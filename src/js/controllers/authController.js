@@ -1,208 +1,111 @@
-import AuthService from '../services/authService.js';
+import { authService } from "../services/authService.js";
+import Swal from "sweetalert2"; // (تأكدوا من تثبيتها أو استخدام CDN)
 
-// ==========================================
-// 1. UI Helper Functions (منطق الواجهة)
-// ==========================================
+// --- Login Logic ---
+const loginForm = document.getElementById("loginForm");
 
-// دالة تحديث طول الكارت ديناميكياً
-const updateCardHeight = (isSignup) => {
-    const container = document.getElementById('mainContainer');
-    const front = document.getElementById('frontFace');
-    const back = document.getElementById('backFace');
-
-    if (container && front && back) {
-        // نزيد هامش بسيط للأمان
-        const height = isSignup ? back.scrollHeight + 20 : front.scrollHeight + 20;
-        container.style.height = `${height}px`;
-    }
-};
-
-// دالة القلب (Flip)
-const flipCard = () => {
-    const cardInner = document.getElementById('cardInner');
-    if (cardInner) {
-        const isCurrentlySignup = cardInner.classList.contains('rotate-y-180');
-        
-        // تبديل الكلاس
-        cardInner.classList.toggle('rotate-y-180');
-        
-        // تحديث الطول بناءً على الوجه الجديد (عكس الحالي)
-        updateCardHeight(!isCurrentlySignup);
-    }
-};
-
-// دالة إظهار/إخفاء الباسورد
-const setupPasswordToggles = () => {
-    document.querySelectorAll('.toggle-password').forEach(icon => {
-        icon.addEventListener('click', (e) => {
-            const input = e.target.previousElementSibling; // الحقل اللي قبل الأيقونة
-            if (input && input.tagName === 'INPUT') {
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    e.target.classList.replace('fa-eye', 'fa-eye-slash');
-                } else {
-                    input.type = 'password';
-                    e.target.classList.replace('fa-eye-slash', 'fa-eye');
-                }
-            }
-        });
-    });
-};
-
-// دالة تبديل نوع الحساب (Job Seeker / Company)
-const setupAccountTypeToggle = () => {
-    const radios = document.querySelectorAll('input[name="accountTypeRadio"]');
-    const jobFields = document.getElementById('jobSeekerFields');
-    const compFields = document.getElementById('companyFields');
-    const hiddenSelect = document.getElementById('accountType');
-
-    radios.forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            const type = e.target.value;
-            
-            // تحديث الـ Select المخفي (لو محتاجينه)
-            if (hiddenSelect) hiddenSelect.value = type;
-
-            if (type === 'company') {
-                jobFields.classList.add('hidden');
-                compFields.classList.remove('hidden');
-            } else {
-                jobFields.classList.remove('hidden');
-                compFields.classList.add('hidden');
-            }
-            
-            // تحديث الطول لأن المحتوى اتغير
-            setTimeout(() => updateCardHeight(true), 50);
-        });
-    });
-};
-
-// ==========================================
-// 2. Initialization (عند تحميل الصفحة)
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // أ) تشغيل أزرار القلب (Flip Buttons)
-    // لاحظي: في HTML لازم ندي الأزرار كلاس اسمه 'flip-btn'
-    document.querySelectorAll('.flip-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault(); // منع أي سلوك افتراضي
-            flipCard();
-        });
-    });
-
-    // ب) تشغيل باقي أدوات الواجهة
-    setupPasswordToggles();
-    setupAccountTypeToggle();
-
-    // ج) التحقق من الرابط (هل جاي من Start Journey؟)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('mode') === 'signup') {
-        const cardInner = document.getElementById('cardInner');
-        if (cardInner) {
-            cardInner.style.transition = 'none'; // إلغاء الانيميشن لحظياً
-            cardInner.classList.add('rotate-y-180');
-            updateCardHeight(true);
-            
-            setTimeout(() => {
-                cardInner.style.transition = ''; // إرجاع الانيميشن
-            }, 100);
-        }
-    } else {
-        updateCardHeight(false);
-    }
-});
-
-
-// ==========================================
-// 3. Form Submission Logic (معالجة البيانات)
-// ==========================================
-
-// --- معالجة Login ---
-const loginForm = document.getElementById('loginForm');
 if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = loginForm.querySelector('button[type="submit"]');
-        const originalText = btn.innerText;
-        btn.innerText = 'Loading...';
-        btn.disabled = true;
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+    try {
+      const result = await authService.login({ email, password });
 
-        try {
-            const data = await AuthService.login({ email, password });
-
-            // حفظ التوكن
-            if (data.token) localStorage.setItem('authToken', data.token);
-            
-            // حفظ اليوزر والتوجيه
-            if (data.data && data.data.user) {
-                localStorage.setItem('user', JSON.stringify(data.data.user));
-                
-                const type = data.data.user.accountType;
-                if (type === 'company') {
-                    window.location.href = '../Company/CompanyPortal/dashboard.html'; // تأكدي من المسار
-                } else {
-                    window.location.href = '../seeker/profile/profile.html'; // تأكدي من المسار
-                }
-            }
-        } catch (error) {
-            console.error(error);
-            alert(error.message || 'Login failed');
-            btn.innerText = originalText;
-            btn.disabled = false;
+      // Success
+      Swal.fire({
+        icon: "success",
+        title: "Welcome Back!",
+        text: "Logged in successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        // Redirect based on account type
+        if (result.data.user.accountType === "company") {
+          window.location.href = "/pages/company/dashboard.html";
+        } else {
+          window.location.href = "/pages/seeker/dashboard.html";
         }
-    });
+      });
+    } catch (error) {
+      console.error("Signup Error Details:", error); // للمطور فقط في الكونسول
+
+      // ✅ الذكاء هنا: استخراج الرسالة من رد الباك إند
+      // error.response.data.message هو المكان الذي يضع فيه الباك إند رسالته
+      const backendMessage = error.response?.data?.message;
+
+      // لو مفيش رسالة من الباك، نعرض رسالة عامة
+      const displayMessage =
+        backendMessage || "Something went wrong. Please try again.";
+
+      Swal.fire({
+        icon: "error",
+        title: "Signup Failed",
+        text: displayMessage, // عرض الرسالة النظيفة للمستخدم
+      });
+    }
+  });
 }
 
-// --- معالجة Signup ---
-const signupForm = document.getElementById('signupForm');
+// --- Signup Logic ---
+const signupForm = document.getElementById("signupForm");
+
 if (signupForm) {
-    signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = signupForm.querySelector('button[type="submit"]');
-        const originalText = btn.innerText;
-        btn.innerText = 'Creating...';
-        btn.disabled = true;
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        // تجميع البيانات
-        const accountType = document.querySelector('input[name="accountTypeRadio"]:checked').value;
-        const baseData = {
-            accountType: accountType,
-            email: document.getElementById('signupEmail').value,
-            password: document.getElementById('signupPassword').value,
-            passwordConfirm: document.getElementById('passwordConfirm').value
-        };
+    // 1. Get Account Type
+    const accountType = document.querySelector(
+      'input[name="accountTypeRadio"]:checked'
+    ).value;
 
-        let finalData = {};
-        if (accountType === 'job_seeker') {
-            finalData = {
-                ...baseData,
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value
-            };
-        } else {
-            finalData = {
-                ...baseData,
-                firstName: document.getElementById('companyName').value, // الباك إند بيستخدم firstName كاسم للشركة أحياناً
-                companyName: document.getElementById('companyName').value // أو ابعتيها كده لو الباك إند عدلها
-            };
-        }
+    // 2. Collect Data
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const passwordConfirm = document.getElementById("passwordConfirm").value;
 
-        try {
-            const data = await AuthService.signup(finalData);
-            
-            localStorage.setItem('tempEmail', finalData.email);
-            alert('Account created! Please verify email.');
-            window.location.href = '../auth/verify-email.html';
+    let userData = { email, password, passwordConfirm, accountType };
 
-        } catch (error) {
-            console.error(error);
-            alert(error.message || 'Signup failed');
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }
-    });
+    if (accountType === "job_seeker") {
+      userData.firstName = document.getElementById("firstName").value;
+      userData.lastName = document.getElementById("lastName").value;
+    } else {
+      userData.companyName = document.getElementById("companyName").value;
+    }
+
+    try {
+      // 3. Call Backend
+      await authService.signup(userData);
+
+      // 4. Success -> Redirect to Verify Email
+      // Store email to use it in the verification page
+      localStorage.setItem("pendingVerificationEmail", email);
+
+      Swal.fire({
+        icon: "success",
+        title: "Account Created!",
+        text: "Please check your email for the verification code.",
+        confirmButtonText: "Go to Verification",
+      }).then(() => {
+        window.location.href = "/pages/auth/verify-email.html";
+      });
+    } catch (error) {
+      console.error("Signup Error Details:", error); // للمطور فقط في الكونسول
+
+      // ✅ الذكاء هنا: استخراج الرسالة من رد الباك إند
+      // error.response.data.message هو المكان الذي يضع فيه الباك إند رسالته
+      const backendMessage = error.response?.data?.message;
+
+      // لو مفيش رسالة من الباك، نعرض رسالة عامة
+      const displayMessage =
+        backendMessage || "Something went wrong. Please try again.";
+
+      Swal.fire({
+        icon: "error",
+        title: "Signup Failed",
+        text: displayMessage, // عرض الرسالة النظيفة للمستخدم
+      });
+    }
+  });
 }

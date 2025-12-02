@@ -1,45 +1,45 @@
-import { BASE_URL } from '../config/constant.js';
+import axiosClient from "../utils/axiosClient.js";
 
-const AuthService = {
-    signup: async (userData) => {
-        const response = await fetch(`${BASE_URL}/api/v1/auth/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData)
-        });
-        if (!response.ok) throw await response.json();
-        return await response.json();
-    },
+export const authService = {
+  // 1. تسجيل حساب جديد
+  async signup(userData) {
+    // userData: { firstName, lastName, email, password, passwordConfirm, accountType }
+    const response = await axiosClient.post("/auth/signup", userData);
+    return response.data;
+  },
 
-    login: async (credentials) => {
-        const response = await fetch(`${BASE_URL}/api/v1/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credentials)
-        });
-        if (!response.ok) throw await response.json();
-        return await response.json();
-    },
-    
-    resendCode: async (email) => {
-        const response = await fetch(`${BASE_URL}/api/v1/auth/resend-code`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        });
-        if (!response.ok) throw await response.json();
-        return await response.json();
-    },
+  // 2. تفعيل الإيميل
+  async verifyEmail(data) {
+    // data: { email, verificationCode }
+    const response = await axiosClient.post("/auth/verify-email", data);
+    return response.data;
+  },
 
-    verifyEmail: async (data) => {
-        const response = await fetch(`${BASE_URL}/api/v1/auth/verify-email`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!response.ok) throw await response.json();
-        return await response.json();
+  // 3. تسجيل الدخول
+  async login(credentials) {
+    // credentials: { email, password }
+    const response = await axiosClient.post("/auth/login", credentials);
+
+    // لو نجح، نحفظ التوكن واليوزر
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.data.user));
     }
-};
 
-export default AuthService;
+    return response.data;
+  },
+
+  // 4. الخروج
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    // توجيه لصفحة تسجيل الدخول
+    window.location.href = "/pages/auth/login.html";
+  },
+
+  // 5. جلب بيانات المستخدم الحالي
+  async getMe() {
+    const response = await axiosClient.get("/auth/me");
+    return response.data;
+  },
+};

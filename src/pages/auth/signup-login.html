@@ -1,258 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome - Career Guidance</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        .perspective-1000 { perspective: 1000px; }
-        .transform-style-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-        .rotate-y-180 { transform: rotateY(180deg); }
-        .rotate-y-180-default { transform: rotateY(180deg); }
-        /* إخفاء Scrollbar للحفاظ على الشكل */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-    </style>
-</head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-hidden relative text-gray-800">
+    <link rel="stylesheet" href="../../css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
-    <a href="../../../index.html" class="absolute top-8 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors text-lg no-underline z-50">
-        <i class="fas fa-arrow-left"></i>
-        <span>CareerPro</span>
+    <style>
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      .transform-style-3d {
+        transform-style: preserve-3d;
+      }
+      .backface-hidden {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+      .rotate-y-180 {
+        transform: rotateY(180deg);
+      }
+      .rotate-y-180-default {
+        transform: rotateY(180deg);
+      }
+      /* إخفاء Scrollbar للحفاظ على الشكل */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-hidden relative text-gray-800"
+  >
+    <a
+      href="../../../index.html"
+      class="absolute top-8 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors text-lg no-underline z-50"
+    >
+      <i class="fas fa-arrow-left"></i>
+      <span>CareerPro</span>
     </a>
 
-    <div id="mainContainer" class="perspective-1000 w-full max-w-md m-4 transition-all duration-500 ease-in-out h-[550px]"> 
-        
-        <div id="cardInner" class="relative w-full h-full duration-700 transform-style-3d">
+    <div
+      id="mainContainer"
+      class="perspective-1000 w-full max-w-md m-4 transition-all duration-500 ease-in-out h-[550px]"
+    >
+      <div
+        id="cardInner"
+        class="relative w-full h-full duration-700 transform-style-3d"
+      >
+        <div
+          id="frontFace"
+          class="absolute top-0 left-0 w-full backface-hidden bg-white p-10 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
+        >
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+            <p class="text-gray-500 text-sm">Please login to continue</p>
+          </div>
 
-            <div id="frontFace" class="absolute top-0 left-0 w-full backface-hidden bg-white p-10 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center">
-                
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-                    <p class="text-gray-500 text-sm">Please login to continue</p>
+          <form id="loginForm" class="space-y-5">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1"
+                >Your Email</label
+              >
+              <div class="relative">
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  placeholder="name@example.com"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 transition-all"
+                />
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"
+                >
+                  <i class="far fa-envelope"></i>
                 </div>
-
-                <form id="loginForm" class="space-y-5">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Your Email</label>
-                        <div class="relative">
-                            <input type="email" id="email" required placeholder="name@example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 transition-all">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                                <i class="far fa-envelope"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Your Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" required placeholder="Enter your password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 pr-10 transition-all">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-blue-600 transition-colors" onclick="togglePassword('password', this)">
-                                <i class="far fa-eye"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all shadow-md mt-4">
-                        Log In
-                    </button>
-
-                    <p class="text-center text-sm text-gray-600 mt-6">
-                        Don't have an account? 
-                        <button type="button" onclick="flipCard()" class="text-blue-600 font-bold hover:underline transition-colors ml-1">Sign Up</button>
-                    </p>
-                </form>
+              </div>
             </div>
 
-            <div id="backFace" class="absolute top-0 left-0 w-full backface-hidden rotate-y-180-default bg-white p-8 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center">
-                
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Let's Start Learning</h2>
-                    <p class="text-gray-500 text-xs">Please sign up to continue</p>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1"
+                >Your Password</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="password"
+                  required
+                  placeholder="Enter your password"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 pr-10 transition-all"
+                />
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"
+                >
+                  <i class="fas fa-lock"></i>
                 </div>
-
-                <form id="signupForm" class="space-y-4">
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">I am a *</label>
-                        <div class="grid grid-cols-2 gap-4">
-                            <label class="cursor-pointer group">
-                                <input type="radio" name="accountTypeRadio" value="job_seeker" class="peer sr-only" checked onchange="toggleAccountType(this.value)">
-                                <div class="peer-checked:border-blue-600 peer-checked:bg-blue-50 peer-checked:text-blue-700 border-2 border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all group-hover:border-blue-300 h-24 text-gray-500">
-                                    <i class="far fa-user text-2xl"></i>
-                                    <span class="text-sm font-bold">Job Seeker</span>
-                                </div>
-                            </label>
-                            <label class="cursor-pointer group">
-                                <input type="radio" name="accountTypeRadio" value="company" class="peer sr-only" onchange="toggleAccountType(this.value)">
-                                <div class="peer-checked:border-blue-600 peer-checked:bg-blue-50 peer-checked:text-blue-700 border-2 border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all group-hover:border-blue-300 h-24 text-gray-500">
-                                    <i class="far fa-building text-2xl"></i>
-                                    <span class="text-sm font-bold">Company</span>
-                                </div>
-                            </label>
-                        </div>
-                        <select id="accountType" class="hidden"><option value="job_seeker">Job Seeker</option><option value="company">Company</option></select>
-                    </div>
-
-                    <div id="jobSeekerFields" class="grid grid-cols-2 gap-3 transition-all duration-300">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">First Name *</label>
-                            <div class="relative">
-                                <input type="text" id="firstName" placeholder="John" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all">
-                                <i class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Last Name *</label>
-                            <div class="relative">
-                                <input type="text" id="lastName" placeholder="Doe" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all">
-                                <i class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="companyFields" class="hidden">
-                        <label class="block text-xs font-bold text-gray-700 mb-1">Company Name *</label>
-                        <div class="relative">
-                            <input type="text" id="companyName" placeholder="Tech Solutions Inc." required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all">
-                            <i class="far fa-building absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">Your Email</label>
-                        <div class="relative">
-                            <input type="email" id="signupEmail" required placeholder="name@example.com" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all">
-                            <i class="far fa-envelope absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">Your Password</label>
-                        <div class="relative">
-                            <input type="password" id="signupPassword" required placeholder="Create password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 pr-8 text-sm transition-all">
-                            <i class="fas fa-lock absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                            <i class="far fa-eye absolute right-3 top-2.5 text-gray-400 cursor-pointer text-xs hover:text-blue-600" onclick="togglePassword('signupPassword', this)"></i>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">Confirm Password</label>
-                        <div class="relative">
-                            <input type="password" id="passwordConfirm" required placeholder="Confirm password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 pr-8 text-sm transition-all">
-                            <i class="fas fa-lock absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                            <i class="far fa-eye absolute right-3 top-2.5 text-gray-400 cursor-pointer text-xs hover:text-blue-600" onclick="togglePassword('passwordConfirm', this)"></i>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all shadow-md text-sm mt-2">
-                        Sign Up
-                    </button>
-
-                    <p class="text-center text-xs text-gray-600 mt-4">
-                        Already have an account? 
-                        <button type="button" onclick="flipCard()" class="text-blue-600 font-bold hover:underline transition-colors ml-1">Log In</button>
-                    </p>
-                </form>
+                <div
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-blue-600 transition-colors"
+                  onclick="togglePassword('password', this)"
+                >
+                  <i class="far fa-eye"></i>
+                </div>
+              </div>
             </div>
 
+            <button
+              type="submit"
+              class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all shadow-md mt-4"
+            >
+              Log In
+            </button>
+
+            <p class="text-center text-sm text-gray-600 mt-6">
+              Don't have an account?
+              <button
+                type="button"
+                onclick="flipCard()"
+                class="text-blue-600 font-bold hover:underline transition-colors ml-1"
+              >
+                Sign Up
+              </button>
+            </p>
+          </form>
         </div>
+
+        <div
+          id="backFace"
+          class="absolute top-0 left-0 w-full backface-hidden rotate-y-180-default bg-white p-8 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
+        >
+          <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">
+              Let's Start Learning
+            </h2>
+            <p class="text-gray-500 text-xs">Please sign up to continue</p>
+          </div>
+
+          <form id="signupForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2"
+                >I am a *</label
+              >
+              <div class="grid grid-cols-2 gap-4">
+                <label class="cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="accountTypeRadio"
+                    value="job_seeker"
+                    class="peer sr-only"
+                    checked
+                    onchange="toggleAccountType(this.value)"
+                  />
+                  <div
+                    class="peer-checked:border-blue-600 peer-checked:bg-blue-50 peer-checked:text-blue-700 border-2 border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all group-hover:border-blue-300 h-24 text-gray-500"
+                  >
+                    <i class="far fa-user text-2xl"></i>
+                    <span class="text-sm font-bold">Job Seeker</span>
+                  </div>
+                </label>
+                <label class="cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="accountTypeRadio"
+                    value="company"
+                    class="peer sr-only"
+                    onchange="toggleAccountType(this.value)"
+                  />
+                  <div
+                    class="peer-checked:border-blue-600 peer-checked:bg-blue-50 peer-checked:text-blue-700 border-2 border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all group-hover:border-blue-300 h-24 text-gray-500"
+                  >
+                    <i class="far fa-building text-2xl"></i>
+                    <span class="text-sm font-bold">Company</span>
+                  </div>
+                </label>
+              </div>
+              <select id="accountType" class="hidden">
+                <option value="job_seeker">Job Seeker</option>
+                <option value="company">Company</option>
+              </select>
+            </div>
+
+            <div
+              id="jobSeekerFields"
+              class="grid grid-cols-2 gap-3 transition-all duration-300"
+            >
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1"
+                  >First Name *</label
+                >
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="firstName"
+                    placeholder="John"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
+                  />
+                  <i
+                    class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"
+                  ></i>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1"
+                  >Last Name *</label
+                >
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Doe"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
+                  />
+                  <i
+                    class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <div id="companyFields" class="hidden">
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Company Name *</label
+              >
+              <div class="relative">
+                <input
+                  type="text"
+                  id="companyName"
+                  placeholder="Tech Solutions Inc."
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
+                />
+                <i
+                  class="far fa-building absolute left-3 top-2.5 text-gray-400 text-xs"
+                ></i>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Your Email</label
+              >
+              <div class="relative">
+                <input
+                  type="email"
+                  id="signupEmail"
+                  required
+                  placeholder="name@example.com"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
+                />
+                <i
+                  class="far fa-envelope absolute left-3 top-2.5 text-gray-400 text-xs"
+                ></i>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Your Password</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="signupPassword"
+                  required
+                  placeholder="Create password"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 pr-8 text-sm transition-all"
+                />
+                <i
+                  class="fas fa-lock absolute left-3 top-2.5 text-gray-400 text-xs"
+                ></i>
+                <i
+                  class="far fa-eye absolute right-3 top-2.5 text-gray-400 cursor-pointer text-xs hover:text-blue-600"
+                  onclick="togglePassword('signupPassword', this)"
+                ></i>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Confirm Password</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="passwordConfirm"
+                  required
+                  placeholder="Confirm password"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 pr-8 text-sm transition-all"
+                />
+                <i
+                  class="fas fa-lock absolute left-3 top-2.5 text-gray-400 text-xs"
+                ></i>
+                <i
+                  class="far fa-eye absolute right-3 top-2.5 text-gray-400 cursor-pointer text-xs hover:text-blue-600"
+                  onclick="togglePassword('passwordConfirm', this)"
+                ></i>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all shadow-md text-sm mt-2"
+            >
+              Sign Up
+            </button>
+
+            <p class="text-center text-xs text-gray-600 mt-4">
+              Already have an account?
+              <button
+                type="button"
+                onclick="flipCard()"
+                class="text-blue-600 font-bold hover:underline transition-colors ml-1"
+              >
+                Log In
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="../../js/controllers/authController.js"></script>
 
     <script>
-        // 1. دالة إظهار/إخفاء الباسورد
-        function togglePassword(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
+      // 1. دالة إظهار/إخفاء الباسورد
+      function togglePassword(inputId, icon) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+
+      // 2. دالة تحديث الطول ديناميكياً (لتجنب الفراغات)
+      function updateCardHeight(isSignup) {
+        const container = document.getElementById("mainContainer");
+        const front = document.getElementById("frontFace");
+        const back = document.getElementById("backFace");
+
+        if (isSignup) {
+          container.style.height = back.scrollHeight + 20 + "px";
+        } else {
+          container.style.height = front.scrollHeight + 20 + "px";
+        }
+      }
+
+      // 3. دالة القلب (Flip Animation)
+      function flipCard() {
+        const cardInner = document.getElementById("cardInner");
+        const isGoingToSignup = !cardInner.classList.contains("rotate-y-180");
+
+        cardInner.classList.toggle("rotate-y-180");
+
+        updateCardHeight(isGoingToSignup);
+      }
+
+      // 4. دالة التبديل بين Job Seeker و Company (محدثة لإصلاح مشكلة الـ Required)
+      function toggleAccountType(type) {
+        const select = document.getElementById("accountType");
+        const jobFields = document.getElementById("jobSeekerFields");
+        const compFields = document.getElementById("companyFields");
+
+        // نمسك الحقول عشان نتحكم في الـ required
+        const firstNameInput = document.getElementById("firstName");
+        const lastNameInput = document.getElementById("lastName");
+        const companyNameInput = document.getElementById("companyName");
+
+        // تحديث القائمة المخفية
+        select.value = type;
+        select.dispatchEvent(new Event("change"));
+
+        // التحكم في الظهور/الاختفاء والـ Required
+        if (type === "company") {
+          // إظهار حقول الشركة
+          jobFields.classList.add("hidden");
+          compFields.classList.remove("hidden");
+
+          // جعل اسم الشركة إجباري، والاسم الشخصي اختياري
+          companyNameInput.setAttribute("required", "");
+          firstNameInput.removeAttribute("required");
+          lastNameInput.removeAttribute("required");
+        } else {
+          // إظهار حقول الباحث عن عمل
+          jobFields.classList.remove("hidden");
+          compFields.classList.add("hidden");
+
+          // جعل الاسم الشخصي إجباري، واسم الشركة اختياري
+          companyNameInput.removeAttribute("required");
+          firstNameInput.setAttribute("required", "");
+          lastNameInput.setAttribute("required", "");
         }
 
-        // 2. دالة تحديث الطول ديناميكياً (لتجنب الفراغات)
-        function updateCardHeight(isSignup) {
-            const container = document.getElementById('mainContainer');
-            const front = document.getElementById('frontFace');
-            const back = document.getElementById('backFace');
+        // تحديث الطول لأن المحتوى تغير
+        setTimeout(() => updateCardHeight(true), 50);
+      }
 
-            if (isSignup) {
-                container.style.height = (back.scrollHeight + 20) + 'px';
-            } else {
-                container.style.height = (front.scrollHeight + 20) + 'px';
-            }
-        }
+      // 6. عند تغيير حجم الشاشة
+      window.addEventListener("resize", () => {
+        const cardInner = document.getElementById("cardInner");
+        const isSignup = cardInner.classList.contains("rotate-y-180");
+        updateCardHeight(isSignup);
+      });
 
-        // 3. دالة القلب (Flip Animation)
-        function flipCard() {
-            const cardInner = document.getElementById('cardInner');
-            const isGoingToSignup = !cardInner.classList.contains('rotate-y-180');
-            
-            cardInner.classList.toggle('rotate-y-180');
-            
-            updateCardHeight(isGoingToSignup);
-        }
-
-        // 4. دالة التبديل بين Job Seeker و Company
-        function toggleAccountType(type) {
-            const select = document.getElementById('accountType');
-            const jobFields = document.getElementById('jobSeekerFields');
-            const compFields = document.getElementById('companyFields');
-
-            // تحديث القائمة المخفية
-            select.value = type;
-            select.dispatchEvent(new Event('change')); 
-
-            // التحكم في الظهور/الاختفاء
-            if (type === 'company') {
-                jobFields.classList.add('hidden');
-                compFields.classList.remove('hidden');
-            } else {
-                jobFields.classList.remove('hidden');
-                compFields.classList.add('hidden');
-            }
-
-            // تحديث الطول لأن المحتوى تغير
-            setTimeout(() => updateCardHeight(true), 50);
-        }
-
-        // 5. عند تحميل الصفحة (للتعامل مع الروابط الخارجية)
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            const cardInner = document.getElementById('cardInner');
-
-            if (mode === 'signup') {
-                cardInner.style.transition = 'none'; 
-                cardInner.classList.add('rotate-y-180');
-                updateCardHeight(true);
-                setTimeout(() => {
-                    cardInner.style.transition = '';
-                }, 50);
-            } else {
-                updateCardHeight(false);
-            }
-        });
-
-        // 6. عند تغيير حجم الشاشة
-        window.addEventListener('resize', () => {
-            const cardInner = document.getElementById('cardInner');
-            const isSignup = cardInner.classList.contains('rotate-y-180');
-            updateCardHeight(isSignup);
-        });
+      window.addEventListener("DOMContentLoaded", () => {
+        toggleAccountType("job_seeker");
+      });
     </script>
-</body>
+  </body>
 </html>

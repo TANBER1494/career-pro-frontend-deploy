@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Step 1 - Career Guidance</title>
+    
+    <link rel="stylesheet" href="../../../css/main.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans py-6">
+
+    <main class="w-full max-w-xl bg-white p-6 md:p-8 rounded-2xl shadow-lg m-4">
+        
+        <div class="text-center mb-6">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-1">Complete Your Profile</h2>
+            <p class="text-gray-500 text-sm">Step 1 of 3: Personal Information</p>
+        </div>
+
+        <form id="step1Form" class="space-y-4">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="phoneNumber" class="block text-xs font-bold text-gray-700 mb-1">Phone Number *</label>
+                    <input type="tel" id="phoneNumber" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm transition-all">
+                </div>
+
+                <div>
+                    <label for="birthDate" class="block text-xs font-bold text-gray-700 mb-1">Birth Date *</label>
+                    <input type="date" id="birthDate" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-gray-500 text-sm transition-all">
+                </div>
+            </div>
+
+            <div>
+                <label for="gender" class="block text-xs font-bold text-gray-700 mb-1">Gender *</label>
+                <div class="relative">
+                    <select id="gender" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all">
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="non">Prefer not to say</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="experienceLevel" class="block text-xs font-bold text-gray-700 mb-1">Experience Level *</label>
+                    <div class="relative">
+                        <select id="experienceLevel" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all">
+                            <option value="" disabled selected>Select level</option>
+                            <option value="intern">Intern</option>
+                            <option value="entry">Entry Level</option>
+                            <option value="junior">Junior</option>
+                            <option value="mid">Mid-Level</option>
+                            <option value="senior">Senior</option>
+                            <option value="lead">Lead</option>
+                            <option value="manager">Manager</option>
+                            <option value="director">Director</option>
+                            <option value="executive">Executive</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="yearsOfExperience" class="block text-xs font-bold text-gray-700 mb-1">Years of Exp *</label>
+                    <div class="relative">
+                        <select id="yearsOfExperience" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all">
+                            <option value="" disabled selected>Select years</option>
+                            <option value="0">Fresh Graduate</option>
+                            <option value="1">1 year</option>
+                            <option value="2">2 years</option>
+                            <option value="3">3 years</option>
+                            <option value="4">4 years</option>
+                            <option value="5">5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="industry" class="block text-xs font-bold text-gray-700 mb-1">Industry *</label>
+                <div class="relative">
+                    <select id="industry" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all">
+                        <option value="" disabled selected>Select industry</option>
+                        <option value="software-development">Software Development</option>
+                        <option value="web-development">Web Development</option>
+                        <option value="mobile-development">Mobile Development</option>
+                        <option value="data-science-analytics">Data Science & Analytics</option>
+                        <option value="ai-ml">AI & Machine Learning</option>
+                        <option value="cybersecurity">Cybersecurity</option>
+                        <option value="cloud-computing">Cloud Computing</option>
+                        <option value="devops-infrastructure">DevOps & Infrastructure</option>
+                        <option value="game-development">Game Development</option>
+                        <option value="ui-ux-design">UI/UX Design</option>
+                        <option value="database-administration">Database Administration</option>
+                        <option value="network-engineering">Network Engineering</option>
+                        <option value="qa-testing">Quality Assurance & Testing</option>
+                        <option value="it-support-helpdesk">IT Support & Help Desk</option>
+                        <option value="blockchain-cryptocurrency">Blockchain & Cryptocurrency</option>
+                        <option value="computer-graphics-animation">Computer Graphics & Animation</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="country" class="block text-xs font-bold text-gray-700 mb-1">Country *</label>
+                    <div class="relative">
+                        <select id="country" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all">
+                            <option value="" disabled selected>Select country</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="United Arab Emirates">UAE</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Yemen">Yemen</option>
+                            <option value="Palestine">Palestine</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Mauritania">Mauritania</option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Comoros">Comoros</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="city" class="block text-xs font-bold text-gray-700 mb-1">City *</label>
+                    <div class="relative">
+                        <select id="city" required disabled class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-sm transition-all">
+                            <option value="" disabled selected>Select city</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6 pt-2 border-t border-gray-100">
+                <button type="button" id="backBtn" class="px-5 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-lg hover:bg-gray-200 text-sm transition-colors">
+                    Back
+                </button>
+
+                <button type="submit" class="flex-1 bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+                    <span>continu to Education (step 2 of 3)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <script type="module" src="../../../js/controllers/jobseekerController.js"></script>
+</body>
+</html>

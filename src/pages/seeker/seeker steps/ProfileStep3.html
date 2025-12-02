@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Step 3 - Upload CV</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans py-6">
+
+    <main class="w-full max-w-xl bg-white p-8 rounded-2xl shadow-lg m-4 text-center">
+        
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Upload Your CV (Step 3 of 3) *</h2>
+            <p class="text-gray-500 text-sm">Required for completing your profile and accessing job opportunities</p>
+        </div>
+
+        <form id="step3Form" class="space-y-6">
+            
+            <div class="relative border-2 border-dashed border-gray-300 rounded-xl p-10 bg-gray-50 hover:bg-gray-100 transition-colors group cursor-pointer" onclick="document.getElementById('cvFile').click()">
+                
+                <div class="mb-4 text-gray-400 group-hover:text-blue-500 transition-colors">
+                    <i class="fas fa-cloud-upload-alt text-4xl"></i>
+                </div>
+
+                <h3 class="text-gray-700 font-medium mb-1">Drop your CV here or click to browse *</h3>
+                <p class="text-xs text-gray-400 mb-4">PDF, DOC, DOCX (Max 5MB)</p>
+
+                <span class="inline-block bg-white border border-gray-300 text-gray-700 text-sm font-medium py-2 px-4 rounded shadow-sm hover:bg-gray-50 transition-all">
+                    Choose File
+                </span>
+                
+                <span id="fileNameDisplay" class="text-xs text-gray-500 ml-2">No file chosen</span>
+
+                <input type="file" id="cvFile" accept=".pdf,.doc,.docx" required class="hidden" onchange="updateFileName(this)">
+            </div>
+
+            <div class="text-red-500 text-xs font-medium flex items-center justify-center gap-1">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>CV upload is required to complete registration</span>
+            </div>
+
+            <div class="flex gap-4 pt-4 border-t border-gray-100">
+                <button type="button" id="backBtn" class="flex-1 py-3 px-6 border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors">
+                    Back
+                </button>
+
+                <button type="submit" id="finishBtn" class="flex-1 bg-green-400 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-500 shadow-md transition-all flex items-center justify-center gap-2">
+                    <span>Complete Registration</span>
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <script type="module" src="../../../js/controllers/jobseekerController.js"></script>
+
+    <script>
+        function updateFileName(input) {
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            if (input.files && input.files.length > 0) {
+                fileNameDisplay.textContent = input.files[0].name;
+                fileNameDisplay.classList.add('text-green-600', 'font-bold'); 
+            } else {
+                fileNameDisplay.textContent = "No file chosen";
+                fileNameDisplay.classList.remove('text-green-600', 'font-bold');
+            }
+        }
+    </script>
+</body>
+</html>

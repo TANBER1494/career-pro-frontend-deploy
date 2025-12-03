@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test Company Discovery</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      button {
+        cursor: pointer;
+        padding: 5px 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 3px;
+      }
+      input,
+      select {
+        padding: 5px;
+        margin: 5px 0;
+      }
+      #output {
+        background: #f4f4f4;
+        padding: 15px;
+        border: 1px solid #ddd;
+        max-height: 300px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🏢 Company Discovery Test Bench</h2>
+
+    <div class="section">
+      <h3>1. Home Page</h3>
+      <button id="btnTop">Get Top Companies (Random 6)</button>
+    </div>
+
+    <div class="section">
+      <h3>2. Search Companies</h3>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by Name (e.g. Tech)"
+      />
+      <br />
+      <label><input type="checkbox" id="verifiedCheck" /> Verified Only</label>
+      <br />
+      <button id="btnSearch">Search Companies</button>
+    </div>
+
+    <div class="section">
+      <h3>3. Company Details (Public View)</h3>
+      <input type="text" id="compIdInput" placeholder="Paste Company ID here" />
+      <button id="btnDetails">Get Public Profile & Jobs</button>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre id="output">Waiting for action...</pre>
+
+    <script type="module">
+      import { companyDiscoveryService } from "./src/js/services/companyDiscoveryService.js";
+
+      const log = (data) => {
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+        console.log(data);
+      };
+
+      // 1. Get Top Companies
+      document.getElementById("btnTop").addEventListener("click", async () => {
+        try {
+          const res = await companyDiscoveryService.getTopCompanies();
+          log(res);
+
+          // Auto-fill ID for next test if available
+          if (res.data.companies.length > 0) {
+            document.getElementById("compIdInput").value =
+              res.data.companies[0]._id;
+          }
+        } catch (err) {
+          log(err);
+        }
+      });
+
+      // 2. Search & Filter
+      document
+        .getElementById("btnSearch")
+        .addEventListener("click", async () => {
+          const search = document.getElementById("searchInput").value;
+          const isVerified = document.getElementById("verifiedCheck").checked;
+
+          // Build filters object
+          const filters = { limit: 5 };
+          if (search) filters.search = search;
+          if (isVerified) filters.isVerified = true;
+
+          try {
+            const res = await companyDiscoveryService.getAllCompanies(filters);
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 3. Get Company Details
+      document
+        .getElementById("btnDetails")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("compIdInput").value;
+          if (!id)
+            return alert(
+              "Put Company ID first (Click Top Companies to get one)"
+            );
+
+          try {
+            const res = await companyDiscoveryService.getCompanyDetails(id);
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+    </script>
+  </body>
+</html>

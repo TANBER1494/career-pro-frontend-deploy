@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test Application Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      button {
+        cursor: pointer;
+        padding: 6px 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        margin: 5px;
+      }
+      button.success {
+        background: #28a745;
+      }
+      button.danger {
+        background: #dc3545;
+      }
+      button.warning {
+        background: #ffc107;
+        color: black;
+      }
+      input,
+      select {
+        padding: 5px;
+        margin: 5px;
+      }
+      #output {
+        background: #f4f4f4;
+        padding: 15px;
+        border: 1px solid #ddd;
+        max-height: 400px;
+        overflow: auto;
+      }
+      .card {
+        border: 1px solid #eee;
+        padding: 10px;
+        margin: 5px 0;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>👥 Company Applications Test Bench</h2>
+
+    <div class="section" style="background-color: #e3f2fd">
+      <h3>0. Authentication (Company Account)</h3>
+      <input type="email" id="email" value="company@test.com" />
+      <input type="password" id="password" value="password123" />
+      <button id="btnLogin">Login as Company</button>
+      <span id="loginStatus">Not Logged In</span>
+    </div>
+
+    <div class="section">
+      <h3>1. View Applications</h3>
+      <label>Filters:</label>
+      <select id="statusFilter">
+        <option value="">All Status</option>
+        <option value="New">New</option>
+        <option value="Reviewing">Reviewing</option>
+        <option value="Interviewed">Interviewed</option>
+        <option value="Hired">Hired</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+      <input
+        type="text"
+        id="searchFilter"
+        placeholder="Search Candidate Name"
+      />
+      <button id="btnGetApps" class="success">Load Applications</button>
+
+      <div
+        id="appsList"
+        style="margin-top: 15px; background: #fafafa; padding: 10px"
+      ></div>
+    </div>
+
+    <div class="section">
+      <h3>2. Update Status (Paste App ID)</h3>
+      <input
+        type="text"
+        id="appIdInput"
+        placeholder="Application ID"
+        style="width: 250px"
+      />
+      <br />
+      <button id="btnReview" class="warning">Mark as Reviewing</button>
+      <button id="btnInterview" class="action">Mark as Interviewed</button>
+      <button id="btnHire" class="success">Hire Candidate</button>
+      <button id="btnReject" class="danger">Reject Candidate</button>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre id="output">Waiting...</pre>
+
+    <script type="module">
+      import { authService } from "./src/js/services/authService.js";
+      import { applicationService } from "./src/js/services/applicationService.js";
+
+      const log = (data) => {
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+        console.log(data);
+      };
+
+      // 0. Login
+      document
+        .getElementById("btnLogin")
+        .addEventListener("click", async () => {
+          try {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const res = await authService.login({ email, password });
+
+            if (res.data.user.accountType !== "company") {
+              alert("⚠️ This is NOT a company account!");
+            }
+            document.getElementById("loginStatus").textContent = "Logged In ✅";
+            document.getElementById("loginStatus").style.color = "green";
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 1. Get Applications
+      document
+        .getElementById("btnGetApps")
+        .addEventListener("click", async () => {
+          const status = document.getElementById("statusFilter").value;
+          const search = document.getElementById("searchFilter").value;
+
+          const filters = {};
+          if (status) filters.status = status;
+          if (search) filters.search = search;
+
+          try {
+            const res = await applicationService.getCompanyApplications(
+              filters
+            );
+            log(res);
+
+            // Render List
+            const listDiv = document.getElementById("appsList");
+            if (res.data.applications.length === 0) {
+              listDiv.innerHTML = "No applications found.";
+            } else {
+              listDiv.innerHTML = res.data.applications
+                .map(
+                  (app) => `
+                        <div class="card">
+                            <strong>${app.candidateName}</strong> applied for <em>${app.position}</em><br>
+                            Status: <b>${app.status}</b> | ID: <code>${app.id}</code>
+                        </div>
+                    `
+                )
+                .join("");
+
+              // Auto-fill input
+              document.getElementById("appIdInput").value =
+                res.data.applications[0].id;
+            }
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 2. Update Status Helper
+      const updateStatus = async (newStatus) => {
+        const id = document.getElementById("appIdInput").value;
+        if (!id) return alert("Enter Application ID");
+
+        try {
+          const res = await applicationService.updateApplicationStatus(
+            id,
+            newStatus
+          );
+          log(res);
+          // Refresh list
+          document.getElementById("btnGetApps").click();
+        } catch (err) {
+          log(err);
+        }
+      };
+
+      document.getElementById("btnReview").onclick = () =>
+        updateStatus("Reviewing");
+      document.getElementById("btnInterview").onclick = () =>
+        updateStatus("Interviewed");
+      document.getElementById("btnHire").onclick = () => updateStatus("Hired");
+      document.getElementById("btnReject").onclick = () =>
+        updateStatus("Rejected");
+    </script>
+  </body>
+</html>

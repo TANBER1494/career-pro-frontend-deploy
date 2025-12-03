@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test Company Complete Workflow</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      button {
+        cursor: pointer;
+        padding: 6px 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        margin: 5px;
+      }
+      button.action {
+        background: #17a2b8;
+      }
+      button.danger {
+        background: #dc3545;
+      }
+      input {
+        padding: 5px;
+        width: 200px;
+      }
+      #output {
+        background: #f4f4f4;
+        padding: 15px;
+        border: 1px solid #ddd;
+        max-height: 400px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🏭 Company Management Test Bench</h2>
+
+    <div class="section" style="background-color: #e3f2fd">
+      <h3>0. Authentication</h3>
+      <input type="email" id="email" value="company@test.com" />
+      <input type="password" id="password" value="password123" />
+      <button id="btnLogin">Login as Company</button>
+      <span id="loginStatus">Not Logged In</span>
+    </div>
+
+    <div class="section">
+      <h3>1. Dashboard & Stats</h3>
+      <button id="btnStats" class="action">Get Company Stats</button>
+      <div id="statsDisplay" style="margin-top: 10px; color: darkblue"></div>
+    </div>
+
+    <div class="section">
+      <h3>2. Post New Job</h3>
+      <input
+        type="text"
+        id="jobTitle"
+        placeholder="Job Title"
+        value="Senior React Dev"
+      />
+      <button id="btnCreate" class="action">Create Job</button>
+    </div>
+
+    <div class="section">
+      <h3>3. My Jobs List</h3>
+      <button id="btnGetJobs" class="action">Load My Jobs</button>
+      <div id="jobsList" style="margin-top: 10px; font-size: 0.85em"></div>
+    </div>
+
+    <div class="section">
+      <h3>4. Actions on Job (Paste ID)</h3>
+      <input type="text" id="jobIdInput" placeholder="Job ID" />
+      <br />
+      <button id="btnEdit">Edit Title</button>
+      <button id="btnStatus">Close Job</button>
+      <button id="btnDelete" class="danger">Delete Job</button>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre id="output">Waiting...</pre>
+
+    <script type="module">
+      import { authService } from "./src/js/services/authService.js";
+      import { jobManagementService } from "./src/js/services/jobManagementService.js";
+
+      const log = (data) => {
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+        console.log(data);
+      };
+
+      // 0. Login
+      document
+        .getElementById("btnLogin")
+        .addEventListener("click", async () => {
+          try {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const res = await authService.login({ email, password });
+            document.getElementById("loginStatus").textContent = "Logged In ✅";
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 1. Get Stats
+      document
+        .getElementById("btnStats")
+        .addEventListener("click", async () => {
+          try {
+            const res = await jobManagementService.getCompanyStats();
+            log(res);
+            // Show simple stats
+            if (res.data && res.data.stats) {
+              document.getElementById(
+                "statsDisplay"
+              ).innerHTML = `Active Jobs: ${res.data.stats.activeJobs} | Apps: ${res.data.stats.totalApplications}`;
+            }
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 2. Create Job
+      document
+        .getElementById("btnCreate")
+        .addEventListener("click", async () => {
+          try {
+            const jobData = {
+              title: document.getElementById("jobTitle").value,
+              department: "IT",
+              location: "Remote",
+              type: "Full-time",
+              experienceLevel: "Mid-level",
+              salaryMin: 5000,
+              salaryMax: 8000,
+              description: "Test Description",
+              requirements: "Test Req",
+              skills: ["React", "JS"],
+              yearsOfExperience: "3 Years",
+              education: "BS",
+            };
+            const res = await jobManagementService.createJob(jobData);
+            log(res);
+            if (res.data.job) {
+              document.getElementById("jobIdInput").value =
+                res.data.job.id || res.data.job._id;
+              alert("Job Created & ID Copied!");
+            }
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 3. Get My Jobs
+      document
+        .getElementById("btnGetJobs")
+        .addEventListener("click", async () => {
+          try {
+            const res = await jobManagementService.getMyJobs();
+            log(res);
+            const list = res.data.jobs
+              .map(
+                (j) => `<li>[${j.status}] <b>${j.title}</b> (ID: ${j._id})</li>`
+              )
+              .join("");
+            document.getElementById("jobsList").innerHTML = `<ul>${list}</ul>`;
+
+            if (
+              res.data.jobs.length > 0 &&
+              !document.getElementById("jobIdInput").value
+            ) {
+              document.getElementById("jobIdInput").value =
+                res.data.jobs[0]._id;
+            }
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 4. Edit
+      document.getElementById("btnEdit").addEventListener("click", async () => {
+        const id = document.getElementById("jobIdInput").value;
+        if (!id) return alert("Enter ID");
+        try {
+          const res = await jobManagementService.editJob(id, {
+            title: "Updated Title " + Date.now(),
+          });
+          log(res);
+        } catch (err) {
+          log(err);
+        }
+      });
+
+      // 5. Status
+      document
+        .getElementById("btnStatus")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("jobIdInput").value;
+          if (!id) return alert("Enter ID");
+          try {
+            const res = await jobManagementService.updateJobStatus(
+              id,
+              "Closed"
+            );
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 6. Delete
+      document
+        .getElementById("btnDelete")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("jobIdInput").value;
+          if (!id) return alert("Enter ID");
+          if (!confirm("Delete this job?")) return;
+          try {
+            await jobManagementService.deleteJob(id);
+            log({ msg: "Deleted" });
+            document.getElementById("jobIdInput").value = "";
+          } catch (err) {
+            log(err);
+          }
+        });
+    </script>
+  </body>
+</html>

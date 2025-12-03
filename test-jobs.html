@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test Jobs Service</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      button {
+        cursor: pointer;
+        padding: 5px 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+      }
+      button:disabled {
+        background: #ccc;
+      }
+      input,
+      select {
+        padding: 5px;
+        margin: 5px 0;
+      }
+      #output {
+        background: #f4f4f4;
+        padding: 15px;
+        border: 1px solid #ddd;
+        max-height: 300px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🛠️ Jobs & Applications Test Bench</h2>
+
+    <div class="section" style="background-color: #e3f2fd">
+      <h3>0. Authentication (Required first)</h3>
+      <input
+        type="email"
+        id="email"
+        placeholder="Email"
+        value="tanbersaber15@gmail.com"
+      />
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+        value="password123"
+      />
+      <button id="btnLogin">Login & Get Token</button>
+      <span id="authStatus" style="margin-left: 10px; color: red"
+        >Not Logged In</span
+      >
+    </div>
+
+    <div class="section">
+      <h3>1. Browse Jobs</h3>
+      <button id="btnFeatured">Get Featured Jobs</button>
+      <button id="btnAllJobs">Get All Jobs (Filter: React)</button>
+      <hr />
+      <input
+        type="text"
+        id="jobIdInput"
+        placeholder="Paste Job ID here for next steps"
+      />
+      <button id="btnJobDetails">Get Job Details</button>
+    </div>
+
+    <div class="section">
+      <h3>2. Actions (Need Job ID above)</h3>
+      <button id="btnSave">Toggle Save Job</button>
+      <br /><br />
+      <label>Apply for Job:</label><br />
+      <input type="file" id="cvFile" /><br />
+      <input
+        type="text"
+        id="appName"
+        placeholder="Full Name"
+        value="Mohamed Test"
+      /><br />
+      <button id="btnApply">Apply Now</button>
+    </div>
+
+    <div class="section">
+      <h3>3. My Data</h3>
+      <button id="btnMyApps">Get My Applications</button>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre id="output">Waiting for action...</pre>
+
+    <script type="module">
+      import { authService } from "./src/js/services/authService.js";
+      import { jobService } from "./src/js/services/jobService.js";
+
+      const log = (data) => {
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+        console.log(data);
+      };
+
+      // 0. Login
+      document
+        .getElementById("btnLogin")
+        .addEventListener("click", async () => {
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          try {
+            const res = await authService.login({ email, password });
+            document.getElementById("authStatus").textContent = "Logged In ✅";
+            document.getElementById("authStatus").style.color = "green";
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 1. Get Featured
+      document
+        .getElementById("btnFeatured")
+        .addEventListener("click", async () => {
+          try {
+            const res = await jobService.getFeaturedJobs();
+            log(res);
+            if (res.data.jobs.length > 0) {
+              document.getElementById("jobIdInput").value =
+                res.data.jobs[0]._id; // Auto-fill first ID
+            }
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 2. Get All Jobs
+      document
+        .getElementById("btnAllJobs")
+        .addEventListener("click", async () => {
+          try {
+            const res = await jobService.getAllJobs({
+              search: "React",
+              limit: 5,
+            });
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 3. Get Details
+      document
+        .getElementById("btnJobDetails")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("jobIdInput").value;
+          if (!id) return alert("Put Job ID first");
+          try {
+            const res = await jobService.getJobDetails(id);
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 4. Toggle Save
+      document.getElementById("btnSave").addEventListener("click", async () => {
+        const id = document.getElementById("jobIdInput").value;
+        if (!id) return alert("Put Job ID first");
+        try {
+          const res = await jobService.toggleSaveJob(id);
+          log(res);
+        } catch (err) {
+          log(err);
+        }
+      });
+
+      // 5. Apply
+      document
+        .getElementById("btnApply")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("jobIdInput").value;
+          const fileInput = document.getElementById("cvFile");
+
+          if (!id) return alert("Put Job ID first");
+          if (fileInput.files.length === 0) return alert("Select CV file");
+
+          const applyData = {
+            cvFile: fileInput.files[0],
+            fullName: document.getElementById("appName").value,
+            email: "test@apply.com",
+            phone: "0100000000",
+          };
+
+          try {
+            const res = await jobService.applyForJob(id, applyData);
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 6. My Applications
+      document
+        .getElementById("btnMyApps")
+        .addEventListener("click", async () => {
+          try {
+            const res = await jobService.getMyApplications();
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+    </script>
+  </body>
+</html>

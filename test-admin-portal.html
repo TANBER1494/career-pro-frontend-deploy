@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test Admin Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      button {
+        cursor: pointer;
+        padding: 6px 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        margin: 5px;
+      }
+      button.success {
+        background: #28a745;
+      }
+      button.danger {
+        background: #dc3545;
+      }
+      input {
+        padding: 5px;
+        width: 250px;
+      }
+      #output {
+        background: #f4f4f4;
+        padding: 15px;
+        border: 1px solid #ddd;
+        max-height: 400px;
+        overflow: auto;
+      }
+      .req-card {
+        background: white;
+        border: 1px solid #eee;
+        padding: 10px;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>👮‍♂️ Admin Portal Test Bench</h2>
+
+    <div class="section" style="background-color: #e3f2fd">
+      <h3>0. Authentication (Admin Account)</h3>
+      <input type="email" id="email" value="admin@test.com" />
+      <input type="password" id="password" value="password123" />
+      <button id="btnLogin">Login as Admin</button>
+      <span id="loginStatus" style="margin-left: 10px; color: red"
+        >Not Logged In</span
+      >
+    </div>
+
+    <div class="section">
+      <h3>1. Pending Verification Requests</h3>
+      <button id="btnGetRequests" class="action">Load Pending Requests</button>
+      <div
+        id="requestsList"
+        style="margin-top: 10px; background: #fafafa; padding: 10px"
+      ></div>
+    </div>
+
+    <div class="section">
+      <h3>2. Review Action (Paste Document ID)</h3>
+      <input type="text" id="docIdInput" placeholder="Document ID" />
+      <br />
+      <button id="btnApprove" class="success">Approve (Verify Company)</button>
+      <button id="btnReject" class="danger">Reject</button>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre id="output">Waiting...</pre>
+
+    <script type="module">
+      import { authService } from "./src/js/services/authService.js";
+      import { adminService } from "./src/js/services/adminService.js";
+
+      const log = (data) => {
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+        console.log(data);
+      };
+
+      // 0. Login
+      document
+        .getElementById("btnLogin")
+        .addEventListener("click", async () => {
+          try {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const res = await authService.login({ email, password });
+
+            if (res.data.user.accountType !== "admin") {
+              alert("⚠️ Warning: This user is NOT an Admin!");
+            }
+            document.getElementById("loginStatus").textContent = "Logged In ✅";
+            document.getElementById("loginStatus").style.color = "green";
+            log(res);
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 1. Get Requests
+      document
+        .getElementById("btnGetRequests")
+        .addEventListener("click", async () => {
+          try {
+            const res = await adminService.getVerificationRequests({
+              status: "pending",
+            });
+            log(res);
+
+            const listDiv = document.getElementById("requestsList");
+            if (res.data.requests.length === 0) {
+              listDiv.innerHTML = "No pending requests found.";
+            } else {
+              listDiv.innerHTML = res.data.requests
+                .map(
+                  (req) => `
+                        <div class="req-card">
+                            📄 <b>${req.documentType}</b> from <u>${
+                    req.companyId ? req.companyId.companyName : "Unknown"
+                  }</u><br>
+                            ID: <code>${req._id}</code> <br>
+                            File: <a href="http://localhost:3000${
+                              req.filePath
+                            }" target="_blank">View File</a>
+                        </div>
+                    `
+                )
+                .join("");
+
+              // Auto-fill input with first ID
+              document.getElementById("docIdInput").value =
+                res.data.requests[0]._id;
+            }
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 2. Approve
+      document
+        .getElementById("btnApprove")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("docIdInput").value;
+          if (!id) return alert("Enter Document ID");
+
+          try {
+            const res = await adminService.reviewVerification(id, {
+              status: "approved",
+            });
+            log(res);
+            alert("Company Verified Successfully!");
+            // Refresh list
+            document.getElementById("btnGetRequests").click();
+          } catch (err) {
+            log(err);
+          }
+        });
+
+      // 3. Reject
+      document
+        .getElementById("btnReject")
+        .addEventListener("click", async () => {
+          const id = document.getElementById("docIdInput").value;
+          if (!id) return alert("Enter Document ID");
+
+          const reason = prompt(
+            "Enter rejection reason:",
+            "Document is blurry"
+          );
+          if (!reason) return;
+
+          try {
+            const res = await adminService.reviewVerification(id, {
+              status: "rejected",
+              rejectionReason: reason,
+            });
+            log(res);
+            alert("Request Rejected.");
+            // Refresh list
+            document.getElementById("btnGetRequests").click();
+          } catch (err) {
+            log(err);
+          }
+        });
+    </script>
+  </body>
+</html>

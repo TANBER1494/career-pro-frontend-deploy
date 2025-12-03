@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Seeker Service</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body style="padding: 20px; font-family: sans-serif">
+    <h1>Test Seeker Profile Services</h1>
+    <p>Make sure you are logged in (Token in localStorage) before testing.</p>
+
+    <div style="margin-bottom: 10px">
+      <button id="btnStep1">1. Test Update Personal Info (Step 1)</button>
+    </div>
+    <div style="margin-bottom: 10px">
+      <button id="btnStep2">2. Test Update Education (Step 2)</button>
+    </div>
+    <div style="margin-bottom: 10px">
+      <input type="file" id="cvInput" />
+      <button id="btnStep3">3. Test Upload CV (Step 3)</button>
+    </div>
+    <div style="margin-bottom: 10px">
+      <button id="btnGetProfile">4. Test Get Full Profile</button>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre
+      id="output"
+      style="background: #f4f4f4; padding: 10px; border: 1px solid #ddd"
+    ></pre>
+
+    <script type="module">
+      // استيراد الخدمة التي أنشأناها للتو
+      import { seekerService } from "./src/js/services/seekerService.js";
+
+      // دالة مساعدة للطباعة
+      const log = (msg) => {
+        const output = document.getElementById("output");
+        output.textContent = JSON.stringify(msg, null, 2);
+        console.log(msg);
+      };
+
+      // 1. Test Step 1
+      document
+        .getElementById("btnStep1")
+        .addEventListener("click", async () => {
+          try {
+            const data = {
+              phoneNumber: "01000000000",
+              birthDate: "1999-01-01",
+              gender: "male",
+              yearsOfExperience: 2,
+              country: "Egypt",
+              city: "Cairo",
+            };
+            const res = await seekerService.updateProfileStep1(data);
+            log(res);
+            alert("Step 1 Success!");
+          } catch (err) {
+            log(err);
+            alert("Step 1 Failed");
+          }
+        });
+
+      // 2. Test Step 2
+      document
+        .getElementById("btnStep2")
+        .addEventListener("click", async () => {
+          try {
+            const data = {
+              degree: "Bachelor",
+              university: "Helwan University",
+              graduationYear: 2022,
+              jobType: "Full Time",
+              workplaceSetting: "remote",
+            };
+            const res = await seekerService.updateProfileStep2(data);
+            log(res);
+            alert("Step 2 Success!");
+          } catch (err) {
+            log(err);
+            alert("Step 2 Failed");
+          }
+        });
+
+      // 3. Test Upload CV
+      document
+        .getElementById("btnStep3")
+        .addEventListener("click", async () => {
+          const fileInput = document.getElementById("cvInput");
+          if (fileInput.files.length === 0) {
+            alert("Please select a file first!");
+            return;
+          }
+
+          try {
+            const file = fileInput.files[0];
+            const res = await seekerService.uploadCV(file);
+            log(res);
+            alert("CV Upload Success!");
+          } catch (err) {
+            log(err);
+            alert("CV Upload Failed");
+          }
+        });
+
+      // 4. Test Get Profile
+      document
+        .getElementById("btnGetProfile")
+        .addEventListener("click", async () => {
+          try {
+            const res = await seekerService.getProfile();
+            log(res);
+            alert("Get Profile Success!");
+          } catch (err) {
+            log(err);
+            alert("Get Profile Failed");
+          }
+        });
+    </script>
+  </body>
+</html>

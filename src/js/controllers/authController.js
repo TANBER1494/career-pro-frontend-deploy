@@ -109,3 +109,97 @@ if (signupForm) {
     }
   });
 }
+// ==========================================
+// 4. Verify Email Logic (Complete)
+// ==========================================
+const verifyForm = document.getElementById('verifyForm');
+
+if (verifyForm) {
+    // أ) منطق زر التأكيد (Verify)
+    verifyForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // 1. قراءة الكود من الحقل المخفي (اللي الـ JS بتاع الـ HTML ملاه)
+        const code = document.getElementById('verificationCode').value; 
+        const email = localStorage.getItem('tempEmail');
+
+        if (!email) {
+            alert('No email found. Please signup again.');
+            window.location.href = '../../pages/auth/signup-login.html';
+            return;
+        }
+
+        // UX: تغيير نص الزرار أثناء التحميل
+        const btn = verifyForm.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+        btn.innerText = 'Verifying...';
+        btn.disabled = true;
+
+        try {
+            // 2. الاتصال بالسيرفر
+            const data = await authService.verifyEmail({ email, verificationCode: code });
+
+            // 3. التعامل مع النجاح
+            if (data.token) localStorage.setItem('authToken', data.token);
+            
+            if (data.data && data.data.user) {
+                localStorage.setItem('user', JSON.stringify(data.data.user));
+                
+                alert('Email Verified Successfully!');
+
+                // 4. التوجيه الذكي
+                if (data.data.user.accountType === 'company') {
+                    window.location.href = '../company/company steps/CompanyStep1.html';
+                } else {
+                    window.location.href = '../seeker/seeker steps/ProfileStep1.html';
+                }
+            }
+            
+        } catch (error) {
+            console.error(error);
+            alert(error.message || 'Verification failed');
+            // إرجاع الزر لحالته الأصلية عند الفشل
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+
+    // ب) منطق زر إعادة الإرسال (Resend Code)
+    const resendBtn = document.getElementById('resendBtn');
+    const resendMessage = document.getElementById('resendMessage'); // تأكدي إن العنصر ده موجود في HTML
+
+    if (resendBtn) {
+        resendBtn.addEventListener('click', async () => {
+            const email = localStorage.getItem('tempEmail');
+            if (!email) return;
+
+            // تعطيل الزر وتشغيل العداد (UX)
+            resendBtn.disabled = true;
+            resendBtn.style.color = '#999';
+            resendBtn.style.cursor = 'not-allowed';
+            
+            let countdown = 60;
+            const timer = setInterval(() => {
+                resendBtn.innerText = `Resend in ${countdown}s`;
+                countdown--;
+                if (countdown < 0) {
+                    clearInterval(timer);
+                    resendBtn.disabled = false;
+                    resendBtn.innerText = 'Resend Code';
+                    resendBtn.style.color = ''; 
+                    resendBtn.style.cursor = 'pointer';
+                }
+            }, 1000);
+
+            try {
+                await authService.resendCode(email);
+                alert('Code sent successfully! Check your inbox.');
+            } catch (error) {
+                clearInterval(timer);
+                resendBtn.disabled = false;
+                resendBtn.innerText = 'Resend Code';
+                alert(error.message || 'Failed to resend code');
+            }
+        });
+    }
+}

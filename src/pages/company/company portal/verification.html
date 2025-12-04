@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Verification - CareerPro</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-800">
+    <nav
+      class="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between"
+    >
+      <div class="flex items-center space-x-8">
+        <a
+          href="dashboard.html"
+          class="text-xl font-bold text-cyan-600 flex items-center gap-2"
+        >
+          <i class="fas fa-building"></i> <span>Company Portal</span>
+        </a>
+        <div
+          class="hidden md:flex items-center space-x-6 text-gray-600 font-medium"
+        >
+          <a href="dashboard.html" class="hover:text-cyan-600">Dashboard</a>
+          <a href="profile.html" class="hover:text-cyan-600">Profile</a>
+          <a href="jobs.html" class="hover:text-cyan-600">Jobs</a>
+          <a href="applications.html" class="hover:text-cyan-600"
+            >Applications</a
+          >
+          <a
+            href="verification.html"
+            class="text-cyan-600 border-b-2 border-cyan-600 pb-1"
+            >Verification</a
+          >
+        </div>
+      </div>
+      <div>
+        <button
+          id="btnLogout"
+          class="text-gray-600 hover:text-red-600 font-medium flex items-center gap-2"
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-6 space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Company Verification</h1>
+          <p class="text-gray-500 mt-1">
+            Verify your company to access premium features and build trust
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3
+                class="text-lg font-bold text-gray-900 flex items-center gap-2"
+              >
+                <i class="fas fa-shield-alt text-cyan-600"></i> Verification
+                Status
+              </h3>
+              <span
+                id="statusBadge"
+                class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold border capitalize"
+              >
+                Unverified
+              </span>
+            </div>
+
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+              <div
+                id="progressBar"
+                class="bg-cyan-600 h-2.5 rounded-full"
+                style="width: 0%"
+              ></div>
+            </div>
+
+            <p id="statusText" class="text-sm text-gray-500">
+              Please upload the required document to start the verification
+              process.
+            </p>
+
+            <div
+              id="rejectionAlert"
+              class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-start gap-2"
+            >
+              <i class="fas fa-exclamation-circle mt-0.5"></i>
+              <div>
+                <strong class="block">Verification Rejected</strong>
+                <span id="rejectionReason">--</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="uploadCard"
+            class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+          >
+            <h3
+              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+            >
+              <i class="fas fa-upload text-cyan-600"></i> Upload Documents
+            </h3>
+
+            <div class="space-y-4">
+              <div
+                class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-cyan-500 transition cursor-pointer relative bg-gray-50"
+              >
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                  class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <div class="space-y-2">
+                  <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                  <p class="text-gray-600 font-medium">
+                    Drag and drop your file here or click to browse
+                  </p>
+                  <p class="text-xs text-gray-400">
+                    Supported formats: PDF, JPG, PNG (Max 5MB)
+                  </p>
+                  <p
+                    id="fileNameDisplay"
+                    class="text-cyan-600 font-semibold mt-2 hidden"
+                  ></p>
+                </div>
+              </div>
+
+              <button
+                id="btnUpload"
+                class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 rounded-lg font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled
+              >
+                <i class="fas fa-upload"></i> Upload Verification Document
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3
+              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+            >
+              <i class="fas fa-history text-cyan-600"></i> Upload History
+            </h3>
+
+            <div id="historyContainer" class="space-y-3">
+              <p class="text-gray-500 text-sm italic">
+                No documents uploaded yet.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3
+              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+            >
+              <i class="fas fa-check-circle text-green-500"></i> Verification
+              Benefits
+            </h3>
+            <ul class="space-y-3 text-sm text-gray-600">
+              <li class="flex items-start gap-2">
+                <i class="fas fa-certificate text-green-500 mt-0.5"></i>
+                <span>Verified company badge on your profile</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-search-plus text-green-500 mt-0.5"></i>
+                <span>Priority candidate matching</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-shield-alt text-green-500 mt-0.5"></i>
+                <span>Enhanced trust and credibility</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-star text-green-500 mt-0.5"></i>
+                <span>Access to premium job posting features</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3
+              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+            >
+              <i class="far fa-envelope text-cyan-600"></i> Contact Support
+            </h3>
+            <p class="text-sm text-gray-500 mb-4">
+              Have questions about the verification process? Contact our support
+              team directly.
+            </p>
+
+            <div
+              class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition cursor-pointer mb-3"
+            >
+              <a
+                href="mailto:verification@careerpro.com"
+                class="flex items-center gap-3"
+              >
+                <div
+                  class="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-gray-900">Send Email</p>
+                  <p class="text-xs text-gray-500">
+                    verification@careerpro.com
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
+    ></script>
+
+    <script type="module" src="/src/js/config/constant.js"></script>
+    <script type="module" src="/src/js/utils/axiosClient.js"></script>
+    <script type="module" src="/src/js/services/companyService.js"></script>
+
+    <script
+      type="module"
+      src="/src/js/controllers/verificationController.js"
+    ></script>
+  </body>
+</html>

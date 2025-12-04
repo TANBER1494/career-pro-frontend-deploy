@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Preview - CareerPro</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-800">
+    <nav
+      class="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between"
+    >
+      <div class="flex items-center space-x-8">
+        <a
+          href="dashboard.html"
+          class="text-xl font-bold text-cyan-600 flex items-center gap-2"
+        >
+          <i class="fas fa-building"></i> <span>Company Portal</span>
+        </a>
+        <div
+          class="hidden md:flex items-center space-x-6 text-gray-600 font-medium"
+        >
+          <a href="dashboard.html" class="hover:text-cyan-600">Dashboard</a>
+          <a href="profile.html" class="hover:text-cyan-600">Profile</a>
+          <a
+            href="jobs.html"
+            class="text-cyan-600 border-b-2 border-cyan-600 pb-1"
+            >Jobs</a
+          >
+          <a href="applications.html" class="hover:text-cyan-600"
+            >Applications</a
+          >
+          <a href="verification.html" class="hover:text-cyan-600"
+            >Verification</a
+          >
+        </div>
+      </div>
+      <div>
+        <button
+          id="btnLogout"
+          class="text-gray-600 hover:text-red-600 font-medium flex items-center gap-2"
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-6 space-y-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <button
+            id="btnBack"
+            class="text-gray-400 hover:text-gray-600 transition"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Job Preview</h1>
+            <p class="text-gray-500 mt-1">
+              Review your job posting before publishing
+            </p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button
+            id="btnEdit"
+            class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"
+          >
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button
+            id="btnSaveDraft"
+            class="bg-white border border-yellow-400 text-yellow-600 hover:bg-yellow-50 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"
+          >
+            <i class="fas fa-save"></i> Save Draft
+          </button>
+          <button
+            id="btnPublish"
+            class="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-lg font-medium transition flex items-center gap-2 shadow-sm"
+          >
+            Publish Job
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 space-y-8"
+      >
+        <div class="border-b border-gray-200 pb-6">
+          <h2 id="preview-title" class="text-3xl font-bold text-gray-900 mb-4">
+            Job Title
+          </h2>
+          <div class="flex flex-wrap gap-4 text-gray-600">
+            <span id="preview-company" class="font-medium text-gray-900"
+              >Company Name</span
+            >
+            <span>•</span>
+            <span id="preview-location">Location</span>
+            <span>•</span>
+            <span id="preview-type">Type</span>
+            <span>•</span>
+            <span id="preview-level">Level</span>
+          </div>
+          <div class="mt-3 text-cyan-600 font-semibold text-lg">
+            <span id="preview-salary">$0 - $0</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Job Description</h3>
+          <p
+            id="preview-description"
+            class="text-gray-700 leading-relaxed whitespace-pre-wrap"
+          ></p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Requirements</h3>
+          <p
+            id="preview-requirements"
+            class="text-gray-700 leading-relaxed whitespace-pre-wrap"
+          ></p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Required Skills</h3>
+          <div id="preview-skills" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Benefits</h3>
+          <p
+            id="preview-benefits"
+            class="text-gray-700 leading-relaxed whitespace-pre-wrap"
+          ></p>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-100"
+        >
+          <div>
+            <span class="text-sm text-gray-500 block mb-1"
+              >Experience Required</span
+            >
+            <span id="preview-experience" class="text-gray-900 font-medium"
+              >--</span
+            >
+          </div>
+          <div>
+            <span class="text-sm text-gray-500 block mb-1">Education</span>
+            <span id="preview-education" class="text-gray-900 font-medium"
+              >--</span
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script type="module" src="/src/js/config/constant.js"></script>
+    <script type="module" src="/src/js/utils/axiosClient.js"></script>
+    <script
+      type="module"
+      src="/src/js/services/jobManagementService.js"
+    ></script>
+
+    <script
+      type="module"
+      src="/src/js/controllers/jobPreviewController.js"
+    ></script>
+  </body>
+</html>

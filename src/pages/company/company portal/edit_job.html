@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Job - CareerPro</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+
+    <style>
+      .skill-badge {
+        @apply px-3 py-1 rounded-full text-sm border bg-cyan-50 text-cyan-700 border-cyan-200;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-800">
+    <nav
+      class="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between"
+    >
+      <div class="flex items-center space-x-8">
+        <a
+          href="dashboard.html"
+          class="text-xl font-bold text-cyan-600 flex items-center gap-2"
+        >
+          <i class="fas fa-building"></i> <span>Company Portal</span>
+        </a>
+        <div
+          class="hidden md:flex items-center space-x-6 text-gray-600 font-medium"
+        >
+          <a href="dashboard.html" class="hover:text-cyan-600">Dashboard</a>
+          <a href="profile.html" class="hover:text-cyan-600">Profile</a>
+          <a
+            href="jobs.html"
+            class="text-cyan-600 border-b-2 border-cyan-600 pb-1"
+            >Jobs</a
+          >
+          <a href="applications.html" class="hover:text-cyan-600"
+            >Applications</a
+          >
+          <a href="verification.html" class="hover:text-cyan-600"
+            >Verification</a
+          >
+        </div>
+      </div>
+      <div>
+        <button
+          id="btnLogout"
+          class="text-gray-600 hover:text-red-600 font-medium flex items-center gap-2"
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-6 space-y-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a
+            href="jobs.html"
+            class="text-gray-400 hover:text-gray-600 transition"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </a>
+          <div>
+            <h1 id="pageTitle" class="text-3xl font-bold text-gray-900">
+              Edit Job
+            </h1>
+            <p id="pageSubtitle" class="text-gray-500 mt-1">
+              Update your job posting details
+            </p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button
+            id="btnPreview"
+            class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"
+          >
+            <i class="fas fa-eye"></i> <span>Preview</span>
+          </button>
+
+          <button
+            id="btnSaveChanges"
+            class="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-lg font-medium transition flex items-center gap-2 shadow-sm"
+          >
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </div>
+
+      <div id="loadingState" class="hidden text-center py-20">
+        <i class="fas fa-spinner fa-spin text-4xl text-cyan-600"></i>
+        <p class="mt-4 text-gray-500">Loading job details...</p>
+      </div>
+
+      <form id="jobForm" class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">
+            Basic Information
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="col-span-2 md:col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Job Title *</label
+              >
+              <input
+                type="text"
+                id="title"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                required
+              />
+            </div>
+            <div class="col-span-2 md:col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Department</label
+              >
+              <input
+                type="text"
+                id="department"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Location *</label
+              >
+              <input
+                type="text"
+                id="location"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Employment Type *</label
+              >
+              <select
+                id="type"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none bg-white transition"
+              >
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Experience Level *</label
+              >
+              <select
+                id="experienceLevel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none bg-white transition"
+              >
+                <option value="Entry-level">Entry-level</option>
+                <option value="Mid-level">Mid-level</option>
+                <option value="Senior-level">Senior-level</option>
+                <option value="Executive">Executive</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Minimum Salary ($)</label
+              >
+              <input
+                type="number"
+                id="salaryMin"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Maximum Salary ($)</label
+              >
+              <input
+                type="number"
+                id="salaryMax"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">
+            Job Details
+          </h3>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Job Description *</label
+              >
+              <textarea
+                id="description"
+                rows="5"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                required
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Requirements</label
+              >
+              <textarea
+                id="requirements"
+                rows="4"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Required Skills (Comma separated) *</label
+              >
+              <input
+                type="text"
+                id="skills"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                required
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                These will be used for AI matching.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Years of Experience</label
+                >
+                <input
+                  type="text"
+                  id="yearsOfExperience"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Education</label
+                >
+                <input
+                  type="text"
+                  id="education"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Benefits & Perks</label
+              >
+              <textarea
+                id="benefits"
+                rows="3"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div
+        id="previewMode"
+        class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-8 space-y-8"
+      >
+        <div class="border-b border-gray-200 pb-6">
+          <h2 id="prev-title" class="text-3xl font-bold text-gray-900 mb-4">
+            Job Title
+          </h2>
+          <div class="flex flex-wrap gap-4 text-gray-600">
+            <span class="flex items-center gap-1"
+              ><i class="fas fa-map-marker-alt"></i>
+              <span id="prev-location">Location</span></span
+            >
+            <span class="flex items-center gap-1"
+              ><i class="fas fa-briefcase"></i>
+              <span id="prev-type">Type</span></span
+            >
+            <span class="flex items-center gap-1"
+              ><i class="fas fa-layer-group"></i>
+              <span id="prev-level">Level</span></span
+            >
+          </div>
+          <div
+            id="prev-salary"
+            class="mt-3 font-semibold text-cyan-600 text-lg"
+          >
+            $0 - $0
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Job Description</h3>
+          <p
+            id="prev-description"
+            class="text-gray-700 whitespace-pre-wrap leading-relaxed"
+          >
+            ...
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Requirements</h3>
+          <p
+            id="prev-requirements"
+            class="text-gray-700 whitespace-pre-wrap leading-relaxed"
+          >
+            ...
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Required Skills</h3>
+          <div id="prev-skills" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg"
+        >
+          <div>
+            <span class="text-sm text-gray-500 font-bold uppercase"
+              >Experience</span
+            >
+            <p id="prev-experience" class="text-gray-900 font-medium">--</p>
+          </div>
+          <div>
+            <span class="text-sm text-gray-500 font-bold uppercase"
+              >Education</span
+            >
+            <p id="prev-education" class="text-gray-900 font-medium">--</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Benefits</h3>
+          <p id="prev-benefits" class="text-gray-700 whitespace-pre-wrap">
+            ...
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="/src/js/config/constant.js"></script>
+    <script type="module" src="/src/js/utils/axiosClient.js"></script>
+    <script
+      type="module"
+      src="/src/js/services/jobManagementService.js"
+    ></script>
+    <script type="module" src="/src/js/services/jobService.js"></script>
+    <script
+      type="module"
+      src="/src/js/controllers/editJobController.js"
+    ></script>
+  </body>
+</html>

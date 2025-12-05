@@ -42,4 +42,9 @@ export const authService = {
     const response = await axiosClient.get("/auth/me");
     return response.data;
   },
+
+  async resendCode(email) {
+    const response = await axiosClient.post("/auth/resend-code", { email });
+    return response.data;
+  },
 };

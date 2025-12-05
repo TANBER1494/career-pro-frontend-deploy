@@ -1,72 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Step 3 - Upload CV</title>
-    <link rel="stylesheet" href="../../../css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans py-6">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Step 3 - CareerPro</title>
+    <link rel="stylesheet" href="../../../css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body
+    class="bg-gray-50 min-h-screen flex items-center justify-center font-sans py-6"
+  >
+    <main class="w-full max-w-xl bg-white p-6 md:p-8 rounded-2xl shadow-lg m-4">
+      <div class="text-center mb-8">
+        <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-1">
+          Upload Your CV
+        </h2>
+        <p class="text-gray-500 text-sm">
+          Step 3 of 3: Required for AI Analysis
+        </p>
+      </div>
 
-    <main class="w-full max-w-xl bg-white p-8 rounded-2xl shadow-lg m-4 text-center">
-        
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Upload Your CV (Step 3 of 3) *</h2>
-            <p class="text-gray-500 text-sm">Required for completing your profile and accessing job opportunities</p>
+      <form id="step3Form" class="space-y-6">
+        <div
+          id="dropZone"
+          class="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center hover:border-blue-500 hover:bg-blue-50 transition cursor-pointer relative group"
+        >
+          <input
+            type="file"
+            id="cvFile"
+            accept=".pdf,.doc,.docx"
+            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          />
+
+          <div class="space-y-3 pointer-events-none">
+            <div
+              class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto group-hover:bg-white transition"
+            >
+              <i
+                class="fas fa-cloud-upload-alt text-3xl text-gray-400 group-hover:text-blue-500 transition"
+              ></i>
+            </div>
+            <div>
+              <p class="text-gray-700 font-medium">
+                Click to upload or drag and drop
+              </p>
+              <p class="text-xs text-gray-400 mt-1">PDF, DOC, DOCX (Max 5MB)</p>
+            </div>
+            <div
+              id="fileName"
+              class="text-sm text-blue-600 font-bold mt-2 hidden"
+            ></div>
+          </div>
         </div>
 
-        <form id="step3Form" class="space-y-6">
-            
-            <div class="relative border-2 border-dashed border-gray-300 rounded-xl p-10 bg-gray-50 hover:bg-gray-100 transition-colors group cursor-pointer" onclick="document.getElementById('cvFile').click()">
-                
-                <div class="mb-4 text-gray-400 group-hover:text-blue-500 transition-colors">
-                    <i class="fas fa-cloud-upload-alt text-4xl"></i>
-                </div>
+        <div
+          class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex gap-3"
+        >
+          <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+          <p class="text-xs text-blue-700 leading-relaxed">
+            Your CV will be analyzed by our AI to match you with the best jobs
+            and suggest improvements.
+          </p>
+        </div>
 
-                <h3 class="text-gray-700 font-medium mb-1">Drop your CV here or click to browse *</h3>
-                <p class="text-xs text-gray-400 mb-4">PDF, DOC, DOCX (Max 5MB)</p>
-
-                <span class="inline-block bg-white border border-gray-300 text-gray-700 text-sm font-medium py-2 px-4 rounded shadow-sm hover:bg-gray-50 transition-all">
-                    Choose File
-                </span>
-                
-                <span id="fileNameDisplay" class="text-xs text-gray-500 ml-2">No file chosen</span>
-
-                <input type="file" id="cvFile" accept=".pdf,.doc,.docx" required class="hidden" onchange="updateFileName(this)">
-            </div>
-
-            <div class="text-red-500 text-xs font-medium flex items-center justify-center gap-1">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span>CV upload is required to complete registration</span>
-            </div>
-
-            <div class="flex gap-4 pt-4 border-t border-gray-100">
-                <button type="button" id="backBtn" class="flex-1 py-3 px-6 border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors">
-                    Back
-                </button>
-
-                <button type="submit" id="finishBtn" class="flex-1 bg-green-400 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-500 shadow-md transition-all flex items-center justify-center gap-2">
-                    <span>Complete Registration</span>
-                </button>
-            </div>
-
-        </form>
+        <div class="flex gap-3 mt-6 pt-2 border-t border-gray-100">
+          <button
+            type="submit"
+            class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 shadow-md transition-all flex items-center justify-center gap-2 text-sm"
+          >
+            <span>Complete Registration</span>
+            <i class="fas fa-check"></i>
+          </button>
+        </div>
+      </form>
     </main>
 
-    <script type="module" src="../../../js/controllers/jobseekerController.js"></script>
-
     <script>
-        function updateFileName(input) {
-            const fileNameDisplay = document.getElementById('fileNameDisplay');
-            if (input.files && input.files.length > 0) {
-                fileNameDisplay.textContent = input.files[0].name;
-                fileNameDisplay.classList.add('text-green-600', 'font-bold'); 
-            } else {
-                fileNameDisplay.textContent = "No file chosen";
-                fileNameDisplay.classList.remove('text-green-600', 'font-bold');
-            }
+      // Simple script to show selected filename
+      const fileInput = document.getElementById("cvFile");
+      const fileNameDisplay = document.getElementById("fileName");
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files[0]) {
+          fileNameDisplay.textContent = e.target.files[0].name;
+          fileNameDisplay.classList.remove("hidden");
         }
+      });
     </script>
-</body>
+
+    <script type="module" src="/src/js/config/constant.js"></script>
+    <script type="module" src="/src/js/utils/axiosClient.js"></script>
+    <script type="module" src="/src/js/services/seekerService.js"></script>
+    <script
+      type="module"
+      src="/src/js/controllers/profileStepsController.js"
+    ></script>
+  </body>
 </html>

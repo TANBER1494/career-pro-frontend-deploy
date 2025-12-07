@@ -31,9 +31,28 @@ function initSeekerStep1() {
 
   if (countrySelect && citySelect) {
     const citiesByCountry = {
-      Egypt: ["Cairo", "Alexandria", "Giza", "Mansoura"],
-      "Saudi Arabia": ["Riyadh", "Jeddah", "Dammam"],
-      "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah"],
+    "Egypt": ["Cairo", "Giza", "Alexandria", "Mansoura", "Luxor", "Aswan", "Asyut", "Port Said", "Suez", "Tanta"],
+    "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Khobar", "Abha", "Tabuk", "Hail"],
+    "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"],
+    "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba", "Madaba", "Jerash"],
+    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Baalbek", "Zahle"],
+    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Kirkuk", "Najaf", "Karbala"],
+    "Syria": ["Damascus", "Aleppo", "Homs", "Hama", "Latakia", "Tartus"],
+    "Kuwait": ["Kuwait City", "Al Ahmadi", "Hawalli", "Al Farwaniyah", "Al Jahra"],
+    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Buraimi"],
+    "Qatar": ["Doha", "Al Rayyan", "Al Wakrah", "Al Khor", "Umm Salal"],
+    "Bahrain": ["Manama", "Riffa", "Muharraq", "Hamad Town", "Isa Town"],
+    "Yemen": ["Sana'a", "Aden", "Taiz", "Al Hudaydah", "Ibb"],
+    "Palestine": ["Jerusalem", "Gaza City", "Ramallah", "Nablus", "Hebron", "Bethlehem", "Jenin", "Jericho"],
+    "Libya": ["Tripoli", "Benghazi", "Misrata", "Tobruk", "Sebha"],
+    "Tunisia": ["Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte", "Gabes"],
+    "Algeria": ["Algiers", "Oran", "Constantine", "Annaba", "Blida", "Batna"],
+    "Morocco": ["Casablanca", "Rabat", "Fes", "Marrakech", "Tangier", "Agadir", "Meknes"],
+    "Sudan": ["Khartoum", "Omdurman", "Port Sudan", "Nyala", "Kassala"],
+    "Mauritania": ["Nouakchott", "Nouadhibou", "Kiffa", "Rosso"],
+    "Somalia": ["Mogadishu", "Hargeisa", "Bosaso", "Kismayo", "Berbera"],
+    "Djibouti": ["Djibouti City", "Ali Sabieh", "Tadjoura"],
+    "Comoros": ["Moroni", "Mutsamudu", "Fomboni"]
     };
 
     countrySelect.addEventListener("change", (e) => {
@@ -127,6 +146,9 @@ function initSeekerStep2() {
         btn.innerHTML = originalText;
       }
     });
+    document.getElementById('backBtn')?.addEventListener('click', () => {
+      window.location.href = '../../seeker/seeker steps/ProfileStep1.html';
+  });
   }
 }
 
@@ -169,7 +191,7 @@ function initSeekerStep3() {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.href = "/src/pages/seeker/dashboard.html";
+          window.location.href = "/src/pages/seeker/profile/profile.html";
         });
       } catch (error) {
         console.error(error);
@@ -182,6 +204,9 @@ function initSeekerStep3() {
         btn.innerHTML = originalText;
       }
     });
+    document.getElementById('backBtn')?.addEventListener('click', () => {
+      window.location.href = '../../seeker/seeker steps/ProfileStep2.html';
+  });
   }
 }
 
@@ -292,6 +317,9 @@ function initCompanyStep2() {
         btn.innerHTML = originalText;
       }
     });
+    document.getElementById('backBtn')?.addEventListener('click', () => {
+      window.location.href = '../../company/company steps/CompanyStep1.html';
+  });
   }
 }
 
@@ -440,5 +468,8 @@ function initCompanyStep3() {
         btn.innerHTML = originalText;
       }
     });
+    document.getElementById('backBtn')?.addEventListener('click', () => {
+      window.location.href = '../../company/company steps/CompanyStep2.html';
+  });
   }
 }

@@ -4,13 +4,109 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareerPro Platform</title>
-    <link href="./src/css/input.css" rel="stylesheet" />
+    <link href="./src/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
-  <body>
-    <h1>Welcome to CareerPro</h1>
-    <p>http://localhost:5174/src/pages/auth/signup-login.html</p>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        
+        body {
+          font-family: "Poppins", sans-serif;
+        }
 
-    <script type="module" src="./src/js/controllers/authController.js"></script>
-  </body>
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <nav class="flex justify-between items-center py-5 px-6 lg:px-20 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+      <div class="text-2xl font-bold text-blue-500 cursor-pointer">
+          CareerPro Platform
+      </div>
+
+      <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+          <a href="#" class="text-blue-600 border-b-2 border-blue-600 pb-1">Home</a>
+          <a href="#" class="hover:text-blue-600 transition">Services</a>
+          <a href="#" class="hover:text-blue-600 transition">Companies</a>
+          <a href="#" class="hover:text-blue-600 transition">Jobs</a>
+      </div>
+
+      <div class="flex items-center space-x-6">
+          <a href="src/pages/auth/signup-login.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
+          <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
+      </div>
+  </nav>
+
+  <section class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden">
+      
+      <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+          
+          <div class="space-y-8 max-w-4xl">
+              <h1 class="font-poppins font-normal text-5xl lg:text-6xl leading-tight text-slate-900">
+                  Discover Your Dream Career with AI-Powered Matching<br>
+                  <!-- <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900"></span> -->
+              </h1>
+              
+              <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+                  Advanced career platform that uses artificial intelligence to match your skills with the best job opportunities in the market.
+              </p>
+
+              <div class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto w-full">
+                  <div class="relative flex-grow text-left"> <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                          <i class="fa-solid fa-magnifying-glass"></i>
+                      </span>
+                      <input type="text" placeholder="Search for jobs or companies..." 
+                          class="w-full py-3 pl-10 pr-4 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white shadow-sm">
+                  </div>
+                  <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30">
+                      Search
+                  </button>
+              </div>
+
+              <div class="flex gap-4 pt-2 justify-center">
+                  <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30">
+                      Start Your Career Journey
+                  </button>
+                  <button class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-6 py-3 rounded-lg font-medium transition shadow-sm">
+                      Browse Jobs
+                  </button>
+              </div>
+          </div>
+
+          </div>
+
+      <div class="border-t border-slate-200 bg-white/50 backdrop-blur-sm mt-auto w-full">
+          <div class="container mx-auto px-6 lg:px-20 py-8">
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                  <div>
+                      <div class="font-poppins font-light text-2xl lg:text-3xl leading-tight text-blue-500">2,847</div>
+                      <div class="text-sm text-slate-500 mt-1">Active Jobs</div>
+                  </div>
+                  <div>
+                      <div class="font-poppins font-light text-2xl lg:text-3xl leading-tight text-blue-500">725</div>
+                      <div class="text-sm text-slate-500 mt-1">Companies</div>
+                  </div>
+                  <div>
+                      <div class="font-poppins font-light text-2xl lg:text-3xl leading-tight text-blue-500">28,250</div>
+                      <div class="text-sm text-slate-500 mt-1">Job Seekers</div>
+                  </div>
+                  <div>
+                      <div class="font-poppins font-light text-2xl lg:text-3xl leading-tight text-blue-500">5,420</div>
+                      <div class="text-sm text-slate-500 mt-1">Successful Matches</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+        <h1 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900">
+          Explore Tech Career Paths
+      </h1>
+      
+      <p class="text-lg text-slate-500 max-w-l mx-auto">
+        Discover exciting opportunities across various computer science disciplines
+      </p>
+
+      </div>
+  </section>
+</body>
 </html>

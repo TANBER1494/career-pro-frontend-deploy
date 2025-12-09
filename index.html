@@ -8,11 +8,133 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-        
+  <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    /* تنسيقات عامة للشكل */
         body {
+          font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            background-color: #f0f2f5;
+            /* شيلنا الـ centering الأفقي لأنه هياخد العرض كله، سيبنا الرأسي بس */
+            /* display: flex; */
+            /* min-height: 100vh; */
+            margin: 0;
+            overflow-x: hidden; /* لمنع ظهور سكرول بار أفقي في الصفحة نفسها */
+        }
+
+        .scroll-container {
+            width: 100%;       
+            height: auto;
+            overflow: hidden;  
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .scroll-container::before,
+        .scroll-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 150px; /* كبرنا الظل شوية عشان يتناسب مع الشاشات الكبيرة */
+            height: 100%;
+            z-index: 2;
+            pointer-events: none; /* عشان الظل ميمنعش الماوس من التفاعل مع الكروت */
+        }
+        /* .scroll-container::before { left: 0; background: linear-gradient(to right, white, transparent); }
+        .scroll-container::after { right: 0; background: linear-gradient(to left, white, transparent); } */
+
+
+        .scroll-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            /* الأنيميشن */
+            animation: scroll-left 40s linear infinite; /* زودنا الوقت شوية عشان الشاشة العريضة */
+        }
+
+        /* 3. التوقف عند الـ Hover */
+        .scroll-container:hover .scroll-track {
+            animation-play-state: paused;
+        }
+
+        /* تنسيق الكارد */
+        .card {
+          width: 350px;
+          height: 200px;
+          border-radius: 12px;
+          position: relative;
+          overflow: hidden; /* عشان الصورة متخرجش بره الحدود */
+          display: flex;
+          align-items: flex-end; /* ينزل المحتوى لأسفل الكارد */
+          justify-content: flex-start; /* يجيب المحتوى شمال */
+          padding: 20px; /* مسافة داخلية عشان الكلام ميلزقش في الحرف */
+          color: white;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: transform 0.3s ease;
+          cursor: pointer;
           font-family: "Poppins", sans-serif;
+          background-size: cover;
+          background-position:center;
+          position: relative;
+          overflow: hidden; /* هنا بتضيف الـ ease */
+        }
+
+        .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: inherit; /* بياخد الصورة من الـ HTML */
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.5s ease;
+        z-index: 0; /* نخليه في الطبقة صفر */
+        }
+
+/* 3. التأثير عند الـ Hover */
+        .card:hover::before {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+        display: flex;
+        flex-direction: column; 
+        gap: 5px; 
+        text-align: left;
+        width: 100%;
+        height: 100%;
+        justify-content: flex-end;
+        position: relative; 
+        z-index: 1;
+        }
+
+        .card-title {
+        font-size: 1.5rem; /* حجم كبير للعنوان */
+        font-weight: 500;
+        margin: 0; /* شيل المسافات الافتراضية */
+        line-height: 1.2;
+        }
+
+        .card-subtitle {
+        font-size: 0.85rem; /* حجم صغير للوصف */
+        font-weight: 400;
+        margin: 0;
+        opacity: 0.9; /* نخليه شفاف سنة بسيطة */
+        line-height: 1.4;
+        }
+
+        /* 4. تعريف الحركة */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /*
+                 المعادلة: -50% (نص الشريط) - 10px (نص المسافة gap)
+                 عشان اللوب يظبط بالمللي
+                */
+                transform: translateX(calc(-50% - 10px));
+            }
         }
 
     </style>
@@ -25,22 +147,22 @@
       </div>
 
       <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
-          <a href="#" class="text-blue-600 border-b-2 border-blue-600 pb-1">Home</a>
-          <a href="#" class="hover:text-blue-600 transition">Services</a>
-          <a href="#" class="hover:text-blue-600 transition">Companies</a>
-          <a href="#" class="hover:text-blue-600 transition">Jobs</a>
-      </div>
+        <button id="Home" class="text-blue-600 border-b-2 border-blue-600 pb-1">Home</button>
+        <button id="Services" class="hover:text-blue-600 transition">Services</button>
+        <button id="Companies" class="hover:text-blue-600 transition">Companies</button>
+        <button id="Jobs" class="hover:text-blue-600 transition">Jobs</button>
+      </div>      
 
       <div class="flex items-center space-x-6">
-          <a href="src/pages/auth/signup-login.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
-          <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
+          <a href="/src/pages/auth/signup-login.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
+          <a href="/src/pages/auth/signup-login.html" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
       </div>
   </nav>
 
-  <section class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden">
+  <section class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"> 
+    <section id="home" class="py-12">
       
       <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
-          
           <div class="space-y-8 max-w-4xl">
               <h1 class="font-poppins font-normal text-5xl lg:text-6xl leading-tight text-slate-900">
                   Discover Your Dream Career with AI-Powered Matching<br>
@@ -64,18 +186,18 @@
               </div>
 
               <div class="flex gap-4 pt-2 justify-center">
-                  <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30">
+                  <button id="startCareerBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30">
                       Start Your Career Journey
                   </button>
-                  <button class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-6 py-3 rounded-lg font-medium transition shadow-sm">
+                  <button id="BrowseBtn" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-6 py-3 rounded-lg font-medium transition shadow-sm">
                       Browse Jobs
                   </button>
               </div>
           </div>
 
-          </div>
+      </div>
 
-      <div class="border-t border-slate-200 bg-white/50 backdrop-blur-sm mt-auto w-full">
+      <div class="border-t border-slate-200 backdrop-blur-sm mt-auto w-full">
           <div class="container mx-auto px-6 lg:px-20 py-8">
               <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                   <div>
@@ -97,16 +219,343 @@
               </div>
           </div>
       </div>
-      <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
-        <h1 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900">
-          Explore Tech Career Paths
+    <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+      <h1 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
+        Explore Tech Career Paths
       </h1>
-      
-      <p class="text-lg text-slate-500 max-w-l mx-auto">
+      <p class="text-lg text-slate-500 max-w-2xl mx-auto">
         Discover exciting opportunities across various computer science disciplines
       </p>
-
+    </div>
+    <div class="scroll-container">
+      <div class="scroll-track">
+          
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788269.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Cybersecurity</h3>
+                  <p class="card-subtitle">Network security & threat protection</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788266.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Backend</h3>
+                  <p class="card-subtitle">Server-side logic, databases, and APIs</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788267.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Frontend</h3>
+                  <p class="card-subtitle">User interfaces & web experiences</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788265.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Data Science</h3>
+                  <p class="card-subtitle">Analytics, ML, and data insights</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788268.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">AI & ML</h3>
+                  <p class="card-subtitle">Intelligent systems & learning models</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788264.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">DevOps</h3>
+                  <p class="card-subtitle">CI/CD, cloud & infrastructure</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788263.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Mobile Dev</h3>
+                  <p class="card-subtitle">iOS, Android & Cross-platform</p>
+              </div>
+          </div>
+  
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788269.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Cybersecurity</h3>
+                  <p class="card-subtitle">Network security & threat protection</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788266.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Backend</h3>
+                  <p class="card-subtitle">Server-side logic, databases, and APIs</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788267.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Frontend</h3>
+                  <p class="card-subtitle">User interfaces & web experiences</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788265.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Data Science</h3>
+                  <p class="card-subtitle">Analytics, ML, and data insights</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788268.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">AI & ML</h3>
+                  <p class="card-subtitle">Intelligent systems & learning models</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788264.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">DevOps</h3>
+                  <p class="card-subtitle">CI/CD, cloud & infrastructure</p>
+              </div>
+          </div>
+  
+          <div class="card" style="background-image: url('./assets/imgs/5888568422914788263.jpg');">
+              <div class="card-content">
+                  <h3 class="card-title">Mobile Dev</h3>
+                  <p class="card-subtitle">iOS, Android & Cross-platform</p>
+              </div>
+          </div>
+  
       </div>
+  </div>
+    </section>
   </section>
+      
+  <section id="services" class="w-full py-24 bg-slate-50">
+  
+    <div class="container mx-auto px-6 max-w-7xl">
+      
+      <div class="flex flex-col gap-20">
+  
+        <div class="text-center mt-8">
+          <h2 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
+            Our AI-Powered Services
+          </h2>
+          <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+            Leverage cutting-edge technology to accelerate your career journey
+          </p>
+        </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+              
+              <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-blue-600 border border-slate-100 hover:border-blue-600 flex flex-col items-center text-center cursor-pointer h-full">
+                  <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300">
+                      <i class="fa-solid fa-file-lines text-white text-2xl group-hover:scale-110 transition-transform duration-300"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-white transition-colors duration-300">CV Analyzer</h3>
+                  <p class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300">
+                      AI-powered resume optimization and personalized improvement suggestions
+                  </p>
+                  <button class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-semibold rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
+                      Analyze CV
+                  </button>
+              </div>
+    
+              <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-blue-600 border border-slate-100 hover:border-blue-600 flex flex-col items-center text-center cursor-pointer h-full">
+                  <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300">
+                      <i class="fa-solid fa-brain text-white text-2xl group-hover:scale-110 transition-transform duration-300"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-white transition-colors duration-300">Matched Jobs</h3>
+                  <p class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300">
+                      Advanced algorithms match your skills with perfect opportunities
+                  </p>
+                  <button class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-semibold rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
+                      View Jobs
+                  </button>
+              </div>
+    
+              <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-blue-600 border border-slate-100 hover:border-blue-600 flex flex-col items-center text-center cursor-pointer h-full">
+                  <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300">
+                      <i class="fa-solid fa-chart-simple text-white text-2xl group-hover:scale-110 transition-transform duration-300"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-white transition-colors duration-300">Personality Test</h3>
+                  <p class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300">
+                      Comprehensive evaluation of your professional competencies
+                  </p>
+                  <button class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-semibold rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
+                      Take Test
+                  </button>
+              </div>
+    
+          </div>
+      </div>
+    </div>
+    </section>
+
+      <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+        <Companies id="companies" class="py-12">
+            <h1 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
+              Top Companies
+            </h1>
+            <p class="text-lg text-slate-500 max-w-l mx-auto">
+              Connect with leading employers in your industry
+            </p>
+        </Companies>
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+          <jobs id="jobs" class="py-12">
+            <h1 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
+              Featured Jobs
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+              Discover handpicked opportunities from top companies
+            </p>
+          </jobs>
+        </div>
+  
+        <footer class="bg-slate-50 pt-16 pb-8 border-t border-slate-200 font-poppins font-normal">
+    <div class="container mx-auto px-6 max-w-7xl">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+            
+            <div>
+                <h3 class="text-blue-600 font-bold text-lg mb-6">CareerPro Platform</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Transform your career journey through intelligent matching and personalized guidance.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-blue-600 font-bold text-lg mb-6">About Us</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                    CareerPro is a leading career development service connecting professionals with innovative companies.
+                </p>
+                <div class="space-y-2 text-sm text-slate-500">
+                    <p><span class="font-semibold text-slate-700">Founded:</span> 2020</p>
+                    <p><span class="font-semibold text-slate-700">HQ:</span> San Francisco, CA</p>
+                    <p><span class="font-semibold text-slate-700">Team:</span> 50-100 employees</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-blue-600 font-bold text-lg mb-6">Contact Info</h3>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center gap-3 text-slate-500 text-sm hover:text-blue-600 transition-colors cursor-pointer">
+                        <i class="fa-regular fa-envelope text-slate-400"></i>
+                        contact@careerpro.com
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-500 text-sm hover:text-blue-600 transition-colors cursor-pointer">
+                        <i class="fa-solid fa-phone text-slate-400"></i>
+                        +1 (555) 123-4567
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-500 text-sm">
+                        <i class="fa-solid fa-location-dot text-slate-400"></i>
+                        San Francisco, CA
+                    </li>
+                </ul>
+
+                <h4 class="text-blue-600 font-semibold text-sm mb-4">Follow Us</h4>
+                <div class="flex gap-4 text-sm text-slate-500">
+                    <a href="#" class="hover:text-blue-600 transition-colors">LinkedIn</a>
+                    <a href="#" class="hover:text-blue-600 transition-colors">Twitter</a>
+                    <a href="#" class="hover:text-blue-600 transition-colors">Facebook</a>
+                    <a href="#" class="hover:text-blue-600 transition-colors">Instagram</a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-blue-600 font-bold text-lg mb-6">Legal</h3>
+                <ul class="space-y-3 text-sm text-slate-500">
+                    <li><a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition-colors">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition-colors">Cookie Policy</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition-colors">Data Protection</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="border-t border-slate-200 pt-8 text-center mt-8 mb-8">
+            <p class="text-slate-500 text-sm mt-4">
+                &copy; 2024 CareerPro Platform. All rights reserved.
+            </p>
+        </div>
+
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const startBtn = document.getElementById('startCareerBtn');
+    
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            // 1. التحقق من وجود التوكن (هل المستخدم مسجل دخول؟)
+            // تأكدي أن الاسم هنا "authToken" أو "token" حسب ما سميتيه في الـ Login
+            const token = localStorage.getItem('authToken'); 
+
+            if (token) {
+                // الحالة الأولى: المستخدم مسجل دخول -> انزل لسكشن الخدمات
+                const servicesSection = document.getElementById('services');
+                if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // الحالة الثانية: المستخدم غير مسجل -> حوله لصفحة التسجيل
+                // ?mode=signup : عشان يفتح على الساين أب علطول بالكود اللي عملناه قبل كده
+                window.location.href = '/src/pages/auth/signup-login.html?mode=signup';
+            }
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. هنا بنعرف قايمة بكل زرار والسكشن اللي المفروض يروحله
+    // { btnId: 'اسم_ايدي_الزرار', targetId: 'اسم_ايدي_السكشن' }
+    const navLinks = [
+        { btnId: 'Home', targetId: 'home' },         
+        { btnId: 'Services', targetId: 'services' },
+        { btnId: 'Companies', targetId: 'companies' }, 
+        { btnId: 'Jobs', targetId: 'jobs' },
+        { btnId: 'BrowseBtn', targetId: 'jobs' }           
+    ];
+
+    // 2. الكود ده هيلف عليهم واحد واحد ويشغلهم
+    navLinks.forEach(link => {
+        const btn = document.getElementById(link.btnId);
+        
+        if (btn) {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); // نمنع النقلة المفاجئة
+                
+                const targetSection = document.getElementById(link.targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.warn(`Section with ID '${link.targetId}' not found!`);
+                }
+            });
+        }
+    });
+});
+
+  </script>
 </body>
 </html>

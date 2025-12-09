@@ -1,16 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",           // ملف الهوم اللي برا خالص
-    "./src/**/*.{html,js}"    // السطر السحري: بيغطي كل الفولدرات الجديدة (controllers, pages, steps, etc.)
+    "./index.html",          
+    "./src/**/*.{html,js}"  
   ],
   theme: {
-    extend: {},
-  },
-  plugins: [],
-  extend: {
-    fontFamily: {
-      poppins: ["Poppins", "sans-serif"],
+    extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
+
+      animation: {
+        marquee: 'marquee 25s linear infinite',
+      },
+
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
     },
-  }  
+  },
+  
+  plugins: [],
 }

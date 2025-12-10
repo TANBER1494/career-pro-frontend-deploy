@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Companies - CareerPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #dce0e0;
+            background: linear-gradient(150deg,rgba(220, 224, 224, 1) 14%, rgba(182, 206, 224, 1) 60%, rgba(95, 106, 115, 1) 100%);
+            margin: 0;
+            overflow-x: hidden; /* لمنع ظهور سكرول بار أفقي في الصفحة نفسها */
+            background-attachment: fixed;
+            }
+    </style>
+</head>
+<body class="font-poppins text-slate-800 flex flex-col min-h-screen">
+
+    <nav class="flex justify-between items-center py-5 px-6 lg:px-20 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div id="Home" class="text-2xl font-simibold text-blue-500 cursor-pointer">
+            CareerPro Platform
+        </div>
+
+        <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-500">
+          <a href="index.html" class="hover:text-blue-600 transition">Home</a>
+          <a href="index.html#services" class="hover:text-blue-600 transition">Services</a>
+          <a href="index.html#companies" class="hover:text-blue-600 transition">Companies</a>
+          <a href="jobs.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Jobs</a>
+        </div>    
+
+        <div class="flex items-center space-x-6">
+            <a href="/src/pages/auth/signup-login.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
+            <a href="/src/pages/auth/signup-login.html" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
+        </div>
+    </nav>
+
+    <a href="index.html" class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 group">
+      <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
+      <span class="text-sm font-medium">Back</span>
+    </a>
+    <main class="w-full px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div class="mb-6">
+            <h1 class="text-2xl font-poppins font-medium text-gray-900">All Companies</h1>
+            <p class="text-gray-500 text-sm">Showing 12 of 12 companies</p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8">
+            <div class="relative mb-4">
+                <span class="absolute left-3 top-3 text-gray-400">
+                    <i class="fa-solid fa-search"></i>
+                </span>
+                <input type="text" placeholder="Search companies..." class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+                <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none focus:border-blue-500 bg-white">
+                      <option>All Industries</option>
+                      <option>Software Development</option>
+                      <option>Web Development</option>
+                      <option>Mobile Development</option>
+                      <option>Data Science & Analytics</option>
+                      <option>AI & Machine Learning</option>
+                      <option>Cybersecurity</option>
+                      <option>Cloud Computing</option>
+                      <option>DevOps & Infrastructure</option>
+                      <option>Game Development</option>
+                      <option>UI/UX Design</option>
+                      <option>Database Administration</option>
+                      <option>Network Engineering</option>
+                      <option>QA & Testing</option>
+                      <option>Blockchain</option>
+                    </select>
+
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none focus:border-blue-500 bg-white">
+                      <option>All Locations</option>
+                      <option>Austin, TX</option>
+                      <option>Boston, MA</option>
+                      <option>Chicago, IL</option>
+                      <option>Denver, CO</option>
+                      <option>Los Angeles, CA</option>
+                      <option>New York, NY</option>
+                      <option>Portland, OR</option>
+                      <option>Remote</option>
+                      <option>San Francisco, CA</option>
+                      <option>Seattle, WA</option>
+                      <option>Washington DC</option>
+                    </select>
+
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none focus:border-blue-500 bg-white">
+                      <option>All Sizes</option>
+                      <option>1-50 employees</option>
+                      <option>50-200 employees</option>
+                      <option>200-500 employees</option>
+                      <option>500-1000 employees</option>
+                    </select>
+
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none focus:border-blue-500 bg-white">
+                      <option>All Companies</option>
+                      <option>Verified Only</option>
+                      <option>Not Verified</option>
+                    </select>
+                </div>
+
+                <div class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-semibold border border-green-100 flex items-center gap-1">
+                    <i class="fa-solid fa-shield-halved"></i> 8 Verified
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+              <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+                <i class="fa-solid fa-shield"></i>
+            </div> <div class="w-14 h-14 bg-green-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">T</div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <h3 class="font-medium font-poppins text-gray-900">TechFlow Solutions</h3>
+                        <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">Software Development & Cloud Solutions</p>
+                    
+                    <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Software Development</span>
+
+                    <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-location-dot text-gray-400"></i> Austin, TX
+                        </div>
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-users text-gray-400"></i> 500-1000
+                        </div>
+                    </div>
+
+                    <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">4 Open Positions</a>
+
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+              <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+                
+                <div class="w-14 h-14 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">I</div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <h3 class="font-medium font-poppins text-gray-900">InnovaCore</h3>
+                        <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">AI & Machine Learning Innovation</p>
+                    
+                    <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Artificial Intelligence</span>
+
+                    <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-location-dot text-gray-400"></i> San Francisco, CA
+                        </div>
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-users text-gray-400"></i> 200-500
+                        </div>
+                    </div>
+
+                    <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">4 Open Positions</a>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+                <div class="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">D</div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <h3 class="font-medium font-poppins text-gray-900">DataMind Corp</h3>
+                        </div>
+                    <p class="text-xs text-gray-500 mb-3">Data Science & Analytics Platform</p>
+                    
+                    <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Data Science & Analytics</span>
+
+                    <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-location-dot text-gray-400"></i> Seattle, WA
+                        </div>
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-users text-gray-400"></i> 1000+
+                        </div>
+                    </div>
+
+                    <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">2 Open Positions</a>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+              <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+                <i class="fa-solid fa-shield"></i>
+            </div>                
+                <div class="w-14 h-14 bg-teal-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">D</div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <h3 class="font-medium font-poppins text-gray-900">DesignCraft Studio</h3>
+                        <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">UI/UX Design for Web Applications</p>
+                    
+                    <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">UI/UX Design</span>
+
+                    <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-location-dot text-gray-400"></i> Austin, TX
+                        </div>
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-users text-gray-400"></i> 50-200
+                        </div>
+                    </div>
+
+                    <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">1 Open Position</a>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+              <div class="w-14 h-14 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">C</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">CloudNet Services</h3>
+                      </div>
+                  <p class="text-xs text-gray-500 mb-3">Cloud Infrastructure & DevOps</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Cloud Computing</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Los Angeles, CA</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 100-500</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">3 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+            <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+              <i class="fa-solid fa-shield"></i>
+          </div>
+              <div class="w-14 h-14 bg-cyan-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">S</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">SecureNet Systems</h3>
+                      <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Cybersecurity Solutions & Services</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Cybersecurity</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Washington, DC</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 200-500</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">5 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+            <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+              <i class="fa-solid fa-shield"></i>
+            </div> 
+              <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">M</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">MobileForge</h3>
+                      <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Mobile App Development</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Mobile Development</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Boston, MA</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 1000+</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">7 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+            <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+              <i class="fa-solid fa-shield"></i>
+            </div>
+              <div class="w-14 h-14 bg-amber-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">G</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">GameDev Studios</h3>
+                      <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Game Development & Graphics</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Game Development</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> New York, NY</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 500-1000</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">6 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+              <div class="w-14 h-14 bg-orange-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">B</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">BlockchainLabs</h3>
+                      </div>
+                  <p class="text-xs text-gray-500 mb-3">Blockchain & Web3 Solutions</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Blockchain & Cryptocurrency</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Remote</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 50-200</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">3 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+            <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+              <i class="fa-solid fa-shield"></i>
+            </div>
+              <div class="w-14 h-14 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">Q</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">QATech Solutions</h3>
+                      <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Quality Assurance & Testing</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Quality Assurance & Testing</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Portland, OR</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 200-500</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">4 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+              <div class="w-14 h-14 bg-sky-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">N</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">NetOps Engineering</h3>
+                      </div>
+                  <p class="text-xs text-gray-500 mb-3">Network Engineering & Infrastructure</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Network Engineering</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Denver, CO</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 100-500</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">8 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+  
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition">
+            <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+              <i class="fa-solid fa-shield"></i>
+            </div>
+              <div class="w-14 h-14 bg-pink-600 rounded-lg flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">D</div>
+              
+              <div class="text-center">
+                  <div class="flex items-center justify-center gap-1 mb-1">
+                      <h3 class="font-medium font-poppins text-gray-900">DatabasePro</h3>
+                      <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">Verified</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Database Administration & Management</p>
+                  <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4">Database Administration</span>
+                  <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i> Chicago, IL</div>
+                      <div class="flex items-center justify-center gap-1"><i class="fa-solid fa-users text-gray-400"></i> 500-1000</div>
+                  </div>
+                  <a href="#" class="text-blue-600 text-xs font-medium hover:underline mb-4 block">5 Open Positions</a>
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">View Company</button>
+              </div>
+          </div>
+
+        </div>
+    </main>
+</body>
+</html>

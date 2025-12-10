@@ -1,45 +1,52 @@
 import axiosClient from "../utils/axiosClient.js";
 
 export const seekerService = {
-  // ============================================================
-  // 1. Seeker Sign Up Steps & Profile
-  // ============================================================
+  // 1. Get Profile
+  async getMe() {
+    const response = await axiosClient.get("/job-seeker/profile");
+    return response.data;
+  },
 
-  // Step 1: Update Personal Information
+  // 2. Update Profile
+  async updateProfile(data) {
+    const req1 = axiosClient.patch("/job-seeker/profile/step1", data);
+    const req2 = axiosClient.patch("/job-seeker/profile/step2", data);
+    const [res1] = await Promise.all([req1, req2]);
+    return res1.data;
+  },
+
+  // 3. Helper Steps
   async updateProfileStep1(data) {
-    // data: { phoneNumber, birthDate, gender, yearsOfExperience, ... }
     const response = await axiosClient.patch("/job-seeker/profile/step1", data);
     return response.data;
   },
 
-  // Step 2: Update Education & Preferences
   async updateProfileStep2(data) {
-    // data: { degree, university, graduationYear, jobType, ... }
     const response = await axiosClient.patch("/job-seeker/profile/step2", data);
     return response.data;
   },
 
-  // Step 3: Upload CV
+  // ✅ التعديل هنا في هذه الدالة
   async uploadCV(file) {
-    // نستخدم FormData لأننا نرفع ملفاً
     const formData = new FormData();
-    formData.append("cvFile", file); // "cvFile" هو الاسم المتفق عليه في الباك إند
+
+    // 🔴 القديم (الخاطئ): formData.append("cv", file);
+    // 🟢 الجديد (الصحيح): يجب أن يطابق ما ينتظره الباك إند (Multer)
+    formData.append("cvFile", file);
 
     const response = await axiosClient.post(
       "/job-seeker/profile/step3",
       formData,
       {
-        headers: {
-          "Content-Type": "multipart/form-data", // مهم جداً لرفع الملفات
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       }
     );
     return response.data;
   },
 
-  // Get Complete Profile (Dashboard/Profile Page)
-  async getProfile() {
-    const response = await axiosClient.get("/job-seeker/profile");
+  // 4. Get My Applications
+  async getMyApplications() {
+    const response = await axiosClient.get("/job-seeker/applications");
     return response.data;
   },
 };

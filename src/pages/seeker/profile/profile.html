@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seeker Profile - CareerPro</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - CareerPro</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
                     colors: {
-                        'header': 'oklch(0.21 0.034 264.665)',
-                        'main': 'oklch(0.373 0.034 259.733)',
-                        'special': '#06b6d4',
-                        'btn-hover': '#0891b2',
+                        primary: '#06b6d4', // Cyan-500
+                        secondary: '#3b82f6', // Blue-500
                     }
                 }
             }
@@ -25,842 +28,408 @@
     </script>
 
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to left, #8b9aaf 0%, #cbd2db 50%, #ffffff 100%);
+        body { background-color: #f8fafc; }
+        
+        /* --- Magic Navigation Styles (Identical to Company Portal) --- */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-right: 100px; /* Offset for centering */
         }
-
-        .hidden-mode {
-            display: none;
+        .magic-menu {
+            display: flex;
+            position: relative;
+            gap: 20px;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .magic-menu li {
+            position: relative;
+            list-style: none;
+            width: 50px;
+            height: 50px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 60px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.5s;
+        }
+        .magic-menu li::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 60px;
+            background: linear-gradient(45deg, var(--i), var(--j));
+            opacity: 0;
+            transition: 0.5s;
+        }
+        .magic-menu li::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            height: 100%;
+            border-radius: 60px;
+            background: linear-gradient(45deg, var(--i), var(--j));
+            transition: 0.5s;
+            filter: blur(15px);
+            z-index: -1;
+            opacity: 0;
+        }
+        .magic-menu li:hover, .magic-menu li.active {
+            width: 140px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
+        }
+        .magic-menu li:hover::before, .magic-menu li.active::before { opacity: 1; }
+        .magic-menu li:hover::after, .magic-menu li.active::after { opacity: 0.5; }
+        
+        .magic-menu li ion-icon {
+            color: #777;
+            font-size: 1.5em;
+            transition: 0.5s;
+            transition-delay: 0.25s;
+        }
+        .magic-menu li:hover ion-icon, .magic-menu li.active ion-icon {
+            transform: scale(0);
+            color: #fff;
+            transition-delay: 0s;
+        }
+        .magic-menu li span.title {
+            position: absolute;
+            color: #fff;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transform: scale(0);
+            transition: 0.5s;
+            transition-delay: 0s;
+        }
+        .magic-menu li:hover span.title, .magic-menu li.active span.title {
+            transform: scale(1);
+            transition-delay: 0.25s;
         }
     </style>
-
-    <script>
-        // ************************************
-        // ** 1. Mock API Service & Elements **
-        // ************************************
-
-        // 💡 محاكاة خدمة الـ API (استبدلها بالخدمة الحقيقية عند الربط)
-        const seekerService = {
-            updateProfile: (data) => {
-                console.log("MOCK API CALL: Sending data to backend:", data);
-                // محاكاة استجابة ناجحة بعد تأخير 500 مللي ثانية
-                return new Promise((resolve) => setTimeout(() => {
-                    console.log("MOCK API CALL: Success response received.");
-                    resolve({ status: 'success', data: data });
-                }, 500));
-            }
-        };
-
-        // Input fields used for validation
-        const fullNameInput = document.getElementById('fullName');
-        const jobTitleInput = document.getElementById('jobTitle');
-        const emailInput = document.getElementById('email');
-        const phoneNumberInput = document.getElementById('phoneNumber');
-        const linkedinInput = document.getElementById('linkedin');
-        const personalProfileInput = document.getElementById('personalProfile');
-
-        // Error messages (IDs from your HTML)
-        const invalidFullName = document.getElementById('invalidFullName');
-        const invalidJobTitle = document.getElementById('invalidJobTitle');
-        const invalidEmail = document.getElementById('invalidEmail');
-        const invalidPhoneNumber = document.getElementById('invalidPhoneNumber');
-        const invalidLinkedin = document.getElementById('invalidLinkedin');
-        const invalidPersonalUrl = document.getElementById('invalidPersonalUrl');
-
-        // Regular Expressions (Matching the Backend Controller)
-        const regex = {
-            fullName: { value: /^[A-Za-z\s\u0600-\u06FF]{2,50}$/ },
-            jobTitle: { value: /^[A-Za-z\s\u0600-\u06FF]{2,50}$/ },
-            email: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/ },
-            phoneNumber: { value: /^[0-9]{8,15}$/ },
-            linkedin: { value: /^(https?:\/\/)?(www\.)?linkedin\.com\/.+$/ },
-            personalProfile: { value: /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/ }
-        };
-
-        // ============================================================
-        // ************************************
-        // ** 2. UI/Mode Control Functions **
-        // ************************************
-
-        function toggleEditMode() {
-            const viewMode = document.getElementById('viewMode');
-            const editMode = document.getElementById('editMode');
-            viewMode.classList.toggle('hidden-mode');
-            editMode.classList.toggle('hidden-mode');
-        }
-
-        function cancelEdit() {
-            toggleEditMode();
-        }
-
-        function populateEditForm() {
-            // ... (دالة ملء النموذج لم تتغير) ...
-            document.getElementById('fullName').value = document.getElementById('fullNameView').textContent.trim();
-            document.getElementById('jobTitle').value = document.getElementById('jobTitleView').textContent.trim();
-            document.getElementById('summary').value = document.getElementById('summaryView').textContent.trim();
-
-            document.getElementById('email').value = document.getElementById('emailInfoView').textContent.trim();
-            document.getElementById('phoneNumber').value = document.getElementById('phoneView').textContent.trim();
-            document.getElementById('birthDate').value = document.getElementById('birthDateView').textContent.trim();
-            document.getElementById('gender').value = document.getElementById('genderView').textContent.trim().toLowerCase();
-            document.getElementById('experienceLevel').value = document.getElementById('experienceLevelView').textContent.trim();
-            document.getElementById('yearsOfExperience').value = document.getElementById('yearsOfExperienceView').textContent.trim();
-            document.getElementById('country').value = document.getElementById('countryView').textContent.trim();
-            document.getElementById('city').value = document.getElementById('cityView').textContent.trim();
-            document.getElementById('linkedin').value = document.getElementById('linkedinView').textContent.trim();
-            document.getElementById('personalProfile').value = document.getElementById('websiteView').textContent.trim();
-            document.getElementById('desiredPosition').value = document.getElementById('desiredPositionView').textContent.trim();
-            document.getElementById('workType').value = document.getElementById('workTypeView').textContent.trim();
-            document.getElementById('industry').value = document.getElementById('industryView').textContent.trim();
-            document.getElementById('careerGoals').value = document.getElementById('careerGoalsView').textContent.trim();
-
-            document.getElementById('degree').value = document.getElementById('degreeView').textContent.trim();
-            document.getElementById('university').value = document.getElementById('universityView').textContent.trim();
-            document.getElementById('graduationYear').value = document.getElementById('graduationYearView').textContent.trim();
-        }
-
-        // ============================================================
-        // ************************************
-        // ** 3. Validation and Save Logic (Integrated Service) **
-        // ************************************
-
-        function displayError(errorElement, message) {
-            hideAllErrors();
-            errorElement.textContent = message;
-            errorElement.classList.remove("hidden");
-            errorElement.classList.add("block");
-        }
-
-        function hideAllErrors() {
-            [invalidFullName, invalidJobTitle, invalidEmail, invalidPhoneNumber, invalidLinkedin, invalidPersonalUrl].forEach(error => {
-                if (error) {
-                    error.classList.add("hidden");
-                    error.classList.remove("block");
-                }
-            });
-        }
-
-        function validateForm() {
-            hideAllErrors();
-
-            // Required Fields Check
-            if (fullNameInput.value.trim() === '' || jobTitleInput.value.trim() === '' || emailInput.value.trim() === '' || phoneNumberInput.value.trim() === '') {
-                alert("Please fill all required fields (Name, Title, Email, Phone).");
-                return false;
-            }
-
-            // Format Validation Check 
-            if (!regex.fullName.value.test(fullNameInput.value.trim())) {
-                displayError(invalidFullName, "Full Name must contain only text and spaces (2-50 characters).");
-                return false;
-            }
-
-            if (!regex.jobTitle.value.test(jobTitleInput.value.trim())) {
-                displayError(invalidJobTitle, "Job Title must contain only text and spaces (2-50 characters).");
-                return false;
-            }
-
-            if (!regex.email.value.test(emailInput.value.trim())) {
-                displayError(invalidEmail, "Invalid Email format.");
-                return false;
-            }
-
-            if (!regex.phoneNumber.value.test(phoneNumberInput.value.trim())) {
-                displayError(invalidPhoneNumber, "Invalid Phone Number. Must be 8-15 digits only.");
-                return false;
-            }
-
-            if (linkedinInput.value.trim() !== '' && !regex.linkedin.value.test(linkedinInput.value.trim())) {
-                displayError(invalidLinkedin, "Invalid LinkedIn URL format.");
-                return false;
-            }
-
-            if (personalProfileInput.value.trim() !== '' && !regex.personalProfile.value.test(personalProfileInput.value.trim())) {
-                displayError(invalidPersonalUrl, "Invalid Personal Website URL format.");
-                return false;
-            }
-
-            return true;
-        }
-
-        function collectFormData() {
-            // Collects all data sent to the backend controller
-            return {
-                fullName: document.getElementById('fullName')?.value.trim(),
-                jobTitle: document.getElementById('jobTitle')?.value.trim(),
-                summary: document.getElementById('summary')?.value.trim(),
-
-                location: document.getElementById('country')?.value + ', ' + document.getElementById('city')?.value, // دمج الموقع
-                email: document.getElementById('email')?.value.trim(),
-                phone: document.getElementById('phoneNumber')?.value.trim(),
-                birthDate: document.getElementById('birthDate')?.value,
-                gender: document.getElementById('gender')?.value,
-                experienceLevel: document.getElementById('experienceLevel')?.value,
-                yearsOfExperience: document.getElementById('yearsOfExperience')?.value,
-                country: document.getElementById('country')?.value,
-                city: document.getElementById('city')?.value,
-
-                desiredPosition: document.getElementById('desiredPosition')?.value.trim(),
-                workType: document.getElementById('workType')?.value,
-                industry: document.getElementById('industry')?.value.trim(),
-                careerGoals: document.getElementById('careerGoals')?.value.trim(),
-
-                linkedin: document.getElementById('linkedin')?.value.trim(),
-                personalWebsite: document.getElementById('personalProfile')?.value.trim(),
-
-                // يجب تحديث الـ Controller ليتلقى حقول التعليم إذا لزم الأمر
-                degree: document.getElementById('degree')?.value,
-                university: document.getElementById('university')?.value.trim(),
-                graduationYear: document.getElementById('graduationYear')?.value,
-            };
-        }
-
-        async function saveChanges(event) {
-            event.preventDefault();
-
-            if (!validateForm()) {
-                return;
-            }
-
-            const data = collectFormData();
-            const saveButton = document.querySelector('button[type="submit"]');
-
-            try {
-                saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-                saveButton.disabled = true;
-
-                // 💡 استخدام الخدمة الوهمية لإرسال البيانات
-                const res = await seekerService.updateProfile(data);
-
-                // ------------------------------------------------------------------
-                // بعد نجاح الـ API: يجب تحديث كل حقول وضع العرض (View)
-
-                // تحديث العرض بالبيانات المُرسلة (لأن المحاكاة تعيد البيانات المُرسلة)
-                document.getElementById('fullNameView').textContent = data.fullName;
-                document.getElementById('jobTitleView').textContent = data.jobTitle;
-                document.getElementById('summaryView').textContent = data.summary;
-                document.getElementById('emailInfoView').textContent = data.email;
-                document.getElementById('phoneView').textContent = data.phone;
-                document.getElementById('locationView').textContent = `${data.city || ''}, ${data.country || ''}`;
-                document.getElementById('yearsView').textContent = data.yearsOfExperience;
-
-                // ... يمكنك تكرار هذا المنطق لتحديث جميع الـ IDs التي تنتهي بـ 'View'
-
-                // ------------------------------------------------------------------
-
-                Swal.fire({
-                    icon: "success",
-                    title: "Profile Updated",
-                    text: "Changes saved successfully.",
-                    timer: 1500,
-                    showConfirmButton: false,
-                }).then(() => {
-                    // العودة إلى وضع العرض بعد الحفظ
-                    toggleEditMode();
-                });
-
-
-            } catch (error) {
-                console.error("Save Error:", error);
-                const errorMessage = "Failed to save profile. Please try again.";
-                Swal.fire("Error", errorMessage, "error");
-
-            } finally {
-                saveButton.innerHTML = '<i class="fas fa-save mr-1"></i> Save Changes';
-                saveButton.disabled = false;
-            }
-        }
-
-        // ============================================================
-        // ************************************
-        // ** 4. Initialization **
-        // ************************************
-
-        // Hide validation errors when typing
-        document.querySelectorAll('input, select, textarea').forEach(input => {
-            input.addEventListener("input", hideAllErrors);
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // ربط دالة 'saveChanges' بحدث إرسال النموذج
-            document.getElementById('main-form').addEventListener('submit', saveChanges);
-
-            // ربط زر "Edit Profile" بالدالتين (مع الـ Populate)
-            const editButton = document.querySelector('button[onclick="toggleEditMode()"]');
-            if (editButton) {
-                editButton.onclick = function () {
-                    populateEditForm();
-                    toggleEditMode();
-                };
-            }
-
-            // ملاحظة: هنا يجب استدعاء دالة 'loadProfileData' عند بدء التشغيل
-            // loadProfileData(); 
-        });
-    </script>
 </head>
+<body class="text-gray-800">
 
-<body class="text-main text-sm leading-relaxed">
-    <main>
-        <div id="viewMode">
-            <header class="container mx-auto px-4 py-6">
-                <div class="flex flex-wrap justify-between items-center gap-4">
-                    <div class="flex items-center">
-                        <div
-                            class="rounded-sm bg-transparent p-2.5 transition-all duration-500 cursor-pointer hover:bg-gray-200">
-                            <i class="fa-solid fa-arrow-left text-gray-500 text-xs hover:text-main"></i>
-                        </div>
-                        <div class="ml-3">
-                            <h1 class="text-2xl font-extrabold m-0 text-header">My Profile</h1>
-                            <p class="mt-0 text-sm text-main">Manage your professional profile and career information
-                            </p>
-                        </div>
-                    </div>
-                    <div>
-                        <button type="button" onclick="toggleEditMode()"
-                            class="bg-special text-white py-1.5 px-3 rounded text-xs transition-colors duration-300 hover:bg-btn-hover">
-                            Edit profile
-                        </button>
-                    </div>
-                </div>
-            </header>
-            <section class="container mx-auto px-4">
-                <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                    <div class="flex flex-wrap items-center gap-4">
-                        <div class="w-full md:w-auto flex justify-center md:justify-start">
-                            <img id="profileImageView" src="https://via.placeholder.com/112"
-                                class="w-28 h-28 object-cover rounded-full" alt="Profile Picture">
-                        </div>
-                        <div class="flex-1">
-                            <h5 id="fullNameView" class="text-2xl font-extrabold text-header">Seeker Name</h5>
-                            <p id="jobTitleView" class="text-base mb-2">Job Title</p>
-                            <div class="text-gray-500 text-sm">
-                                <small class="mr-4">
-                                    <i class="fa-solid fa-location-dot mr-1"></i>
-                                    <span id="locationView">Zawiya, Libya</span>
-                                </small>
-                                <small class="mr-4">
-                                    <i class="fa-solid fa-briefcase mr-1"></i>
-                                    <span id="yearsView">1-2 years</span>
-                                </small>
-                                <small>
-                                    <i class="fa-solid fa-envelope mr-1"></i>
-                                    <span id="emailView">hfg@ff</span>
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="container mx-auto px-4">
-                <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                    <div class="flex items-center mb-4">
-                        <i class="fa-solid fa-bookmark text-special mr-2"></i>
-                        <span class="text-header text-sm font-semibold">Saved Jobs (0)</span>
-                    </div>
-                    <div class="text-center py-5">
-                        <i class="fa-regular fa-bookmark text-header text-5xl mb-3 block"></i>
-                        <p class="text-header text-lg font-semibold">No saved jobs yet</p>
-                        <p class="text-main">Start saving jobs you're interested in to view them here</p>
-                    </div>
-                </div>
-            </section>
-            <section class="container mx-auto px-4">
-                <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                    <div class="flex items-center mb-2">
-                        <i class="fa-regular fa-star text-special mr-2"></i>
-                        <span class="text-header text-sm font-semibold">Professional Summary</span>
-                    </div>
-                    <p id="summaryView" class="mt-2 text-main">Add a professional summary to highlight your experience
-                        and goals.</p>
-                </div>
-            </section>
-            <section class="container mx-auto px-4">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                        <div class="flex items-center mb-4">
-                            <i class="fa-regular fa-user text-special mr-2"></i>
-                            <span class="text-header text-sm font-semibold">Personal Information</span>
-                        </div>
+    <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8">
+        <a href="dashboard.html" class="text-xl font-bold text-primary flex items-center gap-2 min-w-[200px]">
+            <i class="fas fa-briefcase text-2xl"></i> 
+            <span>CareerPro</span>
+        </a>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Email</label>
-                                <div id="emailInfoView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    hgg@hg</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Phone</label>
-                                <div id="phoneView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    111</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Birth Date</label>
-                                <div id="birthDateView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    2025-11-12</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Gender</label>
-                                <div id="genderView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Female</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Experience Level</label>
-                                <div id="experienceLevelView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Principal</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Years Of Experience</label>
-                                <div id="yearsOfExperienceView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    1-2 years</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Country</label>
-                                <div id="countryView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Libya</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">City</label>
-                                <div id="cityView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Zawiya</div>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="font-extrabold text-xs block mb-2 text-header">LinkedIn Profile
-                                    URL</label>
-                                <div id="linkedinView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    linkedin account</div>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="font-extrabold text-xs block mb-2 text-header">Personal Website</label>
-                                <div id="websiteView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    https://yourportfolio.com</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                        <div class="flex items-center mb-4">
-                            <i class="fa-solid fa-bullseye text-special mr-2"></i>
-                            <span class="text-header text-sm font-semibold">Career Preferences</span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Desired Position:</label>
-                                <div id="desiredPositionView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Software engineer</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header">Work Type</label>
-                                <div id="workTypeView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Remote</div>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-1 text-header">Preferred Job
-                                    Types:</label>
-                                <span
-                                    class="inline-block px-3 py-1 rounded-full text-xs border bg-cyan-50 text-cyan-700 border-cyan-200">Part
-                                    Time</span>
-                            </div>
-                            <div>
-                                <label class="font-extrabold text-xs block mb-1 text-header">Workplace Settings:</label>
-                                <span
-                                    class="inline-block px-3 py-1 rounded-full text-xs border bg-cyan-50 text-cyan-700 border-cyan-200">Remote</span>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="font-extrabold text-xs block mb-2 text-header">Industry</label>
-                                <div id="industryView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                    Example Industry Value</div>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="font-extrabold text-xs block mb-2 text-header">Career Goals</label>
-                                <div id="careerGoalsView"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white min-h-[100px]">
-                                    Describe your career aspirations and goals...
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="container mx-auto px-4 mb-6">
-                <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                    <div class="flex items-center mb-4">
-                        <i class="fa-solid fa-graduation-cap text-special mr-2"></i>
-                        <span class="text-header text-sm font-semibold">Education</span>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="font-extrabold text-xs block mb-2 text-header">Degree</label>
-                            <div id="degreeView"
-                                class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                Associate</div>
-                        </div>
-                        <div>
-                            <label class="font-extrabold text-xs block mb-2 text-header">University/Institution</label>
-                            <div id="universityView"
-                                class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">lkk
-                            </div>
-                        </div>
-                        <div>
-                            <label class="font-extrabold text-xs block mb-2 text-header">Graduation year</label>
-                            <div id="graduationYearView"
-                                class="w-full rounded-md p-2 shadow-md shadow-gray-300 text-header text-sm bg-white">
-                                2014</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div class="hidden md:flex flex-1 nav-container">
+            <div class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner">
+                <ul class="magic-menu">
+                    <li style="--i:#06b6d4;--j:#3b82f6" onclick="window.location.href='dashboard.html'">
+                        <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
+                        <span class="title">Home</span>
+                    </li>
+                    <li style="--i:#a955ff;--j:#ea51ff" class="active" onclick="window.location.href='profile.html'">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="title">Profile</span>
+                    </li>
+                    <li style="--i:#ff9966;--j:#ff5e62" onclick="window.location.href='jobs.html'">
+                        <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+                        <span class="title">Jobs</span>
+                    </li>
+                    <li style="--i:#56ab2f;--j:#a8e063" onclick="window.location.href='applications.html'">
+                        <span class="icon"><ion-icon name="list-outline"></ion-icon></span>
+                        <span class="title">Apps</span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <div id="editMode" class="hidden-mode">
-            <form id="main-form">
-                <header class="container mx-auto px-4 py-6">
-                    <div class="flex flex-wrap justify-between items-center gap-4">
-                        <div class="flex items-center">
-                            <div
-                                class="rounded-sm bg-transparent p-2.5 transition-all duration-500 cursor-pointer hover:bg-gray-200">
-                                <i class="fa-solid fa-arrow-left text-gray-500 text-xs hover:text-main"></i>
-                            </div>
-                            <div class="ml-3">
-                                <h1 class="text-2xl font-extrabold m-0 text-header">My Profile</h1>
-                                <p class="mt-0 text-sm text-main">Manage your professional profile and career
-                                    information</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button type="button" onclick="cancelEdit()"
-                                class="bg-white text-main py-1.5 px-3 rounded text-xs transition-colors duration-300 hover:bg-gray-100 border border-gray-300">
-                                Cancel
-                            </button>
-                            <button type="submit"
-                                class="bg-special text-white py-1.5 px-3 rounded text-xs transition-colors duration-300 hover:bg-btn-hover">
-                                <i class="fas fa-save mr-1"></i>
-                                Save Changes
-                            </button>
-                        </div>
-                    </div>
-                </header>
-                <section class="container mx-auto px-4">
-                    <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                        <div class="flex flex-wrap items-center gap-4">
-                            <div class="w-full md:w-auto flex flex-col justify-center items-center">
-                                <img id="profileImageEdit" src="https://via.placeholder.com/112"
-                                    class="w-28 h-28 object-cover rounded-full mb-2" alt="Profile Picture">
-                                <label for="uploadPhoto"
-                                    class="text-[10px] flex items-center justify-center space-x-1 font-extrabold py-0.5 px-2 border border-gray-300 rounded-md text-main transition-all duration-500 hover:text-header hover:bg-gray-100 cursor-pointer">
-                                    <i class="fa-solid fa-upload"></i>
-                                    <span>Upload Image</span>
-                                </label>
-                                <input type="file" id="uploadPhoto" accept="image/*" class="hidden" />
-                            </div>
-                            <div class="flex-1">
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="font-extrabold text-xs block mb-2 text-header" for="fullName">Full
-                                            Name</label>
-                                        <input type="text"
-                                            class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                            id="fullName" name="fullName" />
-                                        <p id="invalidFullName" class="text-xs text-red-500 hidden mt-1">Must be text
-                                            only</p>
-                                    </div>
-                                    <div>
-                                        <label class="font-extrabold text-xs block mb-2 text-header" for="jobTitle">Job
-                                            Title</label>
-                                        <input type="text"
-                                            class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                            id="jobTitle" name="jobTitle" />
-                                        <p id="invalidJobTitle" class="text-xs text-red-500 hidden mt-1">Must be text
-                                            only</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section class="container mx-auto px-4">
-                    <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                        <div class="flex items-center mb-4">
-                            <i class="fa-solid fa-bookmark text-special mr-2"></i>
-                            <span class="text-header text-sm font-semibold">Saved Jobs (0)</span>
-                        </div>
-                        <div class="text-center py-5">
-                            <i class="fa-regular fa-bookmark text-header text-5xl mb-3 block"></i>
-                            <p class="text-header text-lg font-semibold">No saved jobs yet</p>
-                            <p class="text-main">Start saving jobs you're interested in to view them here</p>
-                        </div>
-                    </div>
-                </section>
-                <section class="container mx-auto px-4">
-                    <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                        <div class="flex items-center mb-2">
-                            <i class="fa-regular fa-star text-special mr-2"></i>
-                            <span class="text-header text-sm font-semibold">Professional Summary</span>
-                        </div>
-                        <div class="p-2">
-                            <textarea
-                                class="w-full rounded-md p-2 shadow-md shadow-gray-300 resize-none placeholder:text-sm focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                id="summary" name="summary" rows="3"
-                                placeholder="Write a compelling professional summary..."></textarea>
-                        </div>
-                    </div>
-                </section>
-                <section class="container mx-auto px-4">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="min-w-[100px] flex justify-end">
+            <button id="btnLogout" class="text-gray-600 hover:text-red-600 font-medium flex items-center gap-2 transition-colors">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
 
-                        <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                            <div class="flex items-center mb-4">
-                                <i class="fa-regular fa-user text-special mr-2"></i>
-                                <span class="text-header text-sm font-semibold">Personal Information</span>
-                            </div>
+    <main class="container mx-auto px-4 max-w-5xl pb-12">
 
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label for="email"
-                                        class="font-extrabold text-xs block mb-2 text-header">Email</label>
-                                    <input type="email"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="email" name="email" />
-                                    <p id="invalidEmail" class="text-xs text-red-500 hidden mt-1">Invalid Email</p>
-                                </div>
-                                <div>
-                                    <label for="phoneNumber"
-                                        class="font-extrabold text-xs block mb-2 text-header">Phone</label>
-                                    <input type="tel"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="phoneNumber" name="phoneNumber" />
-                                    <p id="invalidPhoneNumber" class="text-xs text-red-500 hidden mt-1">Invalid Phone
-                                        Number</p>
-                                </div>
-                                <div>
-                                    <label for="birthDate" class="font-extrabold text-xs block mb-2 text-header">Birth
-                                        Date</label>
-                                    <input type="date"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="birthDate" name="birthDate" />
-                                </div>
-                                <div>
-                                    <label for="gender"
-                                        class="font-extrabold text-xs block mb-2 text-header">Gender</label>
-                                    <select
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="gender" name="gender">
-                                        <option value="" disabled selected>Select gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="prefer_not_to_say">Prefer not to say</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="experienceLevel"
-                                        class="font-extrabold text-xs block mb-2 text-header">Experience Level</label>
-                                    <select
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="experienceLevel" name="experienceLevel">
-                                        <option value="" disabled selected>Select experience level</option>
-                                        <option value="Intern">Intern</option>
-                                        <option value="Entry Level">Entry Level</option>
-                                        <option value="Junior">Junior</option>
-                                        <option value="Mid-Level">Mid-Level</option>
-                                        <option value="Senior">Senior</option>
-                                        <option value="Lead">Lead</option>
-                                        <option value="Principal">Principal</option>
-                                        <option value="Manager">Manager</option>
-                                        <option value="Director">Director</option>
-                                        <option value="Executive">Executive</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="yearsOfExperience"
-                                        class="font-extrabold text-xs block mb-2 text-header">Years Of
-                                        Experience</label>
-                                    <select
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="yearsOfExperience" name="yearsOfExperience">
-                                        <option value="" disabled selected>Select years of experience</option>
-                                        <option value="Fresh Graduate (0 years)">Fresh Graduate (0 years)</option>
-                                        <option value="1-2 years">1-2 years</option>
-                                        <option value="3-5 years">3-5 years</option>
-                                        <option value="6-10 years">6-10 years</option>
-                                        <option value="10+ years">10+ years</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="country"
-                                        class="font-extrabold text-xs block mb-2 text-header">Country</label>
-                                    <select
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="country" name="country">
-                                        <option value="" disabled selected>Select country</option>
-                                        <option value="Egypt">Egypt</option>
-                                        <option value="Saudi Arabia">Saudi Arabia</option>
-                                        <option value="United Arab Emirates">United Arab Emirates</option>
-                                        <option value="Jordan">Jordan</option>
-                                        <option value="Lebanon">Lebanon</option>
-                                        <option value="Iraq">Iraq</option>
-                                        <option value="Syria">Syria</option>
-                                        <option value="Kuwait">Kuwait</option>
-                                        <option value="Oman">Oman</option>
-                                        <option value="Qatar">Qatar</option>
-                                        <option value="Bahrain">Bahrain</option>
-                                        <option value="Yemen">Yemen</option>
-                                        <option value="Palestine">Palestine</option>
-                                        <option value="Libya">Libya</option>
-                                        <option value="Tunisia">Tunisia</option>
-                                        <option value="Algeria">Algeria</option>
-                                        <option value="Morocco">Morocco</option>
-                                        <option value="Sudan">Sudan</option>
-                                        <option value="Mauritania">Mauritania</option>
-                                        <option value="United States">United States</option>
-                                        <option value="Canada">Canada</option>
-                                        <option value="United Kingdom">United Kingdom</option>
-                                        <option value="Germany">Germany</option>
-                                        <option value="France">France</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="India">India</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="city" class="font-extrabold text-xs block mb-2 text-header">City</label>
-                                    <input type="text"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="city" name="city" />
-                                </div>
-                                <div class="col-span-2">
-                                    <label for="linkedin" class="font-extrabold text-xs block mb-2 text-header">LinkedIn
-                                        Profile URL</label>
-                                    <input type="url"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="linkedin" name="linkedin"
-                                        placeholder="e.g., https://linkedin.com/in/your-profile" />
-                                    <p id="invalidLinkedin" class="text-xs text-red-500 hidden mt-1">Invalid URL</p>
-                                </div>
-                                <div class="col-span-2">
-                                    <label for="personalProfile"
-                                        class="font-extrabold text-xs block mb-2 text-header">Personal Website</label>
-                                    <input type="url"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="personalProfile" name="personalProfile"
-                                        placeholder="e.g., https://yourportfolio.com" />
-                                    <p id="invalidPersonalUrl" class="text-xs text-red-500 hidden mt-1">Invalid URL</p>
-                                </div>
-                            </div>
+        <div id="viewMode">
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-6">
+                    <button id="btnEditProfile" class="bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2">
+                        <i class="fas fa-pen"></i> Edit Profile
+                    </button>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-100 to-blue-100 flex items-center justify-center text-4xl font-bold text-primary border-4 border-white shadow-md">
+                        <span id="view-initials">--</span>
+                    </div>
+                    
+                    <div class="flex-1 text-center md:text-left mt-2">
+                        <h1 id="view-fullName" class="text-3xl font-bold text-gray-900 mb-1">--</h1>
+                        <p id="view-industry" class="text-lg text-primary font-medium mb-4">--</p>
+                        
+                        <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+                                <i class="fas fa-map-marker-alt text-gray-400"></i> <span id="view-location">--</span>
+                            </span>
+                            <span class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+                                <i class="fas fa-envelope text-gray-400"></i> <span id="view-email">--</span>
+                            </span>
+                            <span class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+                                <i class="fas fa-phone text-gray-400"></i> <span id="view-phone">--</span>
+                            </span>
                         </div>
-                        <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                            <div class="flex items-center mb-4">
-                                <i class="fa-solid fa-bullseye text-special mr-2"></i>
-                                <span class="text-header text-sm font-semibold">Career Preferences</span>
-                            </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-graduation-cap text-primary"></i> Education
+                        </h3>
+                        <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+                            <div class="flex justify-between items-start">
                                 <div>
-                                    <label for="desiredPosition"
-                                        class="font-extrabold text-xs block mb-2 text-header">Desired Position:</label>
-                                    <input type="text"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="desiredPosition" name="desiredPosition"
-                                        placeholder="e.g., Senior Frontend Developer" />
+                                    <h4 id="view-degree" class="font-bold text-gray-800 text-lg">--</h4>
+                                    <p id="view-university" class="text-gray-600">--</p>
                                 </div>
-                                <div>
-                                    <label for="workType" class="font-extrabold text-xs block mb-2 text-header">Work
-                                        Type</label>
-                                    <select
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="workType" name="workType">
-                                        <option value="Remote" selected>Remote</option>
-                                        <option value="On-Site">On-Site</option>
-                                        <option value="Hybrid">Hybrid</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="font-extrabold text-xs block mb-1 text-header">Preferred Job
-                                        Types:</label>
-                                    <span
-                                        class="inline-block px-3 py-1 rounded-full text-xs border bg-cyan-50 text-cyan-700 border-cyan-200">Part
-                                        Time</span>
-                                </div>
-                                <div>
-                                    <label class="font-extrabold text-xs block mb-1 text-header">Workplace
-                                        Settings:</label>
-                                    <span
-                                        class="inline-block px-3 py-1 rounded-full text-xs border bg-cyan-50 text-cyan-700 border-cyan-200">Remote</span>
-                                </div>
-                                <div class="col-span-2">
-                                    <label for="industry"
-                                        class="font-extrabold text-xs block mb-2 text-header">Industry</label>
-                                    <input type="text"
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="industry" name="industry" />
-                                </div>
-                                <div class="col-span-2">
-                                    <label for="careerGoals"
-                                        class="font-extrabold text-xs block mb-2 text-header">Career Goals</label>
-                                    <textarea
-                                        class="w-full rounded-md p-2 shadow-md shadow-gray-300 resize-none placeholder:text-sm focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                        id="careerGoals" name="careerGoals"
-                                        placeholder="Describe your career aspirations and goals..."></textarea>
-                                </div>
+                                <span id="view-gradYear" class="bg-white border border-gray-200 px-3 py-1 rounded text-sm font-bold text-gray-600 shadow-sm">--</span>
+                            </div>
+                            <div class="mt-3 flex gap-2">
+                                <span id="view-gpa-container" class="hidden text-xs bg-green-50 text-green-700 px-2 py-1 rounded border border-green-100">
+                                    GPA: <span id="view-gpa">--</span>
+                                </span>
                             </div>
                         </div>
                     </div>
-                </section>
-                <section class="container mx-auto px-4 mb-6">
-                    <div class="mb-3 p-3 border-0 rounded-xl shadow-md bg-white">
-                        <div class="flex items-center mb-4">
-                            <i class="fa-solid fa-graduation-cap text-special mr-2"></i>
-                            <span class="text-header text-sm font-semibold">Education</span>
-                        </div>
 
-                        <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-briefcase text-primary"></i> Career Info
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header" for="degree">Degree</label>
-                                <select
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                    id="degree" name="degree">
-                                    <option value="" disabled selected>Select degree</option>
-                                    <option value="High School">High School</option>
-                                    <option value="Associate">Associate</option>
-                                    <option value="Bachelor">Bachelor</option>
-                                    <option value="Master">Master</option>
-                                    <option value="Doctoral">Doctoral</option>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Experience Level</label>
+                                <p id="view-expLevel" class="font-medium text-gray-800">--</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Years of Experience</label>
+                                <p id="view-yearsExp" class="font-medium text-gray-800">--</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Industry</label>
+                                <p id="view-industryDetail" class="font-medium text-gray-800">--</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="space-y-6">
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-user text-primary"></i> Personal Details
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
+                                <span class="text-gray-500">Birth Date</span>
+                                <span id="view-birthDate" class="font-medium">--</span>
+                            </li>
+                            <li class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
+                                <span class="text-gray-500">Gender</span>
+                                <span id="view-gender" class="font-medium capitalize">--</span>
+                            </li>
+                            <li class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
+                                <span class="text-gray-500">Nationality</span>
+                                <span id="view-country" class="font-medium">--</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-sliders-h text-primary"></i> Preferences
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="block text-xs text-gray-400 uppercase mb-1">Job Type</span>
+                                <span id="view-jobType" class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold border border-blue-100">--</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-gray-400 uppercase mb-1">Workplace Setting</span>
+                                <span id="view-workplace" class="inline-block bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs font-bold border border-purple-100">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-md p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold">My CV</h3>
+                            <i class="fas fa-file-pdf text-2xl text-gray-400"></i>
+                        </div>
+                        <p id="view-cvName" class="text-sm text-gray-300 mb-4 truncate">No CV uploaded</p>
+                        <a id="view-cvLink" href="#" target="_blank" class="block w-full text-center bg-primary hover:bg-cyan-600 text-white font-bold py-2 rounded transition text-sm">
+                            <i class="fas fa-download mr-2"></i> Download CV
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="editMode" class="hidden">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 max-w-4xl mx-auto p-8">
+                
+                <div class="flex justify-between items-center border-b border-gray-100 pb-6 mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Edit Profile</h2>
+                    <button id="btnCancelEdit" class="text-gray-500 hover:text-gray-700 font-medium transition">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+
+                <form id="profileForm" class="space-y-8">
+                    
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Personal Information</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="input-fullName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                <input type="tel" id="input-phoneNumber" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Birth Date</label>
+                                <input type="date" id="input-birthDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                <select id="input-gender" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary outline-none">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Prefer not to say</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header"
-                                    for="university">University/Institution</label>
-                                <input type="text"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                    id="university" name="university" />
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                                <input type="text" id="input-country" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
                             </div>
                             <div>
-                                <label class="font-extrabold text-xs block mb-2 text-header"
-                                    for="graduationYear">Graduation year</label>
-                                <input type="number"
-                                    class="w-full rounded-md p-2 shadow-md shadow-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:shadow-lg focus:shadow-gray-400"
-                                    id="graduationYear" name="graduationYear" min="1950" max="2025" />
+                                <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                <input type="text" id="input-city" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
                             </div>
                         </div>
                     </div>
-                </section>
-            </form>
-        </div>
-    </main>
-</body>
 
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-t pt-6">Career Details</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
+                                <select id="input-experienceLevel" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary outline-none">
+                                    <option value="Entry-level">Entry Level</option>
+                                    <option value="Mid-Level">Mid-Level</option>
+                                    <option value="Senior-level">Senior-level</option>
+                                    <option value="Executive">Executive</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Years of Exp</label>
+                                <input type="number" id="input-yearsOfExperience" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                                <input type="text" id="input-industry" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-t pt-6">Education & Preferences</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Degree</label>
+                                <input type="text" id="input-degree" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">University</label>
+                                <input type="text" id="input-university" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Graduation Year</label>
+                                <input type="number" id="input-graduationYear" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">GPA (Optional)</label>
+                                <input type="number" step="0.01" id="input-gpa" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Job Type</label>
+                                <select id="input-jobType" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary outline-none">
+                                    <option value="Full Time">Full Time</option>
+                                    <option value="Part Time">Part Time</option>
+                                    <option value="Contract">Contract</option>
+                                    <option value="Internship">Internship</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Workplace Setting</label>
+                                <select id="input-workplaceSetting" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary outline-none">
+                                    <option value="on_site">On-Site</option>
+                                    <option value="remote">Remote</option>
+                                    <option value="hybrid">Hybrid</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-6 border-t border-gray-100">
+                        <button type="submit" id="btnSaveChanges" class="bg-primary hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition transform hover:-translate-y-0.5">
+                            Save Changes
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script type="module" src="/src/js/config/constant.js"></script>
+    <script type="module" src="/src/js/utils/axiosClient.js"></script>
+    <script type="module" src="/src/js/services/seekerService.js"></script>
+    
+    <script type="module" src="/src/js/controllers/seekerProfileController.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname;
+            const page = path.split("/").pop() || 'profile.html';
+            document.querySelectorAll('.magic-menu li').forEach(item => {
+                item.classList.remove('active');
+                // Simple check: if the item's onclick contains the current page name
+                if(item.getAttribute('onclick').includes(page)) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>

@@ -341,10 +341,23 @@ function setupTagsInput(
 
   const addTag = () => {
     const val = input.value.trim();
-    if (val && !dataArray.includes(val)) {
+
+    const exists = dataArray.some(
+      (item) => item.toLowerCase() === val.toLowerCase()
+    );
+
+    if (val && !exists) {
       dataArray.push(val);
       renderTags();
       input.value = "";
+      input.classList.remove("border-red-500", "ring-red-500"); 
+    } else if (exists) {
+      input.classList.add("border-red-500", "focus:ring-red-500");
+
+      input.addEventListener('input', function removeError() {
+        input.classList.remove("border-red-500", "focus:ring-red-500");
+        input.removeEventListener('input', removeError);
+      });
     }
   };
 

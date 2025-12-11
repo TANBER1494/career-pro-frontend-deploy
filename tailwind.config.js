@@ -12,6 +12,7 @@ module.exports = {
 
       animation: {
         marquee: 'marquee 25s linear infinite',
+        glow: 'glow 1.5s infinite',
       },
 
       keyframes: {
@@ -19,9 +20,11 @@ module.exports = {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-100%)' },
         },
+          glow: {
+            '0%, 100%': { boxShadow: '0 0 10px #ff00ff' },
+            '50%': { boxShadow: '0 0 20px #ff00ff' },
+          },
       },
     },
   },
-  
-  plugins: [],
 }

@@ -27,7 +27,7 @@
       .rotate-y-180-default {
         transform: rotateY(180deg);
       }
-      /* إخفاء Scrollbar للحفاظ على الشكل */
+      /* سكرول بار شكله شيك */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -37,9 +37,9 @@
       }
     </style>
   </head>
-  <body
-    class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-hidden relative text-gray-800"
-  >
+  
+  <body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-y-auto py-12 relative text-gray-800">
+
     <a
       href="../../../index.html"
       class="absolute top-8 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors text-lg no-underline z-50"
@@ -50,15 +50,16 @@
 
     <div
       id="mainContainer"
-      class="perspective-1000 w-full max-w-md m-4 transition-all duration-500 ease-in-out h-[550px]"
+      class="perspective-1000 w-full max-w-md m-4 transition-all duration-500 ease-in-out"
     >
       <div
         id="cardInner"
         class="relative w-full h-full duration-700 transform-style-3d"
       >
+        
         <div
           id="frontFace"
-          class="absolute top-0 left-0 w-full backface-hidden bg-white p-10 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
+          class="relative w-full backface-hidden bg-white p-10 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
         >
           <div class="text-center mb-8">
             <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
@@ -330,9 +331,7 @@
     </div>
 
     <script type="module" src="../../js/controllers/authController.js"></script>
-
     <script>
-      // 1. دالة إظهار/إخفاء الباسورد
       function togglePassword(inputId, icon) {
         const input = document.getElementById(inputId);
         if (input.type === "password") {
@@ -346,70 +345,63 @@
         }
       }
 
-      // 2. دالة تحديث الطول ديناميكياً (لتجنب الفراغات)
       function updateCardHeight(isSignup) {
         const container = document.getElementById("mainContainer");
         const front = document.getElementById("frontFace");
         const back = document.getElementById("backFace");
 
+        // هنا بنحسب الطول الجديد
+        // الجافاسكريبت هيحط الطول ده للكونتينر
+        // ال CSS transition هو اللي هيخلي الطول ده يتطبق بنعومة
         if (isSignup) {
-          container.style.height = back.scrollHeight + 20 + "px";
+          container.style.height = back.scrollHeight + "px";
         } else {
-          container.style.height = front.scrollHeight + 20 + "px";
+          container.style.height = front.scrollHeight + "px";
         }
       }
 
-      // 3. دالة القلب (Flip Animation)
       function flipCard() {
         const cardInner = document.getElementById("cardInner");
         const isGoingToSignup = !cardInner.classList.contains("rotate-y-180");
-
+        
+        // 1. لف الكارد
         cardInner.classList.toggle("rotate-y-180");
-
+        
+        // 2. غير الطول فوراً عشان الانيميشن يبدأ مع اللف
         updateCardHeight(isGoingToSignup);
       }
 
-      // 4. دالة التبديل بين Job Seeker و Company (محدثة لإصلاح مشكلة الـ Required)
       function toggleAccountType(type) {
         const select = document.getElementById("accountType");
         const jobFields = document.getElementById("jobSeekerFields");
         const compFields = document.getElementById("companyFields");
-
-        // نمسك الحقول عشان نتحكم في الـ required
         const firstNameInput = document.getElementById("firstName");
         const lastNameInput = document.getElementById("lastName");
         const companyNameInput = document.getElementById("companyName");
 
-        // تحديث القائمة المخفية
         select.value = type;
         select.dispatchEvent(new Event("change"));
 
-        // التحكم في الظهور/الاختفاء والـ Required
         if (type === "company") {
-          // إظهار حقول الشركة
           jobFields.classList.add("hidden");
           compFields.classList.remove("hidden");
-
-          // جعل اسم الشركة إجباري، والاسم الشخصي اختياري
           companyNameInput.setAttribute("required", "");
           firstNameInput.removeAttribute("required");
           lastNameInput.removeAttribute("required");
         } else {
-          // إظهار حقول الباحث عن عمل
           jobFields.classList.remove("hidden");
           compFields.classList.add("hidden");
-
-          // جعل الاسم الشخصي إجباري، واسم الشركة اختياري
           companyNameInput.removeAttribute("required");
           firstNameInput.setAttribute("required", "");
           lastNameInput.setAttribute("required", "");
         }
 
-        // تحديث الطول لأن المحتوى تغير
-        setTimeout(() => updateCardHeight(true), 50);
+        setTimeout(() => {
+          const isSignup = document.getElementById("cardInner").classList.contains("rotate-y-180");
+          updateCardHeight(isSignup);
+        }, 50);
       }
 
-      // 6. عند تغيير حجم الشاشة
       window.addEventListener("resize", () => {
         const cardInner = document.getElementById("cardInner");
         const isSignup = cardInner.classList.contains("rotate-y-180");
@@ -417,8 +409,35 @@
       });
 
       window.addEventListener("DOMContentLoaded", () => {
+    const cardInner = document.getElementById("cardInner");
+    const container = document.getElementById("mainContainer");
+    
+    // 1. قراءة المود من الرابط
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+
+    // 2. تطبيق الوضع المبدئي (بدون أنيميشن نهائيًا)
+    if (mode === 'signup') {
+        // نلف الكارد فوراً (بما اننا شيلنا ال transition من ال HTML، اللفة هتكون لحظية)
+        cardInner.classList.add("rotate-y-180");
+        toggleAccountType("job_seeker"); 
+        updateCardHeight(true); 
+    } else {
+        cardInner.classList.remove("rotate-y-180");
         toggleAccountType("job_seeker");
-      });
+        updateCardHeight(false);
+    }
+
+    // 🔥 السطر السحري (Force Reflow)
+    // السطر ده بيجبر المتصفح انه "يعتمد" الوضع الحالي (سواء مقلوب او معدول) كأنه الوضع الاصلي
+    // قبل ما نضيف اي انيميشن
+    void cardInner.offsetWidth; 
+
+    // 3. دلوقتي بس نضيف كلاسات الأنيميشن للجافاسكريبت
+    // عشان لما اليوزر يدوس بعد كدة، يلف بنعومة
+    cardInner.classList.add("transition-all", "duration-700", "ease-in-out");
+    container.classList.add("transition-all", "duration-500", "ease-in-out");
+});
     </script>
   </body>
 </html>

@@ -4,1400 +4,918 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareerPro Platform</title>
-    <link href="./src/css/main.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="/src/css/main.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  </head>
-  <style>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
 
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-        body {
-            background: #dce0e0;
-            background: linear-gradient(150deg,rgba(220, 224, 224, 1) 14%, rgba(182, 206, 224, 1) 60%, rgba(95, 106, 115, 1) 100%);
-            margin: 0;
-            overflow-x: hidden;
-            background-attachment: fixed;
-          }
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+      body.loaded {
+        opacity: 1;
+      }
+      body {
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out;
+        background: #dce0e0;
+        background: linear-gradient(
+          150deg,
+          rgba(220, 224, 224, 1) 14%,
+          rgba(182, 206, 224, 1) 60%,
+          rgba(95, 106, 115, 1) 100%
+        );
+        margin: 0;
+        overflow-x: hidden;
+        background-attachment: fixed;
+        font-family: "Poppins", sans-serif;
+      }
 
-          .companyCard {
-            width: 400px;
-            height: 300px;
-            margin: 1rem auto;
-            perspective: 1000px;
-          }
-
-          .companyCard-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-          }
-
-          .companyCard:hover .companyCard-inner {
-            transform: rotateY(180deg);
-          }
-
-          .companyCard-front,
-          .companyCard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            /* display: flex;
-            align-items: center;
-            justify-content: center; */
-            border-radius: 0.5rem;
-          }
-
-          .companyCard-front {
-            background: white;
-            border: 1px solid #e5e7eb;
-          }
-
-          .companyCard-back {
-            transform: rotateY(180deg);
-          }
-
-
-        .scroll-container {
-            width: 100%;       
-            height: auto;
-            overflow: hidden;  
-            padding: 20px 0;
-            position: relative;
-        }
-
-        .scroll-container::before,
-        .scroll-container::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            width: 150px; 
-            height: 100%;
-            z-index: 2;
-            pointer-events: none; /* عشان الظل ميمنعش الماوس من التفاعل مع الكروت */
-        }
-
-        .scroll-track {
-            display: flex;
-            gap: 20px;
-            width: max-content;
-            animation: scroll-left 40s linear infinite; 
-        }
-
-        .scroll-container:hover .scroll-track {
-            animation-play-state: paused;
-        }
-
-        .card {
-          width: 350px;
-          height: 200px;
-          border-radius: 12px;
-          position: relative;
-          overflow: hidden; 
-          display: flex;
-          align-items: flex-end; 
-          justify-content: flex-start; 
-          padding: 20px; 
-          color: white;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          transition: transform 0.3s ease;
-          cursor: pointer;
-          font-family: "Poppins", sans-serif;
-          background-size: cover;
-          background-position:center;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .card::before {
+      /* --- Magic Navigation Styles (Compact Version) --- */
+      .nav-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-right: 100px;
+      }
+      .magic-menu {
+        display: flex;
+        position: relative;
+        gap: 15px; /* قللنا المسافة بين الايقونات شوية */
+        align-items: center;
+        padding: 0 10px;
+      }
+      .magic-menu li {
+        position: relative;
+        list-style: none;
+        width: 42px; /* تصغير العرض (كان 50) */
+        height: 42px; /* تصغير الطول (كان 50) */
+        background: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 60px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s;
+      }
+      /* ... (before & after كما هما) ... */
+      .magic-menu li::before {
         content: "";
         position: absolute;
         inset: 0;
-        background-image: inherit; 
+        border-radius: 60px;
+        background: linear-gradient(45deg, var(--i), var(--j));
+        opacity: 0;
+        transition: 0.5s;
+      }
+      .magic-menu li::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        height: 100%;
+        border-radius: 60px;
+        background: linear-gradient(45deg, var(--i), var(--j));
+        transition: 0.5s;
+        filter: blur(15px);
+        z-index: -1;
+        opacity: 0;
+      }
+
+      /* Hover State */
+      .magic-menu li:hover,
+      .magic-menu li.active {
+        width: 130px; /* تصغير عرض التمدد قليلاً */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
+      }
+      .magic-menu li:hover::before,
+      .magic-menu li.active::before {
+        opacity: 1;
+      }
+      .magic-menu li:hover::after,
+      .magic-menu li.active::after {
+        opacity: 0.5;
+      }
+
+      .magic-menu li ion-icon {
+        color: #777;
+        font-size: 1.3em; /* تصغير حجم الايقونة لتناسب الدائرة الجديدة */
+        transition: 0.5s;
+        transition-delay: 0.25s;
+      }
+      /* ... باقي الستايل كما هو ... */
+      .magic-menu li:hover ion-icon,
+      .magic-menu li.active ion-icon {
+        transform: scale(0);
+        color: #fff;
+        transition-delay: 0s;
+      }
+      .magic-menu li span.title {
+        position: absolute;
+        color: #fff;
+        font-size: 0.85em; /* تصغير الخط قليلاً */
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transform: scale(0);
+        transition: 0.5s;
+        transition-delay: 0s;
+      }
+      .magic-menu li:hover span.title,
+      .magic-menu li.active span.title {
+        transform: scale(1);
+        transition-delay: 0.25s;
+      }
+      /* --- Other Styles (Cards, Scroll, etc.) --- */
+      .companyCard {
+        width: 400px;
+        height: 300px;
+        margin: 1rem auto;
+        perspective: 1000px;
+      }
+      .companyCard-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+      .companyCard:hover .companyCard-inner {
+        transform: rotateY(180deg);
+      }
+      .companyCard-front,
+      .companyCard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 0.5rem;
+      }
+      .companyCard-front {
+        background: white;
+        border: 1px solid #e5e7eb;
+      }
+      .companyCard-back {
+        transform: rotateY(180deg);
+      }
+      .scroll-container {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        padding: 20px 0;
+        position: relative;
+      }
+      .scroll-container::before,
+      .scroll-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .scroll-track {
+        display: flex;
+        gap: 20px;
+        width: max-content;
+        animation: scroll-left 40s linear infinite;
+      }
+      .scroll-container:hover .scroll-track {
+        animation-play-state: paused;
+      }
+      .card {
+        width: 350px;
+        height: 200px;
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        padding: 20px;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+        background-size: cover;
+        background-position: center;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: inherit;
         background-size: cover;
         background-position: center;
         transition: transform 0.5s ease;
-        z-index: 0; 
-        }
-
-        .card:hover::before {
-            transform: scale(1.1);
-        }
-        
-        .card-content {
+        z-index: 0;
+      }
+      .card:hover::before {
+        transform: scale(1.1);
+      }
+      .card-content {
         display: flex;
-        flex-direction: column; 
-        gap: 5px; 
+        flex-direction: column;
+        gap: 5px;
         text-align: left;
         width: 100%;
         height: 100%;
         justify-content: flex-end;
-        position: relative; 
+        position: relative;
         z-index: 1;
-        }
-
-        .card-title {
-        font-size: 1.5rem; 
+      }
+      .card-title {
+        font-size: 1.5rem;
         font-weight: 500;
-        margin: 0; 
+        margin: 0;
         line-height: 1.2;
-        }
-
-        .card-subtitle {
-        font-size: 0.85rem; 
+      }
+      .card-subtitle {
+        font-size: 0.85rem;
         font-weight: 400;
         margin: 0;
-        opacity: 0.9; 
+        opacity: 0.9;
         line-height: 1.4;
+      }
+      @keyframes scroll-left {
+        0% {
+          transform: translateX(0);
         }
-
-        @keyframes scroll-left {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(calc(-50% - 10px));
-            }
+        100% {
+          transform: translateX(calc(-50% - 10px));
         }
-
+      }
     </style>
-</head>
-<body class="font-poppins text-slate-800 flex flex-col min-h-screen">
+  </head>
+  <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
+    <nav id="navbar" class="font-poppins flex justify-between items-center py-2 px-6 lg:px-20 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
+        
+        <div id="logo" class="text-2xl font-semibold text-blue-500 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            CareerPro Platform
+        </div>
 
-  <nav class="font-poppins flex justify-between items-center py-5 px-6 lg:px-20 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="hidden md:flex flex-1 nav-container">
+            <div class="bg-gray-50 px-6 py-1.5 rounded-full border border-gray-200 shadow-inner">
+                <ul class="magic-menu">
+                    <li style="--i:#5eb6fd;--j:#0576d3" class="nav-item active" data-target="home">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Home</span>
+                    </li>
+                    <li style="--i:#484c506c;--j:#484c50" class="nav-item" data-target="services">
+                        <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
+                        <span class="title">Services</span>
+                    </li>
+                    <li style="--i:#67e3ff;--j:#69a8b8" class="nav-item" data-target="companies">
+                        <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
+                        <span class="title">Companies</span>
+                    </li>
+                    <li style="--i:#057a22;--j:#1dbe46" class="nav-item" data-target="jobs">
+                        <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+                        <span class="title">Jobs</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-    <div id="logo" class="text-2xl font-semibold text-blue-500 cursor-pointer">
-        CareerPro Platform
-    </div>
+        <div class="flex items-center space-x-6 min-w-[150px] justify-end" id="auth-buttons-container">
+            </div>
+    </nav>
 
-    <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600 relative">
-
-        <button id="HomeBtn" data-target="home" class="nav-item hover:text-blue-600 transition pb-2">Home</button>
-        <button id="ServicesBtn" data-target="services" class="nav-item hover:text-blue-600 transition pb-2">Services</button>
-        <button id="CompaniesBtn" data-target="companies" class="nav-item hover:text-blue-600 transition pb-2">Companies</button>
-        <button id="JobsBtn" data-target="jobs" class="nav-item hover:text-blue-600 transition pb-2">Jobs</button>
-
-        <!-- الخط الأزرق تحت الأزرار -->
-        <span id="navMarker" class="absolute bottom-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out rounded-full left-1 w-9 m-auto"></span>
-
-    </div>
-
-    <div class="flex items-center space-x-6">
-      <a href="./src/pages/auth/signup-login.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
-      <a href="./src/pages/auth/signup-login.html?mode=signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
-    </div>
-
-</nav>
-
-  <section class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"> 
-    <section id="home" class="py-12">
-      
-      <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+    <section
+      class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"
+    >
+      <section id="home" class="py-12">
+        <div
+          class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10"
+        >
           <div class="space-y-8 max-w-4xl">
-              <h1 class="font-poppins font-normal text-5xl lg:text-6xl leading-tight text-slate-900">
-                  Discover Your Dream Career with AI-Powered Matching<br>
-              </h1>
-              
-              <p class="text-lg text-slate-500 max-w-2xl mx-auto">
-                  Advanced career platform that uses artificial intelligence to match your skills with the best job opportunities in the market.
-              </p>
+            <h1
+              class="font-poppins font-normal text-5xl lg:text-6xl leading-tight text-slate-900"
+            >
+              Discover Your Dream Career with AI-Powered Matching<br />
+            </h1>
 
-              <div class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto w-full">
-    
-                <div class="relative w-full">
-                    
-                    <input type="text" placeholder="Search for jobs or companies..."
-                        class="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 outline-none transition-all duration-300 peer">
-                    
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 peer-focus:text-blue-500 peer-focus:scale-125 transition-all duration-300"></i>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+              Advanced career platform that uses artificial intelligence to
+              match your skills with the best job opportunities in the market.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto w-full">
+              <div class="relative w-full">
                 
-                </div>
+                <input
+                  type="text"
+                  id="heroSearchInput"
+                  placeholder="Search for jobs or companies..."
+                  class="w-full py-3 pl-12 pr-4 rounded-lg border border-gray-300 focus:border-blue-500 outline-none transition-all duration-300 peer"
+                />
             
-                <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30 whitespace-nowrap">
-                    Search
-                </button>
+                <i class="fas fa-search absolute left-4 top-4 translate-y-3/2 text-gray-400 peer-focus:text-blue-500 peer-focus:scale-125 transition-all duration-300 pointer-events-none"></i>
+                
+              </div>
+            
+              <button
+                id="heroSearchBtn"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30 shrink-0"
+              >
+                Search
+              </button>
             </div>
 
-              <div class="flex gap-4 pt-2 justify-center">
-                  <button id="startCareerBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30">
-                      Start Your Career Journey
-                  </button>
-                  <button id="BrowseBtn" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-6 py-3 rounded-lg font-medium transition shadow-sm">
-                      Browse Jobs
-                  </button>
-              </div>
+            <div class="flex gap-4 pt-2 justify-center">
+              <button
+                id="startCareerBtn"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-blue-500/30"
+              >
+                Start Your Career Journey
+              </button>
+              <button
+                id="browseJobsBtn"
+                class="bg-slate-50 text-slate-700 border-2 border-slate-300 hover:border-blue-400 hover:bg-slate-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm">
+                Browse Jobs
+              </button>
+            </div>
           </div>
+        </div>
 
-      </div>
+        <!-- <div class="border-t border-slate-200 backdrop-blur-sm mt-auto w-full">
+          <div class="container mx-auto px-6 lg:px-20 py-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div>
+            
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
 
-      <!-- ال infinit scroll bar لسة هشوف لو عبدالخالق عايزني اغير الصور -->
-    <div class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
-      <h1 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
-        Explore Tech Career Paths
-      </h1>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-        Discover exciting opportunities across various computer science disciplines
-      </p>
-    </div>
-    <div class="scroll-container">
-      <div class="scroll-track">
-          
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788269.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Cybersecurity</h3>
-                  <p class="card-subtitle">Network security & threat protection</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788266.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Backend</h3>
-                  <p class="card-subtitle">Server-side logic, databases, and APIs</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788267.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Frontend</h3>
-                  <p class="card-subtitle">User interfaces & web experiences</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788265.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Data Science</h3>
-                  <p class="card-subtitle">Analytics, ML, and data insights</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788268.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">AI & ML</h3>
-                  <p class="card-subtitle">Intelligent systems & learning models</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788264.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">DevOps</h3>
-                  <p class="card-subtitle">CI/CD, cloud & infrastructure</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788263.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Mobile Dev</h3>
-                  <p class="card-subtitle">iOS, Android & Cross-platform</p>
-              </div>
-          </div>
-  
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788269.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Cybersecurity</h3>
-                  <p class="card-subtitle">Network security & threat protection</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788266.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Backend</h3>
-                  <p class="card-subtitle">Server-side logic, databases, and APIs</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788267.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Frontend</h3>
-                  <p class="card-subtitle">User interfaces & web experiences</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788265.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Data Science</h3>
-                  <p class="card-subtitle">Analytics, ML, and data insights</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788268.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">AI & ML</h3>
-                  <p class="card-subtitle">Intelligent systems & learning models</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788264.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">DevOps</h3>
-                  <p class="card-subtitle">CI/CD, cloud & infrastructure</p>
-              </div>
-          </div>
-  
-          <div class="card" style="background-image: url('./assets/imgs/5888568422914788263.jpg');">
-              <div class="card-content">
-                  <h3 class="card-title">Mobile Dev</h3>
-                  <p class="card-subtitle">iOS, Android & Cross-platform</p>
-              </div>
-          </div>
-  
-      </div>
-  </div>
-    </section>
-  </section>
-      <!-- ال services هعمل منها ال personality test -->
-  <section id="services" class="w-full py-24 ">
-  
-    <div class="container mx-auto px-6 max-w-7xl">
-      
-      <div class="flex flex-col gap-20">
-  
-        <div class="text-center mt-8">
-          <h2 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
-            Our AI-Powered Services
-          </h2>
+        <div
+          class="container mx-auto px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10"
+        >
+          <h1
+            class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4"
+          >
+            Explore Tech Career Paths
+          </h1>
           <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-            Leverage cutting-edge technology to accelerate your career journey
+            Discover exciting opportunities across various computer science
+            disciplines
           </p>
         </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-              
-            <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-600 border border-slate-100 hover:border-transparent hover:text-white flex flex-col items-center text-center cursor-pointer h-full">
-                  <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300">
-                      <i class="fa-solid fa-file-lines text-white text-2xl group-hover:scale-110 transition-transform duration-300"></i>
-                  </div>
-                  <h3 class="text-xl font-poppins text-slate-900 mb-3 group-hover:text-white transition-colors duration-300">CV Analyzer</h3>
-                  <p class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300">
-                      AI-powered resume optimization and personalized improvement suggestions
-                  </p>
-                  <button class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
-                      Analyze CV
-                  </button>
+        <div class="scroll-container">
+          <div class="scroll-track">
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788269.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Cybersecurity</h3>
+                <p class="card-subtitle">
+                  Network security & threat protection
+                </p>
               </div>
-    
-              <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-600 border border-slate-100 hover:border-transparent hover:text-white flex flex-col items-center text-center cursor-pointer h-full">
-                  <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300">
-                      <i class="fa-solid fa-brain text-white text-2xl group-hover:scale-110 transition-transform duration-300"></i>
-                  </div>
-                  <h3 class="text-xl font-poppins text-slate-900 mb-3 group-hover:text-white transition-colors duration-300">Matched Jobs</h3>
-                  <p class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300">
-                      Advanced algorithms match your skills with perfect opportunities
-                  </p>
-                  <button class=" w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
-                    view jobs
-                  </button>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788266.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Backend</h3>
+                <p class="card-subtitle">
+                  Server-side logic, databases, and APIs
+                </p>
               </div>
-    
-              <div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-600 border border-slate-100 hover:border-transparent hover:text-white flex flex-col items-center text-center cursor-pointer h-full">
-                  <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300">
-                      <i class="fa-solid fa-chart-simple text-white text-2xl group-hover:scale-110 transition-transform duration-300"></i>
-                  </div>
-                  <h3 class="text-xl font-poppins text-slate-900 mb-3 group-hover:text-white transition-colors duration-300">Personality Test</h3>
-                  <p class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300">
-                      Comprehensive evaluation of your professional competencies
-                  </p>
-                  <a href="./personalityTest.html" class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
-                      Take Test
-                  </a>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788267.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Frontend</h3>
+                <p class="card-subtitle">User interfaces & web experiences</p>
               </div>
-    
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788265.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Data Science</h3>
+                <p class="card-subtitle">Analytics, ML, and data insights</p>
+              </div>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788268.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">AI & ML</h3>
+                <p class="card-subtitle">
+                  Intelligent systems & learning models
+                </p>
+              </div>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788264.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">DevOps</h3>
+                <p class="card-subtitle">CI/CD, cloud & infrastructure</p>
+              </div>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788263.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Mobile Dev</h3>
+                <p class="card-subtitle">iOS, Android & Cross-platform</p>
+              </div>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788269.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Cybersecurity</h3>
+                <p class="card-subtitle">
+                  Network security & threat protection
+                </p>
+              </div>
+            </div>
+            <div
+              class="card"
+              style="
+                background-image: url('./assets/imgs/5888568422914788266.jpg');
+              "
+            >
+              <div class="card-content">
+                <h3 class="card-title">Backend</h3>
+                <p class="card-subtitle">
+                  Server-side logic, databases, and APIs
+                </p>
+              </div>
+            </div>
           </div>
-      </div>
-    </div>
+        </div>
+      </section>
     </section>
 
-<!-- كاردز ال companies 
- لسة عايزة اربطها بال api  
- و اعمل صفحة static لكل company-->
+    <section id="services" class="w-full py-24">
+      <div class="container mx-auto px-6 max-w-7xl">
+        <div class="flex flex-col gap-20">
+          <div class="text-center mt-8">
+            <h2
+              class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4"
+            >
+              Our AI-Powered Services
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+              Leverage cutting-edge technology to accelerate your career journey
+            </p>
+          </div>
 
-    <div class="w-full px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+            <div
+              id="service-cv"
+              class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-600 border border-slate-100 hover:border-transparent hover:text-white flex flex-col items-center text-center cursor-pointer h-full"
+            >
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300"
+              >
+                <i
+                  class="fa-solid fa-file-lines text-white text-2xl group-hover:scale-110 transition-transform duration-300"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-poppins text-slate-900 mb-3 group-hover:text-white transition-colors duration-300"
+              >
+                CV Analyzer
+              </h3>
+              <p
+                class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300"
+              >
+                AI-powered resume optimization and personalized improvement
+                suggestions
+              </p>
+              <a id="serviceBtn" href="cvAnalyzer.html"
+                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+              >
+                Analyze CV
+              </a>
+            </div>
+
+            <div
+              id="service-jobs"
+              class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-600 border border-slate-100 hover:border-transparent hover:text-white flex flex-col items-center text-center cursor-pointer h-full"
+            >
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300"
+              >
+                <i
+                  class="fa-solid fa-brain text-white text-2xl group-hover:scale-110 transition-transform duration-300"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-poppins text-slate-900 mb-3 group-hover:text-white transition-colors duration-300"
+              >
+                Matched Jobs
+              </h3>
+              <p
+                class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300"
+              >
+                Advanced algorithms match your skills with perfect opportunities
+              </p>
+              <a id="serviceBtn" href="matchedJobs.html"
+                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+              >
+                View Jobs
+              </a>
+            </div>
+
+            <div
+              id="service-personality"
+              class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-600 border border-slate-100 hover:border-transparent hover:text-white flex flex-col items-center text-center cursor-pointer h-full"
+            >
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 group-hover:shadow-none transition-colors duration-300"
+              >
+                <i
+                  class="fa-solid fa-chart-simple text-white text-2xl group-hover:scale-110 transition-transform duration-300"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-poppins text-slate-900 mb-3 group-hover:text-white transition-colors duration-300"
+              >
+                Personality Test
+              </h3>
+              <p
+                class="text-slate-500 text-sm leading-relaxed mb-8 group-hover:text-white transition-colors duration-300"
+              >
+                Comprehensive evaluation of your professional competencies
+              </p>
+              <a id="serviceBtn" href="personalityTest.html"
+                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+              >
+                Take Test
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div
+      class="w-full px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10"
+    >
       <section id="companies" class="w-full py-24">
         <div class="container mx-auto px-6 max-w-7xl text-left">
-          
           <div class="text-center mb-16">
-            <h2 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
+            <h2
+              class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4"
+            >
               Top Companies
             </h2>
             <p class="text-lg text-slate-600 max-w-2xl mx-auto">
               Connect with leading employers in your industry
             </p>
           </div>
-      
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <div class="flex flex-col gap-3 group">
-              <div class="companyCard">
-                <div class="companyCard-inner">
-              
-                  <!-- ال FRONT -->
-                  <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">
-                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
-                      <i class="fa-solid fa-shield"></i>
-                    </div>
-              
-                    <div class="flex flex-col items-center text-center">
-                      <div class="w-16 h-16 rounded-xl bg-blue-500 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-blue-500/30">
-                        S
-                      </div>
-              
-                      <h3 class="font-medium font-poppins text-lg mb-1 flex items-center gap-2">
-                        SecureNet Systems
-                        <span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">
-                          Verified
-                        </span>
-                      </h3>
-              
-                      <p class="text-slate-500 text-sm mb-3">Cybersecurity Solutions</p>
-              
-                      <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                        <i class="fa-solid fa-location-dot"></i> Washington, DC
-                      </div>
-              
-                      <a class="text-primary text-sm font-normal mb-4">
-                        5 Open Positions
-                      </a>
-                    </div>
-                  </div>
-              
-                  <!-- ال BACK -->
-                  <div class="companyCard-back bg-white p-6 rounded-xl shadow-md max-w-xl">
-                    <h3 class="text-lg font-semibold mb-3">Company Description</h3>
-              
-                    <p class="text-sm text-slate-700 leading-relaxed">
-                      TechFlow Solutions is a cutting-edge software development company that builds innovative web and
-                      mobile solutions for businesses worldwide. We specialize in React, TypeScript, Node.js, and
-                      cloud-native applications that drive digital transformation and business growth.
-                    </p>
-                  </div>
-              
-                </div>
-              </div>
-              
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                    view jobs
-                </button>
+          <div
+            id="top-companies-container"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            <div class="col-span-full text-center py-10">
+              <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+              <p class="text-slate-500 mt-2">Loading top companies...</p>
             </div>
-        
-            <div class="flex flex-col gap-3 group">
-              <div class="companyCard">
-                <div class="companyCard-inner">
-              
-                  <!-- ال FRONT -->
-                  <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">
-                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
-                        <i class="fa-solid fa-shield"></i>
-                    </div>
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-xl bg-blue-600 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-blue-600/30">
-                            I
-                        </div>
-                        <h3 class="font-medium font-poppins text-lg mb-1 flex items-center gap-2">
-                            InnovaCore 
-                            <span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>
-                        </h3>
-                        <p class="text-slate-500 text-sm mb-3">AI & Machine Learning Innovation</p>
-                        <div cl ass="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                            <i class="fa-solid fa-location-dot"></i> San Francisco, CA
-                        </div>
-                        <a class="text-primary text-sm font-normal mb-4 ">4 Open Positions</a>
-                    </div>
-                </div>
-                <!-- ال BACK -->
-                <div class="companyCard-back bg-white p-6 rounded-xl shadow-md max-w-xl">
-                  <h3 class="text-lg font-semibold mb-3">Company Description</h3>
-            
-                  <p class="text-sm text-slate-700 leading-relaxed">
-                    TechFlow Solutions is a cutting-edge software development company that builds innovative web and
-                    mobile solutions for businesses worldwide. We specialize in React, TypeScript, Node.js, and
-                    cloud-native applications that drive digital transformation and business growth.
-                  </p>
-                </div>
-            
-              </div>
-            </div>
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                    view jobs
-                </button>
-            </div>
-        
-            <div class="flex flex-col gap-3 group">
-              <div class="companyCard">
-                <div class="companyCard-inner">
-              
-                  <!-- ال FRONT -->
-                  <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-xl bg-purple-600 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-purple-600/30">
-                            D
-                        </div>
-                        <h3 class="font-medium font-poppins text-lg mb-1">DataMind Corporation</h3>
-                        <p class="text-slate-500 text-sm mb-3">Data Science & Analytics</p>
-                        <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                            <i class="fa-solid fa-location-dot"></i> Seattle, WA
-                        </div>
-                        <a class="text-primary text-sm font-normal mb-4 ">2 Open Positions</a>
-                    </div>
-                </div>
-                <!-- ال BACK -->
-                <div class="companyCard-back bg-white p-6 rounded-xl shadow-md max-w-xl">
-                  <h3 class="text-lg font-semibold mb-3">Company Description</h3>
-            
-                  <p class="text-sm text-slate-700 leading-relaxed">
-                    TechFlow Solutions is a cutting-edge software development company that builds innovative web and
-                    mobile solutions for businesses worldwide. We specialize in React, TypeScript, Node.js, and
-                    cloud-native applications that drive digital transformation and business growth.
-                  </p>
-                </div>
-            
-              </div>
-            </div>
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                    view jobs
-                </button>
-            </div>
-        
-            <div class="flex flex-col gap-3 group">
-              <div class="companyCard">
-                <div class="companyCard-inner">
-              
-                  <!-- ال FRONT -->
-                  <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
-                        <i class="fa-solid fa-shield"></i>
-                    </div>
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-xl bg-teal-600 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-teal-600/30">
-                            D
-                        </div>
-                        <h3 class="font-medium font-poppins text-lg mb-1 flex items-center gap-2">
-                            DesignCraft Studio
-                            <span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>
-                        </h3>
-                        <p class="text-slate-500 text-sm mb-3">UI/UX Design for Web Apps</p>
-                        <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                            <i class="fa-solid fa-location-dot"></i> Austin, TX
-                        </div>
-                        <a class="text-normal text-sm font-medium mb-4 ">1 Open Positions</a>
-                    </div>
-                </div>
-                <!-- ال BACK -->
-                <div class="companyCard-back bg-white p-6 rounded-xl shadow-md max-w-xl">
-                  <h3 class="text-lg font-semibold mb-3">Company Description</h3>
-            
-                  <p class="text-sm text-slate-700 leading-relaxed">
-                    TechFlow Solutions is a cutting-edge software development company that builds innovative web and
-                    mobile solutions for businesses worldwide. We specialize in React, TypeScript, Node.js, and
-                    cloud-native applications that drive digital transformation and business growth.
-                  </p>
-                </div>
-            
-              </div>
-            </div>
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                    view jobs
-                </button>
-            </div>
-        
-            <div class="flex flex-col gap-3 group">
-              <div class="companyCard">
-                <div class="companyCard-inner">
-              
-                  <!-- ال FRONT -->
-                  <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">                    <div class="flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-indigo-600/30">
-                            C
-                        </div>
-                        <h3 class="font-medium font-poppins text-lg mb-1">CloudNet Services</h3>
-                        <p class="text-slate-500 text-sm mb-3">Cloud Infrastructure & DevOps</p>
-                        <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                            <i class="fa-solid fa-location-dot"></i> Los Angeles, CA
-                        </div>
-                        <a class="text-primary text-sm font-normal mb-4 ">3 Open Positions</a>
-                    </div>
-                </div>
-                <!-- ال BACK -->
-                <div class="companyCard-back bg-white p-6 rounded-xl shadow-md max-w-xl">
-                  <h3 class="text-lg font-semibold mb-3">Company Description</h3>
-            
-                  <p class="text-sm text-slate-700 leading-relaxed">
-                    TechFlow Solutions is a cutting-edge software development company that builds innovative web and
-                    mobile solutions for businesses worldwide. We specialize in React, TypeScript, Node.js, and
-                    cloud-native applications that drive digital transformation and business growth.
-                  </p>
-                </div>
-            
-              </div>
-            </div>
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                    view jobs
-                </button>
-            </div>
-        
-            <div class="flex flex-col gap-3 group">
-              <div class="companyCard">
-                <div class="companyCard-inner">
-              
-                  <!-- ال FRONT -->
-                  <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
-                        <i class="fa-solid fa-shield"></i>
-                    </div>
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-xl bg-blue-500 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-blue-500/30">
-                            S
-                        </div>
-                        <h3 class="font-medium font-poppins text-lg mb-1 flex items-center gap-2">
-                            SecureNet Systems
-                            <span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>
-                        </h3>
-                        <p class="text-slate-500 text-sm mb-3">Cybersecurity Solutions</p>
-                        <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                            <i class="fa-solid fa-location-dot"></i> Washington, DC
-                        </div>
-                        <a class="text-primary text-sm font-normal mb-4 ">5 Open Positions</a>
-                    </div>
-                </div>
-                <!-- ال BACK -->
-                <div class="companyCard-back bg-white p-6 rounded-xl shadow-md max-w-xl">
-                  <h3 class="text-lg font-semibold mb-3">Company Description</h3>
-            
-                  <p class="text-sm text-slate-700 leading-relaxed">
-                    TechFlow Solutions is a cutting-edge software development company that builds innovative web and
-                    mobile solutions for businesses worldwide. We specialize in React, TypeScript, Node.js, and
-                    cloud-native applications that drive digital transformation and business growth.
-                  </p>
-                </div>
-            
-              </div>
-            </div>
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                    view jobs
-                </button>
-            </div>
-        
-        </div>
-              
-              <div class="text-center mt-8 ">
-                <a href="./companies.html" class="bg-white hover:text-black/100 text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
-                  View All companies
-                </a>
-              </div>
           </div>
+
+          <div class="text-center mt-8">
+            <a
+              id="companiesBtn"
+              href="companies.html"
+              onclick="transitionToPage(event, this.href)"
+              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg  transition-all duration-300 hover:shadow-md"
+            >
+              View All Companies
+            </a>
+          </div>
+        </div>
       </section>
-
-
-        </section>
-        </div>
-
-        <!-- كاردز ال jaobs -->
-        <div class="w-full px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10">
-          <section id="jobs" class="w-full py-24">
-            <div class="container mx-auto px-6 max-w-7xl text-left">
-              
-              <div class="text-center mb-16">
-                <h2 class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4">
-                  available Jobs
-                </h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Discover handpicked opportunities from top companies
-                </p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-          
-                <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
-                  
-                  <button class="absolute top-5 left-5 text-slate-400 hover:text-blue-600 transition-colors z-20">
-                      <i class="fa-regular fa-bookmark text-lg"></i>
-                  </button>
-  
-                  <div class="flex items-start gap-4 mb-4 mt-6">
-                      <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                          1
-                      </div>
-                      <div>
-                          <h3 class="font-medium font-poppins text-slate-900 leading-tight">Senior Frontend Developer</h3>
-                          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                              <span><i class="fa-regular fa-building mr-1"></i> TechFlow Solutions</span>
-                              <span><i class="fa-solid fa-location-dot mr-1"></i> San Francisco, CA</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed">
-                      Join our innovative team to build cutting-edge web applications using modern TypeScript and React frameworks.
-                  </p>
-  
-                  <div class="flex flex-wrap gap-2 mb-4">
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">React</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">TypeScript</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Next.js</span>
-                  </div>
-  
-                  <div class="flex items-center justify-between mb-4 mt-auto">
-                      <span class="text-green-600 font-semibold font-poppins text-sm">$120,000 - $160,000</span>
-                      <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> 2 days ago</span>
-                  </div>
-  
-                    
-                  <button onclick="applyForJob('${job.id}')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm mt-auto">
-                    Apply Now
-                </button>
-              </div>
-  
-              <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
-                  
-                  <button class="absolute top-5 left-5 text-slate-400 hover:text-blue-600 transition-colors z-20">
-                      <i class="fa-regular fa-bookmark text-lg"></i>
-                  </button>
-  
-                  <div class="flex items-start gap-4 mb-4 mt-6">
-                      <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                          2
-                      </div>
-                      <div>
-                          <h3 class="font-medium font-poppins text-slate-900 leading-tight">Backend Software Engineer</h3>
-                          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                              <span><i class="fa-regular fa-building mr-1"></i> DataMind Corp</span>
-                              <span><i class="fa-solid fa-globe mr-1"></i> Remote</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed">
-                      Build scalable backend services using Python, Django, and microservices architecture.
-                  </p>
-  
-                  <div class="flex flex-wrap gap-2 mb-4">
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Python</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Django</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">PostgreSQL</span>
-                  </div>
-  
-                  <div class="flex items-center justify-between mb-4 mt-auto">
-                      <span class="text-green-600 font-semibold font-poppins text-sm">$110,000 - $150,000</span>
-                      <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> 1 day ago</span>
-                  </div>
-  
-                    
-                  <button onclick="applyForJob('${job.id}')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm mt-auto">
-                    Apply Now
-                </button>
-              </div>
-  
-              <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
-                  
-                  <button class="absolute top-5 left-5 text-slate-400 hover:text-blue-600 transition-colors z-20">
-                      <i class="fa-regular fa-bookmark text-lg"></i>
-                  </button>
-  
-                  <div class="flex items-start gap-4 mb-4 mt-6">
-                      <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                          3
-                      </div>
-                      <div>
-                          <h3 class="font-medium font-poppins text-slate-900 leading-tight">Full Stack Software Engineer</h3>
-                          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                              <span><i class="fa-regular fa-building mr-1"></i> InnovaCore</span>
-                              <span><i class="fa-solid fa-location-dot mr-1"></i> New York, NY</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed">
-                      Develop end-to-end web applications using modern JavaScript frameworks and cloud technologies.
-                  </p>
-  
-                  <div class="flex flex-wrap gap-2 mb-4">
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">JavaScript</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Node.js</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">AWS</span>
-                  </div>
-  
-                  <div class="flex items-center justify-between mb-4 mt-auto">
-                      <span class="text-green-600 font-semibold font-poppins text-sm">$105,000 - $145,000</span>
-                      <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> 3 days ago</span>
-                  </div>
-  
-                
-                  <button onclick="applyForJob('${job.id}')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm mt-auto">
-                    Apply Now
-                </button>
-              </div>
-  
-              <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
-                  
-                  <button class="absolute top-5 left-5 text-slate-400 hover:text-blue-600 transition-colors z-20">
-                      <i class="fa-regular fa-bookmark text-lg"></i>
-                  </button>
-  
-                  <div class="flex items-start gap-4 mb-4 mt-6">
-                      <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                          4
-                      </div>
-                      <div>
-                          <h3 class="font-medium font-poppins text-slate-900 leading-tight">Mobile Application Developer</h3>
-                          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                              <span><i class="fa-regular fa-building mr-1"></i> CloudNet Services</span>
-                              <span><i class="fa-solid fa-location-dot mr-1"></i> Austin, TX</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed">
-                      Create innovative mobile applications for iOS and Android using React Native and Flutter.
-                  </p>
-  
-                  <div class="flex flex-wrap gap-2 mb-4">
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">React Native</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Flutter</span>
-                  </div>
-  
-                  <div class="flex items-center justify-between mb-4 mt-auto">
-                      <span class="text-green-600 font-semibold font-poppins text-sm">$100,000 - $135,000</span>
-                      <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> 5 days ago</span>
-                  </div>
-  
-                    
-                  <button onclick="applyForJob('${job.id}')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm mt-auto">
-                    Apply Now
-                </button>
-              </div>
-  
-              <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
-                  
-                  <button class="absolute top-5 left-5 text-slate-400 hover:text-blue-600 transition-colors z-20">
-                      <i class="fa-regular fa-bookmark text-lg"></i>
-                  </button>
-  
-                  <div class="flex items-start gap-4 mb-4 mt-6">
-                      <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                          5
-                      </div>
-                      <div>
-                          <h3 class="font-medium font-poppins text-slate-900 leading-tight">Cloud DevOps Engineer</h3>
-                          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                              <span><i class="fa-regular fa-building mr-1"></i> SecureNet Systems</span>
-                              <span><i class="fa-solid fa-location-dot mr-1"></i> Seattle, WA</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed">
-                      Build and maintain CI/CD pipelines and cloud infrastructure using AWS, Docker, and Kubernetes.
-                  </p>
-  
-                  <div class="flex flex-wrap gap-2 mb-4">
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">AWS</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Docker</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">K8s</span>
-                  </div>
-  
-                  <div class="flex items-center justify-between mb-4 mt-auto">
-                      <span class="text-green-600 font-semibold font-poppins text-sm">$115,000 - $155,000</span>
-                      <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> 1 week ago</span>
-                  </div>
-  
-                    
-                  <button onclick="applyForJob('${job.id}')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm mt-auto">
-                    Apply Now
-                </button>
-              </div>
-  
-              <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
-                  
-                  <button class="absolute top-5 left-5 text-slate-400 hover:text-blue-600 transition-colors z-20">
-                      <i class="fa-regular fa-bookmark text-lg"></i>
-                  </button>
-  
-                  <div class="flex items-start gap-4 mb-4 mt-6">
-                      <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                          6
-                      </div>
-                      <div>
-                          <h3 class="font-medium font-poppins text-slate-900 leading-tight">Data Scientist</h3>
-                          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                              <span><i class="fa-regular fa-building mr-1"></i> DataMind Corp</span>
-                              <span><i class="fa-solid fa-location-dot mr-1"></i> Boston, MA</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed">
-                      Apply machine learning and advanced analytics to solve complex business problems using Python.
-                  </p>
-  
-                  <div class="flex flex-wrap gap-2 mb-4">
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">Python</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">ML</span>
-                      <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">SQL</span>
-                  </div>
-  
-                  <div class="flex items-center justify-between mb-4 mt-auto">
-                      <span class="text-green-600 font-semibold font-poppins text-sm">$105,000 - $145,000</span>
-                      <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> 4 days ago</span>
-                  </div>
-  
-                    
-                  <button onclick="applyForJob('${job.id}')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm mt-auto">
-                    Apply Now
-                </button>
-              </div>
-              </div>
-          
-              <div class="text-center mt-8 ">
-                <a href="./jobs.html" class="bg-white hover:text-black/100 text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
-                  View All Jobs
-                </a>
-              </div>
-          
-            </div>
-          </section>
-        </div>
-        <!-- كارد ال job application -->
-        <div id="applyModal" class="  hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300">
-    
-          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 md:max-w-xl relative transform transition-all scale-100 overflow-y-auto max-h-[90vh]">
-              
-              <div class="p-6 pb-2 text-center">
-                  <button onclick="closeApplyModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
-                      <i class="fa-solid fa-xmark text-xl"></i>
-                  </button>
-                  <h2 class="text-xl font-bold text-slate-900">Apply for Job</h2>
-                  <p class="text-sm text-slate-500 mt-1">Submit your application and CV for this position</p>
-              </div>
-      
-              <form id="applyForm" class="p-6 pt-2 space-y-4">
-                  
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                          <label class="block text-xs font-semibold text-slate-700 mb-1">Full Name <span class="text-red-500">*</span></label>
-                          <input type="text" placeholder="Enter your full name" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required>
-                      </div>
-                      <div>
-                          <label class="block text-xs font-semibold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
-                          <input type="email" placeholder="Enter your email" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required>
-                      </div>
-                  </div>
-      
-                  <div>
-                      <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
-                      <input type="tel" placeholder="Enter your phone number" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                  </div>
-      
-                  <div>
-                      <label class="block text-xs font-semibold text-slate-700 mb-1">Upload CV/Resume <span class="text-red-500">*</span></label>
-                      <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer group">
-                          <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-white transition-colors">
-                              <i class="fa-solid fa-arrow-up-from-bracket text-slate-500"></i>
-                          </div>
-                          <p class="text-sm text-slate-600 font-medium">Drag and drop your CV here or click to browse</p>
-                          <p class="text-xs text-slate-400 mt-1">Supported formats: PDF, DOC, DOCX (Max 5MB)</p>
-                          <button type="button" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors">
-                              Choose File
-                          </button>
-                          <input type="file" class="hidden">
-                      </div>
-                  </div>
-      
-                  <div>
-                      <label class="block text-xs font-semibold text-slate-700 mb-1">Cover Letter (Optional)</label>
-                      <textarea rows="4" placeholder="Write a brief cover letter explaining why you're interested in this position..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"></textarea>
-                  </div>
-    
-                  <div class="flex gap-3 pt-2">
-                      <button type="button" onclick="closeApplyModal()" class="flex-1 py-2.5 border border-slate-300 text-slate-600 font-semibold rounded-lg hover:bg-slate-50 text-sm transition-colors">
-                          Cancel
-                      </button>
-                      <button type="submit" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-sm transition-colors shadow-md shadow-cyan-500/20">
-                          Submit Application
-                      </button>
-                  </div>
-      
-              </form>
-          </div>
-      </div>
-  
-        <footer class="bg-white pt-16 pb-8 border-t border-slate-200 font-poppins font-normal">
-    <div class="container mx-auto px-6 max-w-7xl">
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
-            
-            <div>
-                <h3 class="text-blue-600 font-simibold text-lg mb-6">CareerPro Platform</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">
-                    Transform your career journey through intelligent matching and personalized guidance.
-                </p>
-            </div>
-
-            <div>
-                <h3 class="text-blue-600 font-simibold text-lg mb-6">About Us</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                    CareerPro is a leading career development service connecting professionals with innovative companies.
-                </p>
-                <div class="space-y-2 text-sm text-slate-500">
-                    <p><span class="font-semibold text-slate-700">Founded:</span> 2020</p>
-                    <p><span class="font-semibold text-slate-700">HQ:</span> San Francisco, CA</p>
-                    <p><span class="font-semibold text-slate-700">Team:</span> 50-100 employees</p>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-blue-600 font-simibold text-lg mb-6">Contact Info</h3>
-                <ul class="space-y-4 mb-8">
-                    <li class="flex items-center gap-3 text-slate-500 text-sm hover:text-blue-600 transition-colors cursor-pointer">
-                        <i class="fa-regular fa-envelope text-slate-400"></i>
-                        contact@careerpro.com
-                    </li>
-                    <li class="flex items-center gap-3 text-slate-500 text-sm hover:text-blue-600 transition-colors cursor-pointer">
-                        <i class="fa-solid fa-phone text-slate-400"></i>
-                        +1 (555) 123-4567
-                    </li>
-                    <li class="flex items-center gap-3 text-slate-500 text-sm">
-                        <i class="fa-solid fa-location-dot text-slate-400"></i>
-                        San Francisco, CA
-                    </li>
-                </ul>
-
-                <h4 class="text-blue-600 font-semibold text-sm mb-4">Follow Us</h4>
-                <div class="flex gap-4 text-sm text-slate-500">
-                    <a href="#" class="hover:text-blue-600 transition-colors">LinkedIn</a>
-                    <a href="#" class="hover:text-blue-600 transition-colors">Twitter</a>
-                    <a href="#" class="hover:text-blue-600 transition-colors">Facebook</a>
-                    <a href="#" class="hover:text-blue-600 transition-colors">Instagram</a>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-blue-600 font-simibold text-lg mb-6">Legal</h3>
-                <ul class="space-y-3 text-sm text-slate-500">
-                    <li><a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-blue-600 transition-colors">Terms of Service</a></li>
-                    <li><a href="#" class="hover:text-blue-600 transition-colors">Cookie Policy</a></li>
-                    <li><a href="#" class="hover:text-blue-600 transition-colors">Data Protection</a></li>
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="border-t border-slate-200 pt-8 text-center mt-8 mb-8">
-            <p class="text-slate-500 text-sm mt-4">
-                &copy; 2024 CareerPro Platform. All rights reserved.
-            </p>
-        </div>
-
     </div>
-</footer>
 
+    <div
+      class="w-full px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10"
+    >
+      <section id="jobs" class="w-full py-24">
+        <div class="container mx-auto px-6 max-w-7xl text-left">
+          <div class="text-center mb-16">
+            <h2
+              class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4"
+            >
+              Available Jobs
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+              Discover handpicked opportunities from top companies
+            </p>
+          </div>
 
+          <div
+            id="featured-jobs-container"
+            class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6"
+          >
+            <div class="col-span-full text-center py-10">
+              <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+              <p class="text-slate-500 mt-2">Loading featured jobs...</p>
+            </div>
+          </div>
 
+          <div class="text-center mt-8">
+            <a
+              id="jobsBtn"
+              href="/jobs.html"
+              onclick="transitionToPage(event, this.href)"
+              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-md"
+            >
+              View All Jobs
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
 
+    <div
+      id="applyModal"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 md:max-w-xl relative transform transition-all scale-100 overflow-y-auto max-h-[90vh]"
+      >
+        <div class="p-6 pb-2 text-center">
+          <button
+            id="btnCloseModal"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+          <h2 class="text-xl font-bold text-slate-900">Apply for Job</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Submit your application and CV for this position
+          </p>
+        </div>
 
-
-
-
-
-
-
-
-  <script>
-    // --- Modal Logic ---
-      function applyForJob(jobId) {
-        // 1. إظهار المودال
-        const modal = document.getElementById('applyModal');
-        modal.classList.remove('hidden');
-        
-        // 2. (اختياري) ممكن تخزني الـ ID عشان تستخدميه وقت الـ Submit
-        modal.dataset.jobId = jobId; 
-    }
-    
-    function closeApplyModal() {
-        const modal = document.getElementById('applyModal');
-        modal.classList.add('hidden');
-    }
-    
-    //  قفل المودال لو داس بره الصندوق او Esc
-    window.onclick = function(event) {
-        const modal = document.getElementById('applyModal');
-        if (event.target === modal) {
-            closeApplyModal();
-        }
-    };
-    document.addEventListener("keydown", function(event) {
-        if (event.key === "Escape") {
-            closeApplyModal();
-        }
-    });
-    
-    // التعامل مع الـ Submit (اختياري حالياً)
-    document.getElementById('applyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // هنا كود الـ API Call للـ Apply
-        alert('Application Submitted Successfully!');
-        closeApplyModal();
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const startBtn = document.getElementById('startCareerBtn');
-    
-    if (startBtn) {
-        startBtn.addEventListener('click', () => {
-            // 1. التحقق من وجود التوكن (هل المستخدم مسجل دخول؟)
-            // تأكدي أن الاسم هنا "authToken" أو "token" حسب ما سميتيه في الـ Login
-            const token = localStorage.getItem('authToken'); 
-
-            if (token) {
-                // الحالة الأولى: المستخدم مسجل دخول -> انزل لسكشن الخدمات
-                const servicesSection = document.getElementById('services');
-                if (servicesSection) {
-                    servicesSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            } else {
-                // الحالة الثانية: المستخدم غير مسجل -> حوله لصفحة التسجيل
-                // ?mode=signup : عشان يفتح على الساين أب علطول بالكود اللي عملناه قبل كده
-                window.location.href = '/src/pages/auth/signup-login.html?mode=signup';
-            }
-        });
-    }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    
-    const navButtons = document.querySelectorAll('.nav-item');
-    const sections = document.querySelectorAll('section[id]');
-    const marker = document.getElementById('navMarker');
-    let activeButton = null;
-    
-    let isManualScrolling = false;
-    let scrollTimeout;
-
-    function moveMarker(targetBtn) {
-        if (!targetBtn || !marker) return;
-
-        navButtons.forEach(btn => btn.classList.remove('text-blue-600'));
-        targetBtn.classList.add('text-blue-600');
-
-        marker.style.width = `${targetBtn.offsetWidth * 0.8}px`;
-
-        const centerPosition = targetBtn.offsetLeft + (targetBtn.offsetWidth / 2);
-        marker.style.left = `${centerPosition - marker.offsetWidth / 2}px`;
-
-        activeButton = targetBtn;
-    }
-
-    const observerOptions = { threshold: 0.5 };
-
-    const observer = new IntersectionObserver((entries) => {
-        if (isManualScrolling) return;
-
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const sectionId = entry.target.getAttribute('id');
-                const targetBtn = document.querySelector(`.nav-item[data-target="${sectionId}"]`);
-                if (targetBtn) {
-                    moveMarker(targetBtn);
-                }
-            }
-        });
-    }, observerOptions);
-
-    sections.forEach(section => observer.observe(section));
-
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            isManualScrolling = true;
-            clearTimeout(scrollTimeout);
-
-            const targetId = btn.dataset.target;
-            const targetSection = document.getElementById(targetId);
-
-            if (targetSection) {
-                moveMarker(btn);
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-
-                scrollTimeout = setTimeout(() => {
-                    isManualScrolling = false;
-                }, 900);
-            }
-        });
-    });
-
-    const homeBtn = document.getElementById('HomeBtn');
-    if (homeBtn) {
-        setTimeout(() => moveMarker(homeBtn), 100);
-    }
-
-    window.addEventListener('resize', () => {
-        if (activeButton) moveMarker(activeButton);
-    });
-});
-
-// 3. دالة جلب الوظائف من الـ API
-async function fetchFeaturedJobs() {
-    const container = document.getElementById('featured-jobs-container');
-    
-    try {
-        // Fetch Request حسب الـ API Contract
-        const response = await axios.get(`${API_BASE_URL}/jobs`, {
-            params: {
-                featured: true,
-                limit: 6
-            },
-            headers: {
-                // لو الـ API محتاج توكن حتى للعرض (غالباً لأ عشان يشوف isSaved)
-                'Authorization': `Bearer ${getAuthToken()}` 
-            }
-        });
-
-        const jobs = response.data.data.jobs; // المسار حسب الـ Contract
-        
-        // تنظيف الكونتينر
-        container.innerHTML = '';
-
-        if (jobs.length === 0) {
-            container.innerHTML = '<p class="text-white text-center col-span-full">No featured jobs found.</p>';
-            return;
-        }
-
-        // إنشاء الكروت
-        jobs.forEach((job, index) => {
-            const cardHTML = createJobCard(job, index + 1);
-            container.insertAdjacentHTML('beforeend', cardHTML);
-        });
-
-    } catch (error) {
-        console.error('Error fetching jobs:', error);
-        container.innerHTML = '<p class="text-red-400 text-center col-span-full">Failed to load jobs. Please try again later.</p>';
-    }
-}
-
-// 4. دالة رسم الكارت (HTML Template)
-function createJobCard(job, index) {
-    // حساب الوقت (Time Ago)
-    const timeAgo = getTimeAgo(job.postedAt);
-    
-    // التعامل مع اللوجو (صورة افتراضية لو مفيش)
-    const companyLogo = job.company.logo || 'assets/imgs/default-company.png'; 
-    
-    // حالة الزرار Saved
-    const saveIconClass = job.isSaved ? 'fa-solid text-blue-600' : 'fa-regular text-slate-400';
-
-    // توليد مهارات (Skills) - بناخد أول 3 بس عشان الشكل
-    const skillsHTML = job.skills.slice(0, 3).map(skill => 
-        `<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-medium">${skill}</span>`
-    ).join('');
-
-    return `
-      <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100">
-        
-        <button onclick="toggleSaveJob('${job.id}', this)" class="absolute top-6 left-6 hover:text-blue-600 transition-colors z-10" title="Save Job">
-            <i class="${saveIconClass} fa-bookmark text-xl"></i>
-        </button>
-
-        ${job.isFeatured ? `
-        <span class="absolute top-6 right-6 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
-            Featured
-        </span>` : ''}
-
-        <div class="flex items-start gap-4 mb-4 mt-8">
-            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0">
-                <img src="${companyLogo}" alt="${job.company.name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/48x48?text=logo'">
+        <form id="applyForm" class="p-6 pt-2 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1"
+                >Full Name <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                id="applyName"
+                placeholder="Enter your full name"
+                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+              />
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-900 leading-tight">${job.title}</h3>
-                <div class="flex items-center gap-2 text-sm text-slate-500 mt-1">
-                    <span><i class="fa-solid fa-building mr-1"></i> ${job.company.name}</span>
-                    <span class="text-xs">•</span>
-                    <span><i class="fa-solid fa-location-dot mr-1"></i> ${job.location || job.company.location}</span>
-                </div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1"
+                >Email <span class="text-red-500">*</span></label
+              >
+              <input
+                type="email"
+                id="applyEmail"
+                placeholder="Enter your email"
+                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+              />
             </div>
-        </div>
+          </div>
 
-        <p class="text-slate-500 text-sm mb-4 line-clamp-2">
-            ${job.description || 'No description available for this position.'}
-        </p>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              id="applyPhone"
+              placeholder="Enter your phone number"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
 
-        <div class="flex flex-wrap gap-2 mb-6">
-            ${skillsHTML}
-        </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1"
+              >Upload CV/Resume <span class="text-red-500">*</span></label
+            >
+            <div
+              class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer group"
+              onclick="document.getElementById('applyCv').click()"
+            >
+              <div
+                class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-white transition-colors"
+              >
+                <i class="fa-solid fa-arrow-up-from-bracket text-slate-500"></i>
+              </div>
+              <p class="text-sm text-slate-600 font-medium">
+                Drag and drop your CV here or click to browse
+              </p>
+              <p class="text-xs text-slate-400 mt-1">
+                Supported formats: PDF, DOC, DOCX (Max 5MB)
+              </p>
+              <button
+                type="button"
+                class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors"
+              >
+                Choose File
+              </button>
+              <input type="file" id="applyCv" class="hidden" />
+            </div>
+          </div>
 
-        <div class="flex items-center justify-between mb-4">
-            <span class="text-green-600 font-bold text-sm">${job.salaryRange || 'Competitive'}</span>
-            <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
-        </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1"
+              >Cover Letter (Optional)</label
+            >
+            <textarea
+              id="applyCover"
+              rows="4"
+              placeholder="Write a brief cover letter explaining why you're interested in this position..."
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+            ></textarea>
+          </div>
 
-        <button onclick="window.location.href='job-details.html?id=${job.id}'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-300">
-            Apply Now
-        </button>
+          <div class="flex gap-3 pt-2">
+            <button
+              type="button"
+              id="btnCancelModal"
+              class="flex-1 py-2.5 border border-slate-300 text-slate-600 font-semibold rounded-lg hover:bg-slate-50 text-sm transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-sm transition-colors shadow-md shadow-cyan-500/20"
+            >
+              Submit Application
+            </button>
+          </div>
+        </form>
       </div>
-    `;
-}
+    </div>
 
-// 5. دالة حفظ الوظيفة (Toggle Save)
-async function toggleSaveJob(jobId, btnElement) {
-    const token = getAuthToken();
-    
-    if (!token) {
-        alert('Please login to save jobs!');
-        window.location.href = '/login.html'; // توجيه لصفحة الدخول
-        return;
-    }
+    <footer
+      class="bg-white pt-16 pb-8 border-t border-slate-200 font-poppins font-normal"
+    >
+      <div class="container mx-auto px-6 max-w-7xl">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+          <div>
+            <h3 class="text-blue-600 font-simibold text-lg mb-6">
+              CareerPro Platform
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              Transform your career journey through intelligent matching and
+              personalized guidance.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-blue-600 font-simibold text-lg mb-6">About Us</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6">
+              CareerPro is a leading career development service connecting
+              professionals with innovative companies.
+            </p>
+            <div class="space-y-2 text-sm text-slate-500">
+              <p>
+                <span class="font-semibold text-slate-700">Founded:</span> 2020
+              </p>
+              <p>
+                <span class="font-semibold text-slate-700">HQ:</span> San
+                Francisco, CA
+              </p>
+              <p>
+                <span class="font-semibold text-slate-700">Team:</span> 50-100
+                employees
+              </p>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-blue-600 font-simibold text-lg mb-6">
+              Contact Info
+            </h3>
+            <ul class="space-y-4 mb-8">
+              <li
+                class="flex items-center gap-3 text-slate-500 text-sm hover:text-blue-600 transition-colors cursor-pointer"
+              >
+                <i class="fa-regular fa-envelope text-slate-400"></i>
+                contact@careerpro.com
+              </li>
+              <li
+                class="flex items-center gap-3 text-slate-500 text-sm hover:text-blue-600 transition-colors cursor-pointer"
+              >
+                <i class="fa-solid fa-phone text-slate-400"></i> +1 (555)
+                123-4567
+              </li>
+              <li class="flex items-center gap-3 text-slate-500 text-sm">
+                <i class="fa-solid fa-location-dot text-slate-400"></i> San
+                Francisco, CA
+              </li>
+            </ul>
+            <h4 class="text-blue-600 font-semibold text-sm mb-4">Follow Us</h4>
+            <div class="flex gap-4 text-sm text-slate-500">
+              <a href="#" class="hover:text-blue-600 transition-colors"
+                >LinkedIn</a
+              >
+              <a href="#" class="hover:text-blue-600 transition-colors"
+                >Twitter</a
+              >
+              <a href="#" class="hover:text-blue-600 transition-colors"
+                >Facebook</a
+              >
+              <a href="#" class="hover:text-blue-600 transition-colors"
+                >Instagram</a
+              >
+            </div>
+          </div>
+          <div>
+            <h3 class="text-blue-600 font-simibold text-lg mb-6">Legal</h3>
+            <ul class="space-y-3 text-sm text-slate-500">
+              <li>
+                <a href="#" class="hover:text-blue-600 transition-colors"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-blue-600 transition-colors"
+                  >Terms of Service</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-blue-600 transition-colors"
+                  >Cookie Policy</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-blue-600 transition-colors"
+                  >Data Protection</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-slate-200 pt-8 text-center mt-8 mb-8">
+          <p class="text-slate-500 text-sm mt-4">
+            &copy; 2024 CareerPro Platform. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
 
-    try {
-        const icon = btnElement.querySelector('i');
-        
-        // Call API Endpoint
-        const response = await axios.post(`${API_BASE_URL}/jobs/${jobId}/save`, {}, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script type="module" src="/src/js/config/constant.js"></script>
+    <script type="module" src="/src/js/utils/axiosClient.js"></script>
 
-        // Update UI based on response
-        // الـ API بيرجع { data: { isSaved: true/false } }
-        const isSaved = response.data.data.isSaved;
-
-        if (isSaved) {
-            icon.classList.remove('fa-regular', 'text-slate-400');
-            icon.classList.add('fa-solid', 'text-blue-600');
-        } else {
-            icon.classList.remove('fa-solid', 'text-blue-600');
-            icon.classList.add('fa-regular', 'text-slate-400');
-        }
-
-    } catch (error) {
-        console.error('Error saving job:', error);
-        alert('Something went wrong. Please try again.');
-    }
-}
-
-// 6. دالة حساب الوقت (Helper Function)
-function getTimeAgo(dateString) {
-    if (!dateString) return 'Recently';
-    
-    // لو التاريخ جاي "2 days ago" جاهز من الباك اند رجعه زي ما هو
-    if (!dateString.includes('T')) return dateString;
-
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now - date) / 1000);
-
-    let interval = seconds / 31536000;
-    if (interval > 1) return Math.floor(interval) + " years ago";
-    interval = seconds / 2592000;
-    if (interval > 1) return Math.floor(interval) + " months ago";
-    interval = seconds / 86400;
-    if (interval > 1) return Math.floor(interval) + " days ago";
-    interval = seconds / 3600;
-    if (interval > 1) return Math.floor(interval) + " hours ago";
-    interval = seconds / 60;
-    if (interval > 1) return Math.floor(interval) + " minutes ago";
-    return Math.floor(seconds) + " seconds ago";
-}
-</script>
-<script type="module" src="./src/js/controllers/jobsListController.js"></script>
-<script type="module" src="./src/js/controllers/companyDiscoveryService.js"></script>
-</body>
+    <script type="module" src="./src/js/controllers/homeController.js"></script>
+  </body>
 </html>

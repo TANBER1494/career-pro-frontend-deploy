@@ -1,4 +1,5 @@
 import { companyService } from "../services/companyService.js";
+import { authService } from "../services/authService.js";
 import Swal from "sweetalert2";
 
 // ============================================================
@@ -24,6 +25,7 @@ const btnEditProfile = document.getElementById("btnEditProfile");
 const btnCancelEdit = document.getElementById("btnCancelEdit");
 const btnSaveChanges = document.getElementById("btnSaveChanges");
 const btnUploadLogo = document.getElementById("btnUploadLogo");
+const btnLogout = document.getElementById("btnLogout");
 
 // ============================================================
 // 2. Initialization & Data Fetching
@@ -387,3 +389,9 @@ btnSaveChanges.addEventListener("click", async (e) => {
     submitBtn.disabled = false;
   }
 });
+
+if (btnLogout) {
+  btnLogout.addEventListener("click", () => {
+    authService.logout();
+  });
+}

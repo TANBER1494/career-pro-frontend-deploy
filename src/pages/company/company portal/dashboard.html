@@ -4,9 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Company Dashboard - CareerPro</title>
-
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -16,47 +18,180 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
     />
+    <style>
+body {
+        background: #dce0e0;
+        background: linear-gradient(
+          150deg,
+          rgba(220, 224, 224, 1) 14%,
+          rgba(182, 206, 224, 1) 60%,
+          rgba(95, 106, 115, 1) 100%
+        );
+        margin: 0;
+        overflow-x: hidden;
+        background-attachment: fixed;
+        font-family: "Poppins", sans-serif;
+      }
+.nav-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-right: 100px;
+      }
+      .magic-menu {
+        display: flex;
+        position: relative;
+        gap: 15px; /* قللنا المسافة بين الايقونات شوية */
+        align-items: center;
+        padding: 0 10px;
+      }
+      .magic-menu li {
+        position: relative;
+        list-style: none;
+        width: 42px; /* تصغير العرض (كان 50) */
+        height: 42px; /* تصغير الطول (كان 50) */
+        background: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 60px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s;
+      }
+      /* ... (before & after كما هما) ... */
+      .magic-menu li::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 60px;
+        background: linear-gradient(45deg, var(--i), var(--j));
+        opacity: 0;
+        transition: 0.5s;
+      }
+      .magic-menu li::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        height: 100%;
+        border-radius: 60px;
+        background: linear-gradient(45deg, var(--i), var(--j));
+        transition: 0.5s;
+        filter: blur(15px);
+        z-index: -1;
+        opacity: 0;
+      }
+
+      /* Hover State */
+      .magic-menu li:hover,
+      .magic-menu li.active {
+        width: 130px; /* تصغير عرض التمدد قليلاً */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
+      }
+      .magic-menu li:hover::before,
+      .magic-menu li.active::before {
+        opacity: 1;
+      }
+      .magic-menu li:hover::after,
+      .magic-menu li.active::after {
+        opacity: 0.5;
+      }
+
+      .magic-menu li ion-icon {
+        color: #777;
+        font-size: 1.3em; /* تصغير حجم الايقونة لتناسب الدائرة الجديدة */
+        transition: 0.5s;
+        transition-delay: 0.25s;
+      }
+      /* ... باقي الستايل كما هو ... */
+      .magic-menu li:hover ion-icon,
+      .magic-menu li.active ion-icon {
+        transform: scale(0);
+        color: #fff;
+        transition-delay: 0s;
+      }
+      .magic-menu li span.title {
+        position: absolute;
+        color: #fff;
+        font-size: 0.85em; /* تصغير الخط قليلاً */
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transform: scale(0);
+        transition: 0.5s;
+        transition-delay: 0s;
+      }
+      .magic-menu li:hover span.title,
+      .magic-menu li.active span.title {
+        transform: scale(1);
+        transition-delay: 0.25s;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 font-sans text-gray-800">
+  <body class=" text-gray-800">
     <nav
-      class="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between"
+    class="sticky top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md px-6 py-3 flex items-center justify-between shadow-sm mb-8"
     >
-      <div class="flex items-center space-x-8">
-        <a
-          href="dashboard.html"
-          class="text-xl font-bold text-cyan-600 flex items-center gap-2"
-        >
-          <i class="fas fa-building"></i> <span>Company Portal</span>
-        </a>
+      <a
+        href="dashboard.html"
+        class="text-2xl font-semibold text-blue-500 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+      <i class="fas fa-building"></i> 
+      <span>Company Portal</span>
+      </a>
+
+      <div class="hidden md:flex flex-1 nav-container">
         <div
-          class="hidden md:flex items-center space-x-6 text-gray-600 font-medium"
+          class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
         >
-          <a
-            href="dashboard.html"
-            class="text-cyan-600 border-b-2 border-cyan-600 pb-1"
-            >Dashboard</a
-          >
-          <a href="profile.html" class="hover:text-cyan-600">Profile</a>
-          <a href="jobs.html" class="hover:text-cyan-600">Jobs</a>
-          <a href="applications.html" class="hover:text-cyan-600"
-            >Applications</a
-          >
-          <a href="verification.html" class="hover:text-cyan-600"
-            >Verification</a
-          >
+          <ul class="magic-menu">
+            <li
+            style="--i: #5eb6fd;--j:#0576d3"
+            class="active"
+            onclick="window.location.href='dashboard.html'">
+            <span class="icon"><ion-icon name="easel-outline"></ion-icon></span>
+            <span class="title">dashboard</span>
+          </li>
+          <li
+            style="--i: #67e3ff;--j:#69a8b8"
+            onclick="window.location.href='profile.html'">
+            <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+            <span class="title">profile</span>
+          </li>
+          <li
+            style="--i: #8f68d6;--j:#4e3085"
+            onclick="window.location.href='jobs.html'">
+            <span class="icon"><ion-icon name="bag-outline"></ion-icon></span>
+            <span class="title">Jobs</span>
+          </li>
+          <li
+            style="--i: #72f3f3;--j:#29a8a8"
+            onclick="window.location.href='applications.html'">
+            <span class="icon"><ion-icon name="documents-outline"></ion-icon></span>
+            <span class="title">Applications</span>
+          </li>
+          <li
+            style="--i: #2cc034;--j:#17741b"
+            onclick="window.location.href='verification.html'">
+            <span class="icon"><ion-icon name="shield-outline"></ion-icon></span>
+            <span class="title">Verification</span>
+          </li>
+            </ul>
         </div>
       </div>
       <div>
         <button
           id="btnLogout"
-          class="text-gray-600 hover:text-red-600 font-medium flex items-center gap-2"
+          class="text-gray-600 hover:text-red-600 font-bold flex items-center gap-2 transition duration-300"
         >
-          <i class="fas fa-sign-out-alt"></i> Logout
+          <i class="fas fa-sign-out-alt"></i> Log out
         </button>
       </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto p-6 space-y-8">
+    <main class="w-full mx-auto p-6 space-y-8">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold text-gray-900">
@@ -68,7 +203,7 @@
         </div>
         <a
           href="post_job.html"
-          class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 shadow-sm"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm"
         >
           <i class="fas fa-plus"></i> Post New Job
         </a>
@@ -98,7 +233,7 @@
             <div class="flex items-center gap-4">
               <a
                 href="verification.html"
-                class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2"
               >
                 <i class="fas fa-shield-alt"></i> Continue Verification
               </a>
@@ -121,7 +256,7 @@
             <h3 class="text-xl font-bold text-gray-900">Recent Jobs</h3>
             <a
               href="jobs.html"
-              class="text-sm text-cyan-600 hover:underline font-medium"
+              class="text-sm text-blue-500 hover:text-blue-600 font-medium"
               >View All</a
             >
           </div>
@@ -139,7 +274,7 @@
             <h3 class="text-xl font-bold text-gray-900">Recent Applications</h3>
             <a
               href="applications.html"
-              class="text-sm text-cyan-600 hover:underline font-medium"
+              class="text-sm text-blue-500 hover:text-blue-600 font-medium"
               >View All</a
             >
           </div>
@@ -154,14 +289,14 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <a
             href="post_job.html"
-            class="flex flex-col items-center justify-center p-6 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl transition gap-2 shadow-sm"
+            class="flex flex-col items-center justify-center p-6 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition gap-2 shadow-sm"
           >
             <i class="fas fa-plus text-2xl"></i>
             <span class="font-medium">Post New Job</span>
           </a>
           <a
             href="applications.html"
-            class="flex flex-col items-center justify-center p-6 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 rounded-xl transition gap-2"
+            class="flex flex-col items-center justify-center p-6 bg-cyan-50 hover:bg-cyan-100 text-cyan-500 border border-cyan-200 rounded-xl transition gap-2"
           >
             <i class="fas fa-file-alt text-2xl"></i>
             <span class="font-medium">Review Applications</span>

@@ -1,28 +1,23 @@
 import axiosClient from "../utils/axiosClient.js";
 
 export const companyDiscoveryService = {
-  // ============================================================
-  // Public Company Discovery (متاح للجميع)
-  // ============================================================
-
-  // 1. جلب الشركات المميزة (Top Companies) للصفحة الرئيسية
-  async getTopCompanies() {
-    const response = await axiosClient.get("/companies/top");
+  // 1. Home Page: Random 6 Verified
+  async getTopCompanies(params = {}) {
+    // نطلب المسار الجديد /top
+    const response = await axiosClient.get("/companies/top", { params });
     return response.data;
   },
 
-  // 2. جلب كل الشركات مع البحث والفلترة
-  // filters: { search, industry, location, size, isVerified, page, limit }
-  async getAllCompanies(filters = {}) {
-    const response = await axiosClient.get("/companies", { params: filters });
+  // 2. Companies Page: Get All (Search & Filter)
+  async getAllCompanies(params = {}) {
+    // نطلب المسار العام / (الذي ينفذ getAllCompanies في الباك)
+    const response = await axiosClient.get("/companies", { params });
     return response.data;
   },
 
-  // 3. جلب التفاصيل العامة لشركة معينة (Public Profile + Jobs)
-  // 3. جلب التفاصيل العامة لشركة معينة (Public Profile + Jobs)
-  async getCompanyDetails(companyId) {
-    // ✅ التصحيح: حذفنا /public لتتطابق مع الباك إند (/:id)
-    const response = await axiosClient.get(`/companies/${companyId}`);
+  // 3. Company Details
+  async getCompanyDetails(id) {
+    const response = await axiosClient.get(`/companies/${id}`);
     return response.data;
   },
 };

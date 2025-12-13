@@ -94,7 +94,7 @@ function updatePreviewData() {
       .filter((s) => s);
     skills.forEach((skill) => {
       prevSkills.innerHTML += `
-                <span class="px-3 py-1 rounded-full text-sm border bg-cyan-50 text-cyan-700 border-cyan-200 font-medium">
+                <span class="px-3 py-1 rounded-full text-sm border bg-blue-50 text-blue-700 border-blue-200 font-medium">
                     ${skill}
                 </span>`;
     });

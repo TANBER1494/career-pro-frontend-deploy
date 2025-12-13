@@ -1,4 +1,5 @@
 import { companyService } from "../services/companyService.js";
+import { authService } from "../services/authService.js";
 import Toastify from "toastify-js";
 import Swal from "sweetalert2";
 
@@ -24,6 +25,9 @@ const historyContainer = document.getElementById("historyContainer");
 
 // State
 let selectedFile = null;
+
+// log gout
+const btnLogout = document.getElementById("btnLogout");
 
 // ============================================================
 // 2. Initialization
@@ -126,7 +130,7 @@ function updateStatusBadge(status) {
       statusBadge.classList.add("bg-red-100", "text-red-700", "border-red-200");
       statusBadge.textContent = "Rejected";
       progressBar.style.width = "0%";
-      progressBar.classList.replace("bg-cyan-600", "bg-red-500");
+      progressBar.classList.replace("bg-blue-600", "bg-red-500");
       break;
     default: // unverified
       statusBadge.classList.add(
@@ -164,7 +168,7 @@ function renderHistory(docUrl, status) {
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <a href="http://localhost:3000${docUrl}" target="_blank" class="p-2 text-gray-500 hover:text-cyan-600 transition" title="View">
+                <a href="http://localhost:3000${docUrl}" target="_blank" class="p-2 text-gray-500 hover:text-blue-600 transition" title="View">
                     <i class="fas fa-eye"></i>
                 </a>
             </div>
@@ -207,11 +211,11 @@ function preventDefaults(e) {
 }
 
 function highlight() {
-  dropZone.classList.add("border-cyan-500", "bg-cyan-50");
+  dropZone.classList.add("border-blue-500", "bg-blue-50");
 }
 
 function unhighlight() {
-  dropZone.classList.remove("border-cyan-500", "bg-cyan-50");
+  dropZone.classList.remove("border-blue-500", "bg-blue-50");
 }
 
 function handleDrop(e) {
@@ -284,4 +288,12 @@ function resetUploadForm() {
   fileNameDisplay.classList.add("hidden");
   btnUpload.disabled = true;
   btnUpload.classList.add("opacity-50", "cursor-not-allowed");
+}
+
+if (btnLogout) {
+  btnLogout.addEventListener("click", (e) => {
+    e.preventDefault(); // 2. منع أي سلوك افتراضي
+    console.log("Logout clicked"); // 3. للتجربة والتأكد
+    authService.logout();
+  });
 }

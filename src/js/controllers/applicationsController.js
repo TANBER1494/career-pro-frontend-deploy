@@ -1,5 +1,6 @@
 import { applicationService } from "../services/applicationService.js";
 import { jobManagementService } from "../services/jobManagementService.js";
+import { authService } from "../services/authService.js";
 import Swal from "sweetalert2";
 import Toastify from "toastify-js";
 
@@ -21,6 +22,7 @@ const statNew = document.getElementById("stat-new");
 const statReviewing = document.getElementById("stat-reviewing");
 const statInterviewed = document.getElementById("stat-interviewed");
 const statHired = document.getElementById("stat-hired");
+const btnLogout = document.getElementById("btnLogout");
 
 let currentPage = 1;
 let currentLimit = 100;
@@ -114,7 +116,7 @@ function renderApplications(apps) {
   if (apps.length === 0) {
     container.innerHTML = `
             <div class="text-center py-12 bg-white rounded-xl border border-gray-200">
-                <div class="text-gray-300 mb-4"><i class="fas fa-users-slash text-5xl"></i></div>
+                <div class="text-gray-400 mb-4"><i class="fas fa-users-slash text-5xl"></i></div>
                 <h3 class="text-lg font-medium text-gray-900">No applications found</h3>
                 <p class="text-gray-500 mt-1">No candidates match your search.</p>
             </div>
@@ -167,7 +169,7 @@ function renderApplications(apps) {
         app.status
       }</span>
                         </div>
-                        <p class="text-cyan-600 text-sm font-medium mb-2">${
+                        <p class="text-blue-600 text-sm font-medium mb-2">${
                           app.position
                         }</p>
                         
@@ -203,7 +205,7 @@ function renderApplications(apps) {
                         <span class="text-xs text-gray-400 block mb-1">Applied on ${date}</span>
                         <button onclick="handleDownloadCV('${
                           app.candidateName
-                        }')" class="text-sm text-cyan-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
+                        }')" class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
                             <i class="fas fa-file-download"></i> Download CV
                         </button>
                     </div>
@@ -296,21 +298,35 @@ window.updateStatus = async (id, newStatus) => {
 };
 
 // Event Listeners (Only Search & Pagination)
-searchInput.addEventListener("input", (e) => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
-    currentPage = 1;
-    loadApplications();
-  }, 500);
-});
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      currentPage = 1;
+      loadApplications();
+    }, 500);
+  });
+}
 
-prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
+// 2. Pagination Buttons
+if (prevBtn) {
+  prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      loadApplications();
+    }
+  });
+}
+
+if (nextBtn) {
+  nextBtn.addEventListener("click", () => {
+    currentPage++;
     loadApplications();
-  }
-});
-nextBtn.addEventListener("click", () => {
-  currentPage++;
-  loadApplications();
-});
+  });
+}
+
+if (btnLogout) {
+  btnLogout.addEventListener("click", () => {
+    authService.logout();
+  });
+}

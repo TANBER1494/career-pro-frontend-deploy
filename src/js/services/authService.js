@@ -34,7 +34,7 @@ export const authService = {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     // توجيه لصفحة تسجيل الدخول
-    window.location.href = "/pages/auth/login.html";
+    window.location.href = "/src/pages/auth/signup-login.html";
   },
 
   // 5. جلب بيانات المستخدم الحالي

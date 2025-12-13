@@ -1,0 +1,368 @@
+import { jobService } from "../services/jobService.js";
+import { authService } from "../services/authService.js";
+import Swal from "sweetalert2";
+
+// ============================================================
+// 1. Elements & State
+// ============================================================
+const container = document.getElementById("jobs-container");
+const countLabel = document.getElementById("jobs-count");
+
+// Filters
+const searchInput = document.getElementById("search-input");
+const filterLocation = document.getElementById("filter-location");
+const filterType = document.getElementById("filter-type");
+const btnFilter = document.getElementById("btn-filter");
+const filterExperience = document.getElementById("filter-experience");
+
+// State
+let currentFilters = {
+  search: "",
+  location: "",
+  experienceLevel: "",
+  type: "",
+  page: 1,
+  limit: 50,
+};
+
+let searchTimeout = null;
+
+// ============================================================
+// 2. Initialization
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Check URL Params (Coming from Home Page Search)
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchParam = urlParams.get("search");
+
+  if (searchParam) {
+    currentFilters.search = searchParam;
+    if (searchInput) searchInput.value = searchParam;
+  }
+
+  // 2. Load Initial Data
+  loadJobs();
+
+  // 3. Setup Events
+  setupEventListeners();
+  initModalEvents();
+});
+
+// ============================================================
+// 3. Logic: Fetch Jobs
+// ============================================================
+async function loadJobs() {
+  if (!container) return;
+
+  // Show Loading State
+  container.innerHTML = `
+        <div class="col-span-full text-center py-20">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+            <p class="mt-4 text-slate-500 font-medium">Finding the best opportunities for you...</p>
+        </div>
+    `;
+
+  try {
+    // Clean filters
+    const params = { ...currentFilters };
+    if (!params.search) delete params.search;
+    if (!params.location || params.location === "All Locations")
+      delete params.location;
+    if (!params.type || params.type === "All Types") delete params.type;
+    if (!params.experienceLevel) delete params.experienceLevel;
+    // API Call
+    const response = await jobService.getAllJobs(params);
+    const jobs = response.data.jobs || [];
+    const total = response.results || jobs.length;
+
+    // Update Count
+    if (countLabel) {
+      countLabel.textContent = `Showing ${jobs.length} results`;
+    }
+
+    renderJobs(jobs);
+  } catch (error) {
+    console.error("All Jobs Error:", error);
+    container.innerHTML = `
+            <div class="col-span-full text-center py-20">
+                <i class="fas fa-exclamation-circle text-4xl text-red-400 mb-4"></i>
+                <p class="text-slate-500">Failed to load jobs. Please try again later.</p>
+                <button onclick="window.location.reload()" class="mt-4 text-blue-600 font-medium hover:underline">Retry</button>
+            </div>
+        `;
+  }
+}
+
+// ============================================================
+// 4. Logic: Render Cards
+// ============================================================
+function renderJobs(jobs) {
+  container.innerHTML = "";
+
+  if (jobs.length === 0) {
+    container.innerHTML = `
+            <div class="col-span-full text-center py-20 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <i class="fas fa-search text-slate-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-slate-900">No jobs found</h3>
+                <p class="text-slate-500 text-sm mt-1">Try adjusting your search keywords or filters.</p>
+                <button onclick="window.location.href='/jobs.html'" class="mt-4 px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 transition">Clear Filters</button>
+            </div>
+        `;
+    return;
+  }
+
+  jobs.forEach((job) => {
+    container.insertAdjacentHTML("beforeend", createJobCard(job));
+  });
+}
+
+function createJobCard(job) {
+  const timeAgo = getTimeAgo(job.postedAt);
+
+  // Data Fallbacks
+  const company = job.company || {};
+  const companyName = company.name || company.companyName || "Hiring Company";
+  const companyLogo = company.logo || "https://placehold.co/48x48?text=Logo";
+  const location = job.location || company.location || "Remote";
+  const type = job.type || "Full-time";
+
+  // UI States
+  const saveIconClass = job.isSaved
+    ? "fa-solid text-blue-600"
+    : "fa-regular text-slate-400";
+
+  // Featured Badge logic
+  const featuredBadge = job.isFeatured
+    ? `
+        <span class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-semibold font-poppins px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider z-10">
+            Featured
+        </span>`
+    : "";
+
+  // Skills
+  const skillsHTML = (job.skills || [])
+    .slice(0, 3)
+    .map(
+      (skill) =>
+        `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
+    )
+    .join("");
+
+  return `
+    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-200 flex flex-col h-full">
+        
+        ${featuredBadge}
+        
+        <button onclick="window.toggleSaveJob('${
+          job.id || job._id
+        }', this)" class="absolute top-5 left-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
+            <i class="${saveIconClass} fa-bookmark text-lg"></i>
+        </button>
+
+        <div class="flex items-start gap-4 mb-4 mt-6">
+            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 p-1">
+                <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md">
+            </div>
+            <div>
+                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='/job-details.html?id=${
+                  job.id || job._id
+                }'">
+                    ${job.title}
+                </h3>
+                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
+                    <span class="hover:text-blue-600 cursor-pointer" onclick="window.location.href='/company-details.html?id=${
+                      company.id || company._id
+                    }'">
+                        <i class="fa-regular fa-building mr-1"></i> ${companyName}
+                    </span>
+                    <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
+            ${job.description || "No description provided."}
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
+            ${skillsHTML}
+        </div>
+
+        <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
+            <span class="text-green-600 font-semibold font-poppins text-sm">${
+              job.salaryRange || "Competitive"
+            }</span>
+            <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
+        </div>
+
+        <div class="mb-4">
+            <span class="px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 ">
+                ${type}
+            </span>
+            <button onclick="window.applyForJobCheck('${
+              job.id || job._id
+            }')" class="w-full mt-4 flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-md">
+                Apply Now
+            </button>
+        </div>
+    </div>
+    `;
+}
+
+// ============================================================
+// 5. Logic: Event Listeners
+// ============================================================
+function setupEventListeners() {
+  // Search Input (Debounce)
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        currentFilters.search = e.target.value.trim();
+        currentFilters.page = 1;
+        loadJobs();
+      }, 500);
+    });
+  }
+
+  // Select Filters
+  const handleFilterChange = (key, value) => {
+    currentFilters[key] = value;
+    currentFilters.page = 1;
+    loadJobs();
+  };
+
+  if (filterLocation) {
+    filterLocation.addEventListener("change", (e) =>
+      handleFilterChange("location", e.target.value)
+    );
+  }
+
+  if (filterType) {
+    filterType.addEventListener("change", (e) =>
+      handleFilterChange("type", e.target.value)
+    );
+  }
+  if (filterExperience) {
+    filterExperience.addEventListener("change", (e) =>
+      handleFilterChange("experienceLevel", e.target.value)
+    );
+  }
+  // Button Filter (For immediate trigger if needed)
+  if (btnFilter) {
+    btnFilter.addEventListener("click", () => loadJobs());
+  }
+}
+
+// ============================================================
+// 6. Global Actions (Apply, Save, Modal)
+// ============================================================
+
+window.applyForJobCheck = function (jobId) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    Swal.fire({
+      icon: "info",
+      title: "Login Required",
+      text: "You need to login to apply for jobs.",
+      showCancelButton: true,
+      confirmButtonText: "Login Now",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed)
+        window.location.href = "/src/pages/auth/signup-login.html";
+    });
+    return;
+  }
+
+  const modal = document.getElementById("applyModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.dataset.jobId = jobId;
+
+    // Pre-fill Name/Email from local storage
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const nameInput = document.getElementById("applyName");
+    const emailInput = document.getElementById("applyEmail");
+
+    if (nameInput && user.firstName)
+      nameInput.value = `${user.firstName} ${user.lastName || ""}`.trim();
+    if (emailInput && user.email) emailInput.value = user.email;
+  }
+};
+
+window.toggleSaveJob = async function (jobId, btnElement) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    Swal.fire("Login Required", "Please login to save jobs.", "info");
+    return;
+  }
+
+  try {
+    const icon = btnElement.querySelector("i");
+    const isSaved = icon.classList.contains("fa-solid");
+
+    // Optimistic UI
+    if (isSaved) {
+      icon.classList.remove("fa-solid", "text-blue-600");
+      icon.classList.add("fa-regular", "text-slate-400");
+    } else {
+      icon.classList.remove("fa-regular", "text-slate-400");
+      icon.classList.add("fa-solid", "text-blue-600");
+    }
+
+    await jobService.toggleSaveJob(jobId);
+  } catch (error) {
+    console.error("Save Error:", error);
+    Swal.fire("Error", "Failed to save job.", "error");
+  }
+};
+
+window.closeApplyModal = function () {
+  document.getElementById("applyModal").classList.add("hidden");
+};
+
+function initModalEvents() {
+  const modal = document.getElementById("applyModal");
+  const closeBtn = document.getElementById("btnCloseModal");
+  const cancelBtn = document.getElementById("btnCancelModal");
+  const form = document.getElementById("applyForm");
+
+  const close = () => modal && modal.classList.add("hidden");
+  if (closeBtn) closeBtn.onclick = close;
+  if (cancelBtn) cancelBtn.onclick = close;
+
+  window.onclick = (e) => {
+    if (e.target === modal) close();
+  };
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      // TODO: Implement real apply logic with jobService.applyForJob()
+      // Needs FormData preparation
+      Swal.fire("Success", "Application submitted successfully!", "success");
+      close();
+    });
+  }
+}
+
+// Helper
+function getTimeAgo(dateString) {
+  if (!dateString) return "Recently";
+  const date = new Date(dateString);
+  const seconds = Math.floor((new Date() - date) / 1000);
+
+  let interval = seconds / 31536000;
+  if (interval > 1) return Math.floor(interval) + "y ago";
+  interval = seconds / 2592000;
+  if (interval > 1) return Math.floor(interval) + "mo ago";
+  interval = seconds / 86400;
+  if (interval > 1) return Math.floor(interval) + "d ago";
+  interval = seconds / 3600;
+  if (interval > 1) return Math.floor(interval) + "h ago";
+  return "Just now";
+}

@@ -101,10 +101,10 @@ function renderVerificationStatus(status) {
 function renderRecentJobs(jobs) {
   if (!jobs || jobs.length === 0) {
     recentJobsContainer.innerHTML = `
-            <div class="text-center py-8 text-gray-400 text-sm">
+            <div class="text-center py-8 text-gray-500 text-sm">
                 <i class="fas fa-briefcase mb-2 text-2xl opacity-50"></i>
                 <p>No active jobs yet.</p>
-                <a href="post_job.html" class="text-cyan-600 hover:underline mt-1 block">Post a job</a>
+                <a href="post_job.html" class="text-blue-600 hover:text-blue-700 mt-1 block">Post a job</a>
             </div>
         `;
     return;
@@ -142,7 +142,7 @@ function renderRecentJobs(jobs) {
 function renderRecentApplications(apps) {
   if (!apps || apps.length === 0) {
     recentAppsContainer.innerHTML = `
-            <div class="text-center py-8 text-gray-400 text-sm">
+            <div class="text-center py-8 text-gray-500 text-sm">
                 <i class="fas fa-user-clock mb-2 text-2xl opacity-50"></i>
                 <p>No applications yet.</p>
             </div>
@@ -166,7 +166,7 @@ function renderRecentApplications(apps) {
       return `
         <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='applications.html'">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-xs font-bold uppercase">
+                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold uppercase">
                     ${app.candidateName.charAt(0)}
                 </div>
                 <div>

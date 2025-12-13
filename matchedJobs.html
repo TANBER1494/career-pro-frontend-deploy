@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Matched Jobs</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      /* Custom Background Grid */
+    body {
+      background: #dce0e0;
+      background: linear-gradient(
+        150deg,
+        rgba(220, 224, 224, 1) 14%,
+        rgba(182, 206, 224, 1) 60%,
+        rgba(95, 106, 115, 1) 100%
+      );
+      margin: 0;
+      overflow-x: hidden;
+      background-attachment: fixed;
+      font-family: "Poppins", sans-serif;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen ">
+
+  <nav class="sticky top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="text-2xl font-semibold text-blue-500 cursor-pointer" >
+      CareerPro Platform
+  </a>
+</nav>
+    <div class="w-3/4 mx-auto mb-8">
+      <a
+      id="backBtn"
+      href="index.html"
+      class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group"
+    >
+      <i
+        class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
+      ></i>
+      <span class="text-sm font-medium">Back</span>
+    </a>
+        <h1  class="text-3xl font-semibold text-dark">AI-Matched Jobs</h1>
+        <p class="text-slate-600 mt-1">Personalized job recommendations powered by your CV analysis</p>
+    </div>
+
+    <div class="w-3/4 mx-auto flex flex-col gap-6">
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden">
+            <div class="flex justify-between items-start">
+                
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold text-slate-900">Senior Frontend Developer</h2>
+                    <p class="text-slate-500 font-medium mt-1">TechCorp Solutions</p>
+                    
+                    <div class="flex items-center gap-4 mt-3 text-sm text-slate-600">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400"></i> San Francisco, CA</span>
+                        <span class="flex items-center gap-1 text-green-600 font-medium"><i class="fa-solid fa-money-bill-wave"></i> $120,000 - $150,000</span>
+                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs font-medium"><i class="fa-solid fa-briefcase mr-1"></i> Full time</span>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">React</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">JavaScript</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Git</span>
+                    </div>
+
+                    <p class="mt-4 text-slate-600 text-sm leading-relaxed">
+                        Looking for an experienced frontend developer to join our innovative team working on cutting-edge web applications.
+                    </p>
+
+                    <div class="flex gap-3 mt-6">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-blue-500/30 shadow-sm">
+                            <i class="fa-solid fa-eye"></i> Show More Details
+                        </button>
+                        <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                            <i class="fa-regular fa-bookmark"></i> Save Job
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-end pl-4">
+                    <div class="text-3xl font-bold text-green-500">98%</div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden">
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold text-slate-900">Full Stack Engineer</h2>
+                    <p class="text-slate-500 font-medium mt-1">InnovateStart Inc</p>
+                    
+                    <div class="flex items-center gap-4 mt-3 text-sm text-slate-600">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400"></i> Remote</span>
+                        <span class="flex items-center gap-1 text-green-600 font-medium"><i class="fa-solid fa-money-bill-wave"></i> $100,000 - $130,000</span>
+                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs font-medium"><i class="fa-solid fa-briefcase mr-1"></i> Full time</span>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">React</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Python</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Agile</span>
+                    </div>
+
+                    <p class="mt-4 text-slate-600 text-sm leading-relaxed">
+                        Join our startup as a full stack engineer and help build the next generation of software solutions.
+                    </p>
+
+                    <div class="flex gap-3 mt-6">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-blue-500/30 shadow-sm">
+                            <i class="fa-solid fa-eye"></i> Show More Details
+                        </button>
+                        <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                            <i class="fa-regular fa-bookmark"></i> Save Job
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-end pl-4">
+                    <div class="text-3xl font-bold text-green-500">95%</div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden">
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold text-slate-900">Software Developer</h2>
+                    <p class="text-slate-500 font-medium mt-1">Global Tech Systems</p>
+                    
+                    <div class="flex items-center gap-4 mt-3 text-sm text-slate-600">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400"></i> New York, NY</span>
+                        <span class="flex items-center gap-1 text-green-600 font-medium"><i class="fa-solid fa-money-bill-wave"></i> $90,000 - $120,000</span>
+                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs font-medium"><i class="fa-solid fa-briefcase mr-1"></i> Full time</span>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">JavaScript</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Git</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Python</span>
+                    </div>
+
+                    <p class="mt-4 text-slate-600 text-sm leading-relaxed">
+                        We're seeking a talented software developer to contribute to our enterprise solutions.
+                    </p>
+
+                    <div class="flex gap-3 mt-6">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-blue-500/30 shadow-sm">
+                            <i class="fa-solid fa-eye"></i> Show More Details
+                        </button>
+                        <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                            <i class="fa-regular fa-bookmark"></i> Save Job
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-end pl-4">
+                    <div class="text-3xl font-bold text-yellow-500">88%</div> <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

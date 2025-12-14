@@ -16,22 +16,24 @@ const btnFilter = document.getElementById("btn-filter");
 const filterExperience = document.getElementById("filter-experience");
 
 // State
+let allFetchedJobs = []; // <--- 1. مخزن لكل الوظائف
 let currentFilters = {
   search: "",
   location: "",
   experienceLevel: "",
   type: "",
   page: 1,
-  limit: 50,
+  limit: 500, // <--- 2. زودنا الليميت عشان نجيب داتا كتير مرة واحدة
 };
 
+const itemsPerPage = 12; // <--- 3. عدد الوظائف في الصفحة الواحدة
 let searchTimeout = null;
 
 // ============================================================
 // 2. Initialization
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Check URL Params (Coming from Home Page Search)
+  // 1. Check URL Params
   const urlParams = new URLSearchParams(window.location.search);
   const searchParam = urlParams.get("search");
 
@@ -40,13 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchInput) searchInput.value = searchParam;
   }
 
-  // 2. Load Initial Data
+  // 2. Create Pagination Elements if missing
+  ensurePaginationHTML();
+
+  // 3. Load Initial Data
   loadJobs();
 
-  // 3. Setup Events
+  // 4. Setup Events
   setupEventListeners();
   initModalEvents();
 });
+
+function ensurePaginationHTML() {
+  let pagContainer = document.getElementById("pagination-container");
+  if (!pagContainer && container) {
+      pagContainer = document.createElement("div");
+      pagContainer.id = "pagination-container";
+      pagContainer.className = "flex justify-center items-center gap-4 mt-12 mb-8";
+      container.parentNode.appendChild(pagContainer);
+  }
+}
 
 // ============================================================
 // 3. Logic: Fetch Jobs
@@ -66,21 +81,30 @@ async function loadJobs() {
     // Clean filters
     const params = { ...currentFilters };
     if (!params.search) delete params.search;
-    if (!params.location || params.location === "All Locations")
-      delete params.location;
+    if (!params.location || params.location === "All Locations") delete params.location;
     if (!params.type || params.type === "All Types") delete params.type;
     if (!params.experienceLevel) delete params.experienceLevel;
+    
+    // Always request page 1 from API to get the full batch
+    params.page = 1;
+
     // API Call
     const response = await jobService.getAllJobs(params);
-    const jobs = response.data.jobs || [];
-    const total = response.results || jobs.length;
-
+    
+    // <--- 4. تخزين الوظائف في المتغير العام
+    allFetchedJobs = response.data.jobs || [];
+    
     // Update Count
     if (countLabel) {
-      countLabel.textContent = `Showing ${jobs.length} results`;
+      countLabel.textContent = `Showing ${allFetchedJobs.length} results`;
     }
 
-    renderJobs(jobs);
+    // <--- 5. استدعاء دالة العرض بدون بارامتر
+    renderJobs();
+    
+    // <--- 6. تحديث زراير الصفحات
+    updatePaginationUI(allFetchedJobs.length);
+
   } catch (error) {
     console.error("All Jobs Error:", error);
     container.innerHTML = `
@@ -94,10 +118,13 @@ async function loadJobs() {
 }
 
 // ============================================================
-// 4. Logic: Render Cards
+// 4. Logic: Render Cards (With Pagination Slice)
 // ============================================================
-function renderJobs(jobs) {
+function renderJobs() {
   container.innerHTML = "";
+
+  // استخدام المتغير العام
+  const jobs = allFetchedJobs;
 
   if (jobs.length === 0) {
     container.innerHTML = `
@@ -110,12 +137,67 @@ function renderJobs(jobs) {
                 <button onclick="window.location.href='/jobs.html'" class="mt-4 px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 transition">Clear Filters</button>
             </div>
         `;
+    // تفريغ الـ pagination لو مفيش نتائج
+    const pagContainer = document.getElementById("pagination-container");
+    if(pagContainer) pagContainer.innerHTML = '';
     return;
   }
 
-  jobs.forEach((job) => {
+  // <--- 7. معادلة التقسيم (Slicing Logic)
+  const start = (currentFilters.page - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const jobsToShow = jobs.slice(start, end);
+
+  jobsToShow.forEach((job) => {
     container.insertAdjacentHTML("beforeend", createJobCard(job));
   });
+}
+
+// <--- 8. دوال التحكم في الـ Pagination
+function updatePaginationUI(totalItems) {
+    const pagContainer = document.getElementById("pagination-container");
+    if (!pagContainer) return;
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const isFirstPage = currentFilters.page === 1;
+    const isLastPage = currentFilters.page >= totalPages;
+
+    // لو صفحة واحدة بس، نخفي الزراير
+    if (totalPages <= 1) {
+        pagContainer.innerHTML = '';
+        return;
+    }
+
+    pagContainer.innerHTML = `
+        <button id="prevBtn" 
+            class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            ${isFirstPage ? 'disabled' : ''}>
+            <i class="fas fa-chevron-left mr-1"></i> Previous
+        </button>
+        
+        <span class="text-sm text-slate-600 font-medium px-2">
+            Page ${currentFilters.page} of ${totalPages}
+        </span>
+
+        <button id="nextBtn" 
+            class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            ${isLastPage ? 'disabled' : ''}>
+            Next <i class="fas fa-chevron-right ml-1"></i>
+        </button>
+    `;
+    
+    document.getElementById("prevBtn")?.addEventListener("click", () => changePage(-1));
+    document.getElementById("nextBtn")?.addEventListener("click", () => changePage(1));
+}
+
+function changePage(direction) {
+    currentFilters.page += direction;
+    if (currentFilters.page < 1) currentFilters.page = 1;
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    renderJobs();
+    updatePaginationUI(allFetchedJobs.length);
 }
 
 function createJobCard(job) {
@@ -188,7 +270,10 @@ function createJobCard(job) {
 
         <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
             ${skillsHTML}
-        </div>
+            </div>
+            <span class="w-fit px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
+                ${type}
+            </span>
 
         <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
             <span class="text-green-600 font-semibold font-poppins text-sm">${
@@ -197,13 +282,10 @@ function createJobCard(job) {
             <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
         </div>
 
-        <div class="mb-4">
-            <span class="px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 ">
-                ${type}
-            </span>
+        <div class="flex items-center justify-between">
             <button onclick="window.applyForJobCheck('${
               job.id || job._id
-            }')" class="w-full mt-4 flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-md">
+            }')" class="w-full py-2  bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
                 Apply Now
             </button>
         </div>

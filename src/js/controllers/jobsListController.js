@@ -1,450 +1,284 @@
-import { jobService } from "../services/jobService.js";
-import { authService } from "../services/authService.js";
+import { jobManagementService } from "../services/jobManagementService.js";
 import Swal from "sweetalert2";
+import Toastify from "toastify-js";
 
-// ============================================================
-// 1. Elements & State
-// ============================================================
-const container = document.getElementById("jobs-container");
-const countLabel = document.getElementById("jobs-count");
+// DOM Elements
+const jobsContainer = document.getElementById("jobsContainer");
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
 
-// Filters
-const searchInput = document.getElementById("search-input");
-const filterLocation = document.getElementById("filter-location");
-const filterType = document.getElementById("filter-type");
-const btnFilter = document.getElementById("btn-filter");
-const filterExperience = document.getElementById("filter-experience");
+// Stats Elements
+const statActive = document.getElementById("stat-active");
+const statDraft = document.getElementById("stat-draft");
+const statApps = document.getElementById("stat-apps");
+const statViews = document.getElementById("stat-views");
 
 // State
-let allFetchedJobs = []; // <--- 1. مخزن لكل الوظائف
-let currentFilters = {
-  search: "",
-  location: "",
-  experienceLevel: "",
-  type: "",
-  page: 1,
-  limit: 500, // <--- 2. زودنا الليميت عشان نجيب داتا كتير مرة واحدة
-};
-
-const itemsPerPage = 12; // <--- 3. عدد الوظائف في الصفحة الواحدة
-let searchTimeout = null;
+let allJobs = [];
 
 // ============================================================
-// 2. Initialization
+// 1. Initialization
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Check URL Params
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchParam = urlParams.get("search");
-
-  if (searchParam) {
-    currentFilters.search = searchParam;
-    if (searchInput) searchInput.value = searchParam;
-  }
-
-  // 2. Create Pagination Elements if missing
-  ensurePaginationHTML();
-
-  // 3. Load Initial Data
   loadJobs();
-
-  // 4. Setup Events
-  setupEventListeners();
-  initModalEvents();
 });
 
-function ensurePaginationHTML() {
-  let pagContainer = document.getElementById("pagination-container");
-  if (!pagContainer && container) {
-      pagContainer = document.createElement("div");
-      pagContainer.id = "pagination-container";
-      pagContainer.className = "flex justify-center items-center gap-4 mt-12 mb-8";
-      container.parentNode.appendChild(pagContainer);
-  }
-}
-
 // ============================================================
-// 3. Logic: Fetch Jobs
+// 2. Data Fetching
 // ============================================================
 async function loadJobs() {
-  if (!container) return;
-
-  // Show Loading State
-  container.innerHTML = `
-        <div class="col-span-full text-center py-20">
-            <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
-            <p class="mt-4 text-slate-500 font-medium">Finding the best opportunities for you...</p>
-        </div>
-    `;
-
   try {
-    // Clean filters
-    const params = { ...currentFilters };
-    if (!params.search) delete params.search;
-    if (!params.location || params.location === "All Locations") delete params.location;
-    if (!params.type || params.type === "All Types") delete params.type;
-    if (!params.experienceLevel) delete params.experienceLevel;
-    
-    // Always request page 1 from API to get the full batch
-    params.page = 1;
-
-    // API Call
-    const response = await jobService.getAllJobs(params);
-    
-    // <--- 4. تخزين الوظائف في المتغير العام
-    allFetchedJobs = response.data.jobs || [];
-    
-    // Update Count
-    if (countLabel) {
-      countLabel.textContent = `Showing ${allFetchedJobs.length} results`;
+    // Show Loading only on first load or full refresh
+    if (jobsContainer.innerHTML.trim() === "") {
+      jobsContainer.innerHTML =
+        '<div class="text-center py-10 text-gray-500"><i class="fas fa-spinner fa-spin text-2xl"></i><p class="mt-2">Loading your jobs...</p></div>';
     }
 
-    // <--- 5. استدعاء دالة العرض بدون بارامتر
-    renderJobs();
-    
-    // <--- 6. تحديث زراير الصفحات
-    updatePaginationUI(allFetchedJobs.length);
+    const res = await jobManagementService.getMyJobs();
+    allJobs = res.data.jobs;
 
+    renderJobs(allJobs);
+    updateLocalStats(allJobs);
   } catch (error) {
-    console.error("All Jobs Error:", error);
-    container.innerHTML = `
-            <div class="col-span-full text-center py-20">
-                <i class="fas fa-exclamation-circle text-4xl text-red-400 mb-4"></i>
-                <p class="text-slate-500">Failed to load jobs. Please try again later.</p>
-                <button onclick="window.location.reload()" class="mt-4 text-blue-600 font-medium hover:underline">Retry</button>
-            </div>
-        `;
+    console.error("Error loading jobs:", error);
+    jobsContainer.innerHTML = `
+            <div class="text-center py-10 text-red-500">
+                <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
+                <p>Failed to load jobs. Please try again.</p>
+                <button onclick="location.reload()" class="mt-3 text-blue-600 underline">Reload</button>
+            </div>`;
   }
 }
 
-// ============================================================
-// 4. Logic: Render Cards (With Pagination Slice)
-// ============================================================
-function renderJobs() {
-  container.innerHTML = "";
+function updateLocalStats(jobs) {
+  if (statActive)
+    statActive.textContent = jobs.filter(
+      (j) => j.status === "published"
+    ).length;
+  if (statDraft)
+    statDraft.textContent = jobs.filter((j) => j.status === "draft").length;
+  // يمكنك إضافة منطق لحساب التطبيقات هنا إذا كانت البيانات متوفرة
+}
 
-  // استخدام المتغير العام
-  const jobs = allFetchedJobs;
-
+// ============================================================
+// 3. Rendering Logic
+// ============================================================
+function renderJobs(jobs) {
   if (jobs.length === 0) {
-    container.innerHTML = `
-            <div class="col-span-full text-center py-20 bg-slate-50 rounded-xl border border-dashed border-slate-300">
-                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                    <i class="fas fa-search text-slate-400 text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-medium text-slate-900">No jobs found</h3>
-                <p class="text-slate-500 text-sm mt-1">Try adjusting your search keywords or filters.</p>
-                <button onclick="window.location.href='/jobs.html'" class="mt-4 px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 transition">Clear Filters</button>
+    jobsContainer.innerHTML = `
+            <div class="text-center py-12 bg-white rounded-xl border border-gray-200">
+                <div class="text-gray-300 mb-4"><i class="fas fa-briefcase text-5xl"></i></div>
+                <h3 class="text-lg font-medium text-gray-900">No jobs found</h3>
+                <p class="text-gray-500 mt-1 mb-6">Get started by creating your first job posting.</p>
+                <a href="post_job.html" class="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-lg font-medium transition shadow-sm">
+                    <i class="fas fa-plus mr-2"></i> Post New Job
+                </a>
             </div>
         `;
-    // تفريغ الـ pagination لو مفيش نتائج
-    const pagContainer = document.getElementById("pagination-container");
-    if(pagContainer) pagContainer.innerHTML = '';
     return;
   }
 
-  // <--- 7. معادلة التقسيم (Slicing Logic)
-  const start = (currentFilters.page - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const jobsToShow = jobs.slice(start, end);
+  jobsContainer.innerHTML = jobs
+    .map((job) => {
+      const postedDate = new Date(job.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+      const expiryDate = new Date(
+        new Date(job.createdAt).setDate(new Date(job.createdAt).getDate() + 30)
+      ).toLocaleDateString();
 
-  jobsToShow.forEach((job) => {
-    container.insertAdjacentHTML("beforeend", createJobCard(job));
-  });
-}
+      // Mapping DB status to UI Label
+      let currentStatus = "Active";
+      if (job.status === "draft") currentStatus = "Draft";
+      if (job.status === "closed") currentStatus = "Closed";
+      if (job.status === "archived") currentStatus = "Paused";
 
-// <--- 8. دوال التحكم في الـ Pagination
-function updatePaginationUI(totalItems) {
-    const pagContainer = document.getElementById("pagination-container");
-    if (!pagContainer) return;
+      return `
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 p-6 group relative">
+            <div class="flex flex-col md:flex-row justify-between gap-6">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <h3 class="text-xl font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">
+                            ${job.title}
+                        </h3>
+                        
+                        <div class="relative inline-block">
+                            <select 
+                                onchange="handleStatusChange('${
+                                  job._id
+                                }', this.value)"
+                                class="appearance-none pl-3 pr-8 py-1 rounded-full text-xs font-bold border cursor-pointer outline-none focus:ring-2 focus:ring-cyan-500 transition-colors ${getStatusColorClasses(
+                                  currentStatus
+                                )}"
+                            >
+                                <option value="Active" ${
+                                  currentStatus === "Active" ? "selected" : ""
+                                }>Active</option>
+                                <option value="Draft" ${
+                                  currentStatus === "Draft" ? "selected" : ""
+                                }>Draft</option>
+                                <option value="Closed" ${
+                                  currentStatus === "Closed" ? "selected" : ""
+                                }>Closed</option>
+                                <option value="Paused" ${
+                                  currentStatus === "Paused" ? "selected" : ""
+                                }>Paused</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-current">
+                                <i class="fas fa-chevron-down text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-y-2 gap-x-4 text-sm text-gray-500 mb-4">
+                        <span class="flex items-center"><i class="fas fa-map-marker-alt mr-1.5 text-gray-400"></i> ${
+                          job.location
+                        }</span>
+                        <span class="flex items-center"><i class="fas fa-briefcase mr-1.5 text-gray-400"></i> ${
+                          job.type
+                        }</span>
+                        <span class="flex items-center"><i class="fas fa-money-bill-wave mr-1.5 text-gray-400"></i> $${job.salaryMin.toLocaleString()} - $${job.salaryMax.toLocaleString()}</span>
+                        <span class="flex items-center"><i class="far fa-clock mr-1.5 text-gray-400"></i> Posted ${postedDate}</span>
+                    </div>
 
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const isFirstPage = currentFilters.page === 1;
-    const isLastPage = currentFilters.page >= totalPages;
+                    <div class="flex flex-wrap gap-2">
+                        ${job.skills
+                          .slice(0, 4)
+                          .map(
+                            (skill) =>
+                              `<span class="bg-gray-50 text-gray-600 px-2 py-1 rounded text-xs border border-gray-100">${skill}</span>`
+                          )
+                          .join("")}
+                    </div>
+                </div>
 
-    // لو صفحة واحدة بس، نخفي الزراير
-    if (totalPages <= 1) {
-        pagContainer.innerHTML = '';
-        return;
-    }
+                <div class="flex flex-row md:flex-col justify-between items-end gap-4 border-t md:border-t-0 md:border-l border-gray-100 md:pl-6 pt-4 md:pt-0 mt-4 md:mt-0">
+                    <div class="text-right hidden md:block">
+                         <a href="applications.html?jobId=${
+                           job._id
+                         }" class="text-sm text-cyan-600 hover:underline font-medium flex items-center justify-end gap-1">
+                            View Applications <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
 
-    pagContainer.innerHTML = `
-        <button id="prevBtn" 
-            class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            ${isFirstPage ? 'disabled' : ''}>
-            <i class="fas fa-chevron-left mr-1"></i> Previous
-        </button>
-        
-        <span class="text-sm text-slate-600 font-medium px-2">
-            Page ${currentFilters.page} of ${totalPages}
-        </span>
-
-        <button id="nextBtn" 
-            class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            ${isLastPage ? 'disabled' : ''}>
-            Next <i class="fas fa-chevron-right ml-1"></i>
-        </button>
-    `;
-    
-    document.getElementById("prevBtn")?.addEventListener("click", () => changePage(-1));
-    document.getElementById("nextBtn")?.addEventListener("click", () => changePage(1));
-}
-
-function changePage(direction) {
-    currentFilters.page += direction;
-    if (currentFilters.page < 1) currentFilters.page = 1;
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    renderJobs();
-    updatePaginationUI(allFetchedJobs.length);
-}
-
-function createJobCard(job) {
-  const timeAgo = getTimeAgo(job.postedAt);
-
-  // Data Fallbacks
-  const company = job.company || {};
-  const companyName = company.name || company.companyName || "Hiring Company";
-  const companyLogo = company.logo || "https://placehold.co/48x48?text=Logo";
-  const location = job.location || company.location || "Remote";
-  const type = job.type || "Full-time";
-
-  // UI States
-  const saveIconClass = job.isSaved
-    ? "fa-solid text-blue-600"
-    : "fa-regular text-slate-400";
-
-  // Featured Badge logic
-  const featuredBadge = job.isFeatured
-    ? `
-        <span class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-semibold font-poppins px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider z-10">
-            Featured
-        </span>`
-    : "";
-
-  // Skills
-  const skillsHTML = (job.skills || [])
-    .slice(0, 3)
-    .map(
-      (skill) =>
-        `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
-    )
-    .join("");
-
-  return `
-    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-200 flex flex-col h-full">
-        
-        ${featuredBadge}
-        
-        <button onclick="window.toggleSaveJob('${
-          job.id || job._id
-        }', this)" class="absolute top-5 left-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
-            <i class="${saveIconClass} fa-bookmark text-lg"></i>
-        </button>
-
-        <div class="flex items-start gap-4 mb-4 mt-6">
-            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 p-1">
-                <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md">
-            </div>
-            <div>
-                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='/job-details.html?id=${
-                  job.id || job._id
-                }'">
-                    ${job.title}
-                </h3>
-                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                    <span class="hover:text-blue-600 cursor-pointer" onclick="window.location.href='/company-details.html?id=${
-                      company.id || company._id
-                    }'">
-                        <i class="fa-regular fa-building mr-1"></i> ${companyName}
-                    </span>
-                    <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
+                    <div class="flex items-center gap-2 w-full md:w-auto justify-end">
+                        <button onclick="handleEdit('${
+                          job._id
+                        }')" class="p-2 text-gray-500 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition" title="Edit Job">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        
+                        <button onclick="handleDelete('${
+                          job._id
+                        }')" class="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete Job">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
-            ${job.description || "No description provided."}
-        </p>
-
-        <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
-            ${skillsHTML}
-            </div>
-            <span class="w-fit px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
-                ${type}
-            </span>
-
-        <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
-            <span class="text-green-600 font-semibold font-poppins text-sm">${
-              job.salaryRange || "Competitive"
-            }</span>
-            <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
-        </div>
-
-        <div class="flex items-center justify-between">
-            <button onclick="window.applyForJobCheck('${
-              job.id || job._id
-            }')" class="w-full py-2  bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-                Apply Now
-            </button>
-        </div>
-    </div>
-    `;
+        `;
+    })
+    .join("");
 }
 
-// ============================================================
-// 5. Logic: Event Listeners
-// ============================================================
-function setupEventListeners() {
-  // Search Input (Debounce)
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        currentFilters.search = e.target.value.trim();
-        currentFilters.page = 1;
-        loadJobs();
-      }, 500);
-    });
-  }
-
-  // Select Filters
-  const handleFilterChange = (key, value) => {
-    currentFilters[key] = value;
-    currentFilters.page = 1;
-    loadJobs();
-  };
-
-  if (filterLocation) {
-    filterLocation.addEventListener("change", (e) =>
-      handleFilterChange("location", e.target.value)
-    );
-  }
-
-  if (filterType) {
-    filterType.addEventListener("change", (e) =>
-      handleFilterChange("type", e.target.value)
-    );
-  }
-  if (filterExperience) {
-    filterExperience.addEventListener("change", (e) =>
-      handleFilterChange("experienceLevel", e.target.value)
-    );
-  }
-  // Button Filter (For immediate trigger if needed)
-  if (btnFilter) {
-    btnFilter.addEventListener("click", () => loadJobs());
+function getStatusColorClasses(status) {
+  switch (status) {
+    case "Active":
+      return "bg-green-50 text-green-700 border-green-200 hover:bg-green-100";
+    case "Draft":
+      return "bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100";
+    case "Closed":
+      return "bg-red-50 text-red-700 border-red-200 hover:bg-red-100";
+    case "Paused":
+      return "bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200";
+    default:
+      return "bg-gray-50 text-gray-600 border-gray-200";
   }
 }
 
 // ============================================================
-// 6. Global Actions (Apply, Save, Modal)
+// 4. Global Actions (Status, Edit, Delete)
 // ============================================================
 
-window.applyForJobCheck = function (jobId) {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    Swal.fire({
-      icon: "info",
-      title: "Login Required",
-      text: "You need to login to apply for jobs.",
-      showCancelButton: true,
-      confirmButtonText: "Login Now",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed)
-        window.location.href = "/src/pages/auth/signup-login.html";
-    });
-    return;
-  }
-
-  const modal = document.getElementById("applyModal");
-  if (modal) {
-    modal.classList.remove("hidden");
-    modal.dataset.jobId = jobId;
-
-    // Pre-fill Name/Email from local storage
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const nameInput = document.getElementById("applyName");
-    const emailInput = document.getElementById("applyEmail");
-
-    if (nameInput && user.firstName)
-      nameInput.value = `${user.firstName} ${user.lastName || ""}`.trim();
-    if (emailInput && user.email) emailInput.value = user.email;
-  }
-};
-
-window.toggleSaveJob = async function (jobId, btnElement) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    Swal.fire("Login Required", "Please login to save jobs.", "info");
-    return;
-  }
-
+// ✅ New Status Change Handler
+window.handleStatusChange = async (id, newStatus) => {
   try {
-    const icon = btnElement.querySelector("i");
-    const isSaved = icon.classList.contains("fa-solid");
+    // Show mini loading toast
+    Toastify({
+      text: "Updating status...",
+      backgroundColor: "#3b82f6", // Blue
+      duration: 1000,
+      gravity: "bottom",
+      position: "right",
+    }).showToast();
 
-    // Optimistic UI
-    if (isSaved) {
-      icon.classList.remove("fa-solid", "text-blue-600");
-      icon.classList.add("fa-regular", "text-slate-400");
-    } else {
-      icon.classList.remove("fa-regular", "text-slate-400");
-      icon.classList.add("fa-solid", "text-blue-600");
-    }
+    await jobManagementService.updateJobStatus(id, newStatus);
 
-    await jobService.toggleSaveJob(jobId);
+    // Success Feedback
+    Toastify({
+      text: `Job is now ${newStatus}`,
+      backgroundColor: "#10B981", // Green
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+    }).showToast();
+
+    // Refresh data to ensure sync (without full reload flicker)
+    loadJobs();
   } catch (error) {
-    console.error("Save Error:", error);
-    Swal.fire("Error", "Failed to save job.", "error");
+    console.error(error);
+    Swal.fire("Error", "Failed to update status.", "error");
+    // Revert UI if possible (Reloading jobs fixes it)
+    loadJobs();
   }
 };
 
-window.closeApplyModal = function () {
-  document.getElementById("applyModal").classList.add("hidden");
+window.handleDelete = async (id) => {
+  const result = await Swal.fire({
+    title: "Delete Job?",
+    text: "This will permanently remove the job posting and all associated applications.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ef4444",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Yes, delete it",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await jobManagementService.deleteJob(id);
+      Swal.fire("Deleted!", "Job has been removed.", "success");
+      loadJobs();
+    } catch (error) {
+      Swal.fire("Error", "Failed to delete job.", "error");
+    }
+  }
 };
 
-function initModalEvents() {
-  const modal = document.getElementById("applyModal");
-  const closeBtn = document.getElementById("btnCloseModal");
-  const cancelBtn = document.getElementById("btnCancelModal");
-  const form = document.getElementById("applyForm");
+window.handleEdit = (id) => {
+  window.location.href = `edit_job.html?id=${id}`;
+};
 
-  const close = () => modal && modal.classList.add("hidden");
-  if (closeBtn) closeBtn.onclick = close;
-  if (cancelBtn) cancelBtn.onclick = close;
+// ============================================================
+// 5. Filters
+// ============================================================
+function filterJobs() {
+  const term = searchInput.value.toLowerCase();
+  const status = statusFilter.value; // 'all', 'published', 'draft', 'closed'
 
-  window.onclick = (e) => {
-    if (e.target === modal) close();
-  };
+  const filtered = allJobs.filter((job) => {
+    const matchesSearch =
+      job.title.toLowerCase().includes(term) ||
+      job.location.toLowerCase().includes(term);
+    const matchesStatus = status === "all" || job.status === status;
+    return matchesSearch && matchesStatus;
+  });
 
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      // TODO: Implement real apply logic with jobService.applyForJob()
-      // Needs FormData preparation
-      Swal.fire("Success", "Application submitted successfully!", "success");
-      close();
-    });
-  }
+  renderJobs(filtered);
 }
 
-// Helper
-function getTimeAgo(dateString) {
-  if (!dateString) return "Recently";
-  const date = new Date(dateString);
-  const seconds = Math.floor((new Date() - date) / 1000);
-
-  let interval = seconds / 31536000;
-  if (interval > 1) return Math.floor(interval) + "y ago";
-  interval = seconds / 2592000;
-  if (interval > 1) return Math.floor(interval) + "mo ago";
-  interval = seconds / 86400;
-  if (interval > 1) return Math.floor(interval) + "d ago";
-  interval = seconds / 3600;
-  if (interval > 1) return Math.floor(interval) + "h ago";
-  return "Just now";
-}
+searchInput.addEventListener("input", filterJobs);
+statusFilter.addEventListener("change", filterJobs);

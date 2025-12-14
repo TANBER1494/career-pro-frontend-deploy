@@ -25,7 +25,12 @@
     </script>
 
     <style>
+      body.loaded {
+        opacity: 1;
+      }
       body {
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
         background: linear-gradient(
           150deg,
@@ -151,9 +156,8 @@
           class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
         >
           <ul class="magic-menu">
-            <li
+            <li id="homeBtn"
               style="--i: #67e3ff;--j:#69a8b8"
-              onclick="window.location.href='dashboard.html'"
             >
               <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon></span>
@@ -637,7 +641,7 @@
                 </div>
               </div>
             </div>
-
+<a href=""
             <div class="flex justify-end pt-6 border-t border-gray-100">
               <button
                 type="submit"
@@ -682,6 +686,22 @@
           }
         });
       });
+  window.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('loaded');
+});
+      const hbtn = document.getElementById('homeBtn');
+  // بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
+  if (hbtn) {
+      hbtn.addEventListener('click', function(e) {
+          // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
+          document.body.classList.remove('loaded');
+          // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
+          // لو خليتها 200 والـ CSS 500 الحركة هتقطع
+          setTimeout(() => {
+            window.location.href = '../../../../index.html';
+          }, 350);
+      });
+  }
     </script>
   </body>
 </html>

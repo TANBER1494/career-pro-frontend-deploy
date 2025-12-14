@@ -36,7 +36,7 @@ function initAuthButtons() {
     } else {
       // ✅ تم تصحيح المسار هنا (إضافة مجلد profile)
       navLinkHtml = `
-                <a href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 ">
+                <a id="profileBtn" href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 ">
                     <i class="fas fa-user-circle text-lg"></i> Profile
                 </a>`;
     }
@@ -95,7 +95,7 @@ function initSearch() {
   const performSearch = () => {
     const query = searchInput.value.trim();
     if (query) {
-      window.location.href = `/jobs.html?search=${encodeURIComponent(query)}`;
+      window.location.href = `/src/pages/public%20jobs/jobs.html?search=${encodeURIComponent(query)}`;
     }
   };
 
@@ -304,7 +304,7 @@ function createCompanyCard(company) {
                             <i class="fa-solid fa-location-dot"></i> ${location}
                         </div>
                         
-                        <a class="text-blue-600 text-sm font-normal mb-4 cursor-pointer">
+                        <a class="text-blue-600 text-sm font-normal mb-4">
                             ${positions} Open Positions
                         </a>
                     </div>
@@ -320,7 +320,7 @@ function createCompanyCard(company) {
             </div>
         </div>
         
-        <button onclick="window.location.href='companyDetails.html?id=${company.id || company._id}'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
+        <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${company.id || company._id}'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
             View Jobs
         </button>
     </div>
@@ -477,82 +477,43 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add('loaded');
 
   initAuthButtons();
-  initNavbarScrolling(); // ده بتاع الكليك
-  initScrollSpy();       // 🔥 ضيفي ده عشان يشتغل مع السكرول
+  initNavbarScrolling(); 
+  initScrollSpy();    
   initSearch();
 
   loadFeaturedJobs();
   loadTopCompanies();
-
+  
   initModalEvents();
 });
 
 
-const Cbtn = document.getElementById('companiesBtn');
-// بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-if (Cbtn) {
-    Cbtn.addEventListener('click', function(e) {
-        e.preventDefault(); // وقف الانتقال الفوري
-        // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
-        document.body.classList.remove('loaded');
-        // استنى نص ثانية (500ms) وبعدين روح للصفحة الجديدة
-        setTimeout(() => {
-            window.location.href = this.href;
-        }, 400);
-    });
-}
-
-// 1. أول ما الصفحة تفتح، بنخليها تظهر (Fade In)
-// بنستنى جزء من الثانية عشان المتصفح يلحق يرسم الصفحة
-window.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('loaded');
-});
-// 2. كود الزرار (Fade Out)
-const Jbtn = document.getElementById('jobsBtn');
-// بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-if (Jbtn) {
-    Jbtn.addEventListener('click', function(e) {
-        e.preventDefault(); // وقف الانتقال الفوري
-        // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
-        document.body.classList.remove('loaded');
-        // استنى نص ثانية (500ms) وبعدين روح للصفحة الجديدة
-        setTimeout(() => {
-            window.location.href = this.href;
-        }, 400);
-    });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', function() {
   document.body.classList.add('loaded');
 });
-const bbtn = document.getElementById('backBtn');
-// بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-if (bbtn) {
-    bbtn.addEventListener('click', function(e) {
-        e.preventDefault(); // وقف الانتقال الفوري
-        // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
-        document.body.classList.remove('loaded');
-        // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
-        // لو خليتها 200 والـ CSS 500 الحركة هتقطع
-        setTimeout(() => {
-            window.location.href = this.href;
-        }, 400);
-    });
-}
-window.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('loaded');
+document.addEventListener('click', function(e) {
+  const profileBtn = e.target.closest('#profileBtn');
+  if (profileBtn) {
+      e.preventDefault();
+      const targetUrl = profileBtn.getAttribute('href');
+      document.body.classList.remove('loaded');
+      setTimeout(function() {
+          window.location.href = targetUrl;
+      }, 350);
+  }
 });
-const Sbtn = document.getElementById('serviceBtn');
-// بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-if (Sbtn) {
-    Sbtn.addEventListener('click', function(e) {
-        e.preventDefault(); // وقف الانتقال الفوري
-        // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
+
+const allButtons = document.querySelectorAll('.transition-link');
+
+allButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
         document.body.classList.remove('loaded');
-        // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
-        // لو خليتها 200 والـ CSS 500 الحركة هتقطع
+        
+        const targetUrl = this.href;
+        
         setTimeout(() => {
-            window.location.href = this.href;
-        }, 400);
+            window.location.href = targetUrl;
+        }, 350);
     });
-}
+});

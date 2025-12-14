@@ -4,32 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Matched Jobs</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
 
     <style>
-      /* Custom Background Grid */
-    body {
-      background: #dce0e0;
-      background: linear-gradient(
+      body.loaded {
+        opacity: 1;
+      }    
+      body {
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out;
+        background: #dce0e0;
+        background: linear-gradient(
         150deg,
         rgba(220, 224, 224, 1) 14%,
         rgba(182, 206, 224, 1) 60%,
         rgba(95, 106, 115, 1) 100%
-      );
-      margin: 0;
-      overflow-x: hidden;
-      background-attachment: fixed;
-      font-family: "Poppins", sans-serif;
-    }
+        );
+        margin: 0;
+        overflow-x: hidden;
+        background-attachment: fixed;
+        font-family: "Poppins", sans-serif;
+      }
     .hidden { display: none !important; }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen ">
+<body class="bg-slate-100 text-slate-800 min-h-screen mb-6">
 
   <nav class="sticky top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md px-6 py-4 flex items-center justify-between">
     <a href="index.html" class="text-2xl font-semibold text-blue-500 cursor-pointer" >
@@ -76,17 +85,20 @@
                         Looking for an experienced frontend developer to join our innovative team working on cutting-edge web applications.
                     </p>
 
-                    <div class="flex gap-3 mt-6">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-blue-500/30 shadow-sm">
-                            <i class="fa-solid fa-eye"></i> Show More Details
-                        </button>
-                        <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                            <i class="fa-regular fa-bookmark"></i> Save Job
-                        </button>
-                    </div>
                 </div>
 
                 <div class="flex flex-col items-end pl-4">
+                  <label class="relative cursor-pointer w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-2 hover:bg-gray-50 transition-all">
+                    <input type="checkbox" class="peer sr-only" />
+                    <ion-icon 
+                      name="bookmark-outline" 
+                      class="text-xl text-gray-400 transition-all duration-300 peer-checked:opacity-0 hover:text-blue-500 pointer-events-none">
+                    </ion-icon>
+                    <ion-icon 
+                      name="bookmark" 
+                      class="absolute text-xl text-blue-600 transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:scale-110 pointer-events-none">
+                    </ion-icon>
+                  </label>
                     <div class="text-3xl font-bold text-green-500">98%</div>
                     <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
                 </div>
@@ -115,17 +127,20 @@
                         Join our startup as a full stack engineer and help build the next generation of software solutions.
                     </p>
 
-                    <div class="flex gap-3 mt-6">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-blue-500/30 shadow-sm">
-                            <i class="fa-solid fa-eye"></i> Show More Details
-                        </button>
-                        <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                            <i class="fa-regular fa-bookmark"></i> Save Job
-                        </button>
-                    </div>
                 </div>
 
                 <div class="flex flex-col items-end pl-4">
+                  <label class="relative cursor-pointer w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-2 hover:bg-gray-50 transition-all">
+                    <input type="checkbox" class="peer sr-only" />
+                    <ion-icon 
+                      name="bookmark-outline" 
+                      class="text-xl text-gray-400 transition-all duration-300 peer-checked:opacity-0 hover:text-blue-500 pointer-events-none">
+                    </ion-icon>
+                    <ion-icon 
+                      name="bookmark" 
+                      class="absolute text-xl text-blue-600 transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:scale-110 pointer-events-none">
+                    </ion-icon>
+                  </label>
                     <div class="text-3xl font-bold text-green-500">95%</div>
                     <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
                 </div>
@@ -154,23 +169,46 @@
                         We're seeking a talented software developer to contribute to our enterprise solutions.
                     </p>
 
-                    <div class="flex gap-3 mt-6">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-blue-500/30 shadow-sm">
-                            <i class="fa-solid fa-eye"></i> Show More Details
-                        </button>
-                        <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                            <i class="fa-regular fa-bookmark"></i> Save Job
-                        </button>
-                    </div>
                 </div>
 
                 <div class="flex flex-col items-end pl-4">
-                    <div class="text-3xl font-bold text-yellow-500">88%</div> <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
+                  <label class="relative cursor-pointer w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-2 hover:bg-gray-50 transition-all">
+                    <input type="checkbox" class="peer sr-only" />
+                    <ion-icon 
+                      name="bookmark-outline" 
+                      class="text-xl text-gray-400 transition-all duration-300 peer-checked:opacity-0 hover:text-blue-500 pointer-events-none">
+                    </ion-icon>
+                    <ion-icon 
+                      name="bookmark" 
+                      class="absolute text-xl text-blue-600 transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:scale-110 pointer-events-none">
+                    </ion-icon>
+                  </label>
+                    <div class="text-3xl font-bold text-yellow-500">88%</div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
                 </div>
             </div>
         </div>
 
     </div>
-
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('loaded');
+  });
+  const bbtn = document.getElementById('backBtn');
+  // بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
+  if (bbtn) {
+      bbtn.addEventListener('click', function(e) {
+          e.preventDefault(); // وقف الانتقال الفوري
+          // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
+          document.body.classList.remove('loaded');
+          // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
+          // لو خليتها 200 والـ CSS 500 الحركة هتقطع
+          setTimeout(() => {
+              window.location.href = this.href;
+          }, 400);
+      });
+  }
+  
+  </script>
 </body>
 </html>

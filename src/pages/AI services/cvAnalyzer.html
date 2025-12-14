@@ -8,17 +8,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body {
+          body.loaded {
+            opacity: 1;
+          }    
+          body {
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out;
             font-family: 'Poppins', sans-serif;
             background: #dce0e0;
             background: linear-gradient(150deg,rgba(220, 224, 224, 1) 14%, rgba(182, 206, 224, 1) 60%, rgba(95, 106, 115, 1) 100%);
             margin: 0;
-            overflow-x: hidden; 
+            overflow-y: hidden; 
             background-attachment: fixed;
             }
     </style>
 </head>
 <body>
+    <a
+      id="backBtn"
+      href="index.html"
+      class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-2 group"
+    >
+      <i
+        class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
+      ></i>
+      <span class="text-sm font-medium">Back</span>
+    </a>
     <div class="w-screen h-screen flex justify-center items-center dark:bg-white ">
         <h1 class="relative w-full xl:text-9xl md:text-8xl text-5xl sm:tracking-[17px] tracking-[10px] uppercase text-center leading-[0.70em] outline-none animate-dimlight box-reflect">
           Coming Soon</h1>
@@ -61,6 +76,23 @@
             },
           ],
         }
+        window.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('loaded');
+  });
+  const bbtn = document.getElementById('backBtn');
+  // بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
+  if (bbtn) {
+      bbtn.addEventListener('click', function(e) {
+          e.preventDefault(); // وقف الانتقال الفوري
+          // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
+          document.body.classList.remove('loaded');
+          // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
+          // لو خليتها 200 والـ CSS 500 الحركة هتقطع
+          setTimeout(() => {
+              window.location.href = this.href;
+          }, 400);
+      });
+  }
       </script>
 </body>
 

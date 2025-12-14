@@ -48,7 +48,7 @@
       .hidden { display: none !important; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen overflow-x-hidden">
+<body class="text-slate-800 min-h-screen overflow-x-hidden">
 
   <nav class="sticky top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md px-6 py-4 flex items-center justify-between">
     <a href="index.html" class="text-2xl font-semibold text-blue-500 cursor-pointer" >
@@ -367,6 +367,23 @@
             resultView.classList.remove('hidden');
             window.scrollTo(0, 0);
         }
+        window.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('loaded');
+});
+const bbtn = document.getElementById('backBtn');
+// بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
+if (bbtn) {
+    bbtn.addEventListener('click', function(e) {
+        e.preventDefault(); // وقف الانتقال الفوري
+        // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
+        document.body.classList.remove('loaded');
+        // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
+        // لو خليتها 200 والـ CSS 500 الحركة هتقطع
+        setTimeout(() => {
+            window.location.href = this.href;
+        }, 400);
+    });
+}
         </script>
         <script type="module" src="./src/js/controllers/homeController.js"></script>
 

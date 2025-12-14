@@ -19,7 +19,12 @@
       href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
     />
     <style>
-body {
+      body.loaded {
+        opacity: 1;
+      }
+      body {
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
         background: linear-gradient(
           150deg,
@@ -32,7 +37,7 @@ body {
         background-attachment: fixed;
         font-family: "Poppins", sans-serif;
       }
-.nav-container {
+      .nav-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -146,39 +151,32 @@ body {
         <div
           class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
         >
-          <ul class="magic-menu">
-            <li
-            style="--i: #5eb6fd;--j:#0576d3"
-            class="active"
-            onclick="window.location.href='dashboard.html'">
-            <span class="icon"><ion-icon name="easel-outline"></ion-icon></span>
-            <span class="title">dashboard</span>
+        <ul class="magic-menu">
+          <li class="menu-item active" data-url="dashboard.html" style="--i: #5eb6fd;--j:#0576d3">
+              <span class="icon"><ion-icon name="easel-outline"></ion-icon></span>
+              <span class="title">dashboard</span>
           </li>
-          <li
-            style="--i: #67e3ff;--j:#69a8b8"
-            onclick="window.location.href='profile.html'">
-            <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-            <span class="title">profile</span>
+      
+          <li class="menu-item" data-url="profile.html" style="--i: #67e3ff;--j:#69a8b8">
+              <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+              <span class="title">profile</span>
           </li>
-          <li
-            style="--i: #8f68d6;--j:#4e3085"
-            onclick="window.location.href='jobs.html'">
-            <span class="icon"><ion-icon name="bag-outline"></ion-icon></span>
-            <span class="title">Jobs</span>
+      
+          <li class="menu-item" data-url="jobs.html" style="--i: #8f68d6;--j:#4e3085">
+              <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+              <span class="title">Jobs</span>
           </li>
-          <li
-            style="--i: #72f3f3;--j:#29a8a8"
-            onclick="window.location.href='applications.html'">
-            <span class="icon"><ion-icon name="documents-outline"></ion-icon></span>
-            <span class="title">Applications</span>
+      
+          <li class="menu-item" data-url="applications.html" style="--i: #72f3f3;--j:#29a8a8">
+              <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
+              <span class="title">Applications</span>
           </li>
-          <li
-            style="--i: #2cc034;--j:#17741b"
-            onclick="window.location.href='verification.html'">
-            <span class="icon"><ion-icon name="shield-outline"></ion-icon></span>
-            <span class="title">Verification</span>
+      
+          <li class="menu-item" data-url="verification.html" style="--i: #2cc034;--j:#17741b">
+              <span class="icon"><ion-icon name="shield-outline"></ion-icon></span>
+              <span class="title">Verification</span>
           </li>
-            </ul>
+      </ul>
         </div>
       </div>
       <div>
@@ -318,7 +316,22 @@ body {
         </div>
       </div>
     </main>
+    <script>
+      window.addEventListener('load', function() {
+      document.body.classList.add('loaded');
+      });
+      const menuItems = document.querySelectorAll('.menu-item');
+      menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+      document.body.classList.remove('loaded');
+      const targetPage = this.getAttribute('data-url');
+      setTimeout(() => {
+      window.location.href = targetPage;
+        }, 200);
+    });
+});
 
+    </script>
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/toastify-js"

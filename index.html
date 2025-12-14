@@ -266,6 +266,10 @@
           transform: translateX(calc(-50% - 10px));
         }
       }
+      input:focus+heroSearchInput{
+        transform: translateY(-25px);
+        color: cornflowerblue;
+      }
     </style>
   </head>
   <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
@@ -327,7 +331,7 @@
                 <input
                   type="text"
                   id="heroSearchInput"
-                  placeholder="Search for jobs or companies..."
+                  placeholder="Search for jobs"
                   class="w-full py-3 pl-12 pr-4 rounded-lg border border-gray-300 focus:border-blue-500 outline-none transition-all duration-300 peer"
                 />
             
@@ -536,8 +540,8 @@
                 AI-powered resume optimization and personalized improvement
                 suggestions
               </p>
-              <a id="serviceBtn" href="cvAnalyzer.html"
-                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+              <a  href="/src/pages/AI services/cvAnalyzer.html"
+                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300 transition-link"
               >
                 Analyze CV
               </a>
@@ -564,8 +568,8 @@
               >
                 Advanced algorithms match your skills with perfect opportunities
               </p>
-              <a id="serviceBtn" href="matchedJobs.html"
-                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+              <a href="/src/pages/AI services/matchedJobs.html"
+                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300 transition-link"
               >
                 View Jobs
               </a>
@@ -592,8 +596,8 @@
               >
                 Comprehensive evaluation of your professional competencies
               </p>
-              <a id="serviceBtn" href="personalityTest.html"
-                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+              <a href="/src/pages/AI services/personalityTest.html"
+                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300 transition-linkf"
               >
                 Take Test
               </a>
@@ -631,10 +635,9 @@
 
           <div class="text-center mt-8">
             <a
-              id="companiesBtn"
-              href="companies.html"
+              href="/./src/pages/public companies/companies.html"
               onclick="transitionToPage(event, this.href)"
-              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg  transition-all duration-300 hover:shadow-md"
+              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg  transition-all duration-300 hover:shadow-md transition-link"
             >
               View All Companies
             </a>
@@ -671,10 +674,9 @@
 
           <div class="text-center mt-8">
             <a
-              id="jobsBtn"
-              href="/jobs.html"
+              href="/./src/pages/public jobs/jobs.html"
               onclick="transitionToPage(event, this.href)"
-              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-md"
+              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-md transition-link"
             >
               View All Jobs
             </a>

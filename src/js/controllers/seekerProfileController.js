@@ -478,4 +478,3 @@ if (btnLogout) {
     authService.logout();
   });
 }
-

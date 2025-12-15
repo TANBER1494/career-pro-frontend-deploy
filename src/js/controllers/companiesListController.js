@@ -38,10 +38,10 @@ function ensurePaginationHTML() {
   // لو الكونتينر مش موجود في الصفحة، اخلقه تحت قائمة الشركات
   let pagContainer = document.getElementById("pagination-container");
   if (!pagContainer && container) {
-      pagContainer = document.createElement("div");
-      pagContainer.id = "pagination-container";
-      pagContainer.className = "flex justify-center items-center gap-4 mt-8 mb-8";
-      container.parentNode.appendChild(pagContainer);
+    pagContainer = document.createElement("div");
+    pagContainer.id = "pagination-container";
+    pagContainer.className = "flex justify-center items-center gap-4 mt-8 mb-8";
+    container.parentNode.appendChild(pagContainer);
   }
 }
 // ============================================================
@@ -98,11 +98,12 @@ async function loadCompanies() {
 // ============================================================
 // 4. Logic: Render Cards (Updated for Pagination)
 // ============================================================
-function renderCompanies() { // مبقتش محتاجة تستقبل parameter
+function renderCompanies() {
+  // مبقتش محتاجة تستقبل parameter
   container.innerHTML = "";
-  
+
   // نستخدم المتغير العام اللي فيه الداتا
-  const companies = allFetchedCompanies; 
+  const companies = allFetchedCompanies;
 
   if (companies.length === 0) {
     // ... (كود No companies found زي ما هو) ...
@@ -133,7 +134,7 @@ function updatePaginationUI(totalItems) {
   pagContainer.innerHTML = `
       <button id="prevBtn" 
           class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          ${isFirstPage ? 'disabled' : ''}>
+          ${isFirstPage ? "disabled" : ""}>
           <i class="fas fa-chevron-left mr-1"></i> Previous
       </button>
       
@@ -143,26 +144,30 @@ function updatePaginationUI(totalItems) {
 
       <button id="nextBtn" 
           class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          ${isLastPage ? 'disabled' : ''}>
+          ${isLastPage ? "disabled" : ""}>
           Next <i class="fas fa-chevron-right ml-1"></i>
       </button>
   `;
-  
+
   // إعادة ربط الأحداث
-  document.getElementById("prevBtn")?.addEventListener("click", () => changePage(-1));
-  document.getElementById("nextBtn")?.addEventListener("click", () => changePage(1));
+  document
+    .getElementById("prevBtn")
+    ?.addEventListener("click", () => changePage(-1));
+  document
+    .getElementById("nextBtn")
+    ?.addEventListener("click", () => changePage(1));
 }
 function changePage(direction) {
   // تحديث رقم الصفحة
   currentFilters.page += direction;
-  
+
   // التأكد من الحدود
   // (ممكن نضيف شرط هنا عشان ميزدش عن آخر صفحة لو حبيتي)
   if (currentFilters.page < 1) currentFilters.page = 1;
-  
+
   // سكرول لأعلى الصفحة
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   // ⚠️ التغيير هنا: مبقناش بننادي loadCompanies
   // بننادي renderCompanies وتحديث الزراير بس
   renderCompanies();
@@ -194,7 +199,11 @@ function createCompanyCard(company) {
         ${verifiedBadgeHtml}
 
         <div class="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 text-xl font-bold mx-auto mb-4 overflow-hidden border border-blue-100">
-            ${company.logo ? `<img src="${logo}" class="w-full h-full object-cover">` : initial}
+            ${
+              company.logo
+                ? `<img src="${logo}" class="w-full h-full object-cover">`
+                : initial
+            }
         </div>
 
         <div class="text-center">
@@ -224,7 +233,9 @@ function createCompanyCard(company) {
                 ${positions} Open Positions
             </a>
 
-            <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${company.id || company._id}'"
+            <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${
+              company.id || company._id
+            }'"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition shadow-blue-500/20 shadow-sm">
                 View Company
             </button>
@@ -241,7 +252,7 @@ function setupEventListeners() {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         currentFilters.search = e.target.value.trim();
-        currentFilters.page = 1; 
+        currentFilters.page = 1;
         loadCompanies();
       }, 500);
     });
@@ -273,8 +284,8 @@ function setupEventListeners() {
 }
 
 function applyForJob(jobId) {
-    // Redirect to job details page
-    window.location.href = `job-details.html?id=${jobId}`;
+  // Redirect to job details page
+  window.location.href = `job-details.html?id=${jobId}`;
 }
 
 // ============================================================

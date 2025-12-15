@@ -2,74 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>API Data Test</title>
+    <title>Test Companies API</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
       body {
-        font-family: monospace;
         padding: 20px;
-        background: #f4f4f4;
+        font-family: monospace;
+        background: #f0f0f0;
       }
       #output {
         background: #fff;
-        padding: 20px;
-        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 8px;
         white-space: pre-wrap;
-      }
-      button {
-        padding: 10px 20px;
-        cursor: pointer;
-        background: #007bff;
-        color: white;
-        border: none;
-        font-size: 16px;
-        margin-bottom: 10px;
       }
     </style>
   </head>
   <body>
-    <h1>Job Data Structure Tester</h1>
-    <button onclick="testJobs()">Fetch Jobs Data</button>
-    <div id="output">Click the button to see raw data...</div>
+    <button onclick="checkCompanies()">Check Companies Data</button>
+    <div id="output">Waiting...</div>
 
     <script type="module">
-      import { jobService } from "./src/js/services/jobService.js";
+      import { companyDiscoveryService } from "./src/js/services/companyDiscoveryService.js";
 
-      window.testJobs = async function () {
-        const outputDiv = document.getElementById("output");
-        outputDiv.textContent = "Loading...";
-
+      window.checkCompanies = async () => {
+        const out = document.getElementById("output");
+        out.textContent = "Loading...";
         try {
-          // نطلب الوظائف
-          const response = await jobService.getAllJobs({ limit: 1 });
+          // نجلب الشركات
+          const res = await companyDiscoveryService.getAllCompanies({
+            limit: 1,
+          });
+          const company = res.data.companies[0];
 
-          console.log("🔥 FULL RESPONSE:", response);
+          console.log("🔥 FULL COMPANY OBJECT:", company);
 
-          // نأخذ أول وظيفة فقط للتحليل
-          const firstJob = response.data.jobs[0];
-
-          console.log("🎯 FIRST JOB OBJECT:", firstJob);
-          console.log("🏢 COMPANY OBJECT:", firstJob?.company);
-
-          // نعرض النتيجة كنص
-          outputDiv.textContent = JSON.stringify(firstJob, null, 2);
-
-          // تحليل المشكلة
-          if (!firstJob.company) {
-            alert("⚠️ كارثة: حقل company غير موجود أو null!");
-          } else if (!firstJob.company.name && !firstJob.company.companyName) {
-            alert(
-              "⚠️ المشكلة: كائن company موجود، لكن لا يحتوي على name أو companyName!"
-            );
-          } else {
-            alert(
-              "✅ البيانات تبدو سليمة! اسم الشركة هو: " +
-                (firstJob.company.name || firstJob.company.companyName)
-            );
-          }
-        } catch (error) {
-          console.error(error);
-          outputDiv.textContent = "Error: " + error.message;
+          out.innerHTML = `
+                <strong>Company Name:</strong> ${company.companyName}
+                <strong>openPositionsCount:</strong> ${
+                  company.openPositionsCount
+                } (Type: ${typeof company.openPositionsCount})
+                <strong>jobsCount:</strong> ${company.jobsCount}
+                <strong>openPositions (Array):</strong> ${
+                  Array.isArray(company.openPositions)
+                    ? company.openPositions.length
+                    : "Not an Array"
+                }
+                
+                ⬇️ Raw Object ⬇️
+                ${JSON.stringify(company, null, 2)}
+                `;
+        } catch (e) {
+          out.textContent = "Error: " + e.message;
+          console.error(e);
         }
       };
     </script>

@@ -56,10 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
 function ensurePaginationHTML() {
   let pagContainer = document.getElementById("pagination-container");
   if (!pagContainer && container) {
-      pagContainer = document.createElement("div");
-      pagContainer.id = "pagination-container";
-      pagContainer.className = "flex justify-center items-center gap-4 mt-12 mb-8";
-      container.parentNode.appendChild(pagContainer);
+    pagContainer = document.createElement("div");
+    pagContainer.id = "pagination-container";
+    pagContainer.className =
+      "flex justify-center items-center gap-4 mt-12 mb-8";
+    container.parentNode.appendChild(pagContainer);
   }
 }
 
@@ -81,19 +82,20 @@ async function loadJobs() {
     // Clean filters
     const params = { ...currentFilters };
     if (!params.search) delete params.search;
-    if (!params.location || params.location === "All Locations") delete params.location;
+    if (!params.location || params.location === "All Locations")
+      delete params.location;
     if (!params.type || params.type === "All Types") delete params.type;
     if (!params.experienceLevel) delete params.experienceLevel;
-    
+
     // Always request page 1 from API to get the full batch
     params.page = 1;
 
     // API Call
     const response = await jobService.getAllJobs(params);
-    
+
     // <--- 4. تخزين الوظائف في المتغير العام
     allFetchedJobs = response.data.jobs || [];
-    
+
     // Update Count
     if (countLabel) {
       countLabel.textContent = `Showing ${allFetchedJobs.length} results`;
@@ -101,10 +103,9 @@ async function loadJobs() {
 
     // <--- 5. استدعاء دالة العرض بدون بارامتر
     renderJobs();
-    
+
     // <--- 6. تحديث زراير الصفحات
     updatePaginationUI(allFetchedJobs.length);
-
   } catch (error) {
     console.error("All Jobs Error:", error);
     container.innerHTML = `
@@ -139,7 +140,7 @@ function renderJobs() {
         `;
     // تفريغ الـ pagination لو مفيش نتائج
     const pagContainer = document.getElementById("pagination-container");
-    if(pagContainer) pagContainer.innerHTML = '';
+    if (pagContainer) pagContainer.innerHTML = "";
     return;
   }
 
@@ -155,23 +156,23 @@ function renderJobs() {
 
 // <--- 8. دوال التحكم في الـ Pagination
 function updatePaginationUI(totalItems) {
-    const pagContainer = document.getElementById("pagination-container");
-    if (!pagContainer) return;
+  const pagContainer = document.getElementById("pagination-container");
+  if (!pagContainer) return;
 
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const isFirstPage = currentFilters.page === 1;
-    const isLastPage = currentFilters.page >= totalPages;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const isFirstPage = currentFilters.page === 1;
+  const isLastPage = currentFilters.page >= totalPages;
 
-    // لو صفحة واحدة بس، نخفي الزراير
-    if (totalPages <= 1) {
-        pagContainer.innerHTML = '';
-        return;
-    }
+  // لو صفحة واحدة بس، نخفي الزراير
+  if (totalPages <= 1) {
+    pagContainer.innerHTML = "";
+    return;
+  }
 
-    pagContainer.innerHTML = `
+  pagContainer.innerHTML = `
         <button id="prevBtn" 
             class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            ${isFirstPage ? 'disabled' : ''}>
+            ${isFirstPage ? "disabled" : ""}>
             <i class="fas fa-chevron-left mr-1"></i> Previous
         </button>
         
@@ -181,23 +182,27 @@ function updatePaginationUI(totalItems) {
 
         <button id="nextBtn" 
             class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            ${isLastPage ? 'disabled' : ''}>
+            ${isLastPage ? "disabled" : ""}>
             Next <i class="fas fa-chevron-right ml-1"></i>
         </button>
     `;
-    
-    document.getElementById("prevBtn")?.addEventListener("click", () => changePage(-1));
-    document.getElementById("nextBtn")?.addEventListener("click", () => changePage(1));
+
+  document
+    .getElementById("prevBtn")
+    ?.addEventListener("click", () => changePage(-1));
+  document
+    .getElementById("nextBtn")
+    ?.addEventListener("click", () => changePage(1));
 }
 
 function changePage(direction) {
-    currentFilters.page += direction;
-    if (currentFilters.page < 1) currentFilters.page = 1;
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    renderJobs();
-    updatePaginationUI(allFetchedJobs.length);
+  currentFilters.page += direction;
+  if (currentFilters.page < 1) currentFilters.page = 1;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  renderJobs();
+  updatePaginationUI(allFetchedJobs.length);
 }
 
 function createJobCard(job) {
@@ -407,13 +412,23 @@ window.closeApplyModal = function () {
   document.getElementById("applyModal").classList.add("hidden");
 };
 
+// ============================================================
+// Modal & Apply Logic (Fixed Double Submission)
+// ============================================================
 function initModalEvents() {
   const modal = document.getElementById("applyModal");
   const closeBtn = document.getElementById("btnCloseModal");
   const cancelBtn = document.getElementById("btnCancelModal");
-  const form = document.getElementById("applyForm");
 
-  const close = () => modal && modal.classList.add("hidden");
+  // 1. التعامل مع الفورم بحذر لمنع التكرار
+  let form = document.getElementById("applyForm");
+
+  // دالة الإغلاق
+  const close = () => {
+    if (modal) modal.classList.add("hidden");
+    if (form) form.reset();
+  };
+
   if (closeBtn) closeBtn.onclick = close;
   if (cancelBtn) cancelBtn.onclick = close;
 
@@ -422,12 +437,89 @@ function initModalEvents() {
   };
 
   if (form) {
+    //  الحل السحري: استبدال الفورم بنسخة جديدة منه لحذف أي Event Listeners قديمة
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    form = newForm; // تحديث المتغير ليشير للفورم الجديد
+
+    // إعادة تعريف العناصر داخل الفورم الجديد (لأن القديمة اختفت)
+    const submitBtn = form.querySelector('button[type="submit"]');
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      // TODO: Implement real apply logic with jobService.applyForJob()
-      // Needs FormData preparation
-      Swal.fire("Success", "Application submitted successfully!", "success");
-      close();
+      e.stopPropagation(); // منع انتشار الحدث
+
+      const jobId = modal.dataset.jobId;
+
+      // نستخدم getElementById من الوثيقة لضمان جلب العناصر الحالية
+      // (أو يمكن البحث داخل form مباشرة: form.querySelector('#applyCv'))
+      const fileInput = document.getElementById("applyCv");
+      const nameInput = document.getElementById("applyName");
+      const emailInput = document.getElementById("applyEmail");
+      const phoneInput = document.getElementById("applyPhone");
+      const coverInput = document.getElementById("applyCover");
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        Swal.fire("Warning", "Please upload your CV.", "warning");
+        return;
+      }
+
+      // تجهيز البيانات
+      const applyData = {
+        fullName: nameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        cvFile: fileInput.files[0],
+        coverLetter: coverInput.value,
+      };
+
+      try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        }
+
+        console.log("🚀 Submitting Application..."); // Log for debugging
+
+        await jobService.applyForJob(jobId, applyData);
+
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Application submitted successfully.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        close();
+      } catch (error) {
+        console.error("Apply Error Details:", error);
+
+        let errorMsg = "Failed to submit application.";
+
+        // التعامل مع خطأ 409 (Conflict) بشكل خاص
+        if (error.response && error.response.status === 409) {
+          errorMsg = "You have already applied for this job.";
+        } else if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          errorMsg = error.response.data.message;
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: "Application Failed",
+          text: errorMsg,
+        });
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = "Submit Application";
+        }
+      }
     });
   }
 }

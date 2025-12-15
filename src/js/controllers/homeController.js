@@ -1,7 +1,8 @@
-document.body.classList.add('loaded');
+document.body.classList.add("loaded");
 import { jobService } from "../services/jobService.js";
 import { companyDiscoveryService } from "../services/companyDiscoveryService.js";
 import { authService } from "../services/authService.js";
+import Swal from "sweetalert2";
 
 // ============================================================
 // 1. Initialization
@@ -95,7 +96,9 @@ function initSearch() {
   const performSearch = () => {
     const query = searchInput.value.trim();
     if (query) {
-      window.location.href = `/src/pages/public%20jobs/jobs.html?search=${encodeURIComponent(query)}`;
+      window.location.href = `/src/pages/public%20jobs/jobs.html?search=${encodeURIComponent(
+        query
+      )}`;
     }
   };
 
@@ -320,7 +323,9 @@ function createCompanyCard(company) {
             </div>
         </div>
         
-        <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${company.id || company._id}'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
+        <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${
+          company.id || company._id
+        }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
             View Jobs
         </button>
     </div>
@@ -387,13 +392,23 @@ window.closeApplyModal = function () {
   document.getElementById("applyModal").classList.add("hidden");
 };
 
+// ============================================================
+// Modal & Apply Logic (Fixed Double Submission)
+// ============================================================
 function initModalEvents() {
   const modal = document.getElementById("applyModal");
   const closeBtn = document.getElementById("btnCloseModal");
   const cancelBtn = document.getElementById("btnCancelModal");
-  const form = document.getElementById("applyForm");
 
-  const close = () => modal && modal.classList.add("hidden");
+  // 1. التعامل مع الفورم بحذر لمنع التكرار
+  let form = document.getElementById("applyForm");
+
+  // دالة الإغلاق
+  const close = () => {
+    if (modal) modal.classList.add("hidden");
+    if (form) form.reset();
+  };
+
   if (closeBtn) closeBtn.onclick = close;
   if (cancelBtn) cancelBtn.onclick = close;
 
@@ -402,14 +417,92 @@ function initModalEvents() {
   };
 
   if (form) {
+    //  الحل السحري: استبدال الفورم بنسخة جديدة منه لحذف أي Event Listeners قديمة
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    form = newForm; // تحديث المتغير ليشير للفورم الجديد
+
+    // إعادة تعريف العناصر داخل الفورم الجديد (لأن القديمة اختفت)
+    const submitBtn = form.querySelector('button[type="submit"]');
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      Swal.fire("Success", "Application submitted successfully!", "success");
-      close();
+      e.stopPropagation(); // منع انتشار الحدث
+
+      const jobId = modal.dataset.jobId;
+
+      // نستخدم getElementById من الوثيقة لضمان جلب العناصر الحالية
+      // (أو يمكن البحث داخل form مباشرة: form.querySelector('#applyCv'))
+      const fileInput = document.getElementById("applyCv");
+      const nameInput = document.getElementById("applyName");
+      const emailInput = document.getElementById("applyEmail");
+      const phoneInput = document.getElementById("applyPhone");
+      const coverInput = document.getElementById("applyCover");
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        Swal.fire("Warning", "Please upload your CV.", "warning");
+        return;
+      }
+
+      // تجهيز البيانات
+      const applyData = {
+        fullName: nameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        cvFile: fileInput.files[0],
+        coverLetter: coverInput.value,
+      };
+
+      try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        }
+
+        console.log("🚀 Submitting Application..."); // Log for debugging
+
+        await jobService.applyForJob(jobId, applyData);
+
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Application submitted successfully.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        close();
+      } catch (error) {
+        console.error("Apply Error Details:", error);
+
+        let errorMsg = "Failed to submit application.";
+
+        // التعامل مع خطأ 409 (Conflict) بشكل خاص
+        if (error.response && error.response.status === 409) {
+          errorMsg = "You have already applied for this job.";
+        } else if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          errorMsg = error.response.data.message;
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: "Application Failed",
+          text: errorMsg,
+        });
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = "Submit Application";
+        }
+      }
     });
   }
 }
-
 // Helper: Time Ago
 function getTimeAgo(dateString) {
   if (!dateString) return "Recently";
@@ -441,7 +534,7 @@ function initScrollSpy() {
       // (نهاية الجزء الظاهر - بداية الجزء الظاهر)
       const visibleTop = Math.max(0, rect.top);
       const visibleBottom = Math.min(windowHeight, rect.bottom);
-      
+
       // ارتفاع الجزء الظاهر حالياً من هذا السكشن
       const visibleHeight = Math.max(0, visibleBottom - visibleTop);
 
@@ -474,46 +567,45 @@ function initScrollSpy() {
 // 1. Initialization
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add('loaded');
+  document.body.classList.add("loaded");
 
   initAuthButtons();
-  initNavbarScrolling(); 
-  initScrollSpy();    
+  initNavbarScrolling();
+  initScrollSpy();
   initSearch();
 
   loadFeaturedJobs();
   loadTopCompanies();
-  
+
   initModalEvents();
 });
 
-
-window.addEventListener('load', function() {
-  document.body.classList.add('loaded');
+window.addEventListener("load", function () {
+  document.body.classList.add("loaded");
 });
-document.addEventListener('click', function(e) {
-  const profileBtn = e.target.closest('#profileBtn');
+document.addEventListener("click", function (e) {
+  const profileBtn = e.target.closest("#profileBtn");
   if (profileBtn) {
-      e.preventDefault();
-      const targetUrl = profileBtn.getAttribute('href');
-      document.body.classList.remove('loaded');
-      setTimeout(function() {
-          window.location.href = targetUrl;
-      }, 350);
+    e.preventDefault();
+    const targetUrl = profileBtn.getAttribute("href");
+    document.body.classList.remove("loaded");
+    setTimeout(function () {
+      window.location.href = targetUrl;
+    }, 350);
   }
 });
 
-const allButtons = document.querySelectorAll('.transition-link');
+const allButtons = document.querySelectorAll(".transition-link");
 
-allButtons.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.body.classList.remove('loaded');
-        
-        const targetUrl = this.href;
-        
-        setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 350);
-    });
+allButtons.forEach((btn) => {
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    document.body.classList.remove("loaded");
+
+    const targetUrl = this.href;
+
+    setTimeout(() => {
+      window.location.href = targetUrl;
+    }, 350);
+  });
 });

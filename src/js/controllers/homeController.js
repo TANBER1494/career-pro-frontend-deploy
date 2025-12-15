@@ -308,7 +308,10 @@ function createCompanyCard(company) {
   const name = company.name || company.companyName || "Company Name";
   const initial = name.charAt(0).toUpperCase();
   const desc =
-    company.description || company.about || "No description available.";
+    company.companyDescription ||
+    company.description ||
+    company.about ||
+    "No description available.";
   const shortDesc = desc.length > 100 ? desc.substring(0, 100) + "..." : desc;
   const location = company.location || "Remote";
   const industry = company.industry || "Tech";

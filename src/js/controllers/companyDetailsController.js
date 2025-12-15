@@ -1,6 +1,6 @@
 import { companyDiscoveryService } from "../services/companyDiscoveryService.js";
-import { jobService } from "../services/jobService.js"; // نحتاجها للتقديم والحفظ
-import Swal from "sweetalert2"; // نحتاجها للتنبيهات
+import { jobService } from "../services/jobService.js"; // ✅ ضروري لعمليات الحفظ
+import Swal from "sweetalert2";
 
 // ============================================================
 // Initialization
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadCompanyDetails(companyId);
 
-  // تهيئة أحداث المودال (للتقديم)
+  // تفعيل المودال (للتقديم)
   initModalEvents();
 });
 
@@ -32,17 +32,39 @@ async function loadCompanyDetails(id) {
     const responseData = response.data || {};
 
     const company = responseData.company;
-    const openPositions = responseData.openPositions || [];
+    let openPositions = responseData.openPositions || [];
 
     if (!company) {
       throw new Error("Company data not found");
     }
 
+    // ============================================================
+    // 🔥 SYNC SAVED STATUS (نفس المنطق المستخدم في All Jobs)
+    // ============================================================
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        // 1. جلب الوظائف المحفوظة للمستخدم
+        const savedResponse = await jobService.getSavedJobs();
+        const savedJobs = savedResponse.data.jobs || [];
+
+        // 2. إنشاء Set للبحث السريع
+        const savedIds = new Set(savedJobs.map((j) => j._id || j.id));
+
+        // 3. تحديث مصفوفة الوظائف بإضافة isSaved
+        openPositions = openPositions.map((job) => ({
+          ...job,
+          isSaved: savedIds.has(job._id || job.id),
+        }));
+      } catch (err) {
+        console.warn("Could not sync saved jobs in company details", err);
+      }
+    }
+    // ============================================================
+
     // Render Data
     renderCompanyHeader(company);
     renderCompanyAbout(company);
-
-    // ✅ نمرر كائن الشركة هنا لنستخدم اسمها وصورتها في الكروت
     renderCompanyJobs(openPositions, company);
 
     if (loader) loader.classList.add("hidden");
@@ -143,7 +165,7 @@ function renderCompanyAbout(company) {
 }
 
 // ============================================================
-// Render Logic: Jobs Cards (Updated Design)
+// Render Logic: Jobs Cards
 // ============================================================
 function renderCompanyJobs(jobs, companyInfo) {
   const jobsList = document.getElementById("detail-jobs-list");
@@ -163,7 +185,6 @@ function renderCompanyJobs(jobs, companyInfo) {
     return;
   }
 
-  // تجهيز بيانات الشركة الثابتة لكل الكروت
   const companyName =
     companyInfo.name || companyInfo.companyName || "Hiring Company";
   const companyLogo =
@@ -177,12 +198,11 @@ function renderCompanyJobs(jobs, companyInfo) {
       const timeAgo = getTimeAgo(job.postedAt || job.createdAt);
       const jobId = job.id || job._id;
 
-      // Save Icon State
+      // ✅ تحديد أيقونة الحفظ بناءً على القيمة المحسوبة
       const saveIconClass = job.isSaved
         ? "fa-solid text-blue-600"
         : "fa-regular text-slate-400";
 
-      // Skills (أول 3 مهارات)
       const skillsHTML = (job.skills || [])
         .slice(0, 3)
         .map(
@@ -191,9 +211,8 @@ function renderCompanyJobs(jobs, companyInfo) {
         )
         .join("");
 
-      // ✅ تصميم الكارت المطابق لصفحة الوظائف (All Jobs Style)
       return `
-        <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 flex flex-col h-full mb-4">
+        <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 flex flex-col h-full mb-4 text-left">
             
             <button onclick="window.toggleSaveJob('${jobId}', this)" class="absolute top-5 right-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
                 <i class="${saveIconClass} fa-bookmark text-lg"></i>
@@ -216,7 +235,7 @@ function renderCompanyJobs(jobs, companyInfo) {
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-4">
+            <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
                 ${skillsHTML}
             </div>
 
@@ -231,7 +250,7 @@ function renderCompanyJobs(jobs, companyInfo) {
                 <span class="px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
                     ${job.type || "Full Time"}
                 </span>
-                <button onclick="window.applyForJobCheck('${jobId}')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
+                <button onclick="window.openApplyModal('${jobId}')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
                     Apply Now
                 </button>
             </div>
@@ -242,24 +261,51 @@ function renderCompanyJobs(jobs, companyInfo) {
 }
 
 // ============================================================
-// Global Actions (Apply & Save) - Must be global for onclick
+// ✅ GLOBAL ACTIONS (Toggle Save & Apply)
 // ============================================================
 
-window.applyForJobCheck = function (jobId) {
+// 1. Toggle Save Logic
+window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem("token");
+  if (!token) {
+    Swal.fire("Login Required", "Please login to save jobs.", "info");
+    return;
+  }
 
+  try {
+    const icon = btnElement.querySelector("i");
+    const isSaved = icon.classList.contains("fa-solid");
+
+    // UI Update (Optimistic)
+    if (isSaved) {
+      icon.classList.remove("fa-solid", "text-blue-600");
+      icon.classList.add("fa-regular", "text-slate-400");
+    } else {
+      icon.classList.remove("fa-regular", "text-slate-400");
+      icon.classList.add("fa-solid", "text-blue-600");
+    }
+
+    await jobService.toggleSaveJob(jobId);
+  } catch (error) {
+    console.error("Save Error:", error);
+    Swal.fire("Error", "Failed to save job.", "error");
+    // Revert UI on error (optional but recommended)
+  }
+};
+
+// 2. Open Apply Modal (Using the Profile Page Logic)
+window.openApplyModal = function (jobId) {
+  const token = localStorage.getItem("token");
   if (!token) {
     Swal.fire({
       icon: "info",
       title: "Login Required",
-      text: "You need to login to apply for jobs.",
+      text: "You need to login to apply.",
       showCancelButton: true,
-      confirmButtonText: "Login Now",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
+      confirmButtonText: "Login",
+    }).then((res) => {
+      if (res.isConfirmed)
         window.location.href = "/src/pages/auth/signup-login.html";
-      }
     });
     return;
   }
@@ -277,34 +323,6 @@ window.applyForJobCheck = function (jobId) {
     if (nameInput && user.firstName)
       nameInput.value = `${user.firstName} ${user.lastName || ""}`.trim();
     if (emailInput && user.email) emailInput.value = user.email;
-  } else {
-    console.error("Modal element not found in HTML!");
-  }
-};
-
-window.toggleSaveJob = async function (jobId, btnElement) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    Swal.fire("Login Required", "Please login to save jobs.", "info");
-    return;
-  }
-
-  try {
-    const icon = btnElement.querySelector("i");
-    const isSaved = icon.classList.contains("fa-solid");
-
-    if (isSaved) {
-      icon.classList.remove("fa-solid", "text-blue-600");
-      icon.classList.add("fa-regular", "text-slate-400");
-    } else {
-      icon.classList.remove("fa-regular", "text-slate-400");
-      icon.classList.add("fa-solid", "text-blue-600");
-    }
-
-    await jobService.toggleSaveJob(jobId);
-  } catch (error) {
-    console.error("Save Error:", error);
-    Swal.fire("Error", "Failed to save job.", "error");
   }
 };
 
@@ -333,18 +351,14 @@ function initModalEvents() {
   };
 
   if (form) {
-    // Clone to remove old listeners (Prevents Double Submission)
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
 
-    // Re-select elements inside new form
     const newSubmitBtn = newForm.querySelector('button[type="submit"]');
 
     newForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const jobId = modal.dataset.jobId;
-      // Note: We access elements by ID from document since IDs are unique
       const fileInput = document.getElementById("applyCv");
 
       if (!fileInput.files || fileInput.files.length === 0) {

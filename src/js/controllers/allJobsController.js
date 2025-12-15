@@ -16,17 +16,17 @@ const btnFilter = document.getElementById("btn-filter");
 const filterExperience = document.getElementById("filter-experience");
 
 // State
-let allFetchedJobs = []; // <--- 1. مخزن لكل الوظائف
+let allFetchedJobs = [];
 let currentFilters = {
   search: "",
   location: "",
   experienceLevel: "",
   type: "",
   page: 1,
-  limit: 500, // <--- 2. زودنا الليميت عشان نجيب داتا كتير مرة واحدة
+  limit: 500, // نجلب عدد كبير لتقسيمه في الفرونت
 };
 
-const itemsPerPage = 12; // <--- 3. عدد الوظائف في الصفحة الواحدة
+const itemsPerPage = 12;
 let searchTimeout = null;
 
 // ============================================================
@@ -65,7 +65,7 @@ function ensurePaginationHTML() {
 }
 
 // ============================================================
-// 3. Logic: Fetch Jobs
+// 3. Logic: Fetch Jobs (With Saved Status Check)
 // ============================================================
 async function loadJobs() {
   if (!container) return;
@@ -90,21 +90,45 @@ async function loadJobs() {
     // Always request page 1 from API to get the full batch
     params.page = 1;
 
-    // API Call
+    // 1. جلب الوظائف العامة
     const response = await jobService.getAllJobs(params);
+    let jobs = response.data.jobs || [];
 
-    // <--- 4. تخزين الوظائف في المتغير العام
-    allFetchedJobs = response.data.jobs || [];
+    // 2. 🔥 التحقق من حالة الحفظ (للمستخدم المسجل فقط)
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        // نجلب الوظائف المحفوظة
+        const savedResponse = await jobService.getSavedJobs();
+        const savedJobs = savedResponse.data.jobs || [];
+
+        // ننشئ Set تحتوي على IDs الوظائف المحفوظة لسهولة البحث
+        const savedIds = new Set(savedJobs.map((j) => j._id || j.id));
+
+        // نعدل مصفوفة الوظائف الأصلية
+        jobs = jobs.map((job) => ({
+          ...job,
+          // لو الـ ID موجود في المحفوظات، يبقى isSaved = true
+          isSaved: savedIds.has(job._id || job.id),
+        }));
+      } catch (err) {
+        console.warn("Failed to sync saved status", err);
+        // نكمل عادي حتى لو فشل جلب المحفوظات
+      }
+    }
+
+    // تخزين الوظائف في المتغير العام
+    allFetchedJobs = jobs;
 
     // Update Count
     if (countLabel) {
       countLabel.textContent = `Showing ${allFetchedJobs.length} results`;
     }
 
-    // <--- 5. استدعاء دالة العرض بدون بارامتر
+    // استدعاء دالة العرض
     renderJobs();
 
-    // <--- 6. تحديث زراير الصفحات
+    // تحديث زراير الصفحات
     updatePaginationUI(allFetchedJobs.length);
   } catch (error) {
     console.error("All Jobs Error:", error);
@@ -123,8 +147,6 @@ async function loadJobs() {
 // ============================================================
 function renderJobs() {
   container.innerHTML = "";
-
-  // استخدام المتغير العام
   const jobs = allFetchedJobs;
 
   if (jobs.length === 0) {
@@ -138,13 +160,11 @@ function renderJobs() {
                 <button onclick="window.location.href='/jobs.html'" class="mt-4 px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 transition">Clear Filters</button>
             </div>
         `;
-    // تفريغ الـ pagination لو مفيش نتائج
     const pagContainer = document.getElementById("pagination-container");
     if (pagContainer) pagContainer.innerHTML = "";
     return;
   }
 
-  // <--- 7. معادلة التقسيم (Slicing Logic)
   const start = (currentFilters.page - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   const jobsToShow = jobs.slice(start, end);
@@ -154,7 +174,7 @@ function renderJobs() {
   });
 }
 
-// <--- 8. دوال التحكم في الـ Pagination
+// دوال التحكم في الـ Pagination
 function updatePaginationUI(totalItems) {
   const pagContainer = document.getElementById("pagination-container");
   if (!pagContainer) return;
@@ -163,7 +183,6 @@ function updatePaginationUI(totalItems) {
   const isFirstPage = currentFilters.page === 1;
   const isLastPage = currentFilters.page >= totalPages;
 
-  // لو صفحة واحدة بس، نخفي الزراير
   if (totalPages <= 1) {
     pagContainer.innerHTML = "";
     return;
@@ -198,46 +217,34 @@ function updatePaginationUI(totalItems) {
 function changePage(direction) {
   currentFilters.page += direction;
   if (currentFilters.page < 1) currentFilters.page = 1;
-
   window.scrollTo({ top: 0, behavior: "smooth" });
-
   renderJobs();
   updatePaginationUI(allFetchedJobs.length);
 }
 
 function createJobCard(job) {
-  const timeAgo = getTimeAgo(job.postedAt || job.createdAt); // Added createdAt fallback
+  const timeAgo = getTimeAgo(job.postedAt || job.createdAt);
 
   // ============================================================
-  // 🔥 FIX: التعامل الذكي مع بيانات الشركة (بناءً على نتيجة التيست)
+  // 🔥 FIX: التعامل الذكي مع بيانات الشركة
   // ============================================================
-
-  // 1. تحديد المصدر: هل البيانات في companyId أم company؟
-  // في حالتك، البيانات موجودة داخل object اسمه companyId
   const companyData = job.companyId || job.company || {};
-
-  // 2. استخراج الاسم (حسب التيست الاسم هو companyName)
   const companyName =
     companyData.companyName || companyData.name || "Confidential Company";
 
-  // 3. استخراج اللوجو
   let companyLogo = "https://placehold.co/48x48?text=Logo";
-  // قد يكون الاسم logo أو logoUrl
   const rawLogo = companyData.logo || companyData.logoUrl;
   if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
     companyLogo = rawLogo;
   }
 
-  // 4. استخراج الموقع (الأولوية لموقع الوظيفة، ثم موقع الشركة)
   const location = job.location || companyData.location || "Remote";
-
-  // 5. استخراج ID الشركة للرابط
   const companyLinkId = companyData._id || companyData.id;
-
   // ============================================================
 
   const type = job.type || "Full-time";
 
+  // ✅ أيقونة الحفظ المتزامنة
   const saveIconClass = job.isSaved
     ? "fa-solid text-blue-600"
     : "fa-regular text-slate-400";
@@ -254,7 +261,6 @@ function createJobCard(job) {
     )
     .join("");
 
-  // الروابط
   const jobLink = `/job-details.html?id=${job.id || job._id}`;
   const companyLink = companyLinkId
     ? `/company-details.html?id=${companyLinkId}`
@@ -321,7 +327,6 @@ function createJobCard(job) {
 // 5. Logic: Event Listeners
 // ============================================================
 function setupEventListeners() {
-  // Search Input (Debounce)
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       clearTimeout(searchTimeout);
@@ -333,7 +338,6 @@ function setupEventListeners() {
     });
   }
 
-  // Select Filters
   const handleFilterChange = (key, value) => {
     currentFilters[key] = value;
     currentFilters.page = 1;
@@ -356,7 +360,6 @@ function setupEventListeners() {
       handleFilterChange("experienceLevel", e.target.value)
     );
   }
-  // Button Filter (For immediate trigger if needed)
   if (btnFilter) {
     btnFilter.addEventListener("click", () => loadJobs());
   }
@@ -439,10 +442,8 @@ function initModalEvents() {
   const closeBtn = document.getElementById("btnCloseModal");
   const cancelBtn = document.getElementById("btnCancelModal");
 
-  // 1. التعامل مع الفورم بحذر لمنع التكرار
   let form = document.getElementById("applyForm");
 
-  // دالة الإغلاق
   const close = () => {
     if (modal) modal.classList.add("hidden");
     if (form) form.reset();
@@ -456,22 +457,17 @@ function initModalEvents() {
   };
 
   if (form) {
-    //  الحل السحري: استبدال الفورم بنسخة جديدة منه لحذف أي Event Listeners قديمة
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
-    form = newForm; // تحديث المتغير ليشير للفورم الجديد
+    form = newForm;
 
-    // إعادة تعريف العناصر داخل الفورم الجديد (لأن القديمة اختفت)
     const submitBtn = form.querySelector('button[type="submit"]');
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      e.stopPropagation(); // منع انتشار الحدث
+      e.stopPropagation();
 
       const jobId = modal.dataset.jobId;
-
-      // نستخدم getElementById من الوثيقة لضمان جلب العناصر الحالية
-      // (أو يمكن البحث داخل form مباشرة: form.querySelector('#applyCv'))
       const fileInput = document.getElementById("applyCv");
       const nameInput = document.getElementById("applyName");
       const emailInput = document.getElementById("applyEmail");
@@ -483,7 +479,6 @@ function initModalEvents() {
         return;
       }
 
-      // تجهيز البيانات
       const applyData = {
         fullName: nameInput.value,
         email: emailInput.value,
@@ -499,8 +494,6 @@ function initModalEvents() {
             '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
 
-        console.log("🚀 Submitting Application..."); // Log for debugging
-
         await jobService.applyForJob(jobId, applyData);
 
         Swal.fire({
@@ -514,10 +507,7 @@ function initModalEvents() {
         close();
       } catch (error) {
         console.error("Apply Error Details:", error);
-
         let errorMsg = "Failed to submit application.";
-
-        // التعامل مع خطأ 409 (Conflict) بشكل خاص
         if (error.response && error.response.status === 409) {
           errorMsg = "You have already applied for this job.";
         } else if (
@@ -527,7 +517,6 @@ function initModalEvents() {
         ) {
           errorMsg = error.response.data.message;
         }
-
         Swal.fire({
           icon: "error",
           title: "Application Failed",
@@ -543,7 +532,6 @@ function initModalEvents() {
   }
 }
 
-// Helper
 function getTimeAgo(dateString) {
   if (!dateString) return "Recently";
   const date = new Date(dateString);

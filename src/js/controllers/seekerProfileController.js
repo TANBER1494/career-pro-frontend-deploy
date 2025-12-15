@@ -251,10 +251,13 @@ function createApplicationCard(app) {
   let logoHtml = `<span class="text-blue-500 font-bold text-xl">${company
     .charAt(0)
     .toUpperCase()}</span>`;
+
   if (app.companyLogo && !app.companyLogo.includes("url...")) {
+    // ✅ هذا هو التعديل المهم: إضافة الدومين
     const logoSrc = app.companyLogo.startsWith("http")
       ? app.companyLogo
-      : app.companyLogo;
+      : `http://localhost:3000${app.companyLogo}`;
+
     logoHtml = `<img src="${logoSrc}" alt="${company}" class="w-full h-full object-cover">`;
   }
 
@@ -332,8 +335,17 @@ function createSavedJobCard(job) {
   const companyData = job.companyId || job.company || {};
   const companyName = companyData.companyName || companyData.name || "Company";
   let logo = "https://placehold.co/64x64?text=Job";
-  if (companyData.logo && !companyData.logo.includes("url..."))
-    logo = companyData.logo;
+
+  if (
+    companyData.logo &&
+    !companyData.logo.includes("url...") &&
+    companyData.logo.length > 10
+  ) {
+    // ✅ إضافة الدومين هنا أيضاً
+    logo = companyData.logo.startsWith("http")
+      ? companyData.logo
+      : `http://localhost:3000${companyData.logo}`;
+  }
   const location = job.location || companyData.location || "Remote";
   const type = job.type || "Full-time";
 
@@ -495,7 +507,6 @@ window.removeSavedJob = async function (jobId) {
   }
 };
 
-// ✅ FIX: دالة الحذف الجديدة للطلبات
 window.deleteApplication = async function (appId) {
   const result = await Swal.fire({
     title: "Delete Application?",

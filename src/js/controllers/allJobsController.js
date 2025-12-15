@@ -234,8 +234,11 @@ function createJobCard(job) {
 
   let companyLogo = "https://placehold.co/48x48?text=Logo";
   const rawLogo = companyData.logo || companyData.logoUrl;
+
   if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
-    companyLogo = rawLogo;
+    companyLogo = rawLogo.startsWith("http")
+      ? rawLogo
+      : `http://localhost:3000${rawLogo}`;
   }
 
   const location = job.location || companyData.location || "Remote";

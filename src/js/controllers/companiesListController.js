@@ -177,7 +177,12 @@ function changePage(direction) {
 function createCompanyCard(company) {
   // ... (نفس المتغيرات اللي فوق زي ما هي)
   const name = company.name || company.companyName || "Unknown Company";
-  const logo = company.logo || "https://placehold.co/64x64?text=C";
+  let logo = "https://placehold.co/64x64?text=C";
+  if (company.logo && !company.logo.includes("url...")) {
+    logo = company.logo.startsWith("http")
+      ? company.logo
+      : `http://localhost:3000${company.logo}`;
+  }
   const initial = name.charAt(0).toUpperCase();
   const industry = company.industry || "Technology";
   const location = company.location || "Remote";

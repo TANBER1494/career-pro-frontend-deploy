@@ -124,13 +124,15 @@ function renderCompanyHeader(company) {
       company.logo.length > 10 &&
       !company.logo.includes("url...")
     ) {
-      logoImg.src = company.logo;
+      // ✅ Fix URL
+      logoImg.src = company.logo.startsWith("http")
+        ? company.logo
+        : `http://localhost:3000${company.logo}`;
+
       logoImg.classList.remove("hidden");
       logoInit.classList.add("hidden");
     } else {
-      logoImg.classList.add("hidden");
-      logoInit.classList.remove("hidden");
-      logoInit.innerText = name.charAt(0).toUpperCase();
+      // ... fallback code
     }
   }
 }
@@ -164,8 +166,7 @@ function renderCompanyAbout(company) {
   }
 }
 
-// ============================================================
-// Render Logic: Jobs Cards
+// Render Logic: Jobs Cards (Fix Logo Issue)
 // ============================================================
 function renderCompanyJobs(jobs, companyInfo) {
   const jobsList = document.getElementById("detail-jobs-list");
@@ -185,20 +186,35 @@ function renderCompanyJobs(jobs, companyInfo) {
     return;
   }
 
+  // 1. تجهيز البيانات الأساسية للشركة
   const companyName =
     companyInfo.name || companyInfo.companyName || "Hiring Company";
-  const companyLogo =
-    companyInfo.logo && !companyInfo.logo.includes("url...")
-      ? companyInfo.logo
-      : "https://placehold.co/48x48?text=Logo";
   const location = companyInfo.location || "Remote";
 
+  // 2. 🔥 معالجة اللوجو (الحل الجذري)
+  // نبحث عن logo أو logoUrl (لأن الباك إند قد يرسل أي منهما)
+  let rawLogo = companyInfo.logo || companyInfo.logoUrl;
+  let companyLogo = "https://placehold.co/48x48?text=Logo";
+
+  if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
+    // تنظيف المسار: لو بيبدأ بـ / شيلها عشان منكررهاش
+    // ولو هو رابط كامل http نسيبه زي ما هو
+    if (rawLogo.startsWith("http")) {
+      companyLogo = rawLogo;
+    } else {
+      // إضافة رابط السيرفر (Base URL)
+      companyLogo = `http://localhost:3000${
+        rawLogo.startsWith("/") ? rawLogo : "/" + rawLogo
+      }`;
+    }
+  }
+
+  // رسم الكروت
   jobsList.innerHTML = jobs
     .map((job) => {
       const timeAgo = getTimeAgo(job.postedAt || job.createdAt);
       const jobId = job.id || job._id;
 
-      // ✅ تحديد أيقونة الحفظ بناءً على القيمة المحسوبة
       const saveIconClass = job.isSaved
         ? "fa-solid text-blue-600"
         : "fa-regular text-slate-400";
@@ -207,7 +223,7 @@ function renderCompanyJobs(jobs, companyInfo) {
         .slice(0, 3)
         .map(
           (skill) =>
-            `<span class="px-2 py-1 bg-slate-50 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
+            `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
         )
         .join("");
 
@@ -220,7 +236,7 @@ function renderCompanyJobs(jobs, companyInfo) {
 
             <div class="flex items-start gap-4 mb-3">
                 <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 p-1">
-                    <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md">
+                    <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md" onerror="this.src='https://placehold.co/48x48?text=Error'">
                 </div>
                 <div>
                     <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='/job-details.html?id=${jobId}'">
@@ -259,7 +275,6 @@ function renderCompanyJobs(jobs, companyInfo) {
     })
     .join("");
 }
-
 // ============================================================
 // ✅ GLOBAL ACTIONS (Toggle Save & Apply)
 // ============================================================

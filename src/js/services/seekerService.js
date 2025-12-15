@@ -30,8 +30,6 @@ export const seekerService = {
   async uploadCV(file) {
     const formData = new FormData();
 
-    // 🔴 القديم (الخاطئ): formData.append("cv", file);
-    // 🟢 الجديد (الصحيح): يجب أن يطابق ما ينتظره الباك إند (Multer)
     formData.append("cvFile", file);
 
     const response = await axiosClient.post(
@@ -47,6 +45,12 @@ export const seekerService = {
   // 4. Get My Applications
   async getMyApplications() {
     const response = await axiosClient.get("/job-seeker/applications");
+    return response.data;
+  },
+  async deleteApplication(applicationId) {
+    const response = await axiosClient.delete(
+      `/job-seeker/applications/${applicationId}`
+    );
     return response.data;
   },
 };

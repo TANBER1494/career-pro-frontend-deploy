@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>API Data Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        background: #f4f4f4;
+      }
+      #output {
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        white-space: pre-wrap;
+      }
+      button {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Job Data Structure Tester</h1>
+    <button onclick="testJobs()">Fetch Jobs Data</button>
+    <div id="output">Click the button to see raw data...</div>
+
+    <script type="module">
+      import { jobService } from "./src/js/services/jobService.js";
+
+      window.testJobs = async function () {
+        const outputDiv = document.getElementById("output");
+        outputDiv.textContent = "Loading...";
+
+        try {
+          // نطلب الوظائف
+          const response = await jobService.getAllJobs({ limit: 1 });
+
+          console.log("🔥 FULL RESPONSE:", response);
+
+          // نأخذ أول وظيفة فقط للتحليل
+          const firstJob = response.data.jobs[0];
+
+          console.log("🎯 FIRST JOB OBJECT:", firstJob);
+          console.log("🏢 COMPANY OBJECT:", firstJob?.company);
+
+          // نعرض النتيجة كنص
+          outputDiv.textContent = JSON.stringify(firstJob, null, 2);
+
+          // تحليل المشكلة
+          if (!firstJob.company) {
+            alert("⚠️ كارثة: حقل company غير موجود أو null!");
+          } else if (!firstJob.company.name && !firstJob.company.companyName) {
+            alert(
+              "⚠️ المشكلة: كائن company موجود، لكن لا يحتوي على name أو companyName!"
+            );
+          } else {
+            alert(
+              "✅ البيانات تبدو سليمة! اسم الشركة هو: " +
+                (firstJob.company.name || firstJob.company.companyName)
+            );
+          }
+        } catch (error) {
+          console.error(error);
+          outputDiv.textContent = "Error: " + error.message;
+        }
+      };
+    </script>
+  </body>
+</html>

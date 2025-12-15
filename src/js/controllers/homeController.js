@@ -163,13 +163,24 @@ async function loadFeaturedJobs() {
 }
 
 function createJobCard(job, index) {
-  const timeAgo = getTimeAgo(job.postedAt);
+  const timeAgo = getTimeAgo(job.postedAt || job.createdAt);
 
-  const companyObj = job.company || {};
+  const companyData = job.companyId || job.company || {};
+
   const companyName =
-    companyObj.name || companyObj.companyName || "Hiring Company";
-  const companyLogo = companyObj.logo || "https://placehold.co/48x48?text=Logo";
-  const location = job.location || companyObj.location || "Remote";
+    companyData.companyName || companyData.name || "Confidential Company";
+
+  let companyLogo = "https://placehold.co/48x48?text=Logo";
+  const rawLogo = companyData.logo || companyData.logoUrl;
+  if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
+    companyLogo = rawLogo;
+  }
+
+  const location = job.location || companyData.location || "Remote";
+
+  const companyLinkId = companyData._id || companyData.id;
+
+  // ============================================================
 
   const saveIconClass = job.isSaved
     ? "fa-solid text-blue-600"
@@ -183,8 +194,14 @@ function createJobCard(job, index) {
     )
     .join("");
 
+  // روابط الانتقال
+  const jobLink = `/job-details.html?id=${job.id || job._id}`;
+  const companyLink = companyLinkId
+    ? `/company-details.html?id=${companyLinkId}`
+    : "#";
+
   return `
-    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full">
+    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full text-left">
         
         <button onclick="toggleSaveJob('${
           job.id || job._id
@@ -197,11 +214,15 @@ function createJobCard(job, index) {
                 <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover">
             </div>
             <div>
-                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1" title="${
-                  job.title
-                }">${job.title}</h3>
+                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'" title="${
+    job.title
+  }">
+                    ${job.title}
+                </h3>
                 <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                    <span><i class="fa-regular fa-building mr-1"></i> ${companyName}</span>
+                    <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="window.location.href='${companyLink}'">
+                        <i class="fa-regular fa-building mr-1"></i> ${companyName}
+                    </span>
                     <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
                 </div>
             </div>

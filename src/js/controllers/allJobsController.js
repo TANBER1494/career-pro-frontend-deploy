@@ -206,29 +206,46 @@ function changePage(direction) {
 }
 
 function createJobCard(job) {
-  const timeAgo = getTimeAgo(job.postedAt);
+  const timeAgo = getTimeAgo(job.postedAt || job.createdAt); // Added createdAt fallback
 
-  // Data Fallbacks
-  const company = job.company || {};
-  const companyName = company.name || company.companyName || "Hiring Company";
-  const companyLogo = company.logo || "https://placehold.co/48x48?text=Logo";
-  const location = job.location || company.location || "Remote";
+  // ============================================================
+  // 🔥 FIX: التعامل الذكي مع بيانات الشركة (بناءً على نتيجة التيست)
+  // ============================================================
+
+  // 1. تحديد المصدر: هل البيانات في companyId أم company؟
+  // في حالتك، البيانات موجودة داخل object اسمه companyId
+  const companyData = job.companyId || job.company || {};
+
+  // 2. استخراج الاسم (حسب التيست الاسم هو companyName)
+  const companyName =
+    companyData.companyName || companyData.name || "Confidential Company";
+
+  // 3. استخراج اللوجو
+  let companyLogo = "https://placehold.co/48x48?text=Logo";
+  // قد يكون الاسم logo أو logoUrl
+  const rawLogo = companyData.logo || companyData.logoUrl;
+  if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
+    companyLogo = rawLogo;
+  }
+
+  // 4. استخراج الموقع (الأولوية لموقع الوظيفة، ثم موقع الشركة)
+  const location = job.location || companyData.location || "Remote";
+
+  // 5. استخراج ID الشركة للرابط
+  const companyLinkId = companyData._id || companyData.id;
+
+  // ============================================================
+
   const type = job.type || "Full-time";
 
-  // UI States
   const saveIconClass = job.isSaved
     ? "fa-solid text-blue-600"
     : "fa-regular text-slate-400";
 
-  // Featured Badge logic
   const featuredBadge = job.isFeatured
-    ? `
-        <span class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-semibold font-poppins px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider z-10">
-            Featured
-        </span>`
+    ? `<span class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-semibold font-poppins px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider z-10">Featured</span>`
     : "";
 
-  // Skills
   const skillsHTML = (job.skills || [])
     .slice(0, 3)
     .map(
@@ -237,31 +254,33 @@ function createJobCard(job) {
     )
     .join("");
 
+  // الروابط
+  const jobLink = `/job-details.html?id=${job.id || job._id}`;
+  const companyLink = companyLinkId
+    ? `/company-details.html?id=${companyLinkId}`
+    : "#";
+
   return `
-    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-200 flex flex-col h-full">
+    <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 flex flex-col h-full text-left">
         
         ${featuredBadge}
         
         <button onclick="window.toggleSaveJob('${
           job.id || job._id
-        }', this)" class="absolute top-5 left-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
+        }', this)" class="absolute top-5 right-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
             <i class="${saveIconClass} fa-bookmark text-lg"></i>
         </button>
 
-        <div class="flex items-start gap-4 mb-4 mt-6">
+        <div class="flex items-start gap-4 mb-3">
             <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 p-1">
                 <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md">
             </div>
             <div>
-                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='/job-details.html?id=${
-                  job.id || job._id
-                }'">
+                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'">
                     ${job.title}
                 </h3>
                 <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                    <span class="hover:text-blue-600 cursor-pointer" onclick="window.location.href='/company-details.html?id=${
-                      company.id || company._id
-                    }'">
+                    <span class="font-medium text-slate-700 hover:text-blue-600 cursor-pointer transition-colors" onclick="window.location.href='${companyLink}'">
                         <i class="fa-regular fa-building mr-1"></i> ${companyName}
                     </span>
                     <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
@@ -275,22 +294,22 @@ function createJobCard(job) {
 
         <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
             ${skillsHTML}
-            </div>
-            <span class="w-fit px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
-                ${type}
-            </span>
+        </div>
 
         <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
-            <span class="text-green-600 font-semibold font-poppins text-sm">${
+            <span class="text-green-600 font-semibold font-poppins text-xs">${
               job.salaryRange || "Competitive"
             }</span>
             <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
+                ${type}
+            </span>
             <button onclick="window.applyForJobCheck('${
               job.id || job._id
-            }')" class="w-full py-2  bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
+            }')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
                 Apply Now
             </button>
         </div>

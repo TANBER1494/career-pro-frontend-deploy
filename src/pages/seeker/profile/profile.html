@@ -5,19 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile - CareerPro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-    <script type="module"src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet"/>
-<!-- ملوش لازمة حاليا كده كده انا كتبت ازرق بنفسي -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: { sans: ["Poppins", "sans-serif"] },
             colors: {
-              primary: "#06b6d4", // Cyan-500
-              secondary: "#3b82f6", // Blue-500
+              primary: "#06b6d4",
+              secondary: "#3b82f6",
             },
           },
         },
@@ -29,9 +41,8 @@
         opacity: 1;
       }
       body {
-        opacity: 0; 
+        opacity: 0;
         transition: opacity 0.5s ease-in-out;
-        background: #dce0e0;
         background: linear-gradient(
           150deg,
           rgba(220, 224, 224, 1) 14%,
@@ -43,14 +54,13 @@
         background-attachment: fixed;
         font-family: "Poppins", sans-serif;
       }
-
-      /* --- Magic Navigation Styles (Identical to Company Portal) --- */
+      /* --- Magic Navigation Styles --- */
       .nav-container {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin-right: 100px; /* Offset for centering */
+        margin-right: 100px;
       }
       .magic-menu {
         display: flex;
@@ -108,7 +118,6 @@
       .magic-menu li.active::after {
         opacity: 0.5;
       }
-
       .magic-menu li ion-icon {
         color: #777;
         font-size: 1.5em;
@@ -145,26 +154,25 @@
     >
       <a
         href="dashboard.html"
-        class="text-2xl font-semibold text-blue-500 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="text-2xl font-semibold text-blue-500 cursor-pointer"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
       >
-        <i class="fas fa-briefcase text-2xl "></i>
-        <span >CareerPro Platform</span>
+        <i class="fas fa-briefcase text-2xl"></i>
+        <span>CareerPro Platform</span>
       </a>
-
       <div class="hidden md:flex flex-1 nav-container">
         <div
           class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
         >
           <ul class="magic-menu">
-            <li id="homeBtn"
-              style="--i: #67e3ff;--j:#69a8b8"
-            >
+            <li id="homeBtn" style="--i: #67e3ff; --j: #69a8b8">
               <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon></span>
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
               <span class="title">Home</span>
             </li>
             <li
-              style="--i: #5eb6fd;--j:#0576d3"
+              style="--i: #5eb6fd; --j: #0576d3"
               class="active"
               onclick="window.location.href='profile.html'"
             >
@@ -176,7 +184,6 @@
           </ul>
         </div>
       </div>
-
       <div class="min-w-[100px] flex justify-end">
         <button
           id="btnLogout"
@@ -200,18 +207,14 @@
               <i class="fas fa-pen"></i> Edit Profile
             </button>
           </div>
-
           <div
             class="flex flex-col md:flex-row gap-8 items-center md:items-start"
           >
             <div
-              class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue
-              
-              -100 to-blue-100 flex items-center justify-center text-4xl font-bold text-bluering-blue-500 border-4 border-white shadow-md"
+              class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-4xl font-bold text-blue-500 border-4 border-white shadow-md"
             >
               <span id="view-initials">--</span>
             </div>
-
             <div class="flex-1 text-center md:text-left mt-2">
               <h1
                 id="view-fullName"
@@ -221,32 +224,28 @@
               </h1>
               <p
                 id="view-industry"
-                class="text-lg text-bluering-blue-500 font-medium mb-4"
+                class="text-lg text-blue-500 font-medium mb-4"
               >
                 --
               </p>
-
               <div
                 class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500"
               >
                 <span
                   class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
+                  ><i class="fas fa-map-marker-alt text-gray-400"></i>
+                  <span id="view-location">--</span></span
                 >
-                  <i class="fas fa-map-marker-alt text-gray-400"></i>
-                  <span id="view-location">--</span>
-                </span>
                 <span
                   class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
+                  ><i class="fas fa-envelope text-gray-400"></i>
+                  <span id="view-email">--</span></span
                 >
-                  <i class="fas fa-envelope text-gray-400"></i>
-                  <span id="view-email">--</span>
-                </span>
                 <span
                   class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
+                  ><i class="fas fa-phone text-gray-400"></i>
+                  <span id="view-phone">--</span></span
                 >
-                  <i class="fas fa-phone text-gray-400"></i>
-                  <span id="view-phone">--</span>
-                </span>
               </div>
             </div>
           </div>
@@ -283,9 +282,8 @@
                   <span
                     id="view-gpa-container"
                     class="hidden text-xs bg-green-50 text-green-700 px-2 py-1 rounded border border-green-100"
+                    >GPA: <span id="view-gpa">--</span></span
                   >
-                    GPA: <span id="view-gpa">--</span>
-                  </span>
                 </div>
               </div>
             </div>
@@ -324,21 +322,40 @@
                 </div>
               </div>
             </div>
+
             <div
               class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
             >
-            <div class="flex items-center gap-2 mb-6">
-              <i class="fas fa-bookmark text-blue-500 text-lg"></i>
-              <h2 class="text-xl font-bold text-gray-800">Saved Jobs</h2>
-          </div>
-      
-          <div class="flex flex-col items-center justify-center py-12 text-center">
-              
-              <i class="fas fa-bookmark text-7xl text-gray-400 mb-4"></i>
-              
-              <p class="text-gray-600 font-medium text-lg">No saved jobs yet</p>
-              <p class="text-gray-400 text-sm mt-1">Start saving jobs you're interested in to view them here</p>
-          </div>
+              <div
+                class="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4"
+              >
+                <i class="fas fa-bookmark text-blue-500 text-lg"></i>
+                <h2 class="text-xl font-bold text-gray-800">Saved Jobs</h2>
+                <span
+                  id="savedCount"
+                  class="ml-auto bg-blue-100 text-blue-600 text-xs font-bold px-2 py-1 rounded-full"
+                  >0 Saved</span
+                >
+              </div>
+
+              <div id="savedJobsContainer" class="flex flex-col gap-4 w-full">
+                <div
+                  class="flex flex-col items-center justify-center py-12 text-center"
+                >
+                  <i class="fas fa-bookmark text-7xl text-gray-200 mb-4"></i>
+                  <p class="text-gray-600 font-medium text-lg">
+                    No saved jobs yet
+                  </p>
+                  <p class="text-gray-400 text-sm mt-1">
+                    Start saving jobs you're interested in to view them here
+                  </p>
+                  <a
+                    href="/src/pages/public jobs/jobs.html"
+                    class="mt-4 px-6 py-2 bg-blue-50 text-blue-600 font-medium rounded-lg hover:bg-blue-100 transition"
+                    >Explore Jobs</a
+                  >
+                </div>
+              </div>
             </div>
           </div>
 
@@ -355,22 +372,22 @@
                 <li
                   class="flex justify-between items-center text-sm border-b border-gray-50 pb-2"
                 >
-                  <span class="text-gray-500">Birth Date</span>
-                  <span id="view-birthDate" class="font-medium">--</span>
+                  <span class="text-gray-500">Birth Date</span
+                  ><span id="view-birthDate" class="font-medium">--</span>
                 </li>
                 <li
                   class="flex justify-between items-center text-sm border-b border-gray-50 pb-2"
                 >
-                  <span class="text-gray-500">Gender</span>
-                  <span id="view-gender" class="font-medium capitalize"
+                  <span class="text-gray-500">Gender</span
+                  ><span id="view-gender" class="font-medium capitalize"
                     >--</span
                   >
                 </li>
                 <li
                   class="flex justify-between items-center text-sm border-b border-gray-50 pb-2"
                 >
-                  <span class="text-gray-500">Nationality</span>
-                  <span id="view-country" class="font-medium">--</span>
+                  <span class="text-gray-500">Nationality</span
+                  ><span id="view-country" class="font-medium">--</span>
                 </li>
               </ul>
             </div>
@@ -387,8 +404,7 @@
                 <div>
                   <span class="block text-xs text-gray-400 uppercase mb-1"
                     >Job Type</span
-                  >
-                  <span
+                  ><span
                     id="view-jobType"
                     class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold border border-blue-100"
                     >--</span
@@ -397,8 +413,7 @@
                 <div>
                   <span class="block text-xs text-gray-400 uppercase mb-1"
                     >Workplace Setting</span
-                  >
-                  <span
+                  ><span
                     id="view-workplace"
                     class="inline-block bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs font-bold border border-purple-100"
                     >--</span
@@ -422,9 +437,8 @@
                 href="#"
                 target="_blank"
                 class="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded transition text-sm"
+                ><i class="fas fa-download mr-2"></i> Download CV</a
               >
-                <i class="fas fa-download mr-2"></i> Download CV
-              </a>
             </div>
           </div>
         </div>
@@ -445,7 +459,6 @@
               <i class="fas fa-times"></i> Cancel
             </button>
           </div>
-
           <form id="profileForm" class="space-y-8">
             <div>
               <h4
@@ -457,28 +470,25 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Full Name</label
-                  >
-                  <input
+                  ><input
                     type="text"
                     id="input-fullName"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-bluering-blue-500 outline-none"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Phone Number</label
-                  >
-                  <input
+                  ><input
                     type="tel"
                     id="input-phoneNumber"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-bluering-blue-500 outline-none"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Birth Date</label
-                  >
-                  <input
+                  ><input
                     type="date"
                     id="input-birthDate"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -500,8 +510,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Country</label
-                  >
-                  <input
+                  ><input
                     type="text"
                     id="input-country"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -510,8 +519,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >City</label
-                  >
-                  <input
+                  ><input
                     type="text"
                     id="input-city"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -519,7 +527,6 @@
                 </div>
               </div>
             </div>
-
             <div>
               <h4
                 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-t pt-6"
@@ -544,8 +551,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Years of Exp</label
-                  >
-                  <input
+                  ><input
                     type="number"
                     id="input-yearsOfExperience"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -554,8 +560,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Industry</label
-                  >
-                  <input
+                  ><input
                     type="text"
                     id="input-industry"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -563,7 +568,6 @@
                 </div>
               </div>
             </div>
-
             <div>
               <h4
                 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-t pt-6"
@@ -574,8 +578,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Degree</label
-                  >
-                  <input
+                  ><input
                     type="text"
                     id="input-degree"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -584,8 +587,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >University</label
-                  >
-                  <input
+                  ><input
                     type="text"
                     id="input-university"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -594,8 +596,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >Graduation Year</label
-                  >
-                  <input
+                  ><input
                     type="number"
                     id="input-graduationYear"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -604,8 +605,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1"
                     >GPA (Optional)</label
-                  >
-                  <input
+                  ><input
                     type="number"
                     step="0.01"
                     id="input-gpa"
@@ -641,7 +641,6 @@
                 </div>
               </div>
             </div>
-<a href=""
             <div class="flex justify-end pt-6 border-t border-gray-100">
               <button
                 type="submit"
@@ -649,6 +648,123 @@
                 class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
               >
                 Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div
+        id="applyModal"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
+      >
+        <div
+          class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 md:max-w-xl relative transform transition-all scale-100 overflow-y-auto max-h-[90vh]"
+        >
+          <div class="p-6 pb-2 text-center">
+            <button
+              id="btnCloseModal"
+              class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h2 class="text-xl font-bold text-slate-900">Apply for Job</h2>
+            <p class="text-sm text-slate-500 mt-1">
+              Submit your application and CV for this position
+            </p>
+          </div>
+
+          <form id="applyForm" class="p-6 pt-2 space-y-4" novalidate>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1"
+                  >Full Name <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="applyName"
+                  placeholder="Enter your full name"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1"
+                  >Email <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="email"
+                  id="applyEmail"
+                  placeholder="Enter your email"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1"
+                >Phone Number</label
+              >
+              <input
+                type="tel"
+                id="applyPhone"
+                placeholder="Enter your phone number"
+                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1"
+                >Upload CV/Resume <span class="text-red-500">*</span></label
+              >
+              <div
+                class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer group"
+                onclick="document.getElementById('applyCv').click()"
+              >
+                <div
+                  class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-white transition-colors"
+                >
+                  <i
+                    class="fa-solid fa-arrow-up-from-bracket text-slate-500"
+                  ></i>
+                </div>
+                <p class="text-sm text-slate-600 font-medium">
+                  Drag and drop your CV here or click to browse
+                </p>
+                <p class="text-xs text-slate-400 mt-1">
+                  Supported formats: PDF, DOC, DOCX (Max 5MB)
+                </p>
+                <button
+                  type="button"
+                  class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors"
+                >
+                  Choose File
+                </button>
+                <input type="file" id="applyCv" class="hidden" required />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1"
+                >Cover Letter (Optional)</label
+              >
+              <textarea
+                id="applyCover"
+                rows="4"
+                placeholder="Write a brief cover letter..."
+                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              ></textarea>
+            </div>
+            <div class="flex gap-3 pt-2">
+              <button
+                type="button"
+                id="btnCancelModal"
+                class="flex-1 py-2.5 border border-slate-300 text-slate-600 font-semibold rounded-lg hover:bg-slate-50 text-sm transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-sm transition-colors shadow-md shadow-cyan-500/20"
+              >
+                Submit Application
               </button>
             </div>
           </form>
@@ -664,44 +780,41 @@
       type="module"
       src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
     ></script>
-
     <script type="module" src="/src/js/config/constant.js"></script>
     <script type="module" src="/src/js/utils/axiosClient.js"></script>
     <script type="module" src="/src/js/services/seekerService.js"></script>
-
     <script
       type="module"
       src="/src/js/controllers/seekerProfileController.js"
     ></script>
 
     <script>
+      // ✅ FIX: Script error fix (checking if onclick exists)
       document.addEventListener("DOMContentLoaded", () => {
         const path = window.location.pathname;
         const page = path.split("/").pop() || "profile.html";
         document.querySelectorAll(".magic-menu li").forEach((item) => {
           item.classList.remove("active");
-          // Simple check: if the item's onclick contains the current page name
-          if (item.getAttribute("onclick").includes(page)) {
+          const onClickAttr = item.getAttribute("onclick");
+          if (onClickAttr && onClickAttr.includes(page)) {
             item.classList.add("active");
           }
         });
       });
-  window.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('loaded');
-});
-      const hbtn = document.getElementById('homeBtn');
-  // بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-  if (hbtn) {
-      hbtn.addEventListener('click', function(e) {
-          // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
-          document.body.classList.remove('loaded');
-          // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
-          // لو خليتها 200 والـ CSS 500 الحركة هتقطع
-          setTimeout(() => {
-            window.location.href = '../../../../index.html';
-          }, 350);
+
+      window.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("loaded");
       });
-  }
+
+      const hbtn = document.getElementById("homeBtn");
+      if (hbtn) {
+        hbtn.addEventListener("click", function (e) {
+          document.body.classList.remove("loaded");
+          setTimeout(() => {
+            window.location.href = "../../../../index.html";
+          }, 350);
+        });
+      }
     </script>
   </body>
 </html>

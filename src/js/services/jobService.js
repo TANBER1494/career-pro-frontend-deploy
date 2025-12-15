@@ -65,4 +65,10 @@ export const jobService = {
     const response = await axiosClient.get("/job-seeker/applications");
     return response.data;
   },
+
+  async getSavedJobs() {
+    // نفترض أن هذا هو المسار في الباك إند، تأكد منه
+    const response = await axiosClient.get("/job-seeker/saved-jobs");
+    return response.data;
+  },
 };

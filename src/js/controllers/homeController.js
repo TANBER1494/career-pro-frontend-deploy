@@ -134,15 +134,32 @@ function initSearch() {
   }
 }
 // ============================================================
-// 3. Load Featured Jobs
+// 3. Load Featured Jobs (With Saved Status Check)
 // ============================================================
 async function loadFeaturedJobs() {
   const container = document.getElementById("featured-jobs-container");
   if (!container) return;
 
   try {
-    const response = await jobService.getAllJobs({ limit: 6 });
-    const jobs = response.data.jobs || [];
+    // 1. جلب الوظائف المميزة
+    const response = await jobService.getAllJobs({ limit: 6 }); // أو endpoint الـ featured لو عندك
+    let jobs = response.data.jobs || [];
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const savedResponse = await jobService.getSavedJobs();
+        const savedJobs = savedResponse.data.jobs || [];
+        const savedIds = new Set(savedJobs.map((j) => j._id || j.id));
+
+        jobs = jobs.map((job) => ({
+          ...job,
+          isSaved: savedIds.has(job._id || job.id),
+        }));
+      } catch (err) {
+        console.warn("Could not sync saved jobs state in home");
+      }
+    }
 
     container.innerHTML = "";
 
@@ -392,9 +409,10 @@ window.toggleSaveJob = async function (jobId, btnElement) {
 
   try {
     const icon = btnElement.querySelector("i");
-    const isCurrentlySaved = icon.classList.contains("fa-solid");
+    const isSaved = icon.classList.contains("fa-solid");
 
-    if (isCurrentlySaved) {
+    // Optimistic UI Update (تحديث الواجهة فوراً قبل رد السيرفر)
+    if (isSaved) {
       icon.classList.remove("fa-solid", "text-blue-600");
       icon.classList.add("fa-regular", "text-slate-400");
     } else {
@@ -402,9 +420,17 @@ window.toggleSaveJob = async function (jobId, btnElement) {
       icon.classList.add("fa-solid", "text-blue-600");
     }
 
+    // استدعاء السيرفر
     await jobService.toggleSaveJob(jobId);
+
+    // (اختياري) يمكنك إظهار Toast notification صغير هنا
+    // Toastify({ text: isSaved ? "Removed from saved" : "Job Saved", ... }).showToast();
   } catch (error) {
     console.error("Save Error:", error);
+    // التراجع في حالة الخطأ
+    const icon = btnElement.querySelector("i");
+    // اعكس الحالة مرة أخرى
+    // ...
     Swal.fire("Error", "Failed to save job.", "error");
   }
 };

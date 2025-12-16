@@ -37,9 +37,10 @@
       }
     </style>
   </head>
-  
-  <body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-y-auto py-12 relative text-gray-800">
 
+  <body
+    class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-y-auto py-12 relative text-gray-800"
+  >
     <a
       href="../../../index.html"
       class="absolute top-8 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors text-lg no-underline z-50"
@@ -56,7 +57,6 @@
         id="cardInner"
         class="relative w-full h-full duration-700 transform-style-3d"
       >
-        
         <div
           id="frontFace"
           class="relative w-full backface-hidden bg-white p-10 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
@@ -130,6 +130,15 @@
                 Sign Up
               </button>
             </p>
+
+            <div class="text-center mt-3">
+              <a
+                href="forgot-password.html"
+                class="text-blue-600 font-bold hover:text-blue-600 transition-colors hover:underline"
+              >
+                Forgot your password ?
+              </a>
+            </div>
           </form>
         </div>
 
@@ -363,10 +372,10 @@
       function flipCard() {
         const cardInner = document.getElementById("cardInner");
         const isGoingToSignup = !cardInner.classList.contains("rotate-y-180");
-        
+
         // 1. لف الكارد
         cardInner.classList.toggle("rotate-y-180");
-        
+
         // 2. غير الطول فوراً عشان الانيميشن يبدأ مع اللف
         updateCardHeight(isGoingToSignup);
       }
@@ -397,7 +406,9 @@
         }
 
         setTimeout(() => {
-          const isSignup = document.getElementById("cardInner").classList.contains("rotate-y-180");
+          const isSignup = document
+            .getElementById("cardInner")
+            .classList.contains("rotate-y-180");
           updateCardHeight(isSignup);
         }, 50);
       }
@@ -409,35 +420,43 @@
       });
 
       window.addEventListener("DOMContentLoaded", () => {
-    const cardInner = document.getElementById("cardInner");
-    const container = document.getElementById("mainContainer");
-    
-    // 1. قراءة المود من الرابط
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode');
+        const cardInner = document.getElementById("cardInner");
+        const container = document.getElementById("mainContainer");
 
-    // 2. تطبيق الوضع المبدئي (بدون أنيميشن نهائيًا)
-    if (mode === 'signup') {
-        // نلف الكارد فوراً (بما اننا شيلنا ال transition من ال HTML، اللفة هتكون لحظية)
-        cardInner.classList.add("rotate-y-180");
-        toggleAccountType("job_seeker"); 
-        updateCardHeight(true); 
-    } else {
-        cardInner.classList.remove("rotate-y-180");
-        toggleAccountType("job_seeker");
-        updateCardHeight(false);
-    }
+        // 1. قراءة المود من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get("mode");
 
-    // 🔥 السطر السحري (Force Reflow)
-    // السطر ده بيجبر المتصفح انه "يعتمد" الوضع الحالي (سواء مقلوب او معدول) كأنه الوضع الاصلي
-    // قبل ما نضيف اي انيميشن
-    void cardInner.offsetWidth; 
+        // 2. تطبيق الوضع المبدئي (بدون أنيميشن نهائيًا)
+        if (mode === "signup") {
+          // نلف الكارد فوراً (بما اننا شيلنا ال transition من ال HTML، اللفة هتكون لحظية)
+          cardInner.classList.add("rotate-y-180");
+          toggleAccountType("job_seeker");
+          updateCardHeight(true);
+        } else {
+          cardInner.classList.remove("rotate-y-180");
+          toggleAccountType("job_seeker");
+          updateCardHeight(false);
+        }
 
-    // 3. دلوقتي بس نضيف كلاسات الأنيميشن للجافاسكريبت
-    // عشان لما اليوزر يدوس بعد كدة، يلف بنعومة
-    cardInner.classList.add("transition-all", "duration-700", "ease-in-out");
-    container.classList.add("transition-all", "duration-500", "ease-in-out");
-});
+        // 🔥 السطر السحري (Force Reflow)
+        // السطر ده بيجبر المتصفح انه "يعتمد" الوضع الحالي (سواء مقلوب او معدول) كأنه الوضع الاصلي
+        // قبل ما نضيف اي انيميشن
+        void cardInner.offsetWidth;
+
+        // 3. دلوقتي بس نضيف كلاسات الأنيميشن للجافاسكريبت
+        // عشان لما اليوزر يدوس بعد كدة، يلف بنعومة
+        cardInner.classList.add(
+          "transition-all",
+          "duration-700",
+          "ease-in-out"
+        );
+        container.classList.add(
+          "transition-all",
+          "duration-500",
+          "ease-in-out"
+        );
+      });
     </script>
   </body>
 </html>

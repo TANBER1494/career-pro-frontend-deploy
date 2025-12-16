@@ -53,8 +53,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        margin-right: 100px;
+        /* width: 100%;
+        margin-right: 100px; */
       }
       .magic-menu {
         display: flex;
@@ -270,75 +270,141 @@
         transform: translateY(-25px);
         color: cornflowerblue;
       }
+      /* عدل الكود ده في الـ CSS عندك */
+      .job-card-scroll {
+          opacity: 0; /* شيلنا !important عشان ندي فرصة للمتصفح */
+          transform: translateY(30px); /* قللنا المسافة لـ 30 عشان الحركة تكون أهدى */
+          transition: all 0.6s ease-out;
+      }
+
+      .job-card-scroll.in-view {
+          opacity: 1;
+          transform: translateY(0);
+      }
+      .scroll-top-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px; /* مكان الزرار (يمين أسفل الشاشة) */
+        width: 50px;
+        height: 50px;
+        background-color: rgb(32, 99, 255);
+        border: 2px solid #bae6fd; /* لون سماوي فاتح */
+        border-radius: 50%; /* دائرة */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 9999;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* أنيميشن ناعم */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        
+        /* حالة الإخفاء المبدئي */
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+      }
+
+      /* كلاس الظهور (الجافاسكريبت هيضيفه) */
+      .scroll-top-btn.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      /* --- تأثير الـ Hover (السحر كله هنا) --- */
+      .scroll-top-btn:hover {
+        width: 140px; /* العرض يكبر */
+        border-radius: 50px; /* يتحول لكبسولة */
+      }
+
+      /* حركة السهم */
+      .scroll-top-btn .icon {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        fill: white;
+        transition: all 0.3s ease;
+      }
+
+      /* لما تقف عليه، السهم يطير لفوق */
+      .scroll-top-btn:hover .icon {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      /* حركة النص */
+      .scroll-top-btn .text {
+        position: absolute;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        opacity: 0;
+        transform: translateY(50px); /* جاي من تحت */
+        transition: all 0.3s ease;
+      }
+
+      /* لما تقف عليه، النص يظهر */
+      .scroll-top-btn:hover .text {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+
+<button id="backToTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+  <svg class="icon" viewBox="0 0 384 512">
+    <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
+  </svg>
+  
+  <span class="text">Scroll Top</span>
+</button>
     </style>
   </head>
   <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
-    <nav
-      id="navbar"
-      class="font-poppins flex justify-between items-center py-2 px-6 lg:px-20 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300"
-    >
-      <div
-        id="logo"
-        class="text-2xl font-semibold text-blue-500 cursor-pointer"
-        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-      >
-        CareerPro Platform
+    <nav id="navbar" class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 h-[65px] shadow-sm mb-8 w-full px-6 lg:px-20">
+    
+      <div class="flex items-center justify-between w-full h-full">
+          
+          <div class="flex-1 flex justify-start min-w-0">
+              <div 
+                  id="logo" 
+                  class="text-xl font-semibold text-blue-500 cursor-pointer whitespace-nowrap truncate" 
+                  onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+              >
+                  CareerPro Platform
+              </div>
+          </div>
+  
+          <div class="hidden md:flex flex-none justify-center">
+              <div class="bg-gray-50 px-6 py-1.5 rounded-full border border-gray-200 shadow-inner">
+                   <ul class="magic-menu">
+                      <li style="--i: #5eb6fd; --j: #0576d3" class="nav-item active" data-target="home">
+                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                         <span class="title">Home</span>
+                      </li>
+                      <li style="--i: #484c506c; --j: #484c50" class="nav-item" data-target="services">
+                         <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
+                         <span class="title">Services</span>
+                      </li>
+                      <li style="--i: #67e3ff; --j: #69a8b8" class="nav-item" data-target="companies">
+                         <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
+                         <span class="title">Companies</span>
+                      </li>
+                      <li style="--i: #057a22; --j: #1dbe46" class="nav-item" data-target="jobs">
+                         <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+                         <span class="title">Jobs</span>
+                      </li>
+                   </ul>
+              </div>
+          </div>
+  
+          <div class="flex-1 flex justify-end min-w-0">
+               <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+                  </div>
+          </div>
+  
       </div>
-
-      <div class="hidden md:flex flex-1 nav-container">
-        <div
-          class="bg-gray-50 px-6 py-1.5 rounded-full border border-gray-200 shadow-inner"
-        >
-          <ul class="magic-menu">
-            <li
-              style="--i: #5eb6fd; --j: #0576d3"
-              class="nav-item active"
-              data-target="home"
-            >
-              <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon
-              ></span>
-              <span class="title">Home</span>
-            </li>
-            <li
-              style="--i: #484c506c; --j: #484c50"
-              class="nav-item"
-              data-target="services"
-            >
-              <span class="icon"
-                ><ion-icon name="sparkles-outline"></ion-icon
-              ></span>
-              <span class="title">Services</span>
-            </li>
-            <li
-              style="--i: #67e3ff; --j: #69a8b8"
-              class="nav-item"
-              data-target="companies"
-            >
-              <span class="icon"
-                ><ion-icon name="business-outline"></ion-icon
-              ></span>
-              <span class="title">Companies</span>
-            </li>
-            <li
-              style="--i: #057a22; --j: #1dbe46"
-              class="nav-item"
-              data-target="jobs"
-            >
-              <span class="icon"
-                ><ion-icon name="briefcase-outline"></ion-icon
-              ></span>
-              <span class="title">Jobs</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div
-        class="flex items-center space-x-6 min-w-[150px] justify-end"
-        id="auth-buttons-container"
-      ></div>
-    </nav>
+  </nav>
 
     <section
       class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"
@@ -648,11 +714,11 @@
     </section>
 
     <div
-      class="w-full px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-20 z-10"
+      class="w-full px-6 lg:px-20 flex flex-col items-center text-center pt-10 pb-4 z-10"
     >
       <section id="companies" class="w-full py-24">
         <div class="container mx-auto px-6 max-w-7xl text-left">
-          <div class="text-center mb-16">
+          <div class="text-center mb-8">
             <h2
               class="font-poppins font-normal text-5xl lg:text-4xl leading-tight text-slate-900 mb-4"
             >
@@ -677,7 +743,7 @@
             <a
               href="/./src/pages/public companies/companies.html"
               onclick="transitionToPage(event, this.href)"
-              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-md transition-link"
+              class="bg-slate-50 text-slate-700 border-2 border-slate-300 hover:border-blue-400 hover:bg-slate-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm transition-link"
             >
               View All Companies
             </a>
@@ -716,7 +782,7 @@
             <a
               href="/./src/pages/public jobs/jobs.html"
               onclick="transitionToPage(event, this.href)"
-              class="bg-slate-50 text-slate-700 border-2 border-slate-300 font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-md transition-link"
+              class="bg-slate-50 text-slate-700 border-2 border-slate-300 hover:border-blue-400 hover:bg-slate-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm transition-link"
             >
               View All Jobs
             </a>

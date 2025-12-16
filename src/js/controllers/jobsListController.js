@@ -1,11 +1,13 @@
 import { jobManagementService } from "../services/jobManagementService.js";
+import { authService } from "../services/authService.js";
 import Swal from "sweetalert2";
 import Toastify from "toastify-js";
 
 // DOM Elements
 const jobsContainer = document.getElementById("jobsContainer");
-const searchInput = document.getElementById("searchInput");
+const searchInput = document.getElementById("search-input");
 const statusFilter = document.getElementById("statusFilter");
+const btnLogout = document.getElementById("btnLogout");
 
 // Stats Elements
 const statActive = document.getElementById("stat-active");
@@ -70,7 +72,7 @@ function renderJobs(jobs) {
                 <div class="text-gray-300 mb-4"><i class="fas fa-briefcase text-5xl"></i></div>
                 <h3 class="text-lg font-medium text-gray-900">No jobs found</h3>
                 <p class="text-gray-500 mt-1 mb-6">Get started by creating your first job posting.</p>
-                <a href="post_job.html" class="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-lg font-medium transition shadow-sm">
+                <a href="post_job.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition shadow-sm">
                     <i class="fas fa-plus mr-2"></i> Post New Job
                 </a>
             </div>
@@ -100,7 +102,7 @@ function renderJobs(jobs) {
             <div class="flex flex-col md:flex-row justify-between gap-6">
                 <div class="flex-1">
                     <div class="flex items-center gap-3 mb-2">
-                        <h3 class="text-xl font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">
+                        <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                             ${job.title}
                         </h3>
                         
@@ -158,7 +160,7 @@ function renderJobs(jobs) {
                     <div class="text-right hidden md:block">
                          <a href="applications.html?jobId=${
                            job._id
-                         }" class="text-sm text-cyan-600 hover:underline font-medium flex items-center justify-end gap-1">
+                         }" class="text-sm text-blue-600 hover:underline font-medium flex items-center justify-end gap-1">
                             View Applications <i class="fas fa-arrow-right text-xs"></i>
                         </a>
                     </div>
@@ -166,7 +168,7 @@ function renderJobs(jobs) {
                     <div class="flex items-center gap-2 w-full md:w-auto justify-end">
                         <button onclick="handleEdit('${
                           job._id
-                        }')" class="p-2 text-gray-500 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition" title="Edit Job">
+                        }')" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-cyan-50 rounded-lg transition" title="Edit Job">
                             <i class="fas fa-pen"></i>
                         </button>
                         
@@ -282,3 +284,9 @@ function filterJobs() {
 
 searchInput.addEventListener("input", filterJobs);
 statusFilter.addEventListener("change", filterJobs);
+
+if (btnLogout) {
+  btnLogout.addEventListener("click", () => {
+    authService.logout();
+  });
+}

@@ -26,8 +26,8 @@ function initAuthButtons() {
   if (!authContainer) return;
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
-
-  if (token && user) {
+  authContainer.className = "flex items-center gap-3 justify-end";
+      if (token && user) {
     // تحديد الرابط والاسم والأيقونة حسب نوع الحساب
     let navLinkHtml = "";
 
@@ -37,20 +37,34 @@ function initAuthButtons() {
     } else {
       // ✅ تم تصحيح المسار هنا (إضافة مجلد profile)
       navLinkHtml = `
-                <a id="profileBtn" href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 ">
-                    <i class="fas fa-user-circle text-lg"></i> Profile
-                </a>`;
+           <a id="profileBtn" href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+            <i class="fas fa-user-circle text-lg"></i> Profile
+        </a>`;
     }
 
     // حقن الكود في النافبار
     authContainer.innerHTML = `
             ${navLinkHtml}
             <button
-          id="btnLogout"
-          class="text-gray-600 hover:text-red-600 font-bold flex items-center gap-2 transition duration-300"
-        >
-          <i class="fas fa-sign-out-alt"></i> Log out
-        </button>
+                id="btnLogout"
+                class="shrink-0 relative group flex items-center justify-start rounded-full cursor-pointer overflow-hidden transition-all duration-300 shadow-lg hover:w-32 hover:rounded-lg z-10"
+                style="background-color: #dc2626; width: 44px; height: 44px; min-width: 44px; min-height: 44px;"
+            >
+                <div
+                    class="absolute left-0 top-0 flex items-center justify-center transition-all duration-300 group-hover:justify-start group-hover:pl-3"
+                    style="width: 44px; height: 44px;"
+                >
+                    <svg class="w-5 h-5 text-white fill-current" viewBox="0 0 512 512">
+                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                    </svg>
+                </div>
+
+                <div
+                    class="whitespace-nowrap text-white text-sm font-bold opacity-0 translate-x-10 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-9"
+                >
+                    Logout
+                </div>
+            </button>
         `;
 
     document.getElementById("btnLogout").addEventListener("click", () => {
@@ -172,10 +186,32 @@ async function loadFeaturedJobs() {
     jobs.forEach((job, index) => {
       container.insertAdjacentHTML("beforeend", createJobCard(job, index + 1));
     });
+    const observerOptions = {
+      root: null,
+      threshold: 0.1, // بمجرد ظهور 10% فقط
+      rootMargin: "0px" // شيلنا الـ -100px عشان تظهر فوراً
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+        } else {
+          // لو عايزها تختفي وتظهر تاني مع السكرول سيب السطر ده
+          // لو عايزها تظهر مرة واحدة وتثبت، امسح السطر ده
+          entry.target.classList.remove("in-view"); 
+        }
+      });
+    }, observerOptions);
+
+    const cards = container.querySelectorAll('.job-card-scroll');
+    cards.forEach(card => observer.observe(card));
+
   } catch (error) {
     console.error("Jobs Error:", error);
-    container.innerHTML =
-      '<p class="col-span-full text-center text-red-400">Failed to load jobs.</p>';
+    // في حالة الخطأ، شيل الكلاس عشان المحتوى يظهر وميضعش
+    container.querySelectorAll('.job-card-scroll').forEach(el => el.style.opacity = 1);
+    container.innerHTML = '<p class="col-span-full text-center text-red-400">Failed to load jobs.</p>';
   }
 }
 
@@ -220,9 +256,12 @@ function createJobCard(job, index) {
     ? `/company-details.html?id=${companyLinkId}`
     : "#";
 
+    const delay = (index % 6) * 100;
+
   return `
-    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full text-left">
-        
+<div class="job-card-scroll bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full text-left"
+        style="transition-delay: ${delay}ms;">  
+
         <button onclick="toggleSaveJob('${
           job.id || job._id
         }', this)" class="absolute top-5 left-5 hover:text-blue-600 transition-colors z-20" title="Save Job">
@@ -359,16 +398,16 @@ function createCompanyCard(company) {
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
                         ${shortDesc}
                     </p>
+                    <button onclick="window.location.href='/src/pages/public companies/companyDetails.html?id=${
+                      company.id || company._id
+                    }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
+                        View Jobs
+                    </button>
                 </div>
 
             </div>
         </div>
         
-        <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${
-          company.id || company._id
-        }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
-            View Jobs
-        </button>
     </div>
     `;
 }
@@ -642,6 +681,26 @@ document.addEventListener("click", function (e) {
     setTimeout(function () {
       window.location.href = targetUrl;
     }, 350);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const backToTopBtn = document.getElementById("backToTopBtn");
+
+  if (backToTopBtn) {
+    // 1. التحكم في الظهور عند السكرول
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add("show");
+      } else {
+        backToTopBtn.classList.remove("show");
+      }
+    });
+
+    // 2. عند الضغط يطلع لفوق
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 });
 

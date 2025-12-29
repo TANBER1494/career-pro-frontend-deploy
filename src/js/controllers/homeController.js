@@ -3,7 +3,15 @@ import { jobService } from "../services/jobService.js";
 import { companyDiscoveryService } from "../services/companyDiscoveryService.js";
 import { authService } from "../services/authService.js";
 import Swal from "sweetalert2";
+import { initPixelBlast } from './pixelBlast.js';
 
+initPixelBlast('#pixel-blast-container', {
+    // تقدري تعدلي الإعدادات هنا زي ما كنتي بتعملي في React Props
+    color: '#3b82f6', // لون أزرق مثلاً
+    variant: 'square', // شكل مربع
+    pixelSize: 8,
+    speed: 0.5
+});
 // ============================================================
 // 1. Initialization
 // ============================================================
@@ -37,7 +45,7 @@ function initAuthButtons() {
     } else {
       // ✅ تم تصحيح المسار هنا (إضافة مجلد profile)
       navLinkHtml = `
-           <a id="profileBtn" href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+          <a id="profileBtn" href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
             <i class="fas fa-user-circle text-lg"></i> Profile
         </a>`;
     }
@@ -45,26 +53,28 @@ function initAuthButtons() {
     // حقن الكود في النافبار
     authContainer.innerHTML = `
             ${navLinkHtml}
-            <button
-                id="btnLogout"
-                class="shrink-0 relative group flex items-center justify-start rounded-full cursor-pointer overflow-hidden transition-all duration-300 shadow-lg hover:w-32 hover:rounded-lg z-10"
-                style="background-color: #dc2626; width: 44px; height: 44px; min-width: 44px; min-height: 44px;"
-            >
-                <div
-                    class="absolute left-0 top-0 flex items-center justify-center transition-all duration-300 group-hover:justify-start group-hover:pl-3"
-                    style="width: 44px; height: 44px;"
-                >
-                    <svg class="w-5 h-5 text-white fill-current" viewBox="0 0 512 512">
-                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                    </svg>
-                </div>
+            <div class="min-w-[150px] flex justify-end">
+        <button 
+        id="btnLogout"
+  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+>
+  <div
+    class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
+  >
+    <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+      <path
+        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+      ></path>
+    </svg>
+  </div>
+  <div
+    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
+  >
+    Logout
+  </div>
+</button>
 
-                <div
-                    class="whitespace-nowrap text-white text-sm font-bold opacity-0 translate-x-10 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-9"
-                >
-                    Logout
-                </div>
-            </button>
+      </div>
         `;
 
     document.getElementById("btnLogout").addEventListener("click", () => {
@@ -129,6 +139,14 @@ function initSearch() {
     browseBtn.addEventListener("click", (e) => {
       e.preventDefault();
       document.getElementById("jobs")?.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+
+  const logoBtn = document.getElementById("logoBtn");
+  if (logoBtn) {
+    logoBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 

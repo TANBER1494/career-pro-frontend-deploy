@@ -10,7 +10,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet"type="text/css"href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
+    <link rel="website icon" type="png" href="../../../../assets/imgs/Logo.png"/>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
       body.loaded {
         opacity: 1;
       }
@@ -134,10 +136,10 @@
     >
       <a
         href="dashboard.html"
-        class="text-2xl font-semibold text-blue-500 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-      >
-      <i class="fas fa-building"></i> 
-      <span>Company Portal</span>
+        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+    >
+    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+      <span class="font-lexend font-simibold not-italic">Company Portal</span>
       </a>
 
       <div class="hidden md:flex flex-1 nav-container">
@@ -175,7 +177,7 @@
       <div class="min-w-[150px] flex justify-end">
         <button 
         id="btnLogout"
-  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-200 shadow-lg hover:w-32 hover:rounded-lg active:translate-x-1 active:translate-y-1"
+  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
 >
   <div
     class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
@@ -187,7 +189,7 @@
     </svg>
   </div>
   <div
-    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
   >
     Logout
   </div>
@@ -279,7 +281,7 @@
       const targetPage = this.getAttribute('data-url');
       setTimeout(() => {
       window.location.href = targetPage;
-        }, 200);
+        }, 400);
     });
 });
 

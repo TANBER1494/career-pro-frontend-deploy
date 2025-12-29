@@ -3,14 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CareerPro Platform</title>
+    <title>AI-Career Guidance</title>
 
     <link href="/src/css/main.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
+    <link rel="website icon" type="png" href="assets/imgs/Logo.png"/>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -29,6 +34,7 @@
 
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+      @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
       body.loaded {
         opacity: 1;
       }
@@ -296,7 +302,7 @@
         cursor: pointer;
         z-index: 9999;
         overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* أنيميشن ناعم */
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* أنيميشن ناعم */
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         
         /* حالة الإخفاء المبدئي */
@@ -324,7 +330,7 @@
         width: 20px;
         height: 20px;
         fill: white;
-        transition: all 0.3s ease;
+        transition: all 0.6s ease;
       }
 
       /* لما تقف عليه، السهم يطير لفوق */
@@ -341,13 +347,22 @@
         font-weight: bold;
         opacity: 0;
         transform: translateY(50px); /* جاي من تحت */
-        transition: all 0.3s ease;
+        transition: all 0.5s ease;
       }
 
       /* لما تقف عليه، النص يظهر */
       .scroll-top-btn:hover .text {
         opacity: 1;
         transform: translateY(0);
+      }
+      #pixel-blast-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* خلفية */
+        overflow: hidden;
       }
     </style>
 
@@ -361,50 +376,47 @@
     </style>
   </head>
   <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
-    <nav id="navbar" class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 h-[65px] shadow-sm mb-8 w-full px-6 lg:px-20">
-    
-      <div class="flex items-center justify-between w-full h-full">
-          
-          <div class="flex-1 flex justify-start min-w-0">
-              <div 
-                  id="logo" 
-                  class="text-xl font-semibold text-blue-500 cursor-pointer whitespace-nowrap truncate" 
-                  onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-              >
-                  CareerPro Platform
-              </div>
-          </div>
-  
-          <div class="hidden md:flex flex-none justify-center">
-              <div class="bg-gray-50 px-6 py-1.5 rounded-full border border-gray-200 shadow-inner">
-                   <ul class="magic-menu">
-                      <li style="--i: #5eb6fd; --j: #0576d3" class="nav-item active" data-target="home">
-                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                         <span class="title">Home</span>
-                      </li>
-                      <li style="--i: #484c506c; --j: #484c50" class="nav-item" data-target="services">
-                         <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
-                         <span class="title">Services</span>
-                      </li>
-                      <li style="--i: #67e3ff; --j: #69a8b8" class="nav-item" data-target="companies">
-                         <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
-                         <span class="title">Companies</span>
-                      </li>
-                      <li style="--i: #057a22; --j: #1dbe46" class="nav-item" data-target="jobs">
-                         <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
-                         <span class="title">Jobs</span>
-                      </li>
-                   </ul>
-              </div>
-          </div>
-  
-          <div class="flex-1 flex justify-end min-w-0">
-               <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-                  </div>
-          </div>
-  
+    <nav
+      class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full"
+    >
+      <a
+        id="logoBtn"
+        href="dashboard.html"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+      <img src="assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+        <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
+      </a>
+      <div class="hidden md:flex flex-1 nav-container ">
+        <div
+          class="bg-white/50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
+        >
+        <ul class="magic-menu">
+          <li style="--i: #5eb6fd; --j: #0576d3" class="nav-item active" data-target="home">
+            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+            <span class="title">Home</span>
+          </li>
+          <li style="--i: #484c506c; --j: #484c50" class="nav-item" data-target="services">
+            <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
+            <span class="title">Services</span>
+          </li>
+          <li style="--i: #67e3ff; --j: #69a8b8" class="nav-item" data-target="companies">
+            <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
+            <span class="title">Companies</span>
+          </li>
+          <li style="--i: #057a22; --j: #1dbe46" class="nav-item" data-target="jobs">
+            <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+            <span class="title">Jobs</span>
+          </li>
+      </ul>
+        </div>
       </div>
-  </nav>
+      <div class="w-auto flex justify-end min-w-0">
+        <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+            </div>
+    </div>
+    </nav>
 
     <section
       class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"
@@ -1016,7 +1028,7 @@
         </div>
       </div>
     </footer>
-
+    <div id="pixel-blast-container"></div>
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/toastify-js"

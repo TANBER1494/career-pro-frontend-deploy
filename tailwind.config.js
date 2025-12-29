@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
+        lexend: ['Lexend', 'sans-serif'],
+        albert: ['Albert Sans', 'sans-serif'],
+        hegarty: ['BBH Hegarty', 'sans-serif'],
       },
 
       animation: {

@@ -47,4 +47,25 @@ export const authService = {
     const response = await axiosClient.post("/auth/resend-code", { email });
     return response.data;
   },
+
+  // ============================================================
+  // (Password Reset)
+  // ============================================================
+
+  // 7. طلب رابط استعادة كلمة المرور (Forgot Password)
+  async forgotPassword(email) {
+    // نرسل الإيميل للباك إند
+    const response = await axiosClient.post("/auth/forgot-password", { email });
+    return response.data;
+  },
+
+  // 8. تعيين كلمة المرور الجديدة (Reset Password)
+  async resetPassword(token, password, passwordConfirm) {
+    // نرسل التوكن في الرابط، والباسورد الجديد في الجسم (Body)
+    const response = await axiosClient.patch(`/auth/reset-password/${token}`, {
+      password,
+      passwordConfirm,
+    });
+    return response.data;
+  },
 };

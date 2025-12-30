@@ -239,7 +239,7 @@ function renderCompanyJobs(jobs, companyInfo) {
                     <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md" onerror="this.src='https://placehold.co/48x48?text=Error'">
                 </div>
                 <div>
-                    <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='/job-details.html?id=${jobId}'">
+                    <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1" >
                         ${job.title}
                     </h3>
                     <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
@@ -309,6 +309,7 @@ window.toggleSaveJob = async function (jobId, btnElement) {
 };
 
 // 2. Open Apply Modal (Using the Profile Page Logic)
+// 2. Open Apply Modal (Using the Profile Page Logic)
 window.openApplyModal = function (jobId) {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -341,42 +342,94 @@ window.openApplyModal = function (jobId) {
   }
 };
 
+// دالة الإغلاق العامة
 window.closeApplyModal = function () {
   const modal = document.getElementById("applyModal");
   if (modal) modal.classList.add("hidden");
+  
+  const form = document.getElementById("applyForm");
+  if (form) form.reset();
 };
 
 function initModalEvents() {
   const modal = document.getElementById("applyModal");
   const closeBtn = document.getElementById("btnCloseModal");
-  const cancelBtn = document.getElementById("btnCancelModal");
-  const form = document.getElementById("applyForm");
-  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  
+  // لاحظي: شيلنا تعريف cancelBtn من هنا لأنه هيتغير تحت
+  // const cancelBtn = document.getElementById("btnCancelModal"); <-- مش محتاجينه هنا
 
+  let form = document.getElementById("applyForm");
+
+  // --- دالة الإغلاق الموحدة ---
   const close = () => {
     if (modal) modal.classList.add("hidden");
     if (form) form.reset();
+
+    // إعادة تعيين نص الملف
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+        if (fileNameDisplay) {
+            fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
+            fileNameDisplay.classList.remove('black', 'font-bold');
+        }
+    }
   };
 
   if (closeBtn) closeBtn.onclick = close;
-  if (cancelBtn) cancelBtn.onclick = close;
-
+  
+  // إغلاق عند الضغط خارج المودال
   window.onclick = (e) => {
     if (e.target === modal) close();
   };
 
+  // إغلاق عند الضغط على Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        close();
+    }
+  });
+
   if (form) {
+    // 1. نسخ الفورم
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
+    form = newForm; 
 
+    // ✅✅✅ الجزء المضاف لتصليح زرار Cancel ✅✅✅
+    // بنجيب الزرار من "الفورم الجديد" ونربطه بدالة القفل
+    const newCancelBtn = newForm.querySelector("#btnCancelModal");
+    if (newCancelBtn) {
+        newCancelBtn.onclick = close; // ربطناه بدالة الإغلاق
+        newCancelBtn.type = "button"; // تأكيد إنه مش submit
+    }
+    // ✅✅✅ نهاية التعديل ✅✅✅
+
+    // كود إظهار اسم الملف
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0] && fileNameDisplay) {
+                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+                fileNameDisplay.classList.add('black', 'font-bold');
+            }
+        });
+    }
+
+    // تعريف زر الإرسال الجديد
     const newSubmitBtn = newForm.querySelector('button[type="submit"]');
 
+    // Submit Logic
     newForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const jobId = modal.dataset.jobId;
-      const fileInput = document.getElementById("applyCv");
+      const currentFileInput = document.getElementById("applyCv");
 
-      if (!fileInput.files || fileInput.files.length === 0) {
+      if (!currentFileInput.files || currentFileInput.files.length === 0) {
         Swal.fire("Warning", "Please upload your CV.", "warning");
         return;
       }
@@ -385,15 +438,14 @@ function initModalEvents() {
         fullName: document.getElementById("applyName").value,
         email: document.getElementById("applyEmail").value,
         phone: document.getElementById("applyPhone").value,
-        cvFile: fileInput.files[0],
+        cvFile: currentFileInput.files[0],
         coverLetter: document.getElementById("applyCover").value,
       };
 
       try {
         if (newSubmitBtn) {
           newSubmitBtn.disabled = true;
-          newSubmitBtn.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          newSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
 
         await jobService.applyForJob(jobId, applyData);

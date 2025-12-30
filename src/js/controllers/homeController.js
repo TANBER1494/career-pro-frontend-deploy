@@ -499,115 +499,126 @@ window.toggleSaveJob = async function (jobId, btnElement) {
 };
 
 window.closeApplyModal = function () {
-  document.getElementById("applyModal").classList.add("hidden");
+  const modal = document.getElementById("applyModal");
+  if (modal) modal.classList.add("hidden");
+  
+  const form = document.getElementById("applyForm");
+  if (form) form.reset();
 };
 
-// ============================================================
-// Modal & Apply Logic (Fixed Double Submission)
-// ============================================================
 function initModalEvents() {
   const modal = document.getElementById("applyModal");
   const closeBtn = document.getElementById("btnCloseModal");
-  const cancelBtn = document.getElementById("btnCancelModal");
+  
+  // لاحظي: شيلنا تعريف cancelBtn من هنا لأنه هيتغير تحت
+  // const cancelBtn = document.getElementById("btnCancelModal"); <-- مش محتاجينه هنا
 
-  // 1. التعامل مع الفورم بحذر لمنع التكرار
   let form = document.getElementById("applyForm");
 
-  // دالة الإغلاق
+  // --- دالة الإغلاق الموحدة ---
   const close = () => {
     if (modal) modal.classList.add("hidden");
     if (form) form.reset();
+
+    // إعادة تعيين نص الملف
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+        if (fileNameDisplay) {
+             fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
+             fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
+        }
+    }
   };
 
   if (closeBtn) closeBtn.onclick = close;
-  if (cancelBtn) cancelBtn.onclick = close;
-
+  
+  // إغلاق عند الضغط خارج المودال
   window.onclick = (e) => {
     if (e.target === modal) close();
   };
 
+  // إغلاق عند الضغط على Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        close();
+    }
+  });
+
   if (form) {
-    //  الحل السحري: استبدال الفورم بنسخة جديدة منه لحذف أي Event Listeners قديمة
+    // 1. نسخ الفورم
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
-    form = newForm; // تحديث المتغير ليشير للفورم الجديد
+    form = newForm; 
 
-    // إعادة تعريف العناصر داخل الفورم الجديد (لأن القديمة اختفت)
-    const submitBtn = form.querySelector('button[type="submit"]');
+    // ✅✅✅ الجزء المضاف لتصليح زرار Cancel ✅✅✅
+    // بنجيب الزرار من "الفورم الجديد" ونربطه بدالة القفل
+    const newCancelBtn = newForm.querySelector("#btnCancelModal");
+    if (newCancelBtn) {
+        newCancelBtn.onclick = close; // ربطناه بدالة الإغلاق
+        newCancelBtn.type = "button"; // تأكيد إنه مش submit
+    }
+    // ✅✅✅ نهاية التعديل ✅✅✅
 
-    form.addEventListener("submit", async (e) => {
+    // كود إظهار اسم الملف
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0] && fileNameDisplay) {
+                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+                fileNameDisplay.classList.add('text-blue-600', 'font-bold');
+            }
+        });
+    }
+
+    // تعريف زر الإرسال الجديد
+    const newSubmitBtn = newForm.querySelector('button[type="submit"]');
+
+    // Submit Logic
+    newForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      e.stopPropagation(); // منع انتشار الحدث
-
       const jobId = modal.dataset.jobId;
+      const currentFileInput = document.getElementById("applyCv");
 
-      // نستخدم getElementById من الوثيقة لضمان جلب العناصر الحالية
-      // (أو يمكن البحث داخل form مباشرة: form.querySelector('#applyCv'))
-      const fileInput = document.getElementById("applyCv");
-      const nameInput = document.getElementById("applyName");
-      const emailInput = document.getElementById("applyEmail");
-      const phoneInput = document.getElementById("applyPhone");
-      const coverInput = document.getElementById("applyCover");
-
-      if (!fileInput.files || fileInput.files.length === 0) {
+      if (!currentFileInput.files || currentFileInput.files.length === 0) {
         Swal.fire("Warning", "Please upload your CV.", "warning");
         return;
       }
 
-      // تجهيز البيانات
       const applyData = {
-        fullName: nameInput.value,
-        email: emailInput.value,
-        phone: phoneInput.value,
-        cvFile: fileInput.files[0],
-        coverLetter: coverInput.value,
+        fullName: document.getElementById("applyName").value,
+        email: document.getElementById("applyEmail").value,
+        phone: document.getElementById("applyPhone").value,
+        cvFile: currentFileInput.files[0],
+        coverLetter: document.getElementById("applyCover").value,
       };
 
       try {
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        if (newSubmitBtn) {
+          newSubmitBtn.disabled = true;
+          newSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
-
-        console.log("🚀 Submitting Application..."); // Log for debugging
 
         await jobService.applyForJob(jobId, applyData);
 
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Application submitted successfully.",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-
+        Swal.fire("Success", "Application submitted successfully!", "success");
         close();
       } catch (error) {
-        console.error("Apply Error Details:", error);
+        let msg = "Failed to submit application.";
+        if (error.response?.status === 409)
+          msg = "You have already applied for this job.";
+        else if (error.response?.data?.message)
+          msg = error.response.data.message;
 
-        let errorMsg = "Failed to submit application.";
-
-        // التعامل مع خطأ 409 (Conflict) بشكل خاص
-        if (error.response && error.response.status === 409) {
-          errorMsg = "You have already applied for this job.";
-        } else if (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) {
-          errorMsg = error.response.data.message;
-        }
-
-        Swal.fire({
-          icon: "error",
-          title: "Application Failed",
-          text: errorMsg,
-        });
+        Swal.fire("Error", msg, "error");
       } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = "Submit Application";
+        if (newSubmitBtn) {
+          newSubmitBtn.disabled = false;
+          newSubmitBtn.innerHTML = "Submit Application";
         }
       }
     });

@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="website icon" type="png" href="../../../../assets/imgs/Logo.png"/>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
       body {
         background: #dce0e0;
         background: linear-gradient(
@@ -126,15 +127,15 @@
   </head>
   <body class="bg-gray-50 text-gray-800">
     <nav
-      class="sticky top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md px-6 py-4 flex items-center justify-between"
+      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8"
     >
     <a
     href="dashboard.html"
-    class="text-2xl font-semibold text-blue-500 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-  >
-  <i class="fas fa-building"></i> 
-  <span>Company Portal</span>
-  </a>
+    class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+    >
+    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+      <span class="font-lexend font-simibold not-italic">Company Portal</span>
+      </a>
     </nav>
 
     <main class="w-full mx-auto p-6 space-y-6">

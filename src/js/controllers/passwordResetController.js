@@ -4,7 +4,51 @@ import Swal from "sweetalert2";
 document.addEventListener("DOMContentLoaded", () => {
   const forgotForm = document.getElementById("forgotForm");
   const resetForm = document.getElementById("resetForm");
-
+  function handleLoginRedirect(user) {
+    const { accountType, registrationStep } = user;
+  
+    // 1. Job Seeker Routing
+    if (accountType === "job_seeker") {
+      switch (registrationStep) {
+        case 1:
+          window.location.href =
+            "/src/pages/seeker/seeker steps/ProfileStep1.html";
+          break;
+        case 2:
+          window.location.href =
+            "/src/pages/seeker/seeker steps/ProfileStep2.html";
+          break;
+        case 3:
+          window.location.href =
+            "/src/pages/seeker/seeker steps/ProfileStep3.html";
+          break;
+        default: // Step 4 or more (Completed)
+          window.location.href = "/src/pages/seeker/profile.html"; // أو Home Page
+          break;
+      }
+    }
+    // 2. Company Routing
+    else if (accountType === "company") {
+      switch (registrationStep) {
+        case 1:
+          window.location.href =
+            "/src/pages/company/company steps/CompanyStep1.html";
+          break;
+        case 2:
+          window.location.href =
+            "/src/pages/company/company steps/CompanyStep2.html";
+          break;
+        case 3:
+          window.location.href =
+            "/src/pages/company/company steps/CompanyStep3.html";
+          break;
+        default: // Step 4 or more (Completed)
+          window.location.href =
+            "/src/pages/company/company portal/dashboard.html";
+          break;
+      }
+    }
+  }
   // ============================================================
   // 1. Logic for Forgot Password Page (With Exponential Timer)
   // ============================================================
@@ -12,70 +56,136 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("submitBtn");
     const emailInput = document.getElementById("email");
 
-    // أرقام الثوابت
-    const BASE_WAIT_TIME = 15; // يبدأ بـ 15 ثانية
+    // --- ثوابت التحكم (جديد) ---
+    const BASE_WAIT_TIME = 15; // ثانية
+    const RESET_THRESHOLD = 24 * 60 * 60 * 1000; // 24 ساعة
 
-    // 1. عند تحميل الصفحة: تحقق هل يوجد مؤقت مخزن؟
+    // 1. عند تحميل الصفحة: (تعديل بسيط لاستدعاء الدالة الجديدة)
     checkAndStartTimer(btn);
 
     forgotForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = emailInput.value.trim();
+        e.preventDefault();
+        const email = emailInput.value.trim();
 
-      if (!email) {
-        Swal.fire("Warning", "Please enter your email address.", "warning");
-        return;
-      }
-
-      try {
-        // UI Loading
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-        // Call API
-        await authService.forgotPassword(email);
-
-        // Success Alert
-        Swal.fire({
-          icon: "success",
-          title: "Email Sent!",
-          text: "Check your inbox for the link.",
-          confirmButtonColor: "#3b82f6",
-        });
-
-        emailInput.value = "";
-
-        // 🔥 تشغيل المؤقت التصاعدي (Exponential Backoff)
-        startExponentialTimer(btn);
-      } catch (error) {
-        console.error(error);
-
-        // لو الخطأ من الباك إند إنه لازم يستنى (429)
-        if (error.response?.status === 429) {
-          Swal.fire({
-            icon: "warning",
-            title: "Wait a moment",
-            text: error.response.data.message,
-          });
-          // ممكن هنا نشغل تايمر ثابت لو حابب، بس التايمر الفرونت كافي
-        } else {
-          const errorMsg =
-            error.response?.data?.message || "Failed to send reset link.";
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: errorMsg,
-            confirmButtonColor: "#ef4444",
-          });
-
-          // في حالة الخطأ العادي، نرجع الزرار شغال
-          btn.disabled = false;
-          btn.innerHTML = "Send Reset Link";
+        if (!email) {
+            Swal.fire("Warning", "Please enter your email address.", "warning");
+            return;
         }
-      }
+
+        try {
+            // UI Loading (زي ما هو)
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            // Call API (زي ما هو)
+            await authService.forgotPassword(email);
+
+            // Success Alert (زي ما هو)
+            Swal.fire({
+                icon: "success",
+                title: "Email Sent!",
+                text: "Check your inbox for the link.",
+                confirmButtonColor: "#3b82f6",
+            });
+
+            emailInput.value = "";
+
+            // 🔥 هنا التغيير الوحيد: استدعاء الدالة المحسنة
+            startExponentialTimer(btn);
+
+        } catch (error) {
+            console.error(error);
+            // (باقي كود الـ catch بتاعك زي ما هو بالظبط)
+            if (error.response?.status === 429) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Wait a moment",
+                    text: error.response.data.message,
+                });
+            } else {
+                const errorMsg = error.response?.data?.message || "Failed to send reset link.";
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: errorMsg,
+                    confirmButtonColor: "#ef4444",
+                });
+                btn.disabled = false;
+                btn.innerHTML = "Send Reset Link";
+            }
+        }
     });
+
+    // ==========================================
+    //  الجزء الجديد: الدوال المساعدة (Helper Functions)
+    // ==========================================
+
+    function checkAndStartTimer(btn) {
+        const lastAttempt = localStorage.getItem("lastAttemptTime");
+        
+        // لو عدى 24 ساعة، امسح كل حاجة وابدأ من جديد
+        if (lastAttempt && (Date.now() - parseInt(lastAttempt) > RESET_THRESHOLD)) {
+            localStorage.removeItem("timerEndTime");
+            localStorage.removeItem("currentWaitTime");
+            localStorage.removeItem("lastAttemptTime");
+            btn.disabled = false;
+            btn.innerHTML = "Send Reset Link";
+            return;
+        }
+
+        // لو لسه في وقت متبقي
+        const storedEndTime = localStorage.getItem("timerEndTime");
+        if (storedEndTime) {
+            const remaining = Math.ceil((parseInt(storedEndTime) - Date.now()) / 1000);
+            if (remaining > 0) runTimer(btn, remaining);
+            else {
+                btn.disabled = false;
+                btn.innerHTML = "Send Reset Link";
+            }
+        }
+    }
+
+    function startExponentialTimer(btn) {
+      // 1. شوف هل كان فيه وقت انتظار متخزن من المرة اللي فاتت؟
+      let lastWaitTime = localStorage.getItem("currentWaitTime");
+      let newWaitTime;
+
+      if (lastWaitTime) {
+          // لو موجود (يعني دي تاني مرة أو أكتر)، ضاعفه
+          newWaitTime = parseInt(lastWaitTime) * 2;
+      } else {
+          // لو مش موجود (أول مرة خالص)، ابدأ بالـ 15 ثانية
+          newWaitTime = BASE_WAIT_TIME;
+      }
+
+      const endTime = Date.now() + (newWaitTime * 1000);
+      
+      // تخزين القيم الجديدة
+      localStorage.setItem("timerEndTime", endTime);
+      localStorage.setItem("currentWaitTime", newWaitTime);
+      localStorage.setItem("lastAttemptTime", Date.now()); 
+
+      runTimer(btn, newWaitTime);
   }
 
+    function runTimer(btn, seconds) {
+        btn.disabled = true;
+        btn.innerHTML = `Wait ${seconds}s`; // تحديث فوري
+        
+        const interval = setInterval(() => {
+            seconds--;
+            btn.innerHTML = `Wait ${seconds}s`;
+
+            if (seconds <= 0) {
+                clearInterval(interval);
+                // بنمسح وقت النهاية عشان نعرف إنه خلص، بس بنسيب الـ WaitTime عشان المضاعفة الجاية
+                localStorage.removeItem("timerEndTime"); 
+                btn.disabled = false;
+                btn.innerHTML = "Send Reset Link";
+            }
+        }, 1000);
+    }
+}
   // ============================================================
   // 2. Logic for Reset Password Page (كما هو)
   // ============================================================
@@ -133,20 +243,26 @@ document.addEventListener("DOMContentLoaded", () => {
           confirmButtonColor: "#16a34a",
           timer: 2000,
           showConfirmButton: false,
+        }).then(() => {
+          // ✅ استخدام دالة التوجيه الذكي
+          if (response.data && response.data.user) {
+            handleLoginRedirect(response.data.user);
+          }
         });
 
         // Redirect based on status
-        const user = response.data.user;
-        if (user.registrationStep < 2) {
-          if (user.accountType === "company")
-            window.location.href =
-              "/src/pages/auth/complete-company-profile.html";
-          else window.location.href = "/src/pages/auth/complete-profile.html";
-        } else {
-          if (user.accountType === "company")
-            window.location.href = "/src/pages/company/dashboard.html";
-          else window.location.href = "../../../../index.html";
-        }
+        // const user = response.data.user;
+        // if (user.registrationStep < 2) {
+        //   if (user.accountType === "company")
+        //     window.location.href =
+        //       "/src/pages/company/company steps/CompanyStep3.html";
+        //   else window.location.href = "/src/pages/auth/complete-profile.html";
+        // } else {
+        //   if (user.accountType === "company")
+        //     window.location.href = "/src/pages/company/dashboard.html";
+        //   else window.location.href = "../../../../index.html";
+        // }
+      
       } catch (error) {
         const errorMsg = error.response?.data?.message || "Token invalid.";
         Swal.fire({

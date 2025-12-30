@@ -372,6 +372,9 @@ function setupEventListeners() {
 // 6. Global Actions (Apply, Save, Modal)
 // ============================================================
 
+// ============================================================
+// 1. Open Apply Modal Logic
+// ============================================================
 window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem("token");
 
@@ -406,6 +409,9 @@ window.applyForJobCheck = function (jobId) {
   }
 };
 
+// ============================================================
+// 2. Save Job Logic
+// ============================================================
 window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -433,37 +439,91 @@ window.toggleSaveJob = async function (jobId, btnElement) {
   }
 };
 
+// ============================================================
+// 3. Close Logic (Helper)
+// ============================================================
 window.closeApplyModal = function () {
-  document.getElementById("applyModal").classList.add("hidden");
+  const modal = document.getElementById("applyModal");
+  if (modal) modal.classList.add("hidden");
+  
+  // بنحاول نلاقي الفورم ونعمله reset لو اتقفل من بره
+  const form = document.getElementById("applyForm");
+  if (form) form.reset();
 };
 
 // ============================================================
-// Modal & Apply Logic (Fixed Double Submission)
+// 4. Init Modal Events (The Core Logic)
 // ============================================================
 function initModalEvents() {
   const modal = document.getElementById("applyModal");
   const closeBtn = document.getElementById("btnCloseModal");
-  const cancelBtn = document.getElementById("btnCancelModal");
-
+  
+  // ملاحظة: مش هنعرف cancelBtn هنا عشان هيتمسح مع الـ cloning
+  
   let form = document.getElementById("applyForm");
 
+  // --- دالة الإغلاق الموحدة ---
   const close = () => {
     if (modal) modal.classList.add("hidden");
     if (form) form.reset();
+
+    // 🔥 إعادة تعيين نص الملف (عشان يرجع "SVG, PNG..." لما نقفل)
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+        if (fileNameDisplay) {
+             // رجعيه للنص الأصلي اللي عندك في الـ HTML
+            fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
+            fileNameDisplay.classList.remove('black', 'font-bold');
+        }
+    }
   };
 
+  // ربط زر الإغلاق (X)
   if (closeBtn) closeBtn.onclick = close;
-  if (cancelBtn) cancelBtn.onclick = close;
 
+  // إغلاق عند الضغط خارج المودال
   window.onclick = (e) => {
     if (e.target === modal) close();
   };
 
+  // 🔥 (إضافة) إغلاق عند الضغط على Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        close();
+    }
+  });
+
   if (form) {
+    // 1. نسخ الفورم واستبداله (عشان نحل مشكلة الـ Double Submission)
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
-    form = newForm;
+    form = newForm; // تحديث المتغير ليشير للفورم الجديد
 
+    // ✅✅✅ (تصحيح هام) زر Cancel ✅✅✅
+    // لازم نجيبه من "newForm" بعد النسخ، ونربطه بدالة القفل تاني
+    const newCancelBtn = newForm.querySelector("#btnCancelModal") || document.getElementById("btnCancelModal");
+    if (newCancelBtn) {
+        newCancelBtn.onclick = close; 
+        newCancelBtn.type = "button"; // أمان عشان ميعملش submit
+    }
+
+    // 🔥 (إضافة) كود إظهار اسم الملف المختار
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0] && fileNameDisplay) {
+                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+                fileNameDisplay.classList.add('black', 'font-bold');
+            }
+        });
+    }
+
+    // 2. منطق الإرسال (Submit)
     const submitBtn = form.querySelector('button[type="submit"]');
 
     form.addEventListener("submit", async (e) => {
@@ -471,13 +531,15 @@ function initModalEvents() {
       e.stopPropagation();
 
       const jobId = modal.dataset.jobId;
-      const fileInput = document.getElementById("applyCv");
+      
+      // جلب العناصر (نتأكد إننا بنجيبهم من الـ DOM الحالي)
+      const currentFileInput = document.getElementById("applyCv");
       const nameInput = document.getElementById("applyName");
       const emailInput = document.getElementById("applyEmail");
       const phoneInput = document.getElementById("applyPhone");
       const coverInput = document.getElementById("applyCover");
 
-      if (!fileInput.files || fileInput.files.length === 0) {
+      if (!currentFileInput.files || currentFileInput.files.length === 0) {
         Swal.fire("Warning", "Please upload your CV.", "warning");
         return;
       }
@@ -486,15 +548,14 @@ function initModalEvents() {
         fullName: nameInput.value,
         email: emailInput.value,
         phone: phoneInput.value,
-        cvFile: fileInput.files[0],
+        cvFile: currentFileInput.files[0],
         coverLetter: coverInput.value,
       };
 
       try {
         if (submitBtn) {
           submitBtn.disabled = true;
-          submitBtn.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
 
         await jobService.applyForJob(jobId, applyData);
@@ -511,15 +572,13 @@ function initModalEvents() {
       } catch (error) {
         console.error("Apply Error Details:", error);
         let errorMsg = "Failed to submit application.";
+
         if (error.response && error.response.status === 409) {
           errorMsg = "You have already applied for this job.";
-        } else if (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) {
+        } else if (error.response?.data?.message) {
           errorMsg = error.response.data.message;
         }
+
         Swal.fire({
           icon: "error",
           title: "Application Failed",

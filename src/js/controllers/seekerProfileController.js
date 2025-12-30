@@ -472,21 +472,31 @@ btnSaveChanges.addEventListener("click", async (e) => {
 // ============================================================
 if (btnLogout) btnLogout.addEventListener("click", () => authService.logout());
 
+// ============================================================
+// 1. Open Apply Modal (With Profile Data)
+// ============================================================
 window.openApplyModal = function (jobId) {
   const modal = document.getElementById("applyModal");
   if (modal) {
     modal.classList.remove("hidden");
     modal.dataset.jobId = jobId;
-    if (currentProfile) {
-      document.getElementById("applyName").value =
-        currentProfile.fullName || "";
-      document.getElementById("applyEmail").value = currentProfile.email || "";
-      document.getElementById("applyPhone").value =
-        currentProfile.phoneNumber || "";
+    
+    // Check if currentProfile exists (assumed global variable)
+    if (typeof currentProfile !== 'undefined' && currentProfile) {
+      const nameInput = document.getElementById("applyName");
+      const emailInput = document.getElementById("applyEmail");
+      const phoneInput = document.getElementById("applyPhone");
+
+      if (nameInput) nameInput.value = currentProfile.fullName || "";
+      if (emailInput) emailInput.value = currentProfile.email || "";
+      if (phoneInput) phoneInput.value = currentProfile.phoneNumber || "";
     }
   }
 };
 
+// ============================================================
+// 2. Helper Functions (Remove Saved / Delete Application)
+// ============================================================
 window.removeSavedJob = async function (jobId) {
   const result = await Swal.fire({
     title: "Remove?",
@@ -498,11 +508,13 @@ window.removeSavedJob = async function (jobId) {
   if (result.isConfirmed) {
     await jobService.toggleSaveJob(jobId);
     document.getElementById(`saved-card-${jobId}`)?.remove();
-    if (savedCountBadge)
-      savedCountBadge.textContent = `${
-        parseInt(savedCountBadge.textContent) - 1
-      } Saved`;
-    if (savedJobsContainer.children.length === 0) loadSavedJobs();
+    
+    if (typeof savedCountBadge !== 'undefined' && savedCountBadge)
+      savedCountBadge.textContent = `${parseInt(savedCountBadge.textContent) - 1} Saved`;
+    
+    if (typeof savedJobsContainer !== 'undefined' && savedJobsContainer.children.length === 0) 
+        loadSavedJobs();
+    
     Swal.fire("Removed!", "", "success");
   }
 };
@@ -521,11 +533,13 @@ window.deleteApplication = async function (appId) {
     try {
       await seekerService.deleteApplication(appId);
       document.getElementById(`app-card-${appId}`)?.remove();
-      if (appsCountBadge)
-        appsCountBadge.textContent = `${
-          parseInt(appsCountBadge.textContent) - 1
-        } Applied`;
-      if (applicationsContainer.children.length === 0) loadApplications();
+      
+      if (typeof appsCountBadge !== 'undefined' && appsCountBadge)
+        appsCountBadge.textContent = `${parseInt(appsCountBadge.textContent) - 1} Applied`;
+        
+      if (typeof applicationsContainer !== 'undefined' && applicationsContainer.children.length === 0) 
+        loadApplications();
+        
       Swal.fire("Deleted!", "Application history removed.", "success");
     } catch (error) {
       Swal.fire("Error", "Failed to delete application.", "error");
@@ -533,30 +547,85 @@ window.deleteApplication = async function (appId) {
   }
 };
 
+// ============================================================
+// 3. Init Modal Events (The Enhanced Logic)
+// ============================================================
 function initModalEvents() {
   const modal = document.getElementById("applyModal");
   const closeBtn = document.getElementById("btnCloseModal");
+  
+  // Note: We use 'let' for form because it will be replaced
   let form = document.getElementById("applyForm");
 
+  // --- دالة الإغلاق الموحدة ---
   const close = () => {
     modal?.classList.add("hidden");
     form?.reset();
+
+    // 🔥 إعادة تعيين نص الملف (Reset File Input Text)
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+        if (fileNameDisplay) {
+             fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
+             fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
+        }
+    }
   };
+
+  // ربط زر الإغلاق (X)
   closeBtn?.addEventListener("click", close);
-  document.getElementById("btnCancelModal")?.addEventListener("click", close);
+  
+  // إغلاق عند الضغط خارج المودال
   window.onclick = (e) => {
     if (e.target === modal) close();
   };
 
+  // 🔥 (جديد) إغلاق عند الضغط على Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        close();
+    }
+  });
+
   if (form) {
+    // 1. نسخ الفورم واستبداله (Cloning)
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
+    form = newForm; // Update reference
+
+    // ✅✅✅ تصحيح زر Cancel ✅✅✅
+    // لازم نجيبه من "newForm" ونربطه من جديد
+    const newCancelBtn = newForm.querySelector("#btnCancelModal") || document.getElementById("btnCancelModal");
+    if (newCancelBtn) {
+        newCancelBtn.onclick = close; 
+        newCancelBtn.type = "button"; 
+    }
+
+    // 🔥 (جديد) كود إظهار اسم الملف المختار
+    const fileInput = document.getElementById("applyCv");
+    if (fileInput) {
+        const dropZone = fileInput.closest('.group');
+        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0] && fileNameDisplay) {
+                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+                fileNameDisplay.classList.add('text-blue-600', 'font-bold');
+            }
+        });
+    }
+
+    // 2. منطق الإرسال (Submit Logic)
     newForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const submitBtn = newForm.querySelector('button[type="submit"]');
+      
       try {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = "Sending...";
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
         const data = {
           fullName: document.getElementById("applyName").value,
           email: document.getElementById("applyEmail").value,
@@ -564,11 +633,13 @@ function initModalEvents() {
           cvFile: document.getElementById("applyCv").files[0],
           coverLetter: document.getElementById("applyCover").value,
         };
+
         await jobService.applyForJob(modal.dataset.jobId, data);
+        
         Swal.fire("Success", "Application Sent!", "success");
         close();
       } catch (err) {
-        Swal.fire("Error", err.response?.data?.message || "Failed", "error");
+        Swal.fire("Error", err.response?.data?.message || "Failed to send application", "error");
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = "Submit";

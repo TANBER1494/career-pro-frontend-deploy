@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareerPro - personality test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png"/>
@@ -50,41 +50,39 @@
 </head>
 <body class="text-slate-800 min-h-screen overflow-x-hidden">
 
-  <nav class="sticky top-0 z-50 bg-white/80 border-b border-gray-200 backdrop-blur-md px-6 py-4 flex items-center justify-between">
-    <a href="index.html" class="text-2xl font-semibold text-blue-500 cursor-pointer" >
-      CareerPro Platform
-  </a>
-</nav>
-
     <main class="pt-[50px] pb-12 flex justify-center min-h-screen px-4">
         <div class="w-full">
 
-          <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">                <div class="mb-6">
-            <a
-            id="backBtn"
-            href="index.html"
-            class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group"
-          >
-            <i
-              class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-            ></i>
-            <span class="text-sm font-medium">Back</span>
-          </a>
-                    <h1 class="text-3xl font-semibold text-dark">Personality Test</h1>
-                    <p class="text-gray-500 mt-1">Discover your professional strengths and personality profile</p>
-                </div>
+          <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
+            <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto flex items-center gap-4 mt-6 mb-10">
+  
+              <a
+                id="backBtn"
+                href="index.html"
+                class="flex items-center text-slate-500 hover:text-blue-600 transition-colors group shrink-0"
+              >
+                <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-sm font-medium">Back</span>
+              </a>
+            
+              <div>
+                <h1 class="text-3xl font-semibold text-dark">Personality Test</h1>
+                <p class="text-slate-500 mt-1">Discover your professional strengths and personality profile</p>
+              </div>
+            
+            </div>
 
-                <div class="bg-white rounded-2xl p-10 md:p-14 text-center shadow-lg border border-slate-200 max-w-3xl mx-auto">
-                    <i class="fa-solid fa-brain text-6xl text-primary mb-6 inline-block bg-gradient-to-r from-blue-300 to-blue-600 bg-clip-text text-transparent"></i>
-                    <h2 class="text-2xl font-medium text-dark mb-3">Professional Personality Test</h2>
-                    <p class="text-gray-500 leading-relaxed mb-8 max-w-xl mx-auto">
-                        Take our comprehensive 15-question test to discover your unique professional strengths. This evaluation covers technical expertise, communication abilities, and leadership potential.
-                    </p>
-                    
-                    <button onclick="goToQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-3 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg">
-                        Start Test
-                    </button>
-                </div>
+            <div class="bg-white rounded-2xl p-18 md:p-20 text-center shadow-lg border border-slate-200 max-w-4xl mx-auto">
+              <i class="fa-solid fa-brain text-6xl text-primary mb-6 inline-block bg-gradient-to-r from-blue-300 to-blue-600 bg-clip-text text-transparent"></i>
+              <h2 class="text-3xl font-semibold text-dark mb-3">Professional Personality Test</h2>
+              <p class="text-gray-500 font-medium leading-relaxed mb-8 max-w-xl mx-auto">
+                  Take our comprehensive 5-question test to discover your unique professional strengths. This evaluation covers technical expertise, communication abilities, and leadership potential.
+              </p>
+              
+              <button onclick="goToQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-3 mt-2 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg">
+                  Start Test
+              </button>
+          </div>
             </div>
 
             <div id="quiz-view" class="hidden transition-opacity duration-500 ease-in-out opacity-0 max-w-[1000px] mx-auto">
@@ -385,7 +383,7 @@ if (bbtn) {
     });
 }
         </script>
-        <script type="module" src="./src/js/controllers/homeController.js"></script>
+        <script type="module" src="/src/js/controllers/homeController.js"></script>
 
 </body>
 </html>

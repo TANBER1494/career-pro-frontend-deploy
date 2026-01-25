@@ -1,49 +1,51 @@
-import { adminService } from "../services/adminService.js";
-import { authService } from "../services/authService.js";
-import Swal from "sweetalert2";
+import { adminService } from '../services/adminService.js';
+import { authService } from '../services/authService.js';
+import Swal from 'sweetalert2';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   checkAdminAccess();
-  
+
   // Load initial data (Pending by default)
-  fetchVerifications("pending");
+  fetchVerifications('pending');
 
   setupEventListeners();
 });
 
 function checkAdminAccess() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user || user.accountType !== "admin") {
-    window.location.href = "../../../index.html";
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || user.accountType !== 'admin') {
+    window.location.href = '../../../index.html';
   }
 }
 
 function setupEventListeners() {
   // A. Filter Change
-  const statusFilter = document.getElementById("statusFilter");
-  statusFilter.addEventListener("change", (e) => {
+  const statusFilter = document.getElementById('statusFilter');
+  statusFilter.addEventListener('change', (e) => {
     fetchVerifications(e.target.value);
   });
 
   // B. Logout
-  document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
     authService.logout();
   });
 
   // C. Table Actions (View, Approve, Reject)
-  document.getElementById("verificationsTableBody").addEventListener("click", async (e) => {
-    const target = e.target.closest("button");
-    if (!target) return;
+  document
+    .getElementById('verificationsTableBody')
+    .addEventListener('click', async (e) => {
+      const target = e.target.closest('button');
+      if (!target) return;
 
-    const docId = target.dataset.id;
-    const action = target.dataset.action; // 'approve' or 'reject'
+      const docId = target.dataset.id;
+      const action = target.dataset.action; // 'approve' or 'reject'
 
-    if (action === "approve") {
-      handleApprove(docId);
-    } else if (action === "reject") {
-      handleReject(docId);
-    }
-  });
+      if (action === 'approve') {
+        handleApprove(docId);
+      } else if (action === 'reject') {
+        handleReject(docId);
+      }
+    });
 }
 
 // ============================================================
@@ -51,8 +53,8 @@ function setupEventListeners() {
 // ============================================================
 
 async function fetchVerifications(status) {
-  const tableBody = document.getElementById("verificationsTableBody");
-  
+  const tableBody = document.getElementById('verificationsTableBody');
+
   try {
     tableBody.innerHTML = `
         <tr>
@@ -66,9 +68,8 @@ async function fetchVerifications(status) {
     const requests = data.data.requests; // حسب رد الباك إند
 
     renderRequests(requests, status);
-
   } catch (error) {
-    console.error("Error fetching requests:", error);
+    console.error('Error fetching requests:', error);
     tableBody.innerHTML = `
         <tr>
             <td colspan="5" class="px-6 py-8 text-center text-red-500">
@@ -80,7 +81,7 @@ async function fetchVerifications(status) {
 }
 
 function renderRequests(requests, currentStatus) {
-  const tableBody = document.getElementById("verificationsTableBody");
+  const tableBody = document.getElementById('verificationsTableBody');
 
   if (requests.length === 0) {
     tableBody.innerHTML = `
@@ -96,25 +97,27 @@ function renderRequests(requests, currentStatus) {
   tableBody.innerHTML = requests
     .map((req) => {
       // Company Info (Populated)
-      const companyName = req.companyId?.companyName || "Unknown Company";
-      const industry = req.companyId?.industry || "N/A";
-      const location = req.companyId?.location || "N/A";
+      const companyName = req.companyId?.companyName || 'Unknown Company';
+      const industry = req.companyId?.industry || 'N/A';
+      const location = req.companyId?.location || 'N/A';
 
       // File Info
       // نفترض أن الباك إند بيرجع filePath كامل أو نسبي
-      const fileUrl = `http://localhost:3000${req.filePath || req.documentUrl}`; 
-      
+      const fileUrl = `http://localhost:3000${req.filePath || req.documentUrl}`;
+
       // Date
-      const date = new Date(req.createdAt).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
+      const dateProperty = req.uploadedAt || req.createdAt; // (احتياطاً لو غيرت الموديل مستقبلاً)
+
+      const date = new Date(dateProperty).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
       });
 
       // Decision Buttons (Show only if status is pending)
-      let actionsHtml = "";
-      if (currentStatus === "pending") {
+      let actionsHtml = '';
+      if (currentStatus === 'pending') {
         actionsHtml = `
             <div class="flex justify-end gap-2">
                 <button 
@@ -137,7 +140,8 @@ function renderRequests(requests, currentStatus) {
         `;
       } else {
         // Show static status if not pending
-        const badgeColor = currentStatus === 'approved' ? 'text-green-600' : 'text-red-600';
+        const badgeColor =
+          currentStatus === 'approved' ? 'text-green-600' : 'text-red-600';
         actionsHtml = `<span class="font-bold uppercase text-xs ${badgeColor}">${currentStatus}</span>`;
       }
 
@@ -167,32 +171,32 @@ function renderRequests(requests, currentStatus) {
         </tr>
       `;
     })
-    .join("");
+    .join('');
 }
 
 // --- Actions Logic ---
 
 async function handleApprove(docId) {
   const result = await Swal.fire({
-    title: "Approve Company?",
+    title: 'Approve Company?',
     text: "This company will be marked as 'Verified' and get a blue badge.",
-    icon: "question",
+    icon: 'question',
     showCancelButton: true,
-    confirmButtonColor: "#16a34a",
-    confirmButtonText: "Yes, Approve",
+    confirmButtonColor: '#16a34a',
+    confirmButtonText: 'Yes, Approve',
   });
 
   if (result.isConfirmed) {
     try {
-      await adminService.reviewCompany(docId, "approved");
-      
-      await Swal.fire("Approved!", "Company has been verified.", "success");
-      
+      await adminService.reviewCompany(docId, 'approved');
+
+      await Swal.fire('Approved!', 'Company has been verified.', 'success');
+
       // Refresh List
-      fetchVerifications("pending");
+      fetchVerifications('pending');
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "Failed to approve company.", "error");
+      Swal.fire('Error', 'Failed to approve company.', 'error');
     }
   }
 }
@@ -200,34 +204,38 @@ async function handleApprove(docId) {
 async function handleReject(docId) {
   // Show input dialog for reason
   const { value: reason } = await Swal.fire({
-    title: "Reject Verification",
-    input: "textarea",
-    inputLabel: "Rejection Reason",
-    inputPlaceholder: "e.g., Document is blurry, Tax ID mismatch...",
+    title: 'Reject Verification',
+    input: 'textarea',
+    inputLabel: 'Rejection Reason',
+    inputPlaceholder: 'e.g., Document is blurry, Tax ID mismatch...',
     inputAttributes: {
-      "aria-label": "Type your rejection reason here"
+      'aria-label': 'Type your rejection reason here',
     },
     showCancelButton: true,
-    confirmButtonColor: "#ef4444",
-    confirmButtonText: "Reject",
+    confirmButtonColor: '#ef4444',
+    confirmButtonText: 'Reject',
     inputValidator: (value) => {
       if (!value) {
-        return "You need to write a reason!";
+        return 'You need to write a reason!';
       }
-    }
+    },
   });
 
   if (reason) {
     try {
-      await adminService.reviewCompany(docId, "rejected", reason);
-      
-      await Swal.fire("Rejected", "Company verification has been rejected.", "info");
-      
+      await adminService.reviewCompany(docId, 'rejected', reason);
+
+      await Swal.fire(
+        'Rejected',
+        'Company verification has been rejected.',
+        'info'
+      );
+
       // Refresh List
-      fetchVerifications("pending");
+      fetchVerifications('pending');
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "Failed to reject request.", "error");
+      Swal.fire('Error', 'Failed to reject request.', 'error');
     }
   }
 }

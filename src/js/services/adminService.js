@@ -1,27 +1,48 @@
 import axiosClient from "../utils/axiosClient.js";
 
 export const adminService = {
-  // ============================================================
-  // Admin Portal Actions (للأدمن فقط)
-  // ============================================================
+  // 1. Get Dashboard Stats (إحصائيات)
+  async getStats() {
+    const response = await axiosClient.get("/admin/stats");
+    return response.data;
+  },
 
-  // 1. جلب طلبات التوثيق المعلقة
-  // filters: { status: 'pending' | 'approved' | 'rejected', page, limit }
-  async getVerificationRequests(filters = {}) {
-    // الرابط: /admin/verification-requests
+  // 2. Manage Users (إدارة المستخدمين)
+  async getAllUsers(params = {}) {
+    // params: { search, page, limit }
+    const response = await axiosClient.get("/admin/users", { params });
+    return response.data;
+  },
+
+  async deleteUser(userId) {
+    const response = await axiosClient.delete(`/admin/users/${userId}`);
+    return response.data;
+  },
+
+  // 3. Manage Jobs (إدارة الوظائف)
+  async getAllJobs(params = {}) {
+    const response = await axiosClient.get("/admin/jobs", { params });
+    return response.data;
+  },
+
+  async deleteJob(jobId) {
+    const response = await axiosClient.delete(`/admin/jobs/${jobId}`);
+    return response.data;
+  },
+
+  // 4. Verifications (التوثيق)
+  async getVerificationRequests(status = "pending") {
     const response = await axiosClient.get("/admin/verification-requests", {
-      params: filters,
+      params: { status },
     });
     return response.data;
   },
 
-  // 2. مراجعة طلب توثيق (قبول / رفض)
-  // data: { status: 'approved' | 'rejected', rejectionReason?: string }
-  async reviewVerification(documentId, data) {
-    // الرابط: /admin/verify-company/:documentId
+  async reviewCompany(documentId, status, rejectionReason = null) {
+    const body = { status, rejectionReason };
     const response = await axiosClient.patch(
       `/admin/verify-company/${documentId}`,
-      data
+      body
     );
     return response.data;
   },

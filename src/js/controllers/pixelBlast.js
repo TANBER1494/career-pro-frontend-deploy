@@ -1,8 +1,6 @@
 import * as THREE from 'https://esm.sh/three';
 import { EffectComposer, EffectPass, RenderPass, Effect } from 'https://esm.sh/postprocessing';
 
-// --- 1. Shaders & Helpers (نسخ ولصق من الكود الأصلي) ---
-
 const VERTEX_SRC = `void main() { gl_Position = vec4(position, 1.0); }`;
 
 const FRAGMENT_SRC = `
@@ -396,5 +394,6 @@ initPixelBlast('#pixel-blast-container', {
     variant: 'square',  // 2. ده هيخلي شكل الـ pixels مربعات بدل دوائر
     pixelSize: 3   ,     // حجم المربعات زي ما هو
     liquid: false  ,
-    patternDensity: 0.6
+    patternDensity: 0.6  ,
+    enableRipples: false, // <-- أضف هذا السطر لتعطيل تأثير الكليك
 });

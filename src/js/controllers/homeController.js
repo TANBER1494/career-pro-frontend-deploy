@@ -750,3 +750,25 @@ allButtons.forEach((btn) => {
     }, 350);
   });
 });
+
+
+const checkbox = document.getElementById('checkbox');
+const navContainer = document.querySelector('.nav-container');
+
+// التحقق من وجود العناصر أولاً لتجنب الـ TypeError
+if (checkbox && navContainer) {
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      navContainer.classList.add('active');
+    } else {
+      navContainer.classList.remove('active');
+    }
+  });
+  // أضيفي هذا الكود داخل الـ if (checkbox && navContainer)
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    checkbox.checked = false; // سيلغي تفعيل الـ checkbox
+    navContainer.classList.remove('active'); // سيخفي القائمة
+  });
+});
+}

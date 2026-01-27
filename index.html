@@ -55,13 +55,58 @@
       }
 
       /* --- Magic Navigation Styles (Compact Version) --- */
-      .nav-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* width: 100%;
-        margin-right: 100px; */
-      }
+      @media (max-width: 1180px) {
+  /* 1. إظهار الخلفية فقط عندما تكون المنيو نشطة */
+  #bg {
+    display: none; /* تختفي في الموبايل بشكل افتراضي */
+  }
+
+  .nav-container.active #bg {
+    display: block !important; /* تظهر فقط عند الضغط */
+    background: white !important;
+    border-radius: 20px;
+    padding: 15px;
+  }
+
+  /* 2. الحاوية الصغيرة المنسدلة */
+  .nav-container.active {
+    display: flex !important;
+    position: absolute;
+    top: 85px;
+    right: auto; /* تأكدي من تصحيح auti إلى auto أو تحديد جهة واحدة */
+    left: 5%;
+    width: auto;
+    min-width: 160px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: column; /* لضمان الترتيب الرأسي للحاوية */
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+
+  /* 3. إجبار المنيو على التدفق الرأسي */
+  .nav-container.active .magic-menu {
+    display: flex !important;
+    flex-direction: column !important; /* هذا هو السطر السحري */
+    gap: 20px !important;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  /* 4. ضبط شكل العناصر داخل القائمة الرأسية */
+  .magic-menu li {
+    width: 45px !important; 
+    height: 45px !important;
+    margin: 0 auto !important;
+  }
+
+  /* تمدد العنصر أفقياً عند اختياره داخل القائمة الرأسية */
+  .magic-menu li:hover,
+  .magic-menu li.active {
+    width: 130px !important; 
+  }
+}
       .magic-menu {
         display: flex;
         position: relative;
@@ -150,6 +195,26 @@
       .magic-menu li.active span.title {
         transform: scale(1);
         transition-delay: 0.25s;
+      }
+      /* الكود سيعمل فقط في الشاشات الكبيرة */
+      @media (min-width: 1181px) {
+        .magic-menu {
+          display: flex;
+          position: relative;
+          gap: 15px;
+          align-items: center;
+          padding: 0 10px;
+        }
+      }
+
+      /* في الشاشات الصغيرة (أقل من 1180) */
+      @media (max-width: 1180px) {
+        .magic-menu {
+          display: none; /* يختفي تماماً إلا إذا أضفتِ كلاس active عبر JS */
+        }
+        #bg{
+          display: none;
+        }
       }
       /* --- Other Styles (Cards, Scroll, etc.) --- */
       .companyCard {
@@ -361,9 +426,46 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1; /* خلفية */
+        z-index: -1;
         overflow: hidden;
       }
+      /* تأكدي من هذه القيم داخل الـ <style> */
+.toggle {
+  position: relative;
+  width: 35px; /* عرض الزر */
+  height: 24px; /* ارتفاع الزر ليتناسب مع المسافات بين الـ bars */
+  cursor: pointer;
+  display: block !important;
+}
+
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #1e65ff !important;
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(.5,-0.35,.35,1.5);
+}
+
+/* توزيع البراد بشكل متساوي */
+.bar--top { top: 0; }
+.bar--middle { top: 10px; }
+.bar--bottom { top: 20px; }
+
+/* الـ Animation عند الضغط */
+#checkbox:checked + .toggle .bar--top {
+  top: 10px;
+  transform: rotate(135deg);
+}
+#checkbox:checked + .toggle .bar--middle {
+  opacity: 0;
+}
+#checkbox:checked + .toggle .bar--bottom {
+  top: 10px;
+  transform: rotate(225deg);
+}
+
     </style>
 
 <button id="backToTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
@@ -376,48 +478,52 @@
     </style>
   </head>
   <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
-    <nav
-      class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full"
-    >
-      <a
-        id="logoBtn"
-        href="dashboard.html"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer"
-        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-      >
-      <img src="assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-        <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
-      </a>
-      <div class="hidden md:flex flex-1 nav-container ">
-        <div
-          class="bg-white/50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
-        >
-        <ul class="magic-menu">
-          <li style="--i: #5eb6fd; --j: #0576d3" class="nav-item active" data-target="home">
-            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-            <span class="title">Home</span>
-          </li>
-          <li style="--i: #484c506c; --j: #484c50" class="nav-item" data-target="services">
-            <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
-            <span class="title">Services</span>
-          </li>
-          <li style="--i: #67e3ff; --j: #69a8b8" class="nav-item" data-target="companies">
-            <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
-            <span class="title">Companies</span>
-          </li>
-          <li style="--i: #057a22; --j: #1dbe46" class="nav-item" data-target="jobs">
-            <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
-            <span class="title">Jobs</span>
-          </li>
-      </ul>
+    <nav class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full">
+  
+      <div class="flex items-center gap-4">
+        <div class="hidden max-[1180px]:block menu-toggle"> 
+          <input type="checkbox" id="checkbox" class="hidden"> 
+          <label for="checkbox" class="toggle">
+            <div class="bar bar--top"></div>
+            <div class="bar bar--middle"></div>
+            <div class="bar bar--bottom"></div>
+          </label>
         </div>
-      </div>
-      <div class="w-auto flex justify-end min-w-0">
-        <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-            </div>
-    </div>
-    </nav>
 
+    <a id="logoBtn" href="dashboard.html" class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <img src="assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+      <span class="hidden sm:inline font-lexend font-simibold not-italic">AI-Career Guidance</span>
+    </a>
+  </div>
+
+  <div class="nav-container">
+    <div id="bg" class="bg-white/50 px-6 py-2 rounded-full border border-gray-200 shadow-inner">
+      <ul class="magic-menu flex gap-6">
+        <li style="--i: #5eb6fd; --j: #0576d3" class="nav-item active" data-target="home">
+          <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+          <span class="title">Home</span>
+        </li>
+        <li style="--i: #484c506c; --j: #484c50" class="nav-item" data-target="services">
+          <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
+          <span class="title">Services</span>
+        </li>
+        <li style="--i: #67e3ff; --j: #69a8b8" class="nav-item" data-target="companies">
+          <span class="icon"><ion-icon name="business-outline"></ion-icon></span>
+          <span class="title">Companies</span>
+        </li>
+        <li style="--i: #057a22; --j: #1dbe46" class="nav-item" data-target="jobs">
+          <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+          <span class="title">Jobs</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="w-auto flex justify-end min-w-0">
+    <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+      </div>
+  </div>
+</nav>
     <section
       class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"
     >
@@ -927,7 +1033,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
           <div>
             <h3 class="text-blue-600 font-simibold text-lg mb-6">
-              CareerPro Platform
+              AI-Career Guidance
             </h3>
             <p class="text-slate-500 text-sm leading-relaxed">
               Transform your career journey through intelligent matching and
@@ -937,7 +1043,7 @@
           <div>
             <h3 class="text-blue-600 font-simibold text-lg mb-6">About Us</h3>
             <p class="text-slate-500 text-sm leading-relaxed mb-6">
-              CareerPro is a leading career development service connecting
+              AI-Career Guidance is a leading career development service connecting
               professionals with innovative companies.
             </p>
             <div class="space-y-2 text-sm text-slate-500">

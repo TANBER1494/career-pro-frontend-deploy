@@ -29,11 +29,26 @@
       }
     </style>
 </head>
-<body class="bg-grid min-h-screen text-slate-800 p-6 flex justify-center items-start">
-
-    <div class="w-3/4 space-y-6">
-
-        <div id="upload-section">
+<body class="  bg-grid  min-h-screen text-slate-800 p-0 pb-4 flex flex-col items-center ">
+  
+  <nav
+        class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
+      >
+      <a
+      href="../../../index.html"
+      class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+      <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
+      </a>
+      <div class="w-auto flex justify-end min-w-0">
+        <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+          </div>
+      </div>
+      </nav>
+  <div class="w-3/4 space-y-6">
+    
+    <div id="upload-section">
             
             <div class="flex items-center gap-4 mb-2">
                 <a
@@ -120,7 +135,7 @@
                     </button>
                 </div>
                 
-                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex gap-3 items-start">
+                <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex gap-3 items-start">
                     <i class="fa-solid fa-wand-magic-sparkles text-yellow-500 mt-1"></i>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         <span class="font-bold text-slate-800">Tip:</span> Fill in the job description above and upload your CV to get personalized job matches.
@@ -214,7 +229,7 @@
                 </div>
             </div>
 
-             <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
                 <div class="flex items-start gap-4">
                     <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-briefcase"></i></div>
                     <div>
@@ -232,130 +247,6 @@
         </div>
 
     </div>
-
-    <script>
-        // ------------------
-        // Elements Selection
-        // ------------------
-        // Sections
-        const uploadSection = document.getElementById('upload-section');
-        const resultsSection = document.getElementById('results-section');
-
-        // Inputs & Buttons (Upload Section)
-        const fileInput = document.getElementById('cv-upload');
-        const uploadZone = document.getElementById('upload-zone');
-        const filePreview = document.getElementById('file-preview');
-        const fileNameEl = document.getElementById('file-name');
-        const fileSizeEl = document.getElementById('file-size');
-        const removeFileBtn = document.getElementById('remove-file-btn');
-        const jobDescInput = document.getElementById('job-desc');
-        const analyzeBtn = document.getElementById('analyze-btn');
-
-        // Buttons (Results Section)
-        const backToUploadBtn = document.getElementById('back-to-upload');
-        const analyzeAnotherBtn = document.getElementById('analyze-another-btn');
-
-        // State Variables
-        let isFileUploaded = false;
-
-        // ------------------
-        // Logic: Upload View
-        // ------------------
-        
-        // 1. Handle File Upload
-        fileInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                fileNameEl.textContent = file.name;
-                fileSizeEl.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-                
-                uploadZone.classList.add('hidden');
-                filePreview.classList.remove('hidden');
-                
-                isFileUploaded = true;
-                validateForm();
-            }
-        });
-
-        // 2. Handle Remove File
-        removeFileBtn.addEventListener('click', function() {
-            fileInput.value = ''; 
-            isFileUploaded = false;
-            uploadZone.classList.remove('hidden');
-            filePreview.classList.add('hidden');
-            validateForm();
-        });
-
-        // 3. Handle Text Input
-        jobDescInput.addEventListener('input', validateForm);
-
-        // 4. Validate Form to Enable Button
-        function validateForm() {
-            const isTextEntered = jobDescInput.value.trim().length > 0;
-            analyzeBtn.disabled = !(isFileUploaded && isTextEntered);
-        }
-
-        // 5. SWITCH TO RESULTS VIEW
-        analyzeBtn.addEventListener('click', function() {
-            // Change Button State
-            const originalText = this.innerHTML;
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Analyzing...';
-            this.classList.add('opacity-75');
-
-            // Simulate Loading (1.5 seconds)
-            setTimeout(() => {
-                // Hide Upload, Show Results
-                uploadSection.classList.add('hidden');
-                resultsSection.classList.remove('hidden');
-                
-                // Scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                // Reset Button (for next time)
-                this.innerHTML = originalText;
-                this.disabled = false;
-                this.classList.remove('opacity-75');
-            }, 1500);
-        });
-
-        // ------------------
-        // Logic: Results View
-        // ------------------
-
-        // Function to go back to Upload View
-        function resetToUpload() {
-            resultsSection.classList.add('hidden');
-            uploadSection.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Optional: Clear previous data if you want
-            // fileInput.value = '';
-            // jobDescInput.value = '';
-            // removeFileBtn.click();
-        }
-
-        // Bind Back Buttons
-        backToUploadBtn.addEventListener('click', resetToUpload);
-        analyzeAnotherBtn.addEventListener('click', resetToUpload);
-
-        window.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('loaded');
-  });
-  const bbtn = document.getElementById('backBtn');
-  // بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-  if (bbtn) {
-      bbtn.addEventListener('click', function(e) {
-          e.preventDefault(); // وقف الانتقال الفوري
-          // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
-          document.body.classList.remove('loaded');
-          // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
-          // لو خليتها 200 والـ CSS 500 الحركة هتقطع
-          setTimeout(() => {
-              window.location.href = this.href;
-          }, 400);
-      });
-  }
-    </script>
+<script type="module" src="../../js/controllers/analyzerController.js"></script>
 </body>
 </html>

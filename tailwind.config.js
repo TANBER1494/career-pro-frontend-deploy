@@ -11,6 +11,10 @@ module.exports = {
         lexend: ['Lexend', 'sans-serif'],
         albert: ['Albert Sans', 'sans-serif'],
         hegarty: ['BBH Hegarty', 'sans-serif'],
+        screens: {
+          'tablet-custom': '880px',   // النقطة التي ينقسم فيها الصف لاثنين
+          'desktop-custom': '1390px', // النقطة التي يصبح فيها الصف ثلاثة
+        },
       },
 
       animation: {

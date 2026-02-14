@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>personality test - AI-Career Guidance</title>
+    <title>CareerPro - personality test</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,366 +24,105 @@
             }
         }
     </script>
-
     <style>
-        /* Custom Background Grid */
-      body.loaded {
-        opacity: 1;
-      }
+      body.loaded { opacity: 1; }
       body {
         opacity: 0; 
         transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
-        background: linear-gradient(
-          150deg,
-          rgba(220, 224, 224, 1) 14%,
-          rgba(182, 206, 224, 1) 60%,
-          rgba(95, 106, 115, 1) 100%
-        );
+        background: linear-gradient(150deg, rgba(220, 224, 224, 1) 14%, rgba(182, 206, 224, 1) 60%, rgba(95, 106, 115, 1) 100%);
         margin: 0;
         overflow-x: hidden;
         background-attachment: fixed;
         font-family: "Poppins", sans-serif;
       }
       .hidden { display: none !important; }
+      .fade-in { animation: fadeIn 0.8s ease-in-out forwards; }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
     </style>
 </head>
 <body class="text-slate-800 min-h-screen overflow-x-hidden">
-
+  <nav
+  class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
+>
+<a
+href="../../../index.html"
+class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+>
+<img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+<span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
+</a>
+<div class="w-auto flex justify-end min-w-0">
+  <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+    </div>
+</div>
+</nav>
     <main class="pt-[50px] pb-12 flex justify-center min-h-screen px-4">
         <div class="w-full">
 
-          <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
-            <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto flex items-center gap-4 mt-6 mb-10">
-  
-              <a
-                id="backBtn"
-                href="index.html"
-                class="flex items-center text-slate-500 hover:text-blue-600 transition-colors group shrink-0"
-              >
-                <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
-                <span class="text-sm font-medium">Back</span>
-              </a>
-            
-              <div>
-                <h1 class="text-3xl font-semibold text-dark">Personality Test</h1>
-                <p class="text-slate-500 mt-1">Discover your professional strengths and personality profile</p>
-              </div>
-            
-            </div>
+            <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
+                <div class="flex items-center gap-4 mt-6 mb-10">
+                  <a id="backBtn" href="index.html" class="flex items-center text-slate-500 hover:text-blue-600 transition-colors group shrink-0">
+                    <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
+                    <span class="text-sm font-medium">Back</span>
+                  </a>
+                  <div>
+                    <h1 class="text-3xl font-semibold text-dark">Personality Test</h1>
+                    <p class="text-slate-500 mt-1">Discover your professional strengths</p>
+                  </div>
+                </div>
 
-            <div class="bg-white rounded-2xl p-18 md:p-20 text-center shadow-lg border border-slate-200 max-w-4xl mx-auto">
-              <i class="fa-solid fa-brain text-6xl text-primary mb-6 inline-block bg-gradient-to-r from-blue-300 to-blue-600 bg-clip-text text-transparent"></i>
-              <h2 class="text-3xl font-semibold text-dark mb-3">Professional Personality Test</h2>
-              <p class="text-gray-500 font-medium leading-relaxed mb-8 max-w-xl mx-auto">
-                  Take our comprehensive 5-question test to discover your unique professional strengths. This evaluation covers technical expertise, communication abilities, and leadership potential.
-              </p>
-              
-              <button onclick="goToQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-3 mt-2 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg">
-                  Start Test
-              </button>
-          </div>
+                <div class="bg-white rounded-2xl p-18 md:p-20 text-center shadow-lg border border-slate-200 max-w-4xl mx-auto">
+                  <i class="fa-solid fa-brain text-6xl text-primary mb-6 inline-block bg-gradient-to-r from-blue-300 to-blue-600 bg-clip-text text-transparent"></i>
+                  <h2 class="text-3xl font-semibold text-dark mb-3">Professional Personality Test</h2>
+                  <p class="text-gray-500 font-medium mb-8 max-w-xl mx-auto">Take our comprehensive assessment to discover your unique professional strengths.</p>
+                  <button onclick="goToQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-3 rounded-lg font-medium transition shadow-md">
+                      Start Test
+                  </button>
+                </div>
             </div>
 
             <div id="quiz-view" class="hidden transition-opacity duration-500 ease-in-out opacity-0 max-w-[1000px] mx-auto">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 id="q-counter" class="text-xl font-semibold text-dark">Question 1 of 15</h2>
-                    <span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Problem Solving</span>
+                    <h2 id="q-counter" class="text-xl font-semibold text-dark">Loading...</h2>
+                    <span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">AI Assessment</span>
                 </div>
-
                 <div class="w-full h-2 bg-slate-400 rounded-full overflow-hidden mb-8">
-                    <div id="progress-bar" class="h-full bg-dark w-0 transition-all duration-300 ease-out"></div>
+                    <div id="progress-bar" class="h-full bg-dark w-0 transition-all duration-300"></div>
                 </div>
-
                 <div class="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 max-w-4xl mx-auto">
-                    <h3 id="q-text" class="text-xl md:text-2xl font-medium text-dark mb-8 leading-snug">Loading Question...</h3>
-                    
-                    <div id="options-box" class="flex flex-col gap-4">
-                        </div>
-
+                    <h3 id="q-text" class="text-xl md:text-2xl font-medium text-dark mb-8">Fetching questions...</h3>
+                    <div id="options-box" class="flex flex-col gap-4"></div>
                     <div class="text-right mt-8">
-                        <button id="next-btn" onclick="nextQuestion()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium opacity-50 pointer-events-none transition duration-300">
+                        <button id="next-btn" onclick="nextQuestion()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium opacity-50 pointer-events-none transition">
                             Next Question
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div id="result-view" class="hidden w-full px-6 md:px-12">                
-              <div class="mb-6">
+            <div id="result-view" class="hidden w-full px-6 md:px-12 fade-in">                
+                <div class="mb-6">
                     <h1 class="text-2xl md:text-3xl font-bold text-dark">Your Personality Test Results</h1>
-                    <p class="text-gray-500 mt-1">Comprehensive analysis of your professional strengths</p>
                 </div>
-
                 <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 mb-6">
                     <h3 class="text-lg font-semibold text-dark mb-6">Skills Profile Overview</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between items-end mb-2">
-                                    <span class="text-sm font-bold text-dark">Technical Expertise</span>
-                                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold">70%</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
-                                    <div class="bg-slate-900 h-1.5 rounded-full" style="width: 70%"></div>
-                                </div>
-                                <div class="text-xs text-gray-400">Strong technical foundation</div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between items-end mb-2">
-                                    <span class="text-sm font-bold text-dark">Leadership Abilities</span>
-                                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold">64%</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
-                                    <div class="bg-slate-900 h-1.5 rounded-full" style="width: 64%"></div>
-                                </div>
-                                <div class="text-xs text-gray-400">Emerging leadership potential</div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between items-end mb-2">
-                                    <span class="text-sm font-bold text-dark">Creative Problem-Solving</span>
-                                    <span class="bg-green-500 text-white text-[10px] px-2 py-0.5 rounded font-bold">80%</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
-                                    <div class="bg-slate-900 h-1.5 rounded-full" style="width: 80%"></div>
-                                </div>
-                                <div class="text-xs text-gray-400">Highly creative and innovative</div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between items-end mb-2">
-                                    <span class="text-sm font-bold text-dark">Communication Skills</span>
-                                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold">70%</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
-                                    <div class="bg-slate-900 h-1.5 rounded-full" style="width: 70%"></div>
-                                </div>
-                                <div class="text-xs text-gray-400">Effective communicator</div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between items-end mb-2">
-                                    <span class="text-sm font-bold text-dark">Analytical Thinking</span>
-                                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold">76%</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
-                                    <div class="bg-slate-900 h-1.5 rounded-full" style="width: 76%"></div>
-                                </div>
-                                <div class="text-xs text-gray-400">Strong analytical skills</div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between items-end mb-2">
-                                    <span class="text-sm font-bold text-dark">Collaborative Mindset</span>
-                                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold">72%</span>
-                                </div>
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
-                                    <div class="bg-slate-900 h-1.5 rounded-full" style="width: 72%"></div>
-                                </div>
-                                <div class="text-xs text-gray-400">Collaborative team member</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8"></div>
                 </div>
-
-                <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 mb-6">
-                    <h3 class="text-lg font-semibold text-dark mb-6">Your Top Strengths</h3>
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-amber-400 text-white flex items-center justify-center font-bold text-sm">1</div>
-                                <div>
-                                    <h4 class="text-sm font-semibold text-dark">Creative Problem-Solving</h4>
-                                    <p class="text-xs text-gray-400">Highly creative and innovative</p>
-                                </div>
-                            </div>
-                            <span class="border border-slate-200 px-3 py-1 rounded-md text-sm font-semibold text-gray-500">80%</span>
-                        </div>
-
-                        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-slate-400 text-white flex items-center justify-center font-bold text-sm">2</div>
-                                <div>
-                                    <h4 class="text-sm font-semibold text-dark">Technical Expertise</h4>
-                                    <p class="text-xs text-gray-400">Strong technical foundation</p>
-                                </div>
-                            </div>
-                            <span class="border border-slate-200 px-3 py-1 rounded-md text-sm font-semibold text-gray-500">76%</span>
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-slate-400 text-white flex items-center justify-center font-bold text-sm">3</div>
-                                <div>
-                                    <h4 class="text-sm font-semibold text-dark">Analytical Thinking</h4>
-                                    <p class="text-xs text-gray-400">Strong analytical skills</p>
-                                </div>
-                            </div>
-                            <span class="border border-slate-200 px-3 py-1 rounded-md text-sm font-semibold text-gray-500">76%</span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 mb-8">
-                    <h3 class="text-lg font-semibold text-dark mb-6">Recommended Career based on personality test</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl bg-slate-50">
-                            <span class="font-medium text-dark text-sm">Software Engineer</span>
-                            <i class="fa-regular fa-building text-primary"></i>
-                        </div>
-                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl bg-slate-50">
-                            <span class="font-medium text-dark text-sm">Frontend Developer</span>
-                            <i class="fa-solid fa-suitcase text-primary"></i>
-                        </div>
-                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl bg-slate-50">
-                            <span class="font-medium text-dark text-sm">Backend Developer</span>
-                            <i class="fa-solid fa-server text-primary"></i>
-                        </div>
-                        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl bg-slate-50">
-                            <span class="font-medium text-dark text-sm">Full Stack Developer</span>
-                            <i class="fa-solid fa-layer-group text-primary"></i>
-                        </div>
-                    </div>
+                    <h3 class="text-lg font-semibold text-dark mb-6">Recommended Careers</h3>
+                    <div id="careers-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
-
                 <div class="flex justify-center gap-4 pb-8">
-                    <button  onclick="location.reload()" class="px-6 py-2.5 bg-slate-50 text-slate-700 border-2 border-slate-300 hover:border-blue-400 rounded-lg text-dark font-medium hover:bg-slate-50 transition">Retake Test</button>
-                    <a id="backBtn" href="index.html"class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">Explore More Services</a>
+                    <button onclick="location.reload()" class="px-6 py-2.5 bg-slate-50 text-slate-700 border-2 border-slate-300 rounded-lg font-medium">Retake Test</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <script>
-        const questions = [
-            { t: "When faced with a complex problem at work, what's your preferred approach?", o: ["Break it down systematically", "Brainstorm creative solutions", "Research similar problems", "Delegate parts to team"] },
-            { t: "After a long week of work, how do you prefer to recharge?", o: ["Going out with friends", "Spending quiet time alone", "Engaging in a hobby", "Professional networking"] },
-            { t: "When making a critical decision, you rely mostly on:", o: ["Logic and data", "Feelings and people impact", "Past experiences", "Gut instinct"] },
-            { t: "How do you handle deadlines?", o: ["Plan weeks in advance", "Work best under pressure", "Flexible schedule", "Rely on team reminders"] },
-            { t: "In a meeting, you are usually the one who:", o: ["Listens quietly", "Leads conversation", "Takes notes", "Mediates opinions"] }
-        ];
-
-        let currentIdx = 0;
-        
-        // Elements
-        const startView = document.getElementById('start-view');
-        const quizView = document.getElementById('quiz-view');
-        const resultView = document.getElementById('result-view');
-        
-        const qCounter = document.getElementById('q-counter');
-        const qText = document.getElementById('q-text');
-        const optionsBox = document.getElementById('options-box');
-        const nextBtn = document.getElementById('next-btn');
-        const progressBar = document.getElementById('progress-bar');
-
-        function goToQuiz() {
-            // 1. Fade out current view
-            startView.classList.remove('opacity-100');
-            startView.classList.add('opacity-0');
-
-            // 2. Wait for transition (500ms), then swap views
-            setTimeout(() => {
-                startView.classList.add('hidden');
-                
-                // Prepare quiz view (Un-hide but keep transparent)
-                quizView.classList.remove('hidden');
-                loadQuestion();
-
-                // Small delay to allow display:block to apply before fading in
-                setTimeout(() => {
-                    quizView.classList.remove('opacity-0');
-                    quizView.classList.add('opacity-100');
-                }, 50);
-
-            }, 500);
-        }
-
-        function loadQuestion() {
-            const q = questions[currentIdx];
-            qCounter.innerText = `Question ${currentIdx + 1} of ${questions.length}`;
-            qText.innerText = q.t;
-            progressBar.style.width = `${((currentIdx) / questions.length) * 100}%`;
-            
-            optionsBox.innerHTML = '';
-            q.o.forEach((opt, idx) => {
-                const btn = document.createElement('div');
-                btn.className = 'w-full bg-white border-2 border-slate-200 p-5 rounded-lg cursor-pointer flex items-center gap-4 transition hover:bg-slate-50 hover:border-slate-300 group';
-                btn.onclick = () => selectOption(btn);
-                
-                btn.innerHTML = `
-                    <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center flex-shrink-0 group-hover:border-slate-400 transition" id="circle-${idx}">
-                        <div class="w-2.5 h-2.5 bg-primary rounded-full hidden" id="dot-${idx}"></div>
-                    </div> 
-                    <span class="text-slate-700 font-medium">${opt}</span>
-                `;
-                optionsBox.appendChild(btn);
-            });
-
-            nextBtn.classList.add('opacity-50', 'pointer-events-none');
-            nextBtn.classList.remove('opacity-100', 'pointer-events-auto', 'hover:bg-blue-700');
-        }
-
-        function selectOption(selectedBtn) {
-            const allBtns = optionsBox.children;
-            for (let btn of allBtns) {
-                btn.className = 'w-full bg-white border-2 border-slate-200 p-5 rounded-lg cursor-pointer flex items-center gap-4 transition hover:bg-slate-50 hover:border-slate-300 group';
-                btn.querySelector('div[id^="circle-"]').classList.remove('border-primary');
-                btn.querySelector('div[id^="circle-"]').classList.add('border-slate-300');
-                btn.querySelector('div[id^="dot-"]').classList.add('hidden');
-            }
-
-            selectedBtn.className = 'w-full bg-blue-50 border-2 border-primary p-5 rounded-lg cursor-pointer flex items-center gap-4 transition';
-            const circle = selectedBtn.querySelector('div[id^="circle-"]');
-            const dot = selectedBtn.querySelector('div[id^="dot-"]');
-            
-            circle.classList.remove('border-slate-300');
-            circle.classList.add('border-primary');
-            dot.classList.remove('hidden');
-
-            nextBtn.classList.remove('opacity-50', 'pointer-events-none');
-            nextBtn.classList.add('opacity-100', 'pointer-events-auto', 'hover:bg-blue-700');
-        }
-
-        function nextQuestion() {
-            if (currentIdx < questions.length - 1) {
-                currentIdx++;
-                loadQuestion();
-            } else {
-                finishQuiz();
-            }
-        }
-
-        function finishQuiz() {
-            quizView.classList.add('hidden');
-            resultView.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-        window.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('loaded');
-});
-const bbtn = document.getElementById('backBtn');
-// بنعمل شرط عشان لو الزرار مش موجود في الصفحة دي ميديناش ايرور
-if (bbtn) {
-    bbtn.addEventListener('click', function(e) {
-        e.preventDefault(); // وقف الانتقال الفوري
-        // شيل كلاس الظهور (فالصفحة ترجع شفافة تاني)
-        document.body.classList.remove('loaded');
-        // 4. استنى نص ثانية (500ms) عشان تماثل وقت الـ CSS
-        // لو خليتها 200 والـ CSS 500 الحركة هتقطع
-        setTimeout(() => {
-            window.location.href = this.href;
-        }, 400);
-    });
-}
-        </script>
-        <script type="module" src="/src/js/controllers/homeController.js"></script>
-
+    <script type="module" src="../../js/controllers/personalityController.js"></script>
 </body>
 </html>

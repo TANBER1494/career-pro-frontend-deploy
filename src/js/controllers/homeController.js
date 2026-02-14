@@ -43,7 +43,6 @@ function initAuthButtons() {
       // للشركة: Dashboard
       authService.logout();
     } else {
-      // ✅ تم تصحيح المسار هنا (إضافة مجلد profile)
       navLinkHtml = `
           <a id="profileBtn" href="/src/pages/seeker/profile/profile.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
             <i class="fas fa-user-circle text-lg"></i> Profile
@@ -377,7 +376,7 @@ function createCompanyCard(company) {
 
   return `
     <div class="flex flex-col gap-3 group">
-        <div class="companyCard">
+        <div class="companyCard ">
             <div class="companyCard-inner">
                 <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">
                     <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
@@ -526,8 +525,8 @@ function initModalEvents() {
         const dropZone = fileInput.closest('.group');
         const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
         if (fileNameDisplay) {
-             fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
-             fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
+              fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
+              fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
         }
     }
   };
@@ -552,14 +551,12 @@ function initModalEvents() {
     form.parentNode.replaceChild(newForm, form);
     form = newForm; 
 
-    // ✅✅✅ الجزء المضاف لتصليح زرار Cancel ✅✅✅
     // بنجيب الزرار من "الفورم الجديد" ونربطه بدالة القفل
     const newCancelBtn = newForm.querySelector("#btnCancelModal");
     if (newCancelBtn) {
         newCancelBtn.onclick = close; // ربطناه بدالة الإغلاق
         newCancelBtn.type = "button"; // تأكيد إنه مش submit
     }
-    // ✅✅✅ نهاية التعديل ✅✅✅
 
     // كود إظهار اسم الملف
     const fileInput = document.getElementById("applyCv");

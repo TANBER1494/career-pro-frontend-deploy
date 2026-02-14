@@ -25,8 +25,7 @@ function handleLoginRedirect(user) {
           '/src/pages/seeker/seeker steps/ProfileStep3.html';
         break;
       default: // Step 4 or more (Completed)
-        window.location.href = '/src/pages/seeker/profile.html'; // أو Home Page
-        break;
+        window.location.href = '/src/pages/seeker/profile/profile.html'; // زودنا اسم الفولدر        break;
     }
   }
   // 2. Company Routing

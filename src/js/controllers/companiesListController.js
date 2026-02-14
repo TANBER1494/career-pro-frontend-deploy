@@ -1,27 +1,27 @@
-import { companyDiscoveryService } from "../services/companyDiscoveryService.js";
-import { authService } from "../services/authService.js";
-document.addEventListener("DOMContentLoaded", () => {
+import { companyDiscoveryService } from '../services/companyDiscoveryService.js';
+import { authService } from '../services/authService.js';
+document.addEventListener('DOMContentLoaded', () => {
   initAuthButtons();
 });
 // ============================================================
 // 1. Elements & State
 // ============================================================
-const container = document.getElementById("companies-container");
-const countLabel = document.getElementById("companies-count");
-const verifiedBadge = document.getElementById("verified-count-badge");
-const verifiedCountLabel = document.getElementById("verified-count");
+const container = document.getElementById('companies-container');
+const countLabel = document.getElementById('companies-count');
+const verifiedBadge = document.getElementById('verified-count-badge');
+const verifiedCountLabel = document.getElementById('verified-count');
 // Filters
-const searchInput = document.getElementById("search-input");
-const filterIndustry = document.getElementById("filter-industry");
-const filterLocation = document.getElementById("filter-location");
-const filterVerified = document.getElementById("filter-verified");
+const searchInput = document.getElementById('search-input');
+const filterIndustry = document.getElementById('filter-industry');
+const filterLocation = document.getElementById('filter-location');
+const filterVerified = document.getElementById('filter-verified');
 
 // State
 let currentFilters = {
-  search: "",
-  industry: "",
-  location: "",
-  isVerified: "",
+  search: '',
+  industry: '',
+  location: '',
+  isVerified: '',
   page: 1,
   limit: 500,
 };
@@ -32,18 +32,18 @@ let searchTimeout = null; // For Debouncing
 // ============================================================
 // 2. Initialization
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   loadCompanies();
   setupEventListeners();
   ensurePaginationHTML();
 });
 function ensurePaginationHTML() {
   // لو الكونتينر مش موجود في الصفحة، اخلقه تحت قائمة الشركات
-  let pagContainer = document.getElementById("pagination-container");
+  let pagContainer = document.getElementById('pagination-container');
   if (!pagContainer && container) {
-    pagContainer = document.createElement("div");
-    pagContainer.id = "pagination-container";
-    pagContainer.className = "flex justify-center items-center gap-4 mt-8 mb-8";
+    pagContainer = document.createElement('div');
+    pagContainer.id = 'pagination-container';
+    pagContainer.className = 'flex justify-center items-center gap-4 mt-8 mb-8';
     container.parentNode.appendChild(pagContainer);
   }
 }
@@ -79,16 +79,16 @@ async function loadCompanies() {
     // Update Verified Badge
     const verifiedCount = companies.filter((c) => c.isVerified).length;
     if (verifiedCount > 0) {
-      verifiedBadge.classList.remove("hidden");
+      verifiedBadge.classList.remove('hidden');
       verifiedCountLabel.textContent = verifiedCount;
     } else {
-      verifiedBadge.classList.add("hidden");
+      verifiedBadge.classList.add('hidden');
     }
 
     renderCompanies();
     updatePaginationUI(allFetchedCompanies.length);
   } catch (error) {
-    console.error("Companies List Error:", error);
+    console.error('Companies List Error:', error);
     container.innerHTML = `
             <div class="col-span-full text-center py-12">
                 <i class="fas fa-exclamation-circle text-4xl text-red-400"></i>
@@ -103,7 +103,7 @@ async function loadCompanies() {
 // ============================================================
 function renderCompanies() {
   // مبقتش محتاجة تستقبل parameter
-  container.innerHTML = "";
+  container.innerHTML = '';
 
   // نستخدم المتغير العام اللي فيه الداتا
   const companies = allFetchedCompanies;
@@ -119,11 +119,11 @@ function renderCompanies() {
   const companiesToShow = companies.slice(start, end);
 
   companiesToShow.forEach((company) => {
-    container.insertAdjacentHTML("beforeend", createCompanyCard(company));
+    container.insertAdjacentHTML('beforeend', createCompanyCard(company));
   });
 }
 function updatePaginationUI(totalItems) {
-  const pagContainer = document.getElementById("pagination-container");
+  const pagContainer = document.getElementById('pagination-container');
   if (!pagContainer) return;
 
   // حساب عدد الصفحات الكلي (مثلاً 100 شركة / 9 في الصفحة = 12 صفحة)
@@ -137,7 +137,7 @@ function updatePaginationUI(totalItems) {
   pagContainer.innerHTML = `
       <button id="prevBtn" 
           class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          ${isFirstPage ? "disabled" : ""}>
+          ${isFirstPage ? 'disabled' : ''}>
           <i class="fas fa-chevron-left mr-1"></i> Previous
       </button>
       
@@ -147,18 +147,18 @@ function updatePaginationUI(totalItems) {
 
       <button id="nextBtn" 
           class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          ${isLastPage ? "disabled" : ""}>
+          ${isLastPage ? 'disabled' : ''}>
           Next <i class="fas fa-chevron-right ml-1"></i>
       </button>
   `;
 
   // إعادة ربط الأحداث
   document
-    .getElementById("prevBtn")
-    ?.addEventListener("click", () => changePage(-1));
+    .getElementById('prevBtn')
+    ?.addEventListener('click', () => changePage(-1));
   document
-    .getElementById("nextBtn")
-    ?.addEventListener("click", () => changePage(1));
+    .getElementById('nextBtn')
+    ?.addEventListener('click', () => changePage(1));
 }
 function changePage(direction) {
   // تحديث رقم الصفحة
@@ -169,7 +169,7 @@ function changePage(direction) {
   if (currentFilters.page < 1) currentFilters.page = 1;
 
   // سكرول لأعلى الصفحة
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   // ⚠️ التغيير هنا: مبقناش بننادي loadCompanies
   // بننادي renderCompanies وتحديث الزراير بس
@@ -179,27 +179,26 @@ function changePage(direction) {
 
 function createCompanyCard(company) {
   // ... (نفس المتغيرات اللي فوق زي ما هي)
-  const name = company.name || company.companyName || "Unknown Company";
-  let logo = "https://placehold.co/64x64?text=C";
-  if (company.logo && !company.logo.includes("url...")) {
-    logo = company.logo.startsWith("http")
-      ? company.logo
-      : `http://localhost:3000${company.logo}`;
+  const name = company.name || company.companyName || 'Unknown Company';
+  let logo = 'https://placehold.co/64x64?text=C';
+  // التغيير: نستخدم اللوجو مباشرة لو موجود
+  if (company.logo) {
+    logo = company.logo;
   }
   const initial = name.charAt(0).toUpperCase();
-  const industry = company.industry || "Technology";
-  const location = company.location || "Remote";
-  const size = company.companySize || company.size || "N/A";
+  const industry = company.industry || 'Technology';
+  const location = company.location || 'Remote';
+  const size = company.companySize || company.size || 'N/A';
   const positions = company.openPositionsCount || 0;
 
   // Verified Badge logic...
   const verifiedBadgeHtml = company.isVerified
     ? `<div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs" title="Verified Company"><i class="fa-solid fa-shield"></i></div>`
-    : "";
+    : '';
 
   const verifiedTag = company.isVerified
     ? `<span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded ml-1">Verified</span>`
-    : "";
+    : '';
 
   return `
     <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition group">
@@ -256,7 +255,7 @@ function createCompanyCard(company) {
 // ============================================================
 function setupEventListeners() {
   if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
+    searchInput.addEventListener('input', (e) => {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         currentFilters.search = e.target.value.trim();
@@ -267,7 +266,7 @@ function setupEventListeners() {
   }
 
   if (filterIndustry) {
-    filterIndustry.addEventListener("change", (e) => {
+    filterIndustry.addEventListener('change', (e) => {
       currentFilters.industry = e.target.value;
       currentFilters.page = 1;
       loadCompanies();
@@ -275,7 +274,7 @@ function setupEventListeners() {
   }
 
   if (filterLocation) {
-    filterLocation.addEventListener("change", (e) => {
+    filterLocation.addEventListener('change', (e) => {
       currentFilters.location = e.target.value;
       currentFilters.page = 1;
       loadCompanies();
@@ -283,7 +282,7 @@ function setupEventListeners() {
   }
 
   if (filterVerified) {
-    filterVerified.addEventListener("change", (e) => {
+    filterVerified.addEventListener('change', (e) => {
       currentFilters.isVerified = e.target.value;
       currentFilters.page = 1;
       loadCompanies();
@@ -301,16 +300,16 @@ function applyForJob(jobId) {
 // ============================================================
 window.applyForJob = applyForJob;
 function initAuthButtons() {
-  const authContainer = document.getElementById("auth-buttons-container");
+  const authContainer = document.getElementById('auth-buttons-container');
   if (!authContainer) return;
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
-  authContainer.className = "flex items-center gap-3 justify-end";
-      if (token && user) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  authContainer.className = 'flex items-center gap-3 justify-end';
+  if (token && user) {
     // تحديد الرابط والاسم والأيقونة حسب نوع الحساب
-    let navLinkHtml = "";
+    let navLinkHtml = '';
 
-    if (user.accountType === "company") {
+    if (user.accountType === 'company') {
       // للشركة: Dashboard
       authService.logout();
     } else {
@@ -347,7 +346,7 @@ function initAuthButtons() {
       </div>
         `;
 
-    document.getElementById("btnLogout").addEventListener("click", () => {
+    document.getElementById('btnLogout').addEventListener('click', () => {
       authService.logout();
     });
   } else {
@@ -358,15 +357,15 @@ function initAuthButtons() {
         `;
   }
 }
-window.addEventListener("load", function () {
-  document.body.classList.add("loaded");
+window.addEventListener('load', function () {
+  document.body.classList.add('loaded');
 });
-document.addEventListener("click", function (e) {
-  const profileBtn = e.target.closest("#profileBtn");
+document.addEventListener('click', function (e) {
+  const profileBtn = e.target.closest('#profileBtn');
   if (profileBtn) {
     e.preventDefault();
-    const targetUrl = profileBtn.getAttribute("href");
-    document.body.classList.remove("loaded");
+    const targetUrl = profileBtn.getAttribute('href');
+    document.body.classList.remove('loaded');
     setTimeout(function () {
       window.location.href = targetUrl;
     }, 350);

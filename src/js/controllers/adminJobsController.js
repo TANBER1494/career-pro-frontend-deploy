@@ -107,7 +107,7 @@ function renderJobs(jobs) {
       // 2. Company Info (Handle if company was deleted but job exists)
       const companyName = job.companyId?.companyName || 'Unknown Company';
       const companyLogo = job.companyId?.logoUrl
-        ? `http://localhost:3000${job.companyId.logoUrl}`
+        ? job.companyId.logoUrl
         : 'https://via.placeholder.com/40';
 
       return `

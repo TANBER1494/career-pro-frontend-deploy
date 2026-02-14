@@ -1,29 +1,29 @@
-import { jobService } from "../services/jobService.js";
-import { authService } from "../services/authService.js";
-import Swal from "sweetalert2";
-document.addEventListener("DOMContentLoaded", () => {
+import { jobService } from '../services/jobService.js';
+import { authService } from '../services/authService.js';
+import Swal from 'sweetalert2';
+document.addEventListener('DOMContentLoaded', () => {
   initAuthButtons();
 });
 // ============================================================
 // 1. Elements & State
 // ============================================================
-const container = document.getElementById("jobs-container");
-const countLabel = document.getElementById("jobs-count");
+const container = document.getElementById('jobs-container');
+const countLabel = document.getElementById('jobs-count');
 
 // Filters
-const searchInput = document.getElementById("search-input");
-const filterLocation = document.getElementById("filter-location");
-const filterType = document.getElementById("filter-type");
-const btnFilter = document.getElementById("btn-filter");
-const filterExperience = document.getElementById("filter-experience");
+const searchInput = document.getElementById('search-input');
+const filterLocation = document.getElementById('filter-location');
+const filterType = document.getElementById('filter-type');
+const btnFilter = document.getElementById('btn-filter');
+const filterExperience = document.getElementById('filter-experience');
 
 // State
 let allFetchedJobs = [];
 let currentFilters = {
-  search: "",
-  location: "",
-  experienceLevel: "",
-  type: "",
+  search: '',
+  location: '',
+  experienceLevel: '',
+  type: '',
   page: 1,
   limit: 500, // نجلب عدد كبير لتقسيمه في الفرونت
 };
@@ -34,10 +34,10 @@ let searchTimeout = null;
 // ============================================================
 // 2. Initialization
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   // 1. Check URL Params
   const urlParams = new URLSearchParams(window.location.search);
-  const searchParam = urlParams.get("search");
+  const searchParam = urlParams.get('search');
 
   if (searchParam) {
     currentFilters.search = searchParam;
@@ -56,12 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function ensurePaginationHTML() {
-  let pagContainer = document.getElementById("pagination-container");
+  let pagContainer = document.getElementById('pagination-container');
   if (!pagContainer && container) {
-    pagContainer = document.createElement("div");
-    pagContainer.id = "pagination-container";
+    pagContainer = document.createElement('div');
+    pagContainer.id = 'pagination-container';
     pagContainer.className =
-      "flex justify-center items-center gap-4 mt-12 mb-8";
+      'flex justify-center items-center gap-4 mt-12 mb-8';
     container.parentNode.appendChild(pagContainer);
   }
 }
@@ -84,9 +84,9 @@ async function loadJobs() {
     // Clean filters
     const params = { ...currentFilters };
     if (!params.search) delete params.search;
-    if (!params.location || params.location === "All Locations")
+    if (!params.location || params.location === 'All Locations')
       delete params.location;
-    if (!params.type || params.type === "All Types") delete params.type;
+    if (!params.type || params.type === 'All Types') delete params.type;
     if (!params.experienceLevel) delete params.experienceLevel;
 
     // Always request page 1 from API to get the full batch
@@ -97,7 +97,7 @@ async function loadJobs() {
     let jobs = response.data.jobs || [];
 
     // 2. 🔥 التحقق من حالة الحفظ (للمستخدم المسجل فقط)
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       try {
         // نجلب الوظائف المحفوظة
@@ -114,7 +114,7 @@ async function loadJobs() {
           isSaved: savedIds.has(job._id || job.id),
         }));
       } catch (err) {
-        console.warn("Failed to sync saved status", err);
+        console.warn('Failed to sync saved status', err);
         // نكمل عادي حتى لو فشل جلب المحفوظات
       }
     }
@@ -133,7 +133,7 @@ async function loadJobs() {
     // تحديث زراير الصفحات
     updatePaginationUI(allFetchedJobs.length);
   } catch (error) {
-    console.error("All Jobs Error:", error);
+    console.error('All Jobs Error:', error);
     container.innerHTML = `
             <div class="col-span-full text-center py-20">
                 <i class="fas fa-exclamation-circle text-4xl text-red-400 mb-4"></i>
@@ -148,7 +148,7 @@ async function loadJobs() {
 // 4. Logic: Render Cards (With Pagination Slice)
 // ============================================================
 function renderJobs() {
-  container.innerHTML = "";
+  container.innerHTML = '';
   const jobs = allFetchedJobs;
 
   if (jobs.length === 0) {
@@ -162,8 +162,8 @@ function renderJobs() {
                 <button onclick="window.location.href='/jobs.html'" class="mt-4 px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 transition">Clear Filters</button>
             </div>
         `;
-    const pagContainer = document.getElementById("pagination-container");
-    if (pagContainer) pagContainer.innerHTML = "";
+    const pagContainer = document.getElementById('pagination-container');
+    if (pagContainer) pagContainer.innerHTML = '';
     return;
   }
 
@@ -172,13 +172,13 @@ function renderJobs() {
   const jobsToShow = jobs.slice(start, end);
 
   jobsToShow.forEach((job) => {
-    container.insertAdjacentHTML("beforeend", createJobCard(job));
+    container.insertAdjacentHTML('beforeend', createJobCard(job));
   });
 }
 
 // دوال التحكم في الـ Pagination
 function updatePaginationUI(totalItems) {
-  const pagContainer = document.getElementById("pagination-container");
+  const pagContainer = document.getElementById('pagination-container');
   if (!pagContainer) return;
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -186,14 +186,14 @@ function updatePaginationUI(totalItems) {
   const isLastPage = currentFilters.page >= totalPages;
 
   if (totalPages <= 1) {
-    pagContainer.innerHTML = "";
+    pagContainer.innerHTML = '';
     return;
   }
 
   pagContainer.innerHTML = `
         <button id="prevBtn" 
             class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            ${isFirstPage ? "disabled" : ""}>
+            ${isFirstPage ? 'disabled' : ''}>
             <i class="fas fa-chevron-left mr-1"></i> Previous
         </button>
         
@@ -203,23 +203,23 @@ function updatePaginationUI(totalItems) {
 
         <button id="nextBtn" 
             class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            ${isLastPage ? "disabled" : ""}>
+            ${isLastPage ? 'disabled' : ''}>
             Next <i class="fas fa-chevron-right ml-1"></i>
         </button>
     `;
 
   document
-    .getElementById("prevBtn")
-    ?.addEventListener("click", () => changePage(-1));
+    .getElementById('prevBtn')
+    ?.addEventListener('click', () => changePage(-1));
   document
-    .getElementById("nextBtn")
-    ?.addEventListener("click", () => changePage(1));
+    .getElementById('nextBtn')
+    ?.addEventListener('click', () => changePage(1));
 }
 
 function changePage(direction) {
   currentFilters.page += direction;
   if (currentFilters.page < 1) currentFilters.page = 1;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   renderJobs();
   updatePaginationUI(allFetchedJobs.length);
 }
@@ -232,31 +232,30 @@ function createJobCard(job) {
   // ============================================================
   const companyData = job.companyId || job.company || {};
   const companyName =
-    companyData.companyName || companyData.name || "Confidential Company";
+    companyData.companyName || companyData.name || 'Confidential Company';
 
-  let companyLogo = "https://placehold.co/48x48?text=Logo";
+  let companyLogo = 'https://placehold.co/48x48?text=Logo';
   const rawLogo = companyData.logo || companyData.logoUrl;
 
-  if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
-    companyLogo = rawLogo.startsWith("http")
-      ? rawLogo
-      : `http://localhost:3000${rawLogo}`;
+  if (rawLogo && rawLogo.length > 10) {
+    // التغيير: استخدام الرابط الخام مباشرة
+    companyLogo = rawLogo;
   }
 
-  const location = job.location || companyData.location || "Remote";
+  const location = job.location || companyData.location || 'Remote';
   const companyLinkId = companyData._id || companyData.id;
   // ============================================================
 
-  const type = job.type || "Full-time";
+  const type = job.type || 'Full-time';
 
   // ✅ أيقونة الحفظ المتزامنة
   const saveIconClass = job.isSaved
-    ? "fa-solid text-blue-600"
-    : "fa-regular text-slate-400";
+    ? 'fa-solid text-blue-600'
+    : 'fa-regular text-slate-400';
 
   const featuredBadge = job.isFeatured
     ? `<span class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-semibold font-poppins px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider z-10">Featured</span>`
-    : "";
+    : '';
 
   const skillsHTML = (job.skills || [])
     .slice(0, 3)
@@ -264,12 +263,12 @@ function createJobCard(job) {
       (skill) =>
         `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
     )
-    .join("");
+    .join('');
 
   const jobLink = `/job-details.html?id=${job.id || job._id}`;
   const companyLink = companyLinkId
     ? `/company-details.html?id=${companyLinkId}`
-    : "#";
+    : '#';
 
   return `
     <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 flex flex-col h-full text-left">
@@ -300,7 +299,7 @@ function createJobCard(job) {
         </div>
 
         <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
-            ${job.description || "No description provided."}
+            ${job.description || 'No description provided.'}
         </p>
 
         <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
@@ -309,7 +308,7 @@ function createJobCard(job) {
 
         <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
             <span class="text-green-600 font-semibold font-poppins text-xs">${
-              job.salaryRange || "Competitive"
+              job.salaryRange || 'Competitive'
             }</span>
             <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
         </div>
@@ -333,7 +332,7 @@ function createJobCard(job) {
 // ============================================================
 function setupEventListeners() {
   if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
+    searchInput.addEventListener('input', (e) => {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         currentFilters.search = e.target.value.trim();
@@ -350,23 +349,23 @@ function setupEventListeners() {
   };
 
   if (filterLocation) {
-    filterLocation.addEventListener("change", (e) =>
-      handleFilterChange("location", e.target.value)
+    filterLocation.addEventListener('change', (e) =>
+      handleFilterChange('location', e.target.value)
     );
   }
 
   if (filterType) {
-    filterType.addEventListener("change", (e) =>
-      handleFilterChange("type", e.target.value)
+    filterType.addEventListener('change', (e) =>
+      handleFilterChange('type', e.target.value)
     );
   }
   if (filterExperience) {
-    filterExperience.addEventListener("change", (e) =>
-      handleFilterChange("experienceLevel", e.target.value)
+    filterExperience.addEventListener('change', (e) =>
+      handleFilterChange('experienceLevel', e.target.value)
     );
   }
   if (btnFilter) {
-    btnFilter.addEventListener("click", () => loadJobs());
+    btnFilter.addEventListener('click', () => loadJobs());
   }
 }
 
@@ -378,35 +377,35 @@ function setupEventListeners() {
 // 1. Open Apply Modal Logic
 // ============================================================
 window.applyForJobCheck = function (jobId) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   if (!token) {
     Swal.fire({
-      icon: "info",
-      title: "Login Required",
-      text: "You need to login to apply for jobs.",
+      icon: 'info',
+      title: 'Login Required',
+      text: 'You need to login to apply for jobs.',
       showCancelButton: true,
-      confirmButtonText: "Login Now",
-      cancelButtonText: "Cancel",
+      confirmButtonText: 'Login Now',
+      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed)
-        window.location.href = "/src/pages/auth/signup-login.html";
+        window.location.href = '/src/pages/auth/signup-login.html';
     });
     return;
   }
 
-  const modal = document.getElementById("applyModal");
+  const modal = document.getElementById('applyModal');
   if (modal) {
-    modal.classList.remove("hidden");
+    modal.classList.remove('hidden');
     modal.dataset.jobId = jobId;
 
     // Pre-fill Name/Email from local storage
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const nameInput = document.getElementById("applyName");
-    const emailInput = document.getElementById("applyEmail");
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const nameInput = document.getElementById('applyName');
+    const emailInput = document.getElementById('applyEmail');
 
     if (nameInput && user.firstName)
-      nameInput.value = `${user.firstName} ${user.lastName || ""}`.trim();
+      nameInput.value = `${user.firstName} ${user.lastName || ''}`.trim();
     if (emailInput && user.email) emailInput.value = user.email;
   }
 };
@@ -415,29 +414,29 @@ window.applyForJobCheck = function (jobId) {
 // 2. Save Job Logic
 // ============================================================
 window.toggleSaveJob = async function (jobId, btnElement) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (!token) {
-    Swal.fire("Login Required", "Please login to save jobs.", "info");
+    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
     return;
   }
 
   try {
-    const icon = btnElement.querySelector("i");
-    const isSaved = icon.classList.contains("fa-solid");
+    const icon = btnElement.querySelector('i');
+    const isSaved = icon.classList.contains('fa-solid');
 
     // Optimistic UI
     if (isSaved) {
-      icon.classList.remove("fa-solid", "text-blue-600");
-      icon.classList.add("fa-regular", "text-slate-400");
+      icon.classList.remove('fa-solid', 'text-blue-600');
+      icon.classList.add('fa-regular', 'text-slate-400');
     } else {
-      icon.classList.remove("fa-regular", "text-slate-400");
-      icon.classList.add("fa-solid", "text-blue-600");
+      icon.classList.remove('fa-regular', 'text-slate-400');
+      icon.classList.add('fa-solid', 'text-blue-600');
     }
 
     await jobService.toggleSaveJob(jobId);
   } catch (error) {
-    console.error("Save Error:", error);
-    Swal.fire("Error", "Failed to save job.", "error");
+    console.error('Save Error:', error);
+    Swal.fire('Error', 'Failed to save job.', 'error');
   }
 };
 
@@ -445,11 +444,11 @@ window.toggleSaveJob = async function (jobId, btnElement) {
 // 3. Close Logic (Helper)
 // ============================================================
 window.closeApplyModal = function () {
-  const modal = document.getElementById("applyModal");
-  if (modal) modal.classList.add("hidden");
-  
+  const modal = document.getElementById('applyModal');
+  if (modal) modal.classList.add('hidden');
+
   // بنحاول نلاقي الفورم ونعمله reset لو اتقفل من بره
-  const form = document.getElementById("applyForm");
+  const form = document.getElementById('applyForm');
   if (form) form.reset();
 };
 
@@ -457,28 +456,28 @@ window.closeApplyModal = function () {
 // 4. Init Modal Events (The Core Logic)
 // ============================================================
 function initModalEvents() {
-  const modal = document.getElementById("applyModal");
-  const closeBtn = document.getElementById("btnCloseModal");
-  
+  const modal = document.getElementById('applyModal');
+  const closeBtn = document.getElementById('btnCloseModal');
+
   // ملاحظة: مش هنعرف cancelBtn هنا عشان هيتمسح مع الـ cloning
-  
-  let form = document.getElementById("applyForm");
+
+  let form = document.getElementById('applyForm');
 
   // --- دالة الإغلاق الموحدة ---
   const close = () => {
-    if (modal) modal.classList.add("hidden");
+    if (modal) modal.classList.add('hidden');
     if (form) form.reset();
 
     // 🔥 إعادة تعيين نص الملف (عشان يرجع "SVG, PNG..." لما نقفل)
-    const fileInput = document.getElementById("applyCv");
+    const fileInput = document.getElementById('applyCv');
     if (fileInput) {
-        const dropZone = fileInput.closest('.group');
-        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
-        if (fileNameDisplay) {
-             // رجعيه للنص الأصلي اللي عندك في الـ HTML
-            fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
-            fileNameDisplay.classList.remove('black', 'font-bold');
-        }
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      if (fileNameDisplay) {
+        // رجعيه للنص الأصلي اللي عندك في الـ HTML
+        fileNameDisplay.textContent = 'SVG, PNG, JPG or GIF (MAX. 800x400px)';
+        fileNameDisplay.classList.remove('black', 'font-bold');
+      }
     }
   };
 
@@ -493,7 +492,7 @@ function initModalEvents() {
   // 🔥 (إضافة) إغلاق عند الضغط على Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-        close();
+      close();
     }
   });
 
@@ -505,44 +504,46 @@ function initModalEvents() {
 
     // ✅✅✅ (تصحيح هام) زر Cancel ✅✅✅
     // لازم نجيبه من "newForm" بعد النسخ، ونربطه بدالة القفل تاني
-    const newCancelBtn = newForm.querySelector("#btnCancelModal") || document.getElementById("btnCancelModal");
+    const newCancelBtn =
+      newForm.querySelector('#btnCancelModal') ||
+      document.getElementById('btnCancelModal');
     if (newCancelBtn) {
-        newCancelBtn.onclick = close; 
-        newCancelBtn.type = "button"; // أمان عشان ميعملش submit
+      newCancelBtn.onclick = close;
+      newCancelBtn.type = 'button'; // أمان عشان ميعملش submit
     }
 
     // 🔥 (إضافة) كود إظهار اسم الملف المختار
-    const fileInput = document.getElementById("applyCv");
+    const fileInput = document.getElementById('applyCv');
     if (fileInput) {
-        const dropZone = fileInput.closest('.group');
-        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
 
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0] && fileNameDisplay) {
-                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
-                fileNameDisplay.classList.add('black', 'font-bold');
-            }
-        });
+      fileInput.addEventListener('change', function () {
+        if (this.files && this.files[0] && fileNameDisplay) {
+          fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+          fileNameDisplay.classList.add('black', 'font-bold');
+        }
+      });
     }
 
     // 2. منطق الإرسال (Submit)
     const submitBtn = form.querySelector('button[type="submit"]');
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       e.stopPropagation();
 
       const jobId = modal.dataset.jobId;
-      
+
       // جلب العناصر (نتأكد إننا بنجيبهم من الـ DOM الحالي)
-      const currentFileInput = document.getElementById("applyCv");
-      const nameInput = document.getElementById("applyName");
-      const emailInput = document.getElementById("applyEmail");
-      const phoneInput = document.getElementById("applyPhone");
-      const coverInput = document.getElementById("applyCover");
+      const currentFileInput = document.getElementById('applyCv');
+      const nameInput = document.getElementById('applyName');
+      const emailInput = document.getElementById('applyEmail');
+      const phoneInput = document.getElementById('applyPhone');
+      const coverInput = document.getElementById('applyCover');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire("Warning", "Please upload your CV.", "warning");
+        Swal.fire('Warning', 'Please upload your CV.', 'warning');
         return;
       }
 
@@ -557,39 +558,40 @@ function initModalEvents() {
       try {
         if (submitBtn) {
           submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
 
         await jobService.applyForJob(jobId, applyData);
 
         Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Application submitted successfully.",
+          icon: 'success',
+          title: 'Success!',
+          text: 'Application submitted successfully.',
           timer: 2000,
           showConfirmButton: false,
         });
 
         close();
       } catch (error) {
-        console.error("Apply Error Details:", error);
-        let errorMsg = "Failed to submit application.";
+        console.error('Apply Error Details:', error);
+        let errorMsg = 'Failed to submit application.';
 
         if (error.response && error.response.status === 409) {
-          errorMsg = "You have already applied for this job.";
+          errorMsg = 'You have already applied for this job.';
         } else if (error.response?.data?.message) {
           errorMsg = error.response.data.message;
         }
 
         Swal.fire({
-          icon: "error",
-          title: "Application Failed",
+          icon: 'error',
+          title: 'Application Failed',
           text: errorMsg,
         });
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = "Submit Application";
+          submitBtn.innerHTML = 'Submit Application';
         }
       }
     });
@@ -597,32 +599,32 @@ function initModalEvents() {
 }
 
 function getTimeAgo(dateString) {
-  if (!dateString) return "Recently";
+  if (!dateString) return 'Recently';
   const date = new Date(dateString);
   const seconds = Math.floor((new Date() - date) / 1000);
 
   let interval = seconds / 31536000;
-  if (interval > 1) return Math.floor(interval) + "y ago";
+  if (interval > 1) return Math.floor(interval) + 'y ago';
   interval = seconds / 2592000;
-  if (interval > 1) return Math.floor(interval) + "mo ago";
+  if (interval > 1) return Math.floor(interval) + 'mo ago';
   interval = seconds / 86400;
-  if (interval > 1) return Math.floor(interval) + "d ago";
+  if (interval > 1) return Math.floor(interval) + 'd ago';
   interval = seconds / 3600;
-  if (interval > 1) return Math.floor(interval) + "h ago";
-  return "Just now";
+  if (interval > 1) return Math.floor(interval) + 'h ago';
+  return 'Just now';
 }
 
 function initAuthButtons() {
-  const authContainer = document.getElementById("auth-buttons-container");
+  const authContainer = document.getElementById('auth-buttons-container');
   if (!authContainer) return;
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
-  authContainer.className = "flex items-center gap-3 justify-end";
-      if (token && user) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  authContainer.className = 'flex items-center gap-3 justify-end';
+  if (token && user) {
     // تحديد الرابط والاسم والأيقونة حسب نوع الحساب
-    let navLinkHtml = "";
+    let navLinkHtml = '';
 
-    if (user.accountType === "company") {
+    if (user.accountType === 'company') {
       // للشركة: Dashboard
       authService.logout();
     } else {
@@ -659,7 +661,7 @@ function initAuthButtons() {
       </div>
         `;
 
-    document.getElementById("btnLogout").addEventListener("click", () => {
+    document.getElementById('btnLogout').addEventListener('click', () => {
       authService.logout();
     });
   } else {
@@ -670,15 +672,15 @@ function initAuthButtons() {
         `;
   }
 }
-window.addEventListener("load", function () {
-  document.body.classList.add("loaded");
+window.addEventListener('load', function () {
+  document.body.classList.add('loaded');
 });
-document.addEventListener("click", function (e) {
-  const profileBtn = e.target.closest("#profileBtn");
+document.addEventListener('click', function (e) {
+  const profileBtn = e.target.closest('#profileBtn');
   if (profileBtn) {
     e.preventDefault();
-    const targetUrl = profileBtn.getAttribute("href");
-    document.body.classList.remove("loaded");
+    const targetUrl = profileBtn.getAttribute('href');
+    document.body.classList.remove('loaded');
     setTimeout(function () {
       window.location.href = targetUrl;
     }, 350);

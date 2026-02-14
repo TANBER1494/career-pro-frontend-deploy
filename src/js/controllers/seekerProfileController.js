@@ -1,32 +1,32 @@
-import { seekerService } from "../services/seekerService.js";
-import { jobService } from "../services/jobService.js";
-import { authService } from "../services/authService.js";
-import Swal from "sweetalert2";
+import { seekerService } from '../services/seekerService.js';
+import { jobService } from '../services/jobService.js';
+import { authService } from '../services/authService.js';
+import Swal from 'sweetalert2';
 
 // ============================================================
 // 1. Elements & State
 // ============================================================
 
-const viewMode = document.getElementById("viewMode");
-const editMode = document.getElementById("editMode");
-const loadingState = document.getElementById("loadingState");
+const viewMode = document.getElementById('viewMode');
+const editMode = document.getElementById('editMode');
+const loadingState = document.getElementById('loadingState');
 
-const btnEditProfile = document.getElementById("btnEditProfile");
-const btnCancelEdit = document.getElementById("btnCancelEdit");
-const btnSaveChanges = document.getElementById("btnSaveChanges");
-const btnLogout = document.getElementById("btnLogout");
+const btnEditProfile = document.getElementById('btnEditProfile');
+const btnCancelEdit = document.getElementById('btnCancelEdit');
+const btnSaveChanges = document.getElementById('btnSaveChanges');
+const btnLogout = document.getElementById('btnLogout');
 
-const savedJobsContainer = document.getElementById("savedJobsContainer");
-const applicationsContainer = document.getElementById("applicationsContainer");
-const savedCountBadge = document.getElementById("savedCount");
-const appsCountBadge = document.getElementById("appsCount");
+const savedJobsContainer = document.getElementById('savedJobsContainer');
+const applicationsContainer = document.getElementById('applicationsContainer');
+const savedCountBadge = document.getElementById('savedCount');
+const appsCountBadge = document.getElementById('appsCount');
 
 let currentProfile = {};
 
 // ============================================================
 // 2. Initialization
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   init();
 });
 
@@ -34,55 +34,55 @@ async function init() {
   setupProfileTabs();
   initModalEvents();
 
-  if (loadingState) loadingState.classList.remove("hidden");
-  if (viewMode) viewMode.classList.add("hidden");
+  if (loadingState) loadingState.classList.remove('hidden');
+  if (viewMode) viewMode.classList.add('hidden');
 
   try {
     await Promise.all([loadProfileData(), loadApplications(), loadSavedJobs()]);
   } catch (error) {
-    console.error("Partial Error loading data", error);
+    console.error('Partial Error loading data', error);
   }
 
-  if (loadingState) loadingState.classList.add("hidden");
-  if (viewMode) viewMode.classList.remove("hidden");
+  if (loadingState) loadingState.classList.add('hidden');
+  if (viewMode) viewMode.classList.remove('hidden');
 }
 
 // ============================================================
 // Logic: Tabs Navigation
 // ============================================================
 function setupProfileTabs() {
-  const tabs = document.querySelectorAll(".profile-tab-btn");
-  const contents = document.querySelectorAll(".profile-tab-content");
+  const tabs = document.querySelectorAll('.profile-tab-btn');
+  const contents = document.querySelectorAll('.profile-tab-content');
 
   tabs.forEach((tab) => {
-    tab.addEventListener("click", (e) => {
+    tab.addEventListener('click', (e) => {
       e.preventDefault();
       tabs.forEach((t) => {
         t.classList.remove(
-          "active",
-          "text-blue-600",
-          "border-b-2",
-          "border-blue-600"
+          'active',
+          'text-blue-600',
+          'border-b-2',
+          'border-blue-600'
         );
-        t.classList.add("text-slate-500");
+        t.classList.add('text-slate-500');
       });
       contents.forEach((c) => {
-        c.classList.add("hidden");
-        c.classList.remove("block");
+        c.classList.add('hidden');
+        c.classList.remove('block');
       });
       tab.classList.add(
-        "active",
-        "text-blue-600",
-        "border-b-2",
-        "border-blue-600"
+        'active',
+        'text-blue-600',
+        'border-b-2',
+        'border-blue-600'
       );
-      tab.classList.remove("text-slate-500");
+      tab.classList.remove('text-slate-500');
 
       const targetId = tab.dataset.target;
       const targetContent = document.getElementById(targetId);
       if (targetContent) {
-        targetContent.classList.remove("hidden");
-        targetContent.classList.add("block");
+        targetContent.classList.remove('hidden');
+        targetContent.classList.add('block');
       }
     });
   });
@@ -98,17 +98,17 @@ async function loadProfileData() {
     const personal = backendData.personal || {};
     const education = backendData.education || {};
     const cv = backendData.cv || {};
-    const localUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const localUser = JSON.parse(localStorage.getItem('user') || '{}');
 
     let finalName = personal.fullName;
     if (!finalName && (localUser.firstName || localUser.lastName)) {
-      finalName = `${localUser.firstName || ""} ${
-        localUser.lastName || ""
+      finalName = `${localUser.firstName || ''} ${
+        localUser.lastName || ''
       }`.trim();
     }
 
     currentProfile = {
-      fullName: finalName || "User",
+      fullName: finalName || 'User',
       firstName: localUser.firstName,
       lastName: localUser.lastName,
       email: localUser.email || personal.email,
@@ -134,7 +134,7 @@ async function loadProfileData() {
 
     renderViewMode(currentProfile);
   } catch (error) {
-    console.error("Load Profile Error:", error);
+    console.error('Load Profile Error:', error);
   }
 }
 
@@ -142,49 +142,48 @@ function renderViewMode(data) {
   if (!data) return;
   const setText = (id, val) => {
     const el = document.getElementById(id);
-    if (el) el.textContent = val && val !== "undefined" ? val : "--";
+    if (el) el.textContent = val && val !== 'undefined' ? val : '--';
   };
 
-  setText("view-fullName", data.fullName);
-  const initials = (data.fullName || "ME")
-    .split(" ")
+  setText('view-fullName', data.fullName);
+  const initials = (data.fullName || 'ME')
+    .split(' ')
     .map((n) => n[0])
-    .join("")
+    .join('')
     .substring(0, 2)
     .toUpperCase();
-  setText("view-initials", initials);
-  setText("view-industry", data.jobTitle || data.industry || "Job Seeker");
+  setText('view-initials', initials);
+  setText('view-industry', data.jobTitle || data.industry || 'Job Seeker');
   setText(
-    "view-location",
+    'view-location',
     data.city || data.country
-      ? `${data.city || ""}, ${data.country || ""}`
-      : "--"
+      ? `${data.city || ''}, ${data.country || ''}`
+      : '--'
   );
-  setText("view-email", data.email);
-  setText("view-phone", data.phoneNumber);
-  setText("view-degree", data.degree);
-  setText("view-university", data.university);
-  setText("view-gradYear", data.graduationYear);
-  setText("view-gpa", data.gpa);
+  setText('view-email', data.email);
+  setText('view-phone', data.phoneNumber);
+  setText('view-degree', data.degree);
+  setText('view-university', data.university);
+  setText('view-gradYear', data.graduationYear);
+  setText('view-gpa', data.gpa);
   if (data.gpa)
-    document.getElementById("view-gpa-container")?.classList.remove("hidden");
-  setText("view-expLevel", data.experienceLevel);
-  setText("view-yearsExp", data.yearsOfExperience);
-  setText("view-industryDetail", data.industry);
+    document.getElementById('view-gpa-container')?.classList.remove('hidden');
+  setText('view-expLevel', data.experienceLevel);
+  setText('view-yearsExp', data.yearsOfExperience);
+  setText('view-industryDetail', data.industry);
   setText(
-    "view-birthDate",
-    data.birthDate ? new Date(data.birthDate).toLocaleDateString() : "--"
+    'view-birthDate',
+    data.birthDate ? new Date(data.birthDate).toLocaleDateString() : '--'
   );
-  setText("view-gender", data.gender);
-  setText("view-country", data.country);
-  setText("view-jobType", data.jobType);
-  setText("view-workplace", data.workplaceSetting);
-  setText("view-cvName", data.cvName || "No CV uploaded");
-  const cvLink = document.getElementById("view-cvLink");
+  setText('view-gender', data.gender);
+  setText('view-country', data.country);
+  setText('view-jobType', data.jobType);
+  setText('view-workplace', data.workplaceSetting);
+  setText('view-cvName', data.cvName || 'No CV uploaded');
+  const cvLink = document.getElementById('view-cvLink');
   if (cvLink && data.cvUrl) {
-    cvLink.href = data.cvUrl.startsWith("http")
-      ? data.cvUrl
-      : `http://localhost:3000${data.cvUrl}`;
+    // التغيير: رابط الـ CV يأتي كاملاً من Cloudinary
+    cvLink.href = data.cvUrl;
   }
 }
 
@@ -211,59 +210,57 @@ async function loadApplications() {
 
     applicationsContainer.innerHTML = apps
       .map((app) => createApplicationCard(app))
-      .join("");
+      .join('');
   } catch (error) {
-    console.error("Apps Error:", error);
+    console.error('Apps Error:', error);
     applicationsContainer.innerHTML = `<p class="text-center text-red-400">Failed to load applications.</p>`;
   }
 }
 
 function createApplicationCard(app) {
-  let statusClass = "bg-gray-100 text-gray-600";
-  let statusIcon = "fa-clock";
-  const statusLower = (app.status || "").toLowerCase();
+  let statusClass = 'bg-gray-100 text-gray-600';
+  let statusIcon = 'fa-clock';
+  const statusLower = (app.status || '').toLowerCase();
 
   // Status Logic
-  if (statusLower === "submitted" || statusLower === "new") {
-    statusClass = "bg-blue-50 text-blue-600 border-blue-100";
-    statusIcon = "fa-paper-plane";
-  } else if (statusLower === "viewed" || statusLower === "reviewing") {
-    statusClass = "bg-yellow-50 text-yellow-600 border-yellow-100";
-    statusIcon = "fa-eye";
-  } else if (statusLower === "interview") {
-    statusClass = "bg-purple-50 text-purple-600 border-purple-100";
-    statusIcon = "fa-user-tie";
-  } else if (statusLower === "accepted" || statusLower === "hired") {
-    statusClass = "bg-green-50 text-green-600 border-green-100";
-    statusIcon = "fa-check-circle";
-  } else if (statusLower === "rejected") {
-    statusClass = "bg-red-50 text-red-600 border-red-100";
-    statusIcon = "fa-times-circle";
+  if (statusLower === 'submitted' || statusLower === 'new') {
+    statusClass = 'bg-blue-50 text-blue-600 border-blue-100';
+    statusIcon = 'fa-paper-plane';
+  } else if (statusLower === 'viewed' || statusLower === 'reviewing') {
+    statusClass = 'bg-yellow-50 text-yellow-600 border-yellow-100';
+    statusIcon = 'fa-eye';
+  } else if (statusLower === 'interview') {
+    statusClass = 'bg-purple-50 text-purple-600 border-purple-100';
+    statusIcon = 'fa-user-tie';
+  } else if (statusLower === 'accepted' || statusLower === 'hired') {
+    statusClass = 'bg-green-50 text-green-600 border-green-100';
+    statusIcon = 'fa-check-circle';
+  } else if (statusLower === 'rejected') {
+    statusClass = 'bg-red-50 text-red-600 border-red-100';
+    statusIcon = 'fa-times-circle';
   }
 
-  const title = app.jobTitle || "Unknown Position";
-  const company = app.companyName || "Unknown Company";
-  const location = app.location || "Remote";
+  const title = app.jobTitle || 'Unknown Position';
+  const company = app.companyName || 'Unknown Company';
+  const location = app.location || 'Remote';
   const date = app.appliedAt
     ? new Date(app.appliedAt).toLocaleDateString()
-    : "Recent";
+    : 'Recent';
   const appId = app.id || app._id;
 
   let logoHtml = `<span class="text-blue-500 font-bold text-xl">${company
     .charAt(0)
     .toUpperCase()}</span>`;
 
-  if (app.companyLogo && !app.companyLogo.includes("url...")) {
-    // ✅ هذا هو التعديل المهم: إضافة الدومين
-    const logoSrc = app.companyLogo.startsWith("http")
-      ? app.companyLogo
-      : `http://localhost:3000${app.companyLogo}`;
+  if (app.companyLogo && !app.companyLogo.includes('url...')) {
+    // ✅ التغيير: نستخدم الرابط مباشرة
+    const logoSrc = app.companyLogo;
 
     logoHtml = `<img src="${logoSrc}" alt="${company}" class="w-full h-full object-cover">`;
   }
 
   // 🔥 الشرط: إظهار زر الحذف فقط لو الحالة Rejected أو Hired/Accepted
-  const canDelete = ["rejected", "hired", "accepted"].includes(statusLower);
+  const canDelete = ['rejected', 'hired', 'accepted'].includes(statusLower);
 
   return `
     <div class="bg-white border border-slate-200 rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300 group w-full" id="app-card-${appId}">
@@ -298,7 +295,7 @@ function createApplicationCard(app) {
                 <i class="fa-solid fa-trash-can text-xs"></i>
             </button>
             `
-                : ""
+                : ''
             }
         </div>
     </div>
@@ -325,7 +322,7 @@ async function loadSavedJobs() {
     }
     savedJobsContainer.innerHTML = jobs
       .map((job) => createSavedJobCard(job))
-      .join("");
+      .join('');
   } catch (error) {
     savedJobsContainer.innerHTML = `<p class="text-center text-red-400">Failed to load saved jobs.</p>`;
   }
@@ -334,21 +331,19 @@ async function loadSavedJobs() {
 function createSavedJobCard(job) {
   const jobId = job.id || job._id;
   const companyData = job.companyId || job.company || {};
-  const companyName = companyData.companyName || companyData.name || "Company";
-  let logo = "https://placehold.co/64x64?text=Job";
+  const companyName = companyData.companyName || companyData.name || 'Company';
+  let logo = 'https://placehold.co/64x64?text=Job';
 
   if (
     companyData.logo &&
-    !companyData.logo.includes("url...") &&
+    !companyData.logo.includes('url...') &&
     companyData.logo.length > 10
   ) {
-    // ✅ إضافة الدومين هنا أيضاً
-    logo = companyData.logo.startsWith("http")
-      ? companyData.logo
-      : `http://localhost:3000${companyData.logo}`;
+    // ✅ التغيير: نستخدم الرابط مباشرة
+    logo = companyData.logo;
   }
-  const location = job.location || companyData.location || "Remote";
-  const type = job.type || "Full-time";
+  const location = job.location || companyData.location || 'Remote';
+  const type = job.type || 'Full-time';
 
   return `
     <div class="group relative w-full bg-white border border-slate-200 rounded-xl p-5 mb-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" id="saved-card-${jobId}">
@@ -381,69 +376,69 @@ function createSavedJobCard(job) {
 // ============================================================
 function toggleView(showEdit) {
   if (showEdit) {
-    viewMode.classList.add("hidden");
-    editMode.classList.remove("hidden");
+    viewMode.classList.add('hidden');
+    editMode.classList.remove('hidden');
   } else {
-    editMode.classList.add("hidden");
-    viewMode.classList.remove("hidden");
+    editMode.classList.add('hidden');
+    viewMode.classList.remove('hidden');
   }
 }
 if (btnEditProfile)
-  btnEditProfile.addEventListener("click", () => {
+  btnEditProfile.addEventListener('click', () => {
     populateEditForm(currentProfile);
     toggleView(true);
   });
 if (btnCancelEdit)
-  btnCancelEdit.addEventListener("click", () => toggleView(false));
+  btnCancelEdit.addEventListener('click', () => toggleView(false));
 
 function populateEditForm(data) {
   const setVal = (id, val) => {
     const el = document.getElementById(id);
-    if (el) el.value = val || "";
+    if (el) el.value = val || '';
   };
-  setVal("input-fullName", data.fullName);
-  setVal("input-phoneNumber", data.phoneNumber);
+  setVal('input-fullName', data.fullName);
+  setVal('input-phoneNumber', data.phoneNumber);
   if (data.birthDate) {
     try {
       setVal(
-        "input-birthDate",
-        new Date(data.birthDate).toISOString().split("T")[0]
+        'input-birthDate',
+        new Date(data.birthDate).toISOString().split('T')[0]
       );
     } catch (e) {}
   }
-  setVal("input-gender", data.gender);
-  setVal("input-country", data.country);
-  setVal("input-city", data.city);
-  setVal("input-experienceLevel", data.experienceLevel);
-  setVal("input-yearsOfExperience", data.yearsOfExperience);
-  setVal("input-industry", data.industry);
-  setVal("input-degree", data.degree);
-  setVal("input-university", data.university);
-  setVal("input-graduationYear", data.graduationYear);
-  setVal("input-gpa", data.gpa);
-  setVal("input-jobType", data.jobType);
-  setVal("input-workplaceSetting", data.workplaceSetting);
+  setVal('input-gender', data.gender);
+  setVal('input-country', data.country);
+  setVal('input-city', data.city);
+  setVal('input-experienceLevel', data.experienceLevel);
+  setVal('input-yearsOfExperience', data.yearsOfExperience);
+  setVal('input-industry', data.industry);
+  setVal('input-degree', data.degree);
+  setVal('input-university', data.university);
+  setVal('input-graduationYear', data.graduationYear);
+  setVal('input-gpa', data.gpa);
+  setVal('input-jobType', data.jobType);
+  setVal('input-workplaceSetting', data.workplaceSetting);
 }
 
-btnSaveChanges.addEventListener("click", async (e) => {
+btnSaveChanges.addEventListener('click', async (e) => {
   e.preventDefault();
-  const getVal = (id) => document.getElementById(id)?.value.trim() || "";
+  const getVal = (id) => document.getElementById(id)?.value.trim() || '';
   const updatedData = {
-    fullName: getVal("input-fullName"),
-    phoneNumber: getVal("input-phoneNumber"),
-    birthDate: getVal("input-birthDate"),
-    gender: getVal("input-gender"),
-    yearsOfExperience: Number(getVal("input-yearsOfExperience")) || 0,
-    experienceLevel: getVal("input-experienceLevel"),
-    industry: getVal("input-industry"),
-    country: getVal("input-country"),
-    city: getVal("input-city"),
-    degree: getVal("input-degree"),
-    university: getVal("input-university"),
-    graduationYear: Number(getVal("input-graduationYear")) || null,
-    gpa: Number(getVal("input-gpa")) || null,
-    jobType: getVal("input-jobType"),
-    workplaceSetting: getVal("input-workplaceSetting"),
+    fullName: getVal('input-fullName'),
+    phoneNumber: getVal('input-phoneNumber'),
+    birthDate: getVal('input-birthDate'),
+    gender: getVal('input-gender'),
+    yearsOfExperience: Number(getVal('input-yearsOfExperience')) || 0,
+    experienceLevel: getVal('input-experienceLevel'),
+    industry: getVal('input-industry'),
+    country: getVal('input-country'),
+    city: getVal('input-city'),
+    degree: getVal('input-degree'),
+    university: getVal('input-university'),
+    graduationYear: Number(getVal('input-graduationYear')) || null,
+    gpa: Number(getVal('input-gpa')) || null,
+    jobType: getVal('input-jobType'),
+    workplaceSetting: getVal('input-workplaceSetting'),
   };
 
   try {
@@ -452,8 +447,8 @@ btnSaveChanges.addEventListener("click", async (e) => {
       '<i class="fas fa-spinner fa-spin"></i> Saving...';
     await seekerService.updateProfile(updatedData);
     Swal.fire({
-      icon: "success",
-      title: "Profile Updated",
+      icon: 'success',
+      title: 'Profile Updated',
       timer: 1500,
       showConfirmButton: false,
     }).then(() => {
@@ -461,36 +456,36 @@ btnSaveChanges.addEventListener("click", async (e) => {
       toggleView(false);
     });
   } catch (error) {
-    Swal.fire("Error", "Failed to update profile.", "error");
+    Swal.fire('Error', 'Failed to update profile.', 'error');
   } finally {
     btnSaveChanges.disabled = false;
-    btnSaveChanges.innerHTML = "Save Changes";
+    btnSaveChanges.innerHTML = 'Save Changes';
   }
 });
 
 // ============================================================
 // Global Helpers
 // ============================================================
-if (btnLogout) btnLogout.addEventListener("click", () => authService.logout());
+if (btnLogout) btnLogout.addEventListener('click', () => authService.logout());
 
 // ============================================================
 // 1. Open Apply Modal (With Profile Data)
 // ============================================================
 window.openApplyModal = function (jobId) {
-  const modal = document.getElementById("applyModal");
+  const modal = document.getElementById('applyModal');
   if (modal) {
-    modal.classList.remove("hidden");
+    modal.classList.remove('hidden');
     modal.dataset.jobId = jobId;
-    
+
     // Check if currentProfile exists (assumed global variable)
     if (typeof currentProfile !== 'undefined' && currentProfile) {
-      const nameInput = document.getElementById("applyName");
-      const emailInput = document.getElementById("applyEmail");
-      const phoneInput = document.getElementById("applyPhone");
+      const nameInput = document.getElementById('applyName');
+      const emailInput = document.getElementById('applyEmail');
+      const phoneInput = document.getElementById('applyPhone');
 
-      if (nameInput) nameInput.value = currentProfile.fullName || "";
-      if (emailInput) emailInput.value = currentProfile.email || "";
-      if (phoneInput) phoneInput.value = currentProfile.phoneNumber || "";
+      if (nameInput) nameInput.value = currentProfile.fullName || '';
+      if (emailInput) emailInput.value = currentProfile.email || '';
+      if (phoneInput) phoneInput.value = currentProfile.phoneNumber || '';
     }
   }
 };
@@ -500,50 +495,56 @@ window.openApplyModal = function (jobId) {
 // ============================================================
 window.removeSavedJob = async function (jobId) {
   const result = await Swal.fire({
-    title: "Remove?",
-    icon: "warning",
+    title: 'Remove?',
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    confirmButtonText: "Yes",
+    confirmButtonColor: '#d33',
+    confirmButtonText: 'Yes',
   });
   if (result.isConfirmed) {
     await jobService.toggleSaveJob(jobId);
     document.getElementById(`saved-card-${jobId}`)?.remove();
-    
+
     if (typeof savedCountBadge !== 'undefined' && savedCountBadge)
       savedCountBadge.textContent = `${parseInt(savedCountBadge.textContent) - 1} Saved`;
-    
-    if (typeof savedJobsContainer !== 'undefined' && savedJobsContainer.children.length === 0) 
-        loadSavedJobs();
-    
-    Swal.fire("Removed!", "", "success");
+
+    if (
+      typeof savedJobsContainer !== 'undefined' &&
+      savedJobsContainer.children.length === 0
+    )
+      loadSavedJobs();
+
+    Swal.fire('Removed!', '', 'success');
   }
 };
 
 window.deleteApplication = async function (appId) {
   const result = await Swal.fire({
-    title: "Delete Application?",
-    text: "This will remove it from your history. Are you sure?",
-    icon: "warning",
+    title: 'Delete Application?',
+    text: 'This will remove it from your history. Are you sure?',
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it",
+    confirmButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it',
   });
 
   if (result.isConfirmed) {
     try {
       await seekerService.deleteApplication(appId);
       document.getElementById(`app-card-${appId}`)?.remove();
-      
+
       if (typeof appsCountBadge !== 'undefined' && appsCountBadge)
         appsCountBadge.textContent = `${parseInt(appsCountBadge.textContent) - 1} Applied`;
-        
-      if (typeof applicationsContainer !== 'undefined' && applicationsContainer.children.length === 0) 
+
+      if (
+        typeof applicationsContainer !== 'undefined' &&
+        applicationsContainer.children.length === 0
+      )
         loadApplications();
-        
-      Swal.fire("Deleted!", "Application history removed.", "success");
+
+      Swal.fire('Deleted!', 'Application history removed.', 'success');
     } catch (error) {
-      Swal.fire("Error", "Failed to delete application.", "error");
+      Swal.fire('Error', 'Failed to delete application.', 'error');
     }
   }
 };
@@ -552,32 +553,32 @@ window.deleteApplication = async function (appId) {
 // 3. Init Modal Events (The Enhanced Logic)
 // ============================================================
 function initModalEvents() {
-  const modal = document.getElementById("applyModal");
-  const closeBtn = document.getElementById("btnCloseModal");
-  
+  const modal = document.getElementById('applyModal');
+  const closeBtn = document.getElementById('btnCloseModal');
+
   // Note: We use 'let' for form because it will be replaced
-  let form = document.getElementById("applyForm");
+  let form = document.getElementById('applyForm');
 
   // --- دالة الإغلاق الموحدة ---
   const close = () => {
-    modal?.classList.add("hidden");
+    modal?.classList.add('hidden');
     form?.reset();
 
     // 🔥 إعادة تعيين نص الملف (Reset File Input Text)
-    const fileInput = document.getElementById("applyCv");
+    const fileInput = document.getElementById('applyCv');
     if (fileInput) {
-        const dropZone = fileInput.closest('.group');
-        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
-        if (fileNameDisplay) {
-             fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
-             fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
-        }
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      if (fileNameDisplay) {
+        fileNameDisplay.textContent = 'SVG, PNG, JPG or GIF (MAX. 800x400px)';
+        fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
+      }
     }
   };
 
   // ربط زر الإغلاق (X)
-  closeBtn?.addEventListener("click", close);
-  
+  closeBtn?.addEventListener('click', close);
+
   // إغلاق عند الضغط خارج المودال
   window.onclick = (e) => {
     if (e.target === modal) close();
@@ -586,7 +587,7 @@ function initModalEvents() {
   // 🔥 (جديد) إغلاق عند الضغط على Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-        close();
+      close();
     }
   });
 
@@ -598,52 +599,59 @@ function initModalEvents() {
 
     // ✅✅✅ تصحيح زر Cancel ✅✅✅
     // لازم نجيبه من "newForm" ونربطه من جديد
-    const newCancelBtn = newForm.querySelector("#btnCancelModal") || document.getElementById("btnCancelModal");
+    const newCancelBtn =
+      newForm.querySelector('#btnCancelModal') ||
+      document.getElementById('btnCancelModal');
     if (newCancelBtn) {
-        newCancelBtn.onclick = close; 
-        newCancelBtn.type = "button"; 
+      newCancelBtn.onclick = close;
+      newCancelBtn.type = 'button';
     }
 
     // 🔥 (جديد) كود إظهار اسم الملف المختار
-    const fileInput = document.getElementById("applyCv");
+    const fileInput = document.getElementById('applyCv');
     if (fileInput) {
-        const dropZone = fileInput.closest('.group');
-        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
 
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0] && fileNameDisplay) {
-                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
-                fileNameDisplay.classList.add('text-blue-600', 'font-bold');
-            }
-        });
+      fileInput.addEventListener('change', function () {
+        if (this.files && this.files[0] && fileNameDisplay) {
+          fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+          fileNameDisplay.classList.add('text-blue-600', 'font-bold');
+        }
+      });
     }
 
     // 2. منطق الإرسال (Submit Logic)
-    newForm.addEventListener("submit", async (e) => {
+    newForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = newForm.querySelector('button[type="submit"]');
-      
+
       try {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Sending...';
 
         const data = {
-          fullName: document.getElementById("applyName").value,
-          email: document.getElementById("applyEmail").value,
-          phone: document.getElementById("applyPhone").value,
-          cvFile: document.getElementById("applyCv").files[0],
-          coverLetter: document.getElementById("applyCover").value,
+          fullName: document.getElementById('applyName').value,
+          email: document.getElementById('applyEmail').value,
+          phone: document.getElementById('applyPhone').value,
+          cvFile: document.getElementById('applyCv').files[0],
+          coverLetter: document.getElementById('applyCover').value,
         };
 
         await jobService.applyForJob(modal.dataset.jobId, data);
-        
-        Swal.fire("Success", "Application Sent!", "success");
+
+        Swal.fire('Success', 'Application Sent!', 'success');
         close();
       } catch (err) {
-        Swal.fire("Error", err.response?.data?.message || "Failed to send application", "error");
+        Swal.fire(
+          'Error',
+          err.response?.data?.message || 'Failed to send application',
+          'error'
+        );
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = "Submit";
+        submitBtn.innerHTML = 'Submit';
       }
     });
   }

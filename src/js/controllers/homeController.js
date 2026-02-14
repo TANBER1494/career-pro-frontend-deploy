@@ -1,21 +1,21 @@
-document.body.classList.add("loaded");
-import { jobService } from "../services/jobService.js";
-import { companyDiscoveryService } from "../services/companyDiscoveryService.js";
-import { authService } from "../services/authService.js";
-import Swal from "sweetalert2";
+document.body.classList.add('loaded');
+import { jobService } from '../services/jobService.js';
+import { companyDiscoveryService } from '../services/companyDiscoveryService.js';
+import { authService } from '../services/authService.js';
+import Swal from 'sweetalert2';
 import { initPixelBlast } from './pixelBlast.js';
 
 initPixelBlast('#pixel-blast-container', {
-    // تقدري تعدلي الإعدادات هنا زي ما كنتي بتعملي في React Props
-    color: '#3b82f6', // لون أزرق مثلاً
-    variant: 'square', // شكل مربع
-    pixelSize: 8,
-    speed: 0.5
+  // تقدري تعدلي الإعدادات هنا زي ما كنتي بتعملي في React Props
+  color: '#3b82f6', // لون أزرق مثلاً
+  variant: 'square', // شكل مربع
+  pixelSize: 8,
+  speed: 0.5,
 });
 // ============================================================
 // 1. Initialization
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   initAuthButtons();
   initNavbarScrolling();
   initSearch();
@@ -30,16 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
 // 2. Auth State & Navigation Logic
 // ============================================================
 function initAuthButtons() {
-  const authContainer = document.getElementById("auth-buttons-container");
+  const authContainer = document.getElementById('auth-buttons-container');
   if (!authContainer) return;
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
-  authContainer.className = "flex items-center gap-3 justify-end";
-      if (token && user) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  authContainer.className = 'flex items-center gap-3 justify-end';
+  if (token && user) {
     // تحديد الرابط والاسم والأيقونة حسب نوع الحساب
-    let navLinkHtml = "";
+    let navLinkHtml = '';
 
-    if (user.accountType === "company") {
+    if (user.accountType === 'company') {
       // للشركة: Dashboard
       authService.logout();
     } else {
@@ -76,7 +76,7 @@ function initAuthButtons() {
       </div>
         `;
 
-    document.getElementById("btnLogout").addEventListener("click", () => {
+    document.getElementById('btnLogout').addEventListener('click', () => {
       authService.logout();
     });
   } else {
@@ -90,22 +90,22 @@ function initAuthButtons() {
 
 function initNavbarScrolling() {
   // نحدد فقط عناصر القائمة السحرية (التي تعمل كسكرول)
-  const navItems = document.querySelectorAll(".nav-item");
+  const navItems = document.querySelectorAll('.nav-item');
 
   navItems.forEach((item) => {
-    item.addEventListener("click", (e) => {
+    item.addEventListener('click', (e) => {
       e.preventDefault(); // نمنع الانتقال لأننا نريد سكرول
 
       // 1. تفعيل العنصر النشط
-      navItems.forEach((nav) => nav.classList.remove("active"));
-      item.classList.add("active");
+      navItems.forEach((nav) => nav.classList.remove('active'));
+      item.classList.add('active');
 
       // 2. السكرول للقسم في نفس الصفحة
       const targetId = item.dataset.target; // home, services, companies, jobs
       const targetSection = document.getElementById(targetId);
 
       if (targetSection) {
-        targetSection.scrollIntoView({ behavior: "smooth" });
+        targetSection.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
@@ -113,8 +113,8 @@ function initNavbarScrolling() {
 
 function initSearch() {
   // زرار البحث في الهيرو
-  const searchBtn = document.getElementById("heroSearchBtn");
-  const searchInput = document.getElementById("heroSearchInput");
+  const searchBtn = document.getElementById('heroSearchBtn');
+  const searchInput = document.getElementById('heroSearchInput');
 
   const performSearch = () => {
     const query = searchInput.value.trim();
@@ -125,41 +125,41 @@ function initSearch() {
     }
   };
 
-  if (searchBtn) searchBtn.addEventListener("click", performSearch);
+  if (searchBtn) searchBtn.addEventListener('click', performSearch);
   if (searchInput) {
-    searchInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") performSearch();
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') performSearch();
     });
   }
 
   // زرار Browse Jobs (سكرول داخلي)
-  const browseBtn = document.getElementById("browseJobsBtn");
+  const browseBtn = document.getElementById('browseJobsBtn');
   if (browseBtn) {
-    browseBtn.addEventListener("click", (e) => {
+    browseBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      document.getElementById("jobs")?.scrollIntoView({ behavior: "smooth" });
+      document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
     });
   }
 
-  const logoBtn = document.getElementById("logoBtn");
+  const logoBtn = document.getElementById('logoBtn');
   if (logoBtn) {
-    logoBtn.addEventListener("click", (e) => {
+    logoBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
   // زرار Start Career (فحص حالة الدخول)
-  const startBtn = document.getElementById("startCareerBtn");
+  const startBtn = document.getElementById('startCareerBtn');
   if (startBtn) {
-    startBtn.addEventListener("click", () => {
-      const token = localStorage.getItem("token");
+    startBtn.addEventListener('click', () => {
+      const token = localStorage.getItem('token');
       if (token) {
         document
-          .getElementById("services")
-          ?.scrollIntoView({ behavior: "smooth" });
+          .getElementById('services')
+          ?.scrollIntoView({ behavior: 'smooth' });
       } else {
-        window.location.href = "/src/pages/auth/signup-login.html?mode=signup";
+        window.location.href = '/src/pages/auth/signup-login.html?mode=signup';
       }
     });
   }
@@ -168,7 +168,7 @@ function initSearch() {
 // 3. Load Featured Jobs (With Saved Status Check)
 // ============================================================
 async function loadFeaturedJobs() {
-  const container = document.getElementById("featured-jobs-container");
+  const container = document.getElementById('featured-jobs-container');
   if (!container) return;
 
   try {
@@ -176,7 +176,7 @@ async function loadFeaturedJobs() {
     const response = await jobService.getAllJobs({ limit: 6 }); // أو endpoint الـ featured لو عندك
     let jobs = response.data.jobs || [];
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       try {
         const savedResponse = await jobService.getSavedJobs();
@@ -188,11 +188,11 @@ async function loadFeaturedJobs() {
           isSaved: savedIds.has(job._id || job.id),
         }));
       } catch (err) {
-        console.warn("Could not sync saved jobs state in home");
+        console.warn('Could not sync saved jobs state in home');
       }
     }
 
-    container.innerHTML = "";
+    container.innerHTML = '';
 
     if (jobs.length === 0) {
       container.innerHTML =
@@ -201,34 +201,36 @@ async function loadFeaturedJobs() {
     }
 
     jobs.forEach((job, index) => {
-      container.insertAdjacentHTML("beforeend", createJobCard(job, index + 1));
+      container.insertAdjacentHTML('beforeend', createJobCard(job, index + 1));
     });
     const observerOptions = {
       root: null,
       threshold: 0.1, // بمجرد ظهور 10% فقط
-      rootMargin: "0px" // شيلنا الـ -100px عشان تظهر فوراً
+      rootMargin: '0px', // شيلنا الـ -100px عشان تظهر فوراً
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
+          entry.target.classList.add('in-view');
         } else {
           // لو عايزها تختفي وتظهر تاني مع السكرول سيب السطر ده
           // لو عايزها تظهر مرة واحدة وتثبت، امسح السطر ده
-          entry.target.classList.remove("in-view"); 
+          entry.target.classList.remove('in-view');
         }
       });
     }, observerOptions);
 
     const cards = container.querySelectorAll('.job-card-scroll');
-    cards.forEach(card => observer.observe(card));
-
+    cards.forEach((card) => observer.observe(card));
   } catch (error) {
-    console.error("Jobs Error:", error);
+    console.error('Jobs Error:', error);
     // في حالة الخطأ، شيل الكلاس عشان المحتوى يظهر وميضعش
-    container.querySelectorAll('.job-card-scroll').forEach(el => el.style.opacity = 1);
-    container.innerHTML = '<p class="col-span-full text-center text-red-400">Failed to load jobs.</p>';
+    container
+      .querySelectorAll('.job-card-scroll')
+      .forEach((el) => (el.style.opacity = 1));
+    container.innerHTML =
+      '<p class="col-span-full text-center text-red-400">Failed to load jobs.</p>';
   }
 }
 
@@ -238,26 +240,25 @@ function createJobCard(job, index) {
   const companyData = job.companyId || job.company || {};
 
   const companyName =
-    companyData.companyName || companyData.name || "Confidential Company";
+    companyData.companyName || companyData.name || 'Confidential Company';
 
-  let companyLogo = "https://placehold.co/48x48?text=Logo";
+  let companyLogo = 'https://placehold.co/48x48?text=Logo';
   const rawLogo = companyData.logo || companyData.logoUrl;
 
-  if (rawLogo && !rawLogo.includes("url...") && rawLogo.length > 10) {
-    companyLogo = rawLogo.startsWith("http")
-      ? rawLogo
-      : `http://localhost:3000${rawLogo}`;
+  if (rawLogo && !rawLogo.includes('url...') && rawLogo.length > 10) {
+    // التغيير: تعيين القيمة مباشرة
+    companyLogo = rawLogo;
   }
 
-  const location = job.location || companyData.location || "Remote";
+  const location = job.location || companyData.location || 'Remote';
 
   const companyLinkId = companyData._id || companyData.id;
 
   // ============================================================
 
   const saveIconClass = job.isSaved
-    ? "fa-solid text-blue-600"
-    : "fa-regular text-slate-400";
+    ? 'fa-solid text-blue-600'
+    : 'fa-regular text-slate-400';
 
   const skillsHTML = (job.skills || [])
     .slice(0, 3)
@@ -265,15 +266,15 @@ function createJobCard(job, index) {
       (skill) =>
         `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
     )
-    .join("");
+    .join('');
 
   // روابط الانتقال
   const jobLink = `/job-details.html?id=${job.id || job._id}`;
   const companyLink = companyLinkId
     ? `/company-details.html?id=${companyLinkId}`
-    : "#";
+    : '#';
 
-    const delay = (index % 6) * 100;
+  const delay = (index % 6) * 100;
 
   return `
 <div class="job-card-scroll bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full text-left"
@@ -291,8 +292,8 @@ function createJobCard(job, index) {
             </div>
             <div>
                 <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'" title="${
-    job.title
-  }">
+                  job.title
+                }">
                     ${job.title}
                 </h3>
                 <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
@@ -305,7 +306,7 @@ function createJobCard(job, index) {
         </div>
 
         <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
-            ${job.description || "No description available."}
+            ${job.description || 'No description available.'}
         </p>
 
         <div class="flex flex-wrap gap-2 mb-4 h-6 overflow-hidden">
@@ -314,7 +315,7 @@ function createJobCard(job, index) {
 
         <div class="flex items-center justify-between mb-4 mt-auto">
             <span class="text-green-600 font-semibold font-poppins text-sm">${
-              job.salaryRange || "Competitive"
+              job.salaryRange || 'Competitive'
             }</span>
             <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
         </div>
@@ -332,7 +333,7 @@ function createJobCard(job, index) {
 // 4. Load Top Companies
 // ============================================================
 async function loadTopCompanies() {
-  const container = document.getElementById("top-companies-container");
+  const container = document.getElementById('top-companies-container');
   if (!container) return;
 
   try {
@@ -341,7 +342,7 @@ async function loadTopCompanies() {
     });
     const companies = response.data.companies || [];
 
-    container.innerHTML = "";
+    container.innerHTML = '';
 
     if (companies.length === 0) {
       container.innerHTML =
@@ -350,27 +351,27 @@ async function loadTopCompanies() {
     }
 
     companies.forEach((company) => {
-      container.insertAdjacentHTML("beforeend", createCompanyCard(company));
+      container.insertAdjacentHTML('beforeend', createCompanyCard(company));
     });
   } catch (error) {
-    console.error("Companies Error:", error);
+    console.error('Companies Error:', error);
     container.innerHTML =
       '<p class="col-span-full text-center text-red-400">Failed to load companies.</p>';
   }
 }
 
 function createCompanyCard(company) {
-  const logo = company.logo || "https://placehold.co/64x64?text=C";
-  const name = company.name || company.companyName || "Company Name";
+  const logo = company.logo || 'https://placehold.co/64x64?text=C';
+  const name = company.name || company.companyName || 'Company Name';
   const initial = name.charAt(0).toUpperCase();
   const desc =
     company.companyDescription ||
     company.description ||
     company.about ||
-    "No description available.";
-  const shortDesc = desc.length > 100 ? desc.substring(0, 100) + "..." : desc;
-  const location = company.location || "Remote";
-  const industry = company.industry || "Tech";
+    'No description available.';
+  const shortDesc = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
+  const location = company.location || 'Remote';
+  const industry = company.industry || 'Tech';
   const positions = company.openPositionsCount || 0;
   const detailsLink = `/company-details.html?id=${company.id || company._id}`;
 
@@ -397,7 +398,7 @@ function createCompanyCard(company) {
                             ${
                               company.isVerified
                                 ? '<span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>'
-                                : ""
+                                : ''
                             }
                         </h3>
                         
@@ -437,49 +438,49 @@ function createCompanyCard(company) {
 // ============================================================
 
 window.applyForJobCheck = function (jobId) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   if (!token) {
     Swal.fire({
-      icon: "info",
-      title: "Login Required",
-      text: "You need to login to apply for jobs.",
+      icon: 'info',
+      title: 'Login Required',
+      text: 'You need to login to apply for jobs.',
       showCancelButton: true,
-      confirmButtonText: "Login Now",
-      cancelButtonText: "Cancel",
+      confirmButtonText: 'Login Now',
+      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "/src/pages/auth/signup-login.html";
+        window.location.href = '/src/pages/auth/signup-login.html';
       }
     });
     return;
   }
 
-  const modal = document.getElementById("applyModal");
+  const modal = document.getElementById('applyModal');
   if (modal) {
-    modal.classList.remove("hidden");
+    modal.classList.remove('hidden');
     modal.dataset.jobId = jobId;
   }
 };
 
 window.toggleSaveJob = async function (jobId, btnElement) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (!token) {
-    Swal.fire("Login Required", "Please login to save jobs.", "info");
+    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
     return;
   }
 
   try {
-    const icon = btnElement.querySelector("i");
-    const isSaved = icon.classList.contains("fa-solid");
+    const icon = btnElement.querySelector('i');
+    const isSaved = icon.classList.contains('fa-solid');
 
     // Optimistic UI Update (تحديث الواجهة فوراً قبل رد السيرفر)
     if (isSaved) {
-      icon.classList.remove("fa-solid", "text-blue-600");
-      icon.classList.add("fa-regular", "text-slate-400");
+      icon.classList.remove('fa-solid', 'text-blue-600');
+      icon.classList.add('fa-regular', 'text-slate-400');
     } else {
-      icon.classList.remove("fa-regular", "text-slate-400");
-      icon.classList.add("fa-solid", "text-blue-600");
+      icon.classList.remove('fa-regular', 'text-slate-400');
+      icon.classList.add('fa-solid', 'text-blue-600');
     }
 
     // استدعاء السيرفر
@@ -488,51 +489,51 @@ window.toggleSaveJob = async function (jobId, btnElement) {
     // (اختياري) يمكنك إظهار Toast notification صغير هنا
     // Toastify({ text: isSaved ? "Removed from saved" : "Job Saved", ... }).showToast();
   } catch (error) {
-    console.error("Save Error:", error);
+    console.error('Save Error:', error);
     // التراجع في حالة الخطأ
-    const icon = btnElement.querySelector("i");
+    const icon = btnElement.querySelector('i');
     // اعكس الحالة مرة أخرى
     // ...
-    Swal.fire("Error", "Failed to save job.", "error");
+    Swal.fire('Error', 'Failed to save job.', 'error');
   }
 };
 
 window.closeApplyModal = function () {
-  const modal = document.getElementById("applyModal");
-  if (modal) modal.classList.add("hidden");
-  
-  const form = document.getElementById("applyForm");
+  const modal = document.getElementById('applyModal');
+  if (modal) modal.classList.add('hidden');
+
+  const form = document.getElementById('applyForm');
   if (form) form.reset();
 };
 
 function initModalEvents() {
-  const modal = document.getElementById("applyModal");
-  const closeBtn = document.getElementById("btnCloseModal");
-  
+  const modal = document.getElementById('applyModal');
+  const closeBtn = document.getElementById('btnCloseModal');
+
   // لاحظي: شيلنا تعريف cancelBtn من هنا لأنه هيتغير تحت
   // const cancelBtn = document.getElementById("btnCancelModal"); <-- مش محتاجينه هنا
 
-  let form = document.getElementById("applyForm");
+  let form = document.getElementById('applyForm');
 
   // --- دالة الإغلاق الموحدة ---
   const close = () => {
-    if (modal) modal.classList.add("hidden");
+    if (modal) modal.classList.add('hidden');
     if (form) form.reset();
 
     // إعادة تعيين نص الملف
-    const fileInput = document.getElementById("applyCv");
+    const fileInput = document.getElementById('applyCv');
     if (fileInput) {
-        const dropZone = fileInput.closest('.group');
-        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
-        if (fileNameDisplay) {
-              fileNameDisplay.textContent = "SVG, PNG, JPG or GIF (MAX. 800x400px)";
-              fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
-        }
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      if (fileNameDisplay) {
+        fileNameDisplay.textContent = 'SVG, PNG, JPG or GIF (MAX. 800x400px)';
+        fileNameDisplay.classList.remove('text-blue-600', 'font-bold');
+      }
     }
   };
 
   if (closeBtn) closeBtn.onclick = close;
-  
+
   // إغلاق عند الضغط خارج المودال
   window.onclick = (e) => {
     if (e.target === modal) close();
@@ -541,7 +542,7 @@ function initModalEvents() {
   // إغلاق عند الضغط على Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-        close();
+      close();
     }
   });
 
@@ -549,73 +550,74 @@ function initModalEvents() {
     // 1. نسخ الفورم
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
-    form = newForm; 
+    form = newForm;
 
     // بنجيب الزرار من "الفورم الجديد" ونربطه بدالة القفل
-    const newCancelBtn = newForm.querySelector("#btnCancelModal");
+    const newCancelBtn = newForm.querySelector('#btnCancelModal');
     if (newCancelBtn) {
-        newCancelBtn.onclick = close; // ربطناه بدالة الإغلاق
-        newCancelBtn.type = "button"; // تأكيد إنه مش submit
+      newCancelBtn.onclick = close; // ربطناه بدالة الإغلاق
+      newCancelBtn.type = 'button'; // تأكيد إنه مش submit
     }
 
     // كود إظهار اسم الملف
-    const fileInput = document.getElementById("applyCv");
+    const fileInput = document.getElementById('applyCv');
     if (fileInput) {
-        const dropZone = fileInput.closest('.group');
-        const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
 
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0] && fileNameDisplay) {
-                fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
-                fileNameDisplay.classList.add('text-blue-600', 'font-bold');
-            }
-        });
+      fileInput.addEventListener('change', function () {
+        if (this.files && this.files[0] && fileNameDisplay) {
+          fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+          fileNameDisplay.classList.add('text-blue-600', 'font-bold');
+        }
+      });
     }
 
     // تعريف زر الإرسال الجديد
     const newSubmitBtn = newForm.querySelector('button[type="submit"]');
 
     // Submit Logic
-    newForm.addEventListener("submit", async (e) => {
+    newForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const jobId = modal.dataset.jobId;
-      const currentFileInput = document.getElementById("applyCv");
+      const currentFileInput = document.getElementById('applyCv');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire("Warning", "Please upload your CV.", "warning");
+        Swal.fire('Warning', 'Please upload your CV.', 'warning');
         return;
       }
 
       const applyData = {
-        fullName: document.getElementById("applyName").value,
-        email: document.getElementById("applyEmail").value,
-        phone: document.getElementById("applyPhone").value,
+        fullName: document.getElementById('applyName').value,
+        email: document.getElementById('applyEmail').value,
+        phone: document.getElementById('applyPhone').value,
         cvFile: currentFileInput.files[0],
-        coverLetter: document.getElementById("applyCover").value,
+        coverLetter: document.getElementById('applyCover').value,
       };
 
       try {
         if (newSubmitBtn) {
           newSubmitBtn.disabled = true;
-          newSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          newSubmitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
 
         await jobService.applyForJob(jobId, applyData);
 
-        Swal.fire("Success", "Application submitted successfully!", "success");
+        Swal.fire('Success', 'Application submitted successfully!', 'success');
         close();
       } catch (error) {
-        let msg = "Failed to submit application.";
+        let msg = 'Failed to submit application.';
         if (error.response?.status === 409)
-          msg = "You have already applied for this job.";
+          msg = 'You have already applied for this job.';
         else if (error.response?.data?.message)
           msg = error.response.data.message;
 
-        Swal.fire("Error", msg, "error");
+        Swal.fire('Error', msg, 'error');
       } finally {
         if (newSubmitBtn) {
           newSubmitBtn.disabled = false;
-          newSubmitBtn.innerHTML = "Submit Application";
+          newSubmitBtn.innerHTML = 'Submit Application';
         }
       }
     });
@@ -623,25 +625,25 @@ function initModalEvents() {
 }
 // Helper: Time Ago
 function getTimeAgo(dateString) {
-  if (!dateString) return "Recently";
+  if (!dateString) return 'Recently';
   const date = new Date(dateString);
   const seconds = Math.floor((new Date() - date) / 1000);
 
   let interval = seconds / 31536000;
-  if (interval > 1) return Math.floor(interval) + " years ago";
+  if (interval > 1) return Math.floor(interval) + ' years ago';
   interval = seconds / 2592000;
-  if (interval > 1) return Math.floor(interval) + " months ago";
+  if (interval > 1) return Math.floor(interval) + ' months ago';
   interval = seconds / 86400;
-  if (interval > 1) return Math.floor(interval) + " days ago";
-  return "Today";
+  if (interval > 1) return Math.floor(interval) + ' days ago';
+  return 'Today';
 }
 function initScrollSpy() {
-  const sections = document.querySelectorAll("section[id]");
-  const navItems = document.querySelectorAll(".nav-item");
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
 
   function onScroll() {
     let maxVisibleHeight = 0;
-    let currentId = "";
+    let currentId = '';
 
     const windowHeight = window.innerHeight;
 
@@ -661,31 +663,31 @@ function initScrollSpy() {
       // الرقم 100 ده "فلتر" عشان يتجاهل الأجزاء الصغيرة جداً لو ظهرت بالغلط
       if (visibleHeight > maxVisibleHeight && visibleHeight > 100) {
         maxVisibleHeight = visibleHeight;
-        currentId = section.getAttribute("id");
+        currentId = section.getAttribute('id');
       }
     });
 
     // 3. تحديث النافبار
     if (currentId) {
       navItems.forEach((li) => {
-        li.classList.remove("active");
+        li.classList.remove('active');
         if (li.dataset.target === currentId) {
-          li.classList.add("active");
+          li.classList.add('active');
         }
       });
     }
   }
 
   // تشغيل الدالة عند السكرول
-  window.addEventListener("scroll", onScroll);
+  window.addEventListener('scroll', onScroll);
   // تشغيلها مرة واحدة عند التحميل
   onScroll();
 }
 // ============================================================
 // 1. Initialization
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add("loaded");
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('loaded');
 
   initAuthButtons();
   initNavbarScrolling();
@@ -698,47 +700,47 @@ document.addEventListener("DOMContentLoaded", () => {
   initModalEvents();
 });
 
-window.addEventListener("load", function () {
-  document.body.classList.add("loaded");
+window.addEventListener('load', function () {
+  document.body.classList.add('loaded');
 });
-document.addEventListener("click", function (e) {
-  const profileBtn = e.target.closest("#profileBtn");
+document.addEventListener('click', function (e) {
+  const profileBtn = e.target.closest('#profileBtn');
   if (profileBtn) {
     e.preventDefault();
-    const targetUrl = profileBtn.getAttribute("href");
-    document.body.classList.remove("loaded");
+    const targetUrl = profileBtn.getAttribute('href');
+    document.body.classList.remove('loaded');
     setTimeout(function () {
       window.location.href = targetUrl;
     }, 350);
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const backToTopBtn = document.getElementById("backToTopBtn");
+document.addEventListener('DOMContentLoaded', () => {
+  const backToTopBtn = document.getElementById('backToTopBtn');
 
   if (backToTopBtn) {
     // 1. التحكم في الظهور عند السكرول
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', () => {
       if (window.scrollY > 300) {
-        backToTopBtn.classList.add("show");
+        backToTopBtn.classList.add('show');
       } else {
-        backToTopBtn.classList.remove("show");
+        backToTopBtn.classList.remove('show');
       }
     });
 
     // 2. عند الضغط يطلع لفوق
-    backToTopBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 });
 
-const allButtons = document.querySelectorAll(".transition-link");
+const allButtons = document.querySelectorAll('.transition-link');
 
 allButtons.forEach((btn) => {
-  btn.addEventListener("click", function (e) {
+  btn.addEventListener('click', function (e) {
     e.preventDefault();
-    document.body.classList.remove("loaded");
+    document.body.classList.remove('loaded');
 
     const targetUrl = this.href;
 
@@ -747,7 +749,6 @@ allButtons.forEach((btn) => {
     }, 350);
   });
 });
-
 
 const checkbox = document.getElementById('checkbox');
 const navContainer = document.querySelector('.nav-container');
@@ -762,10 +763,10 @@ if (checkbox && navContainer) {
     }
   });
   // أضيفي هذا الكود داخل الـ if (checkbox && navContainer)
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    checkbox.checked = false; // سيلغي تفعيل الـ checkbox
-    navContainer.classList.remove('active'); // سيخفي القائمة
+  document.querySelectorAll('.nav-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      checkbox.checked = false; // سيلغي تفعيل الـ checkbox
+      navContainer.classList.remove('active'); // سيخفي القائمة
+    });
   });
-});
 }

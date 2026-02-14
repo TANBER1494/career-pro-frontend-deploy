@@ -103,8 +103,7 @@ function renderRequests(requests, currentStatus) {
 
       // File Info
       // نفترض أن الباك إند بيرجع filePath كامل أو نسبي
-      const fileUrl = `http://localhost:3000${req.filePath || req.documentUrl}`;
-
+      const fileUrl = req.filePath || req.documentUrl;
       // Date
       const dateProperty = req.uploadedAt || req.createdAt; // (احتياطاً لو غيرت الموديل مستقبلاً)
 

@@ -168,7 +168,7 @@ function renderHistory(docUrl, status) {
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <a href="http://localhost:3000${docUrl}" target="_blank" class="p-2 text-gray-500 hover:text-blue-600 transition" title="View">
+                <a href="${docUrl}" target="_blank" class="p-2 text-gray-500 hover:text-blue-600 transition" title="View">
                     <i class="fas fa-eye"></i>
                 </a>
             </div>

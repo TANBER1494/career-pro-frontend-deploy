@@ -1,6 +1,6 @@
-import { companyService } from "../services/companyService.js";
-import { authService } from "../services/authService.js";
-import Swal from "sweetalert2";
+import { companyService } from '../services/companyService.js';
+import { authService } from '../services/authService.js';
+import Swal from 'sweetalert2';
 
 // ============================================================
 // 1. State & Variables
@@ -8,29 +8,29 @@ import Swal from "sweetalert2";
 let currentProfile = null;
 
 // DOM Elements - View Mode
-const viewMode = document.getElementById("viewMode");
-const viewActions = document.getElementById("viewActions");
-const viewLogo = document.getElementById("view-logo");
-const viewLogoPlaceholder = document.getElementById("view-logo-placeholder");
+const viewMode = document.getElementById('viewMode');
+const viewActions = document.getElementById('viewActions');
+const viewLogo = document.getElementById('view-logo');
+const viewLogoPlaceholder = document.getElementById('view-logo-placeholder');
 
 // DOM Elements - Edit Mode
-const editMode = document.getElementById("editMode");
-const editActions = document.getElementById("editActions");
-const logoInput = document.getElementById("input-logo");
-const logoPreview = document.getElementById("edit-logo-preview");
-const logoIcon = document.getElementById("edit-logo-icon");
+const editMode = document.getElementById('editMode');
+const editActions = document.getElementById('editActions');
+const logoInput = document.getElementById('input-logo');
+const logoPreview = document.getElementById('edit-logo-preview');
+const logoIcon = document.getElementById('edit-logo-icon');
 
 // Buttons
-const btnEditProfile = document.getElementById("btnEditProfile");
-const btnCancelEdit = document.getElementById("btnCancelEdit");
-const btnSaveChanges = document.getElementById("btnSaveChanges");
-const btnUploadLogo = document.getElementById("btnUploadLogo");
-const btnLogout = document.getElementById("btnLogout");
+const btnEditProfile = document.getElementById('btnEditProfile');
+const btnCancelEdit = document.getElementById('btnCancelEdit');
+const btnSaveChanges = document.getElementById('btnSaveChanges');
+const btnUploadLogo = document.getElementById('btnUploadLogo');
+const btnLogout = document.getElementById('btnLogout');
 
 // ============================================================
 // 2. Initialization & Data Fetching
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   fetchProfileData();
 });
 
@@ -40,11 +40,11 @@ async function fetchProfileData() {
     currentProfile = res.data;
     renderViewMode(currentProfile);
   } catch (error) {
-    console.error("Error fetching profile:", error);
+    console.error('Error fetching profile:', error);
     Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "Failed to load company profile. Please try again.",
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to load company profile. Please try again.',
     });
   }
 }
@@ -57,41 +57,41 @@ function renderViewMode(data) {
   const details = data.companyDetails || {};
 
   // --- 1. Header Section (The missing part) ---
-  setText("view-companyName", info.companyName);
-  setText("view-industry", info.industry); // Tagline/Industry under name
+  setText('view-companyName', info.companyName);
+  setText('view-industry', info.industry); // Tagline/Industry under name
 
   // Header Stats (Icons row)
   setText(
-    "view-employees",
-    info.companySize ? `${info.companySize} employees` : "--"
+    'view-employees',
+    info.companySize ? `${info.companySize} employees` : '--'
   );
-  setText("view-founded", info.foundedYear);
-  setText("view-location", info.location);
+  setText('view-founded', info.foundedYear);
+  setText('view-location', info.location);
 
   // --- 2. Details Cards ---
-  setText("view-industry-detail", info.industry);
-  setText("view-employees-detail", info.companySize);
-  setText("view-founded-detail", info.foundedYear);
-  setText("view-location-detail", info.location);
+  setText('view-industry-detail', info.industry);
+  setText('view-employees-detail', info.companySize);
+  setText('view-founded-detail', info.foundedYear);
+  setText('view-location-detail', info.location);
 
   // Contact
-  const webLink = document.getElementById("view-website");
+  const webLink = document.getElementById('view-website');
   if (webLink) {
-    webLink.textContent = info.website || "--";
-    webLink.href = info.website || "#";
+    webLink.textContent = info.website || '--';
+    webLink.href = info.website || '#';
   }
-  setText("view-phone", info.phone);
+  setText('view-phone', info.phone);
 
   // Description
   setText(
-    "view-description",
-    info.companyDescription || "No description added."
+    'view-description',
+    info.companyDescription || 'No description added.'
   );
 
   // --- 3. Lists (Technologies & Benefits) ---
-  const techContainer = document.getElementById("view-technologies");
+  const techContainer = document.getElementById('view-technologies');
   if (techContainer) {
-    techContainer.innerHTML = "";
+    techContainer.innerHTML = '';
     if (details.technologies && details.technologies.length > 0) {
       details.technologies.forEach((tech) => {
         techContainer.innerHTML += `<span class="tech-badge">${tech}</span>`;
@@ -102,9 +102,9 @@ function renderViewMode(data) {
     }
   }
 
-  const benContainer = document.getElementById("view-benefits");
+  const benContainer = document.getElementById('view-benefits');
   if (benContainer) {
-    benContainer.innerHTML = "";
+    benContainer.innerHTML = '';
     if (details.benefits && details.benefits.length > 0) {
       details.benefits.forEach((ben) => {
         benContainer.innerHTML += `<li>${ben}</li>`;
@@ -116,41 +116,41 @@ function renderViewMode(data) {
   }
 
   // --- 4. Social Media ---
-  const socialContainer = document.getElementById("view-socials");
+  const socialContainer = document.getElementById('view-socials');
   if (socialContainer) {
-    socialContainer.innerHTML = "";
+    socialContainer.innerHTML = '';
     const socials = details.socialMedia || {};
     let hasSocials = false;
 
     if (socials.linkedin) {
       socialContainer.innerHTML += createSocialLink(
-        "linkedin",
+        'linkedin',
         socials.linkedin,
-        "text-blue-600"
+        'text-blue-600'
       );
       hasSocials = true;
     }
     if (socials.twitter) {
       socialContainer.innerHTML += createSocialLink(
-        "twitter",
+        'twitter',
         socials.twitter,
-        "text-blue-400"
+        'text-blue-400'
       );
       hasSocials = true;
     }
     if (socials.facebook) {
       socialContainer.innerHTML += createSocialLink(
-        "facebook",
+        'facebook',
         socials.facebook,
-        "text-blue-800"
+        'text-blue-800'
       );
       hasSocials = true;
     }
     if (socials.instagram) {
       socialContainer.innerHTML += createSocialLink(
-        "instagram",
+        'instagram',
         socials.instagram,
-        "text-pink-600"
+        'text-pink-600'
       );
       hasSocials = true;
     }
@@ -163,31 +163,28 @@ function renderViewMode(data) {
 
   // --- 5. Logo Handling ---
   if (info.logoUrl) {
-    // Handle relative vs absolute URLs
-    // If backend returns "/uploads/...", prepend base URL. If "http...", use as is.
-    const fullLogoUrl = info.logoUrl.startsWith("http")
-      ? info.logoUrl
-      : `http://localhost:3000${info.logoUrl}`; // Ensure this matches your backend port
+    // التغيير: الرابط يأتي كاملاً من Cloudinary، لا داعي لفحص http أو إضافة localhost
+    const fullLogoUrl = info.logoUrl;
 
     if (viewLogo) {
       viewLogo.src = fullLogoUrl;
-      viewLogo.classList.remove("hidden");
+      viewLogo.classList.remove('hidden');
     }
-    if (viewLogoPlaceholder) viewLogoPlaceholder.classList.add("hidden");
+    if (viewLogoPlaceholder) viewLogoPlaceholder.classList.add('hidden');
 
     // Update Edit Mode Preview too
     if (logoPreview) {
       logoPreview.src = fullLogoUrl;
-      logoPreview.classList.remove("hidden");
+      logoPreview.classList.remove('hidden');
     }
-    if (logoIcon) logoIcon.classList.add("hidden");
+    if (logoIcon) logoIcon.classList.add('hidden');
   }
 }
 
 // Helpers
 function setText(id, value) {
   const el = document.getElementById(id);
-  if (el) el.textContent = value || "--";
+  if (el) el.textContent = value || '--';
 }
 
 function createSocialLink(platform, url, colorClass) {
@@ -199,27 +196,27 @@ function createSocialLink(platform, url, colorClass) {
 // ============================================================
 
 // Switch to Edit Mode
-btnEditProfile.addEventListener("click", () => {
+btnEditProfile.addEventListener('click', () => {
   if (currentProfile) populateEditForm(currentProfile);
   toggleView(true);
 });
 
 // Cancel Edit
-btnCancelEdit.addEventListener("click", () => {
+btnCancelEdit.addEventListener('click', () => {
   toggleView(false);
 });
 
 function toggleView(isEdit) {
   if (isEdit) {
-    viewMode.classList.add("hidden");
-    viewActions.classList.add("hidden");
-    editMode.classList.remove("hidden");
-    editActions.classList.remove("hidden");
+    viewMode.classList.add('hidden');
+    viewActions.classList.add('hidden');
+    editMode.classList.remove('hidden');
+    editActions.classList.remove('hidden');
   } else {
-    editMode.classList.add("hidden");
-    editActions.classList.add("hidden");
-    viewMode.classList.remove("hidden");
-    viewActions.classList.remove("hidden");
+    editMode.classList.add('hidden');
+    editActions.classList.add('hidden');
+    viewMode.classList.remove('hidden');
+    viewActions.classList.remove('hidden');
   }
 }
 
@@ -229,79 +226,79 @@ function populateEditForm(data) {
   const socials = details.socialMedia || {};
 
   // Step 1
-  setValue("input-companyName", info.companyName);
-  setValue("input-industry", info.industry);
-  setValue("input-numberOfEmployees", info.companySize);
-  setValue("input-foundedYear", info.foundedYear);
-  setValue("input-location", info.location);
-  setValue("input-phone", info.phone);
-  setValue("input-website", info.website);
-  setValue("input-companyDescription", info.companyDescription);
+  setValue('input-companyName', info.companyName);
+  setValue('input-industry', info.industry);
+  setValue('input-numberOfEmployees', info.companySize);
+  setValue('input-foundedYear', info.foundedYear);
+  setValue('input-location', info.location);
+  setValue('input-phone', info.phone);
+  setValue('input-website', info.website);
+  setValue('input-companyDescription', info.companyDescription);
 
   // Step 2 (Arrays to String)
   setValue(
-    "input-technologies",
-    details.technologies ? details.technologies.join(", ") : ""
+    'input-technologies',
+    details.technologies ? details.technologies.join(', ') : ''
   );
   setValue(
-    "input-benefits",
-    details.benefits ? details.benefits.join(", ") : ""
+    'input-benefits',
+    details.benefits ? details.benefits.join(', ') : ''
   );
 
   // Socials
-  setValue("input-linkedin", socials.linkedin);
-  setValue("input-twitter", socials.twitter);
-  setValue("input-facebook", socials.facebook);
-  setValue("input-instagram", socials.instagram);
+  setValue('input-linkedin', socials.linkedin);
+  setValue('input-twitter', socials.twitter);
+  setValue('input-facebook', socials.facebook);
+  setValue('input-instagram', socials.instagram);
 }
 
 function setValue(id, value) {
   const el = document.getElementById(id);
-  if (el) el.value = value || "";
+  if (el) el.value = value || '';
 }
 
 function getValue(id) {
   const el = document.getElementById(id);
-  return el ? el.value.trim() : "";
+  return el ? el.value.trim() : '';
 }
 
 // ============================================================
 // 5. Logo Upload Logic
 // ============================================================
-logoInput.addEventListener("change", function () {
+logoInput.addEventListener('change', function () {
   const file = this.files[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = function (e) {
       logoPreview.src = e.target.result;
-      logoPreview.classList.remove("hidden");
-      logoIcon.classList.add("hidden");
+      logoPreview.classList.remove('hidden');
+      logoIcon.classList.add('hidden');
     };
     reader.readAsDataURL(file);
   }
 });
 
-btnUploadLogo.addEventListener("click", async (e) => {
+btnUploadLogo.addEventListener('click', async (e) => {
   e.preventDefault();
   const file = logoInput.files[0];
 
   if (!file) {
-    Swal.fire("Warning", "Please select an image first.", "warning");
+    Swal.fire('Warning', 'Please select an image first.', 'warning');
     return;
   }
 
   try {
-    const btn = document.getElementById("btnUploadLogo");
+    const btn = document.getElementById('btnUploadLogo');
     const originalText = btn.innerHTML;
-    btn.innerHTML = "Uploading...";
+    btn.innerHTML = 'Uploading...';
     btn.disabled = true;
 
     await companyService.uploadLogo(file);
 
     Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "Company logo updated successfully!",
+      icon: 'success',
+      title: 'Success',
+      text: 'Company logo updated successfully!',
       timer: 1500,
       showConfirmButton: false,
     });
@@ -311,55 +308,55 @@ btnUploadLogo.addEventListener("click", async (e) => {
     fetchProfileData(); // Refresh UI
   } catch (error) {
     console.error(error);
-    Swal.fire("Error", "Failed to upload logo.", "error");
-    document.getElementById("btnUploadLogo").innerHTML = "Upload";
-    document.getElementById("btnUploadLogo").disabled = false;
+    Swal.fire('Error', 'Failed to upload logo.', 'error');
+    document.getElementById('btnUploadLogo').innerHTML = 'Upload';
+    document.getElementById('btnUploadLogo').disabled = false;
   }
 });
 
 // ============================================================
 // 6. Save Changes Logic
 // ============================================================
-btnSaveChanges.addEventListener("click", async (e) => {
+btnSaveChanges.addEventListener('click', async (e) => {
   e.preventDefault();
 
   // 1. Collect Data for Step 1
   const step1Data = {
-    companyName: getValue("input-companyName"),
-    industry: getValue("input-industry"),
-    numberOfEmployees: getValue("input-numberOfEmployees"),
-    foundedYear: getValue("input-foundedYear"),
-    location: getValue("input-location"),
-    phone: getValue("input-phone"),
-    website: getValue("input-website"),
-    companyDescription: getValue("input-companyDescription"),
+    companyName: getValue('input-companyName'),
+    industry: getValue('input-industry'),
+    numberOfEmployees: getValue('input-numberOfEmployees'),
+    foundedYear: getValue('input-foundedYear'),
+    location: getValue('input-location'),
+    phone: getValue('input-phone'),
+    website: getValue('input-website'),
+    companyDescription: getValue('input-companyDescription'),
   };
 
   // 2. Collect Data for Step 2
-  const technologiesStr = getValue("input-technologies");
-  const benefitsStr = getValue("input-benefits");
+  const technologiesStr = getValue('input-technologies');
+  const benefitsStr = getValue('input-benefits');
 
   const step2Data = {
     technologies: technologiesStr
       ? technologiesStr
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .filter((s) => s)
       : [],
     benefits: benefitsStr
       ? benefitsStr
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .filter((s) => s)
       : [],
-    linkedin: getValue("input-linkedin"),
-    twitter: getValue("input-twitter"),
-    facebook: getValue("input-facebook"),
-    instagram: getValue("input-instagram"),
+    linkedin: getValue('input-linkedin'),
+    twitter: getValue('input-twitter'),
+    facebook: getValue('input-facebook'),
+    instagram: getValue('input-instagram'),
   };
 
   try {
-    const submitBtn = document.getElementById("btnSaveChanges");
+    const submitBtn = document.getElementById('btnSaveChanges');
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     submitBtn.disabled = true;
 
@@ -370,9 +367,9 @@ btnSaveChanges.addEventListener("click", async (e) => {
     ]);
 
     Swal.fire({
-      icon: "success",
-      title: "Profile Updated",
-      text: "Company information has been saved successfully.",
+      icon: 'success',
+      title: 'Profile Updated',
+      text: 'Company information has been saved successfully.',
       timer: 1500,
       showConfirmButton: false,
     }).then(() => {
@@ -380,18 +377,18 @@ btnSaveChanges.addEventListener("click", async (e) => {
       toggleView(false); // Switch to View Mode
     });
   } catch (error) {
-    console.error("Update Error:", error);
-    const message = error.response?.data?.message || "Something went wrong";
-    Swal.fire("Error", message, "error");
+    console.error('Update Error:', error);
+    const message = error.response?.data?.message || 'Something went wrong';
+    Swal.fire('Error', message, 'error');
   } finally {
-    const submitBtn = document.getElementById("btnSaveChanges");
+    const submitBtn = document.getElementById('btnSaveChanges');
     submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
     submitBtn.disabled = false;
   }
 });
 
 if (btnLogout) {
-  btnLogout.addEventListener("click", () => {
+  btnLogout.addEventListener('click', () => {
     authService.logout();
   });
 }

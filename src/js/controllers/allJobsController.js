@@ -388,7 +388,7 @@ window.applyForJobCheck = function (jobId) {
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
-      if (result.isConfirmed) window.location.href = '/Login';
+      if (result.isConfirmed) window.location.href = '/login';
     });
     return;
   }

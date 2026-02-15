@@ -271,7 +271,7 @@ function createJobCard(job, index) {
   // روابط الانتقال
   const jobLink = `/job-details.html?id=${job.id || job._id}`;
   const companyLink = companyLinkId
-    ? `/company-details?id=${companyLinkId}`
+    ? `/company-details.html?id=${companyLinkId}`
     : '#';
 
   const delay = (index % 6) * 100;
@@ -373,7 +373,7 @@ function createCompanyCard(company) {
   const location = company.location || 'Remote';
   const industry = company.industry || 'Tech';
   const positions = company.openPositionsCount || 0;
-  const detailsLink = `/company-details?id=${company.id || company._id}`;
+  const detailsLink = `/company-details.html?id=${company.id || company._id}`;
 
   return `
     <div class="flex flex-col gap-3 group">
@@ -419,7 +419,7 @@ function createCompanyCard(company) {
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
                         ${shortDesc}
                     </p>
-                    <button onclick="window.location.href='/src/pages/public companies/company-details?id=${
+                    <button onclick="window.location.href='/src/pages/public companies/companyDetails.html?id=${
                       company.id || company._id
                     }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
                         View Jobs
@@ -450,7 +450,7 @@ window.applyForJobCheck = function (jobId) {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = '/login';
+        window.location.href = '/Login';
       }
     });
     return;

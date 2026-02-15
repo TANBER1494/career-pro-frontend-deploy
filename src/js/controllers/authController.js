@@ -103,7 +103,7 @@ if (loginForm) {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.href = '/src/pages/auth/verify-email.html';
+          window.location.href = '/verify-email';
         });
         return;
       }
@@ -170,7 +170,7 @@ if (signupForm) {
         allowOutsideClick: false,
       }).then(() => {
         // التوجيه لصفحة التفعيل
-        window.location.href = '/src/pages/auth/verify-email.html';
+        window.location.href = '/verify-email';
       });
     } catch (error) {
       console.error('Signup Error:', error);
@@ -201,7 +201,7 @@ if (verifyForm) {
 
     if (!email) {
       alert('No email found. Please signup again.');
-      window.location.href = '../../pages/auth/signup-login.html';
+      window.location.href = '/signup';
       return;
     }
 

@@ -17,6 +17,21 @@
     {
       "source": "/admin/verifications",
       "destination": "/src/pages/admin/verifications.html"
+    },
+
+    { "source": "/login", "destination": "/src/pages/auth/signup-login.html" },
+    { "source": "/signup", "destination": "/src/pages/auth/signup-login.html" },
+    {
+      "source": "/verify-email",
+      "destination": "/src/pages/auth/verify-email.html"
+    },
+    {
+      "source": "/forgot-password",
+      "destination": "/src/pages/auth/forgot-password.html"
+    },
+    {
+      "source": "/reset-password",
+      "destination": "/src/pages/auth/reset-password.html"
     }
   ]
 }

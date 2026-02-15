@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         allowOutsideClick: false,
         confirmButtonText: 'Go to Login',
       }).then(() => {
-        window.location.href = 'signup-login.html';
+        window.location.href = '/login';
       });
     }
 
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.data && response.data.user) {
           handleLoginRedirect(response.data.user);
         } else {
-          window.location.href = '../../../../index.html';
+          window.location.href = '/index.html';
         }
       } catch (error) {
         console.error(error);

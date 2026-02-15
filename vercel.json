@@ -45,6 +45,10 @@
     {
       "source": "/jobs",
       "destination": "/src/pages/public jobs/jobs.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/src/pages/seeker/profile/profile.html"
     }
   ]
 }

@@ -191,7 +191,7 @@ function initSeekerStep3() {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.href = "/src/pages/seeker/profile/profile.html";
+          window.location.href = "/profile";
         });
       } catch (error) {
         console.error(error);

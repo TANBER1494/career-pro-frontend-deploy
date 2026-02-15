@@ -23,7 +23,7 @@ function handleLoginRedirect(user) {
           '/src/pages/seeker/seeker steps/ProfileStep3.html';
         break;
       default: // Step 4 (Completed)
-        window.location.href = '/src/pages/seeker/profile/profile.html';
+        window.location.href = '/profile';
         break;
     }
   }

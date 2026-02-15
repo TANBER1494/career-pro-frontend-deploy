@@ -22,7 +22,7 @@ function handleLoginRedirect(user) {
           '/src/pages/seeker/seeker steps/ProfileStep3.html';
         break;
       default:
-        window.location.href = '/src/pages/seeker/profile/profile.html';
+        window.location.href = '/profile';
         break;
     }
   } else if (accountType === 'company') {

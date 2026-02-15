@@ -64,14 +64,20 @@ if (loginForm) {
     const btn = loginForm.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
 
+    // 👇👇 التصحيح هنا: تأكدنا إننا بناخد القيمة النصية مش العنصر
+    const emailInput = document.getElementById('email');
+    const emailVal = emailInput.value.trim(); // خدنا النص وشيلنا المسافات الزيادة
+    const passwordVal = document.getElementById('password').value;
+
     try {
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
       btn.disabled = true;
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      const result = await authService.login({ email, password });
+      // بنبعت النص الصريح
+      const result = await authService.login({
+        email: emailVal,
+        password: passwordVal,
+      });
 
       Swal.fire({
         icon: 'success',
@@ -84,27 +90,26 @@ if (loginForm) {
         }
       });
     } catch (error) {
-      if (error.response && error.response.status === 403) {
-        // أ) نحفظ الإيميل عشان صفحة التفعيل تلاقيه جاهز
-        localStorage.setItem('tempEmail', email);
+      console.error(error);
 
-        // ب) نبلغ اليوزر ونوجهه
+      // 🔥 معالجة الحساب غير المفعل (403)
+      if (error.response && error.response.status === 403) {
+        // 👇👇 هنا بنخزن "النص" (emailVal) اللي جبناه فوق صح
+        localStorage.setItem('tempEmail', emailVal);
+
         Swal.fire({
           icon: 'info',
           title: 'Verification Required',
-          text: 'Your account is created but not verified. Redirecting to verification page...',
+          text: 'Your account is created but not verified. Redirecting...',
           timer: 2500,
           showConfirmButton: false,
           allowOutsideClick: false,
         }).then(() => {
-          // ج) التوجيه لصفحة التفعيل
           window.location.href = '/src/pages/auth/verify-email.html';
         });
-
-        return; // نوقف التنفيذ هنا
+        return;
       }
 
-      // 2. لو أي خطأ تاني (باسورد غلط، إيميل مش موجود)
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',

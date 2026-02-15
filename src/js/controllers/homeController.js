@@ -419,7 +419,7 @@ function createCompanyCard(company) {
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
                         ${shortDesc}
                     </p>
-                    <button onclick="window.location.href='/src/pages/public companies/companyDetails.html?id=${
+                    <button onclick="window.location.href='/company-details?id=${
                       company.id || company._id
                     }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
                         View Jobs

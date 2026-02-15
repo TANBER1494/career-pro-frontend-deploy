@@ -214,75 +214,87 @@
           display: none;
         }
       }
-/* 1. الحاوية الرئيسية للكارت */
-.companyCard {
-  width: 100%;            /* خليناه 100% عشان ياخد مساحة الجريد بالظبط */
-  max-width: 400px;       /* أقصى عرض عشان ميكبرش أوي */
-  height: 300px;          /* تثبيت الطول ضروري جداً */
-  margin: 0 auto;         /* سنتره جوه الجريد */
-  perspective: 1000px;    /* عشان الـ 3D */
-  background-color: transparent; /* عشان نمنع أي وميض */
+/* 1. ضبط الشبكة (الكونتينر الأب) */
+#top-companies-container {
+  display: flex; /* غيرناها لـ Flex عشان التحكم في التوسيط أسهل */
+  flex-wrap: wrap; /* يسمح بالنزول لسطر جديد */
+  gap: 2rem; /* مسافات بين الكروت */
+  justify-content: center; /* توسيط الكروت في نص الشاشة */
+  width: 100%;
+  max-width: 1200px; /* نمنعهم يفرشوا أوي في الشاشات العريضة */
+  margin: 0 auto;
 }
 
-/* 2. العنصر الداخلي اللي بيلف */
+/* 2. الكارت نفسه (ثابت ومتوحد) */
+.companyCard {
+  width: 340px;          /* 👈 الحل السحري: عرض ثابت للجميع */
+  height: 320px;         /* 👈 طول ثابت للجميع */
+  position: relative;
+  perspective: 1000px;   /* عمق الـ 3D */
+  margin: 0;             /* الـ Flex هيظبط المسافات */
+  flex-shrink: 0;        /* ممنوع الانكماش */
+}
+
+/* 3. العنصر الدوار الداخلي */
 .companyCard-inner {
   position: relative;
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.6s;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* حركة أنعم */
   transform-style: preserve-3d;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* ضيفنا الضل هنا عشان يلف مع الكارت */
-  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
 }
 
-/* 3. الهوفر (اللف) */
+/* 4. الدوران عند الهوفر */
 .companyCard:hover .companyCard-inner {
   transform: rotateY(180deg);
 }
 
-/* 4. الوجه الأمامي والخلفي (أهم جزء) */
+/* 5. الوش والظهر */
 .companyCard-front, .companyCard-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* لسفاري */
   backface-visibility: hidden;
-  border-radius: 1rem;
-  overflow: hidden;       /* 👈 ده أهم سطر: بيقص أي كلام زيادة عشان الكارت ميبوظش */
-  background-color: white; /* 👈 لازم ندي لون خلفية للوجهين عشان ميبقوش شفافين */
-  border: 1px solid #e5e7eb;
-  top: 0;                 /* تثبيت المكان */
-  left: 0;                /* تثبيت المكان */
+  border-radius: 16px;
+  overflow: hidden; /* عشان الكلام ميهربش بره */
+  background-color: white;
+  border: 1px solid #f3f4f6;
+  top: 0;
+  left: 0;
 }
 
-/* 5. تخصيص الوجه الأمامي */
+/* 6. تنسيق الوش (اللوجو والاسم) */
 .companyCard-front {
   z-index: 2;
-  display: flex;          /* عشان نسنتر المحتوى */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-/* 6. تخصيص الوجه الخلفي */
+/* 7. تنسيق الظهر (التفاصيل) */
 .companyCard-back {
   transform: rotateY(180deg);
   z-index: 1;
-  display: flex;          /* عشان نسنتر المحتوى */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;          /* مسافة داخلية للكلام */
-  overflow-y: auto;       /* لو الكلام كتير أوي يسمح بالسكرول جوا الكارت بس */
+  padding: 20px;
+  background-color: #f8fafc; /* لون رصاصي فاتح جداً للظهر عشان التمييز */
+  overflow-y: auto; /* لو الكلام كتير نعمل سكرول جوه الكارت */
 }
-      /* الحالة الافتراضية: 3 أعمدة للشاشات الأكبر من 1390px */
-#top-companies-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  width: 100%;
-  justify-items: center; /* لتوسيط الكروت داخل الأعمدة */
+
+/* --- تعديل للموبايل فقط --- */
+@media (max-width: 640px) {
+  .companyCard {
+    width: 90%; /* في الموبايل بس نخليه ياخد عرض الشاشة */
+    max-width: 340px;
+  }
 }
 
 /* عندما تصبح الشاشة أصغر من 1390px ينزل لصفين */

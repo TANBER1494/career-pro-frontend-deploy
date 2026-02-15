@@ -240,7 +240,7 @@ function createCompanyCard(company) {
                 ${positions} Open Positions
             </a>
 
-            <button onclick="window.location.href='../../pages/public companies/companyDetails.html?id=${
+            <button onclick="window.location.href='/company-details?id=${
               company.id || company._id
             }'"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition shadow-blue-500/20 shadow-sm">

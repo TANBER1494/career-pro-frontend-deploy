@@ -63,21 +63,18 @@ if (loginForm) {
 
     const btn = loginForm.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
-
-    // 👇👇 التصحيح هنا: تأكدنا إننا بناخد القيمة النصية مش العنصر
+    
+    // 👇👇 التصحيح هنا: لازم نتأكد إننا بناخد .value
     const emailInput = document.getElementById('email');
-    const emailVal = emailInput.value.trim(); // خدنا النص وشيلنا المسافات الزيادة
-    const passwordVal = document.getElementById('password').value;
+    const email = emailInput.value.trim(); // 👈 ده النص اللي احنا عايزينه
+    const password = document.getElementById('password').value;
 
     try {
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
       btn.disabled = true;
 
-      // بنبعت النص الصريح
-      const result = await authService.login({
-        email: emailVal,
-        password: passwordVal,
-      });
+      // إرسال الطلب
+      const result = await authService.login({ email, password });
 
       Swal.fire({
         icon: 'success',
@@ -89,21 +86,22 @@ if (loginForm) {
           handleLoginRedirect(result.data.user);
         }
       });
+
     } catch (error) {
       console.error(error);
 
-      // 🔥 معالجة الحساب غير المفعل (403)
+      // 🔥 معالجة الحساب غير المفعل (Dead Area Fix)
       if (error.response && error.response.status === 403) {
-        // 👇👇 هنا بنخزن "النص" (emailVal) اللي جبناه فوق صح
-        localStorage.setItem('tempEmail', emailVal);
-
+        
+        // 👇👇 هنا كان الخطأ: كنا بنحفظ العنصر بدل النص
+        localStorage.setItem('tempEmail', email); // ✅ دلوقتي بنحفظ النص (String)
+        
         Swal.fire({
           icon: 'info',
           title: 'Verification Required',
-          text: 'Your account is created but not verified. Redirecting...',
-          timer: 2500,
+          text: 'Your account is not verified yet. Redirecting...',
+          timer: 2000,
           showConfirmButton: false,
-          allowOutsideClick: false,
         }).then(() => {
           window.location.href = '/src/pages/auth/verify-email.html';
         });

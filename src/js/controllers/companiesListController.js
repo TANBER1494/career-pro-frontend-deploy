@@ -352,8 +352,8 @@ function initAuthButtons() {
   } else {
     // للزائر
     authContainer.innerHTML = `
-            <a href="/src/pages/auth/signup-login.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
-            <a href="/src/pages/auth/signup-login.html?mode=signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
+            <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
+            <a href="/signup?mode=signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
         `;
   }
 }

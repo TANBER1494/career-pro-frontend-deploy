@@ -32,7 +32,7 @@ axiosClient.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       // تأكد إن المسار ده صحيح في مشروعك
-      window.location.href = '/src/pages/auth/signup-login.html';
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

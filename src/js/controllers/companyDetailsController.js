@@ -307,7 +307,7 @@ window.openApplyModal = function (jobId) {
       confirmButtonText: 'Login',
     }).then((res) => {
       if (res.isConfirmed)
-        window.location.href = '/src/pages/auth/signup-login.html';
+        window.location.href = '/login';
     });
     return;
   }

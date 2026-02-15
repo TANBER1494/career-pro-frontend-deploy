@@ -31,7 +31,7 @@ if (verifyForm) {
         text: 'Please signup or login again.',
         confirmButtonColor: '#3b82f6',
       }).then(() => {
-        window.location.href = '/src/pages/auth/signup-login.html';
+        window.location.href = '/login';
       });
       return;
     }

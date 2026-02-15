@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const companyId = urlParams.get('id');
 
   if (!companyId) {
-    window.location.href = 'companies.html';
+    window.location.href = '/companies';
     return;
   }
 
@@ -76,7 +76,7 @@ async function loadCompanyDetails(id) {
                 <div class="text-center py-20">
                     <i class="fas fa-exclamation-triangle text-4xl text-red-400 mb-3"></i>
                     <p class="text-slate-500">Failed to load company details.</p>
-                    <a href="companies.html" class="text-blue-600 hover:underline mt-2 inline-block">Back to Companies</a>
+                    <a href="/companies" class="text-blue-600 hover:underline mt-2 inline-block">Back to Companies</a>
                 </div>
             `;
       content.classList.remove('hidden');

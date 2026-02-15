@@ -33,6 +33,14 @@
       "source": "/reset-password",
       "destination": "/src/pages/auth/reset-password.html"
     },
-    { "source": "/CareerPro", "destination": "/index.html" }
+    { "source": "/CareerPro", "destination": "/index.html" },
+    {
+      "source": "/companies",
+      "destination": "/src/pages/public companies/companies.html"
+    },
+    {
+      "source": "/company-details",
+      "destination": "/src/pages/public companies/companyDetails.html"
+    }
   ]
 }

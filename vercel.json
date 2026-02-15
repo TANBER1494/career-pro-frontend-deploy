@@ -41,6 +41,10 @@
     {
       "source": "/company-details",
       "destination": "/src/pages/public companies/companyDetails.html"
+    },
+    {
+      "source": "/jobs",
+      "destination": "/src/pages/public jobs/jobs.html"
     }
   ]
 }

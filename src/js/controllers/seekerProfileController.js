@@ -203,7 +203,7 @@ async function loadApplications() {
         <div class="flex flex-col items-center justify-center py-20 text-center">
             <i class="fas fa-file-signature text-6xl text-slate-200 mb-4"></i>
             <p class="text-slate-500 font-medium">No applications sent yet</p>
-            <a href="/src/pages/public jobs/jobs.html" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Find Jobs</a>
+            <a href="/jobs" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Find Jobs</a>
         </div>`;
       return;
     }
@@ -316,7 +316,7 @@ async function loadSavedJobs() {
         <div class="flex flex-col items-center justify-center py-20 text-center">
             <i class="fas fa-bookmark text-7xl text-slate-200 mb-4"></i>
             <p class="text-slate-500 font-medium">No saved jobs yet</p>
-            <a href="/src/pages/public jobs/jobs.html" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Explore Jobs</a>
+            <a href="/jobs" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Explore Jobs</a>
         </div>`;
       return;
     }

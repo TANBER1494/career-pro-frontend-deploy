@@ -271,7 +271,7 @@ function createJobCard(job, index) {
   // روابط الانتقال
   const jobLink = `/job-details.html?id=${job.id || job._id}`;
   const companyLink = companyLinkId
-    ? `/company-details.html?id=${companyLinkId}`
+    ? `/company-details?id=${companyLinkId}`
     : '#';
 
   const delay = (index % 6) * 100;
@@ -373,7 +373,7 @@ function createCompanyCard(company) {
   const location = company.location || 'Remote';
   const industry = company.industry || 'Tech';
   const positions = company.openPositionsCount || 0;
-  const detailsLink = `/company-details.html?id=${company.id || company._id}`;
+  const detailsLink = `/company-details?id=${company.id || company._id}`;
 
   return `
     <div class="flex flex-col gap-3 group">

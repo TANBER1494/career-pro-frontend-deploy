@@ -84,7 +84,27 @@ if (loginForm) {
         }
       });
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.status === 403) {
+        // أ) نحفظ الإيميل عشان صفحة التفعيل تلاقيه جاهز
+        localStorage.setItem('tempEmail', email);
+
+        // ب) نبلغ اليوزر ونوجهه
+        Swal.fire({
+          icon: 'info',
+          title: 'Verification Required',
+          text: 'Your account is created but not verified. Redirecting to verification page...',
+          timer: 2500,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+        }).then(() => {
+          // ج) التوجيه لصفحة التفعيل
+          window.location.href = '/src/pages/auth/verify-email.html';
+        });
+
+        return; // نوقف التنفيذ هنا
+      }
+
+      // 2. لو أي خطأ تاني (باسورد غلط، إيميل مش موجود)
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',

@@ -1,8 +1,6 @@
 import { authService } from '../services/authService.js';
 import Swal from 'sweetalert2';
 
-// ... imports
-
 // ==========================================
 // Helper: Smart Redirect based on Step
 // ==========================================
@@ -24,8 +22,9 @@ function handleLoginRedirect(user) {
         window.location.href =
           '/src/pages/seeker/seeker steps/ProfileStep3.html';
         break;
-      default: // Step 4 or more (Completed)
-        window.location.href = '/src/pages/seeker/profile/profile.html'; // زودنا اسم الفولدر        break;
+      default: // Step 4 (Completed)
+        window.location.href = '/src/pages/seeker/profile/profile.html';
+        break;
     }
   }
   // 2. Company Routing
@@ -43,19 +42,18 @@ function handleLoginRedirect(user) {
         window.location.href =
           '/src/pages/company/company steps/CompanyStep3.html';
         break;
-      default: // Step 4 or more (Completed)
+      default: // Step 4 (Completed)
         window.location.href =
           '/src/pages/company/company portal/dashboard.html';
         break;
     }
   } else if (accountType === 'admin') {
     window.location.href = '/src/pages/admin/dashboard.html';
-    return;
   }
 }
 
 // ==========================================
-// Login Logic (Updated)
+// 1. Login Logic
 // ==========================================
 const loginForm = document.getElementById('loginForm');
 
@@ -63,27 +61,24 @@ if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // UX: Loading Button
     const btn = loginForm.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
-    btn.innerHTML = 'Logging in...';
-    btn.disabled = true;
-
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
 
     try {
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+      btn.disabled = true;
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
       const result = await authService.login({ email, password });
 
-      // Success
       Swal.fire({
         icon: 'success',
         title: 'Welcome Back!',
-        text: 'Logged in successfully.',
         timer: 1000,
         showConfirmButton: false,
       }).then(() => {
-        // ✅ استخدام دالة التوجيه الذكي
         if (result.data && result.data.user) {
           handleLoginRedirect(result.data.user);
         }
@@ -96,66 +91,74 @@ if (loginForm) {
         text: error.response?.data?.message || 'Invalid credentials',
       });
     } finally {
-      // Reset Button
       btn.innerHTML = originalText;
       btn.disabled = false;
     }
   });
 }
-// --- Signup Logic ---
+
+// ==========================================
+// 2. Signup Logic (Updated for Email Verification)
+// ==========================================
 const signupForm = document.getElementById('signupForm');
 
 if (signupForm) {
   signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // 1. Get Account Type
-    const accountType = document.querySelector(
-      'input[name="accountTypeRadio"]:checked'
-    ).value;
-
-    // 2. Collect Data
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-    const passwordConfirm = document.getElementById('passwordConfirm').value;
-
-    let userData = { email, password, passwordConfirm, accountType };
-
-    if (accountType === 'job_seeker') {
-      userData.firstName = document.getElementById('firstName').value;
-      userData.lastName = document.getElementById('lastName').value;
-    } else {
-      userData.companyName = document.getElementById('companyName').value;
-    }
+    const btn = signupForm.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
 
     try {
-      // 3. Call Backend
+      // 1. Get Values
+      const accountType = document.querySelector(
+        'input[name="accountTypeRadio"]:checked'
+      ).value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+      let userData = { email, password, passwordConfirm, accountType };
+
+      if (accountType === 'job_seeker') {
+        userData.firstName = document.getElementById('firstName').value;
+        userData.lastName = document.getElementById('lastName').value;
+      } else {
+        userData.companyName = document.getElementById('companyName').value;
+      }
+
+      // UX: Loading
+      btn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+      btn.disabled = true;
+
+      // 2. Call Backend
       await authService.signup(userData);
 
-      // 4. Success -> Redirect to Verify Email
-      localStorage.setItem('pendingVerificationEmail', email);
+      // 3. Success Handling
+      // ✅ تصحيح هام: توحيد اسم المفتاح ليكون tempEmail
+      localStorage.setItem('tempEmail', email);
 
       Swal.fire({
         icon: 'success',
         title: 'Account Created!',
-        text: 'Please check your email for the verification code.',
-        confirmButtonText: 'Go to Verification',
+        text: 'A verification code has been sent to your email.',
+        confirmButtonText: 'Verify Now',
+        allowOutsideClick: false,
       }).then(() => {
-        // ✅ تصحيح المسار هنا (وهو سبب مشكلتك الحالية)
+        // التوجيه لصفحة التفعيل
         window.location.href = '/src/pages/auth/verify-email.html';
       });
     } catch (error) {
-      console.error('Signup Error Details:', error);
-
-      const backendMessage = error.response?.data?.message;
-      const displayMessage =
-        backendMessage || 'Something went wrong. Please try again.';
-
+      console.error('Signup Error:', error);
       Swal.fire({
         icon: 'error',
         title: 'Signup Failed',
-        text: displayMessage,
+        text: error.response?.data?.message || 'Something went wrong.',
       });
+    } finally {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
     }
   });
 }

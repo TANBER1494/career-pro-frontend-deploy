@@ -214,41 +214,68 @@
           display: none;
         }
       }
-      /* --- Other Styles (Cards, Scroll, etc.) --- */
-      .companyCard {
-        width: 400px;             /* بدلاً من 400px ليكون مرناً */
-  max-width: 400px;        /* ليحتفظ بحجمه الأصلي ولا يزيد عنه */
-  height: 300px;
-  margin: 1rem auto;
-  perspective: 1000px;
-  margin-bottom: 20px;
-      }
-      .companyCard-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        transition: transform 0.6s;
-        transform-style: preserve-3d;
-      }
-      .companyCard:hover .companyCard-inner {
-        transform: rotateY(180deg);
-      }
-      .companyCard-front, .companyCard-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        border-radius: 1rem; 
-      }
-      .companyCard-front {
-        background: white;
-        border: 1px solid #e5e7eb;
-      }
-      .companyCard-back {
-        transform: rotateY(180deg);
-      }
+/* 1. الحاوية الرئيسية للكارت */
+.companyCard {
+  width: 100%;            /* خليناه 100% عشان ياخد مساحة الجريد بالظبط */
+  max-width: 400px;       /* أقصى عرض عشان ميكبرش أوي */
+  height: 300px;          /* تثبيت الطول ضروري جداً */
+  margin: 0 auto;         /* سنتره جوه الجريد */
+  perspective: 1000px;    /* عشان الـ 3D */
+  background-color: transparent; /* عشان نمنع أي وميض */
+}
+
+/* 2. العنصر الداخلي اللي بيلف */
+.companyCard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* ضيفنا الضل هنا عشان يلف مع الكارت */
+  border-radius: 1rem;
+}
+
+/* 3. الهوفر (اللف) */
+.companyCard:hover .companyCard-inner {
+  transform: rotateY(180deg);
+}
+
+/* 4. الوجه الأمامي والخلفي (أهم جزء) */
+.companyCard-front, .companyCard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  overflow: hidden;       /* 👈 ده أهم سطر: بيقص أي كلام زيادة عشان الكارت ميبوظش */
+  background-color: white; /* 👈 لازم ندي لون خلفية للوجهين عشان ميبقوش شفافين */
+  border: 1px solid #e5e7eb;
+  top: 0;                 /* تثبيت المكان */
+  left: 0;                /* تثبيت المكان */
+}
+
+/* 5. تخصيص الوجه الأمامي */
+.companyCard-front {
+  z-index: 2;
+  display: flex;          /* عشان نسنتر المحتوى */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 6. تخصيص الوجه الخلفي */
+.companyCard-back {
+  transform: rotateY(180deg);
+  z-index: 1;
+  display: flex;          /* عشان نسنتر المحتوى */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;          /* مسافة داخلية للكلام */
+  overflow-y: auto;       /* لو الكلام كتير أوي يسمح بالسكرول جوا الكارت بس */
+}
       /* الحالة الافتراضية: 3 أعمدة للشاشات الأكبر من 1390px */
 #top-companies-container {
   display: grid;

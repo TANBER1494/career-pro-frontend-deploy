@@ -290,10 +290,12 @@
 }
 
 /* --- تعديل للموبايل فقط --- */
-@media (max-width: 640px) {
-  .companyCard {
-    width: 90%; /* في الموبايل بس نخليه ياخد عرض الشاشة */
-    max-width: 340px;
+@media (max-width: 1024px) {
+    .companyCard {
+    width: 320px !important;/* في الموبايل بس نخليه ياخد عرض الشاشة */
+    max-width: 100%;            /* أمان عشان الشاشات الصغيرة جداً */
+    height: 300px !important;   /* طول ثابت */
+    margin: 0 auto 1.5rem auto 
   }
 }
 

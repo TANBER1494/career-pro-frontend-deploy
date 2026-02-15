@@ -7,6 +7,24 @@
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
         }
+      ],
+      "rewrites": [
+        {
+          "source": "/admin",
+          "destination": "/src/pages/admin/dashboard.html"
+        },
+        {
+          "source": "/admin/jobs",
+          "destination": "/src/pages/admin/jobs.html"
+        },
+        {
+          "source": "/admin/users",
+          "destination": "/src/pages/admin/users.html"
+        },
+        {
+          "source": "/admin/verifications",
+          "destination": "/src/pages/admin/verifications.html"
+        }
       ]
     }
   ]

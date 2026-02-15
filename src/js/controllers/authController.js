@@ -48,7 +48,7 @@ function handleLoginRedirect(user) {
         break;
     }
   } else if (accountType === 'admin') {
-    window.location.href = '/src/pages/admin/dashboard.html';
+    window.location.href = '/admin';
   }
 }
 

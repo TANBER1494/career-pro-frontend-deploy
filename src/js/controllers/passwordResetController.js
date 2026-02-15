@@ -11,15 +11,15 @@ function handleLoginRedirect(user) {
     switch (registrationStep) {
       case 1:
         window.location.href =
-          '/src/pages/seeker/seeker steps/ProfileStep1.html';
+          'SeekerStep1';
         break;
       case 2:
         window.location.href =
-          '/src/pages/seeker/seeker steps/ProfileStep2.html';
+          'SeekerStep2';
         break;
       case 3:
         window.location.href =
-          '/src/pages/seeker/seeker steps/ProfileStep3.html';
+          'SeekerStep3';
         break;
       default:
         window.location.href = '/profile';

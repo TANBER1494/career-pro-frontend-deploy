@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname;
 
   // --- Seeker Pages ---
-  if (path.includes("ProfileStep1.html")) initSeekerStep1();
-  else if (path.includes("ProfileStep2.html")) initSeekerStep2();
-  else if (path.includes("ProfileStep3.html")) initSeekerStep3();
+  if (path.includes("SeekerStep1")) initSeekerStep1();
+  else if (path.includes("SeekerStep2")) initSeekerStep2();
+  else if (path.includes("SeekerStep3")) initSeekerStep3();
   // --- Company Pages ---
   else if (path.includes("CompanyStep1.html")) initCompanyStep1();
   else if (path.includes("CompanyStep2.html")) initCompanyStep2();
@@ -95,7 +95,7 @@ function initSeekerStep1() {
         };
 
         await seekerService.updateProfileStep1(formData);
-        window.location.href = "ProfileStep2.html";
+        window.location.href = "SeekerStep2";
       } catch (error) {
         console.error(error);
         Swal.fire(
@@ -134,7 +134,7 @@ function initSeekerStep2() {
         };
 
         await seekerService.updateProfileStep2(formData);
-        window.location.href = "ProfileStep3.html";
+        window.location.href = "SeekerStep3";
       } catch (error) {
         console.error(error);
         Swal.fire(
@@ -147,7 +147,7 @@ function initSeekerStep2() {
       }
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
-      window.location.href = '../../seeker/seeker steps/ProfileStep1.html';
+      window.location.href = 'SeekerStep1';
   });
   }
 }
@@ -205,7 +205,7 @@ function initSeekerStep3() {
       }
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
-      window.location.href = '../../seeker/seeker steps/ProfileStep2.html';
+      window.location.href = 'SeekerStep2';
   });
   }
 }

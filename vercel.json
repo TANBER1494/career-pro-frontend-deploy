@@ -49,6 +49,18 @@
     {
       "source": "/profile",
       "destination": "/src/pages/seeker/profile/profile.html"
+    },
+    {
+      "source": "/SeekerStep1",
+      "destination": "/src/pages/seeker/seeker steps/ProfileStep1.html"
+    },
+    {
+      "source": "/SeekerStep2",
+      "destination": "/src/pages/seeker/seeker steps/ProfileStep2.html"
+    },
+    {
+      "source": "/SeekerStep3",
+      "destination": "/src/pages/seeker/seeker steps/ProfileStep3.html"
     }
   ]
 }

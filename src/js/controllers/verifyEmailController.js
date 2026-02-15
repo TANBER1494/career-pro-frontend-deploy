@@ -85,7 +85,7 @@ if (verifyForm) {
             '/src/pages/company/company steps/CompanyStep1.html';
         } else {
           window.location.href =
-            '/src/pages/seeker/seeker steps/ProfileStep1.html';
+            'SeekerStep1';
         }
       });
     } catch (error) {

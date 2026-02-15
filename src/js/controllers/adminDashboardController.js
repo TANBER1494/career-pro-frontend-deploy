@@ -19,7 +19,7 @@ function checkAdminAccess() {
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user || user.accountType !== "admin") {
     // If not admin, kick them out
-    window.location.href = "../../../index.html";
+    window.location.href = "/CareerPro";
   }
 }
 

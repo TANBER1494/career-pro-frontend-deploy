@@ -32,6 +32,7 @@
     {
       "source": "/reset-password",
       "destination": "/src/pages/auth/reset-password.html"
-    }
+    },
+    { "source": "/CareerPro", "destination": "/index.html" }
   ]
 }

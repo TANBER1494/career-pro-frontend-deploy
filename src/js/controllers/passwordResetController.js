@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.data && response.data.user) {
           handleLoginRedirect(response.data.user);
         } else {
-          window.location.href = '/index.html';
+          window.location.href = '/CareerPro';
         }
       } catch (error) {
         console.error(error);

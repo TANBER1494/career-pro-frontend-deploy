@@ -1,28 +1,28 @@
-import { applicationService } from "../services/applicationService.js";
-import { jobManagementService } from "../services/jobManagementService.js";
-import { authService } from "../services/authService.js";
-import Swal from "sweetalert2";
-import Toastify from "toastify-js";
+import { applicationService } from '../services/applicationService.js';
+import { jobManagementService } from '../services/jobManagementService.js';
+import { authService } from '../services/authService.js';
+import Swal from 'sweetalert2';
+import Toastify from 'toastify-js';
 
 // ============================================================
 // 1. Elements & State
 // ============================================================
-const container = document.getElementById("applicationsContainer");
-const searchInput = document.getElementById("searchInput");
+const container = document.getElementById('applicationsContainer');
+const searchInput = document.getElementById('searchInput');
 // ❌ تم حذف فلاتر الحالة والوظيفة من هنا
 
 // Pagination Elements
-const prevBtn = document.getElementById("prevPage");
-const nextBtn = document.getElementById("nextPage");
-const pageInfo = document.getElementById("pageInfo");
+const prevBtn = document.getElementById('prevPage');
+const nextBtn = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
 
 // Stats Elements
-const statTotal = document.getElementById("stat-total");
-const statNew = document.getElementById("stat-new");
-const statReviewing = document.getElementById("stat-reviewing");
-const statInterviewed = document.getElementById("stat-interviewed");
-const statHired = document.getElementById("stat-hired");
-const btnLogout = document.getElementById("btnLogout");
+const statTotal = document.getElementById('stat-total');
+const statNew = document.getElementById('stat-new');
+const statReviewing = document.getElementById('stat-reviewing');
+const statInterviewed = document.getElementById('stat-interviewed');
+const statHired = document.getElementById('stat-hired');
+const btnLogout = document.getElementById('btnLogout');
 
 let currentPage = 1;
 let currentLimit = 100;
@@ -32,7 +32,7 @@ let allFetchedApps = [];
 // ============================================================
 // 2. Initialization
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   // ❌ تم حذف loadJobsForFilter()
   loadStats();
   loadApplications();
@@ -49,9 +49,9 @@ async function loadStats() {
     const stats = res.data.stats;
 
     if (statTotal) statTotal.textContent = stats.totalApplications || 0;
-    if (statNew) statNew.textContent = "-";
+    if (statNew) statNew.textContent = '-';
   } catch (error) {
-    console.error("Stats error", error);
+    console.error('Stats error', error);
   }
 }
 
@@ -79,7 +79,7 @@ async function loadApplications() {
     calculateLocalStats(allFetchedApps);
     updatePagination(allFetchedApps.length);
   } catch (error) {
-    console.error("Load error:", error);
+    console.error('Load error:', error);
     container.innerHTML = `
             <div class="text-center py-10 text-red-500 bg-white rounded-xl border">
                 <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
@@ -95,11 +95,11 @@ function calculateLocalStats(apps) {
 
   apps.forEach((app) => {
     const s = app.status.toLowerCase();
-    if (s === "new" || s === "submitted") counts.new++;
-    else if (s === "reviewing" || s === "under_review") counts.reviewing++;
-    else if (s === "interviewed" || s === "interview_scheduled")
+    if (s === 'new' || s === 'submitted') counts.new++;
+    else if (s === 'reviewing' || s === 'under_review') counts.reviewing++;
+    else if (s === 'interviewed' || s === 'interview_scheduled')
       counts.interviewed++;
-    else if (s === "hired" || s === "accepted") counts.hired++;
+    else if (s === 'hired' || s === 'accepted') counts.hired++;
   });
 
   if (statTotal) statTotal.textContent = counts.total;
@@ -130,20 +130,20 @@ function renderApplications(apps) {
       const date = new Date(app.appliedAt).toLocaleDateString();
 
       // Action Buttons Logic
-      let actionsHtml = "";
-      if (app.status === "New" || app.status === "submitted") {
+      let actionsHtml = '';
+      if (app.status === 'New' || app.status === 'submitted') {
         actionsHtml = `
                 <button onclick="updateStatus('${app.id}', 'Reviewing')" class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded hover:bg-yellow-200 border border-yellow-200 transition">Review</button>
                 <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 transition">Reject</button>
             `;
-      } else if (app.status === "Reviewing" || app.status === "under_review") {
+      } else if (app.status === 'Reviewing' || app.status === 'under_review') {
         actionsHtml = `
                 <button onclick="updateStatus('${app.id}', 'Interviewed')" class="text-xs bg-purple-100 text-purple-700 px-3 py-1.5 rounded hover:bg-purple-200 border border-purple-200 transition">Interview</button>
                 <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 transition">Reject</button>
             `;
       } else if (
-        app.status === "Interviewed" ||
-        app.status === "interview_scheduled"
+        app.status === 'Interviewed' ||
+        app.status === 'interview_scheduled'
       ) {
         actionsHtml = `
                 <button onclick="updateStatus('${app.id}', 'Hired')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded hover:bg-green-200 border border-green-200 transition font-bold"><i class="fas fa-check mr-1"></i> Hire</button>
@@ -166,8 +166,8 @@ function renderApplications(apps) {
                               app.candidateName
                             }</h3>
                             <span class="${statusColor} px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wide">${
-        app.status
-      }</span>
+                              app.status
+                            }</span>
                         </div>
                         <p class="text-blue-600 text-sm font-medium mb-2">${
                           app.position
@@ -193,7 +193,7 @@ function renderApplications(apps) {
                                       (s) =>
                                         `<span class="bg-gray-50 text-gray-600 px-2 py-0.5 rounded text-xs border border-gray-100">${s}</span>`
                                     )
-                                    .join("")
+                                    .join('')
                                 : '<span class="text-xs text-gray-400">No skills listed</span>'
                             }
                         </div>
@@ -204,7 +204,13 @@ function renderApplications(apps) {
                     <div class="text-right">
                         <span class="text-xs text-gray-400 block mb-1">Applied on ${date}</span>
                         <button onclick="handleDownloadCV('${
-                          app.candidateName
+                          app.resume || app.cv
+                            ? `<a href="${app.resume || app.cv}" target="_blank" class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
+         <i class="fas fa-eye"></i> View CV
+       </a>`
+                            : `<span class="text-sm text-gray-400 flex items-center justify-end gap-1 cursor-not-allowed">
+         <i class="fas fa-eye-slash"></i> No CV
+       </span>`
                         }')" class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
                             <i class="fas fa-file-download"></i> Download CV
                         </button>
@@ -222,43 +228,43 @@ function renderApplications(apps) {
             <div class="mt-4 pt-4 border-t border-gray-100">
                 <p class="text-sm text-gray-500 italic line-clamp-2">"${app.coverLetter}"</p>
             </div>`
-                : ""
+                : ''
             }
         </div>
         `;
     })
-    .join("");
+    .join('');
 }
 
 function getStatusBadgeColor(status) {
   const s = status.toLowerCase();
-  if (s === "new" || s === "submitted")
-    return "bg-blue-50 text-blue-600 border-blue-200";
-  if (s === "reviewing" || s === "under_review")
-    return "bg-yellow-50 text-yellow-600 border-yellow-200";
-  if (s === "interviewed" || s === "interview_scheduled")
-    return "bg-purple-50 text-purple-600 border-purple-200";
-  if (s === "hired" || s === "accepted")
-    return "bg-green-50 text-green-600 border-green-200";
-  if (s === "rejected") return "bg-red-50 text-red-600 border-red-200";
-  return "bg-gray-50 text-gray-600";
+  if (s === 'new' || s === 'submitted')
+    return 'bg-blue-50 text-blue-600 border-blue-200';
+  if (s === 'reviewing' || s === 'under_review')
+    return 'bg-yellow-50 text-yellow-600 border-yellow-200';
+  if (s === 'interviewed' || s === 'interview_scheduled')
+    return 'bg-purple-50 text-purple-600 border-purple-200';
+  if (s === 'hired' || s === 'accepted')
+    return 'bg-green-50 text-green-600 border-green-200';
+  if (s === 'rejected') return 'bg-red-50 text-red-600 border-red-200';
+  return 'bg-gray-50 text-gray-600';
 }
 
 function updatePagination(count) {
   pageInfo.textContent = `Page ${currentPage}`;
   if (count < currentLimit) {
     nextBtn.disabled = true;
-    nextBtn.style.opacity = "0.5";
+    nextBtn.style.opacity = '0.5';
   } else {
     nextBtn.disabled = false;
-    nextBtn.style.opacity = "1";
+    nextBtn.style.opacity = '1';
   }
   if (currentPage === 1) {
     prevBtn.disabled = true;
-    prevBtn.style.opacity = "0.5";
+    prevBtn.style.opacity = '0.5';
   } else {
     prevBtn.disabled = false;
-    prevBtn.style.opacity = "1";
+    prevBtn.style.opacity = '1';
   }
 }
 
@@ -268,38 +274,38 @@ function updatePagination(count) {
 
 window.handleDownloadCV = (name) => {
   Swal.fire({
-    icon: "info",
-    title: "Coming Soon",
+    icon: 'info',
+    title: 'Coming Soon',
     text: `CV download feature for ${name} will be available in the next update!`,
-    confirmButtonColor: "#3b82f6",
+    confirmButtonColor: '#3b82f6',
   });
 };
 
 window.updateStatus = async (id, newStatus) => {
   try {
     Toastify({
-      text: "Updating status...",
-      backgroundColor: "#3b82f6",
+      text: 'Updating status...',
+      backgroundColor: '#3b82f6',
     }).showToast();
     await applicationService.updateApplicationStatus(id, newStatus);
     Toastify({
       text: `Candidate moved to ${newStatus}`,
-      backgroundColor: "#10B981",
+      backgroundColor: '#10B981',
     }).showToast();
     loadApplications();
   } catch (error) {
     console.error(error);
     Swal.fire(
-      "Error",
-      error.response?.data?.message || "Failed to update status",
-      "error"
+      'Error',
+      error.response?.data?.message || 'Failed to update status',
+      'error'
     );
   }
 };
 
 // Event Listeners (Only Search & Pagination)
 if (searchInput) {
-  searchInput.addEventListener("input", (e) => {
+  searchInput.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       currentPage = 1;
@@ -310,7 +316,7 @@ if (searchInput) {
 
 // 2. Pagination Buttons
 if (prevBtn) {
-  prevBtn.addEventListener("click", () => {
+  prevBtn.addEventListener('click', () => {
     if (currentPage > 1) {
       currentPage--;
       loadApplications();
@@ -319,14 +325,14 @@ if (prevBtn) {
 }
 
 if (nextBtn) {
-  nextBtn.addEventListener("click", () => {
+  nextBtn.addEventListener('click', () => {
     currentPage++;
     loadApplications();
   });
 }
 
 if (btnLogout) {
-  btnLogout.addEventListener("click", () => {
+  btnLogout.addEventListener('click', () => {
     authService.logout();
   });
 }

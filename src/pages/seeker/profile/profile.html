@@ -903,21 +903,30 @@
     ></script>
 
     <script>
-      // Navigation Logic
+      // 1. Navigation Logic (تحديد العنصر النشط في القائمة)
       document.addEventListener('DOMContentLoaded', () => {
         const path = window.location.pathname;
-        const page = path.split('/').pop() || '/Company_profile';
+        // تأكد إن المسار الافتراضي يناسب صفحة السيكر
+        const page = path.split('/').pop() || 'profile';
+
         document.querySelectorAll('.magic-menu li').forEach((item) => {
           item.classList.remove('active');
           const onClickAttr = item.getAttribute('onclick');
+
+          // مطابقة الرابط لتفعيل الكلاس
           if (onClickAttr && onClickAttr.includes(page)) {
             item.classList.add('active');
           }
         });
       });
-      window.addEventListener('DOMContentLoaded', () =>
-        document.body.classList.add('loaded')
-      );
+
+      // ✅ 2. الحل الجذري لمشكلة الشاشة البيضاء عند الرجوع
+      // pageshow بيشتغل سواء الصفحة فتحت أول مرة أو رجعت من الكاش
+      window.addEventListener('pageshow', function (event) {
+        document.body.classList.add('loaded');
+      });
+
+      // 3. Home Button Transition Logic
       const hbtn = document.getElementById('homeBtn');
       if (hbtn) {
         hbtn.addEventListener('click', () => {

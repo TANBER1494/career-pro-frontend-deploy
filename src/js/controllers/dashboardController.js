@@ -104,7 +104,7 @@ function renderRecentJobs(jobs) {
             <div class="text-center py-8 text-gray-500 text-sm">
                 <i class="fas fa-briefcase mb-2 text-2xl opacity-50"></i>
                 <p>No active jobs yet.</p>
-                <a href="post_job.html" class="text-blue-600 hover:text-blue-700 mt-1 block">Post a job</a>
+                <a href="/post_job" class="text-blue-600 hover:text-blue-700 mt-1 block">Post a job</a>
             </div>
         `;
     return;

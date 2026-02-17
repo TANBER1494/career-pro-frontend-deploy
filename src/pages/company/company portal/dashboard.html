@@ -332,21 +332,27 @@
         </div>
       </div>
     </main>
-    <script>
-      window.addEventListener('load', function() {
-      document.body.classList.add('loaded');
+   <script>
+      // ✅ الحل: استخدام pageshow بدلاً من load
+      // هذا الحدث يعمل حتى عند الضغط على زر Back
+      window.addEventListener('pageshow', function(event) {
+          // إذا كانت الصفحة مخفية (بسبب الانتقال السابق)، أظهرها فوراً
+          document.body.classList.add('loaded');
       });
+
       const menuItems = document.querySelectorAll('.menu-item');
       menuItems.forEach(item => {
-      item.addEventListener('click', function() {
-      document.body.classList.remove('loaded');
-      const targetPage = this.getAttribute('data-url');
-      setTimeout(() => {
-      window.location.href = targetPage;
-        }, 400);
-    });
-});
+        item.addEventListener('click', function() {
+          // فقط إذا كان الرابط مختلف عن الصفحة الحالية
+          const targetPage = this.getAttribute('data-url');
+          if (targetPage === window.location.pathname.split('/').pop()) return;
 
+          document.body.classList.remove('loaded');
+          setTimeout(() => {
+            window.location.href = targetPage;
+          }, 400);
+        });
+      });
     </script>
     <script
       type="text/javascript"

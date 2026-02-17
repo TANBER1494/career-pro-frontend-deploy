@@ -70,5 +70,10 @@
       "source": "/Company_dashboard",
       "destination": "/src/pages/company/company portal/dashboard.html"
     }
+    ,
+    {
+      "source": "/Company_profile",
+      "destination": "/src/pages/company/company portal/profile.html"
+    }
   ]
 }

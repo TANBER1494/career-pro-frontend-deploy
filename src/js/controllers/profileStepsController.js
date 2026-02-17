@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   else if (path.includes("SeekerStep2")) initSeekerStep2();
   else if (path.includes("SeekerStep3")) initSeekerStep3();
   // --- Company Pages ---
-  else if (path.includes("CompanyStep1.html")) initCompanyStep1();
-  else if (path.includes("CompanyStep2.html")) initCompanyStep2();
-  else if (path.includes("CompanyStep3.html")) initCompanyStep3();
+  else if (path.includes("CompanyStep1")) initCompanyStep1();
+  else if (path.includes("CompanyStep2")) initCompanyStep2();
+  else if (path.includes("CompanyStep3")) initCompanyStep3();
 });
 
 // ============================================================
@@ -239,7 +239,7 @@ function initCompanyStep1() {
         };
 
         await companyService.updateProfileStep1(formData);
-        window.location.href = "CompanyStep2.html";
+        window.location.href = "/CompanyStep2";
       } catch (error) {
         console.error(error);
         Swal.fire(
@@ -305,7 +305,7 @@ function initCompanyStep2() {
         };
 
         await companyService.updateProfileStep2(formData);
-        window.location.href = "CompanyStep3.html";
+        window.location.href = "/CompanyStep3";
       } catch (error) {
         console.error(error);
         Swal.fire(
@@ -318,7 +318,7 @@ function initCompanyStep2() {
       }
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
-      window.location.href = '../../company/company steps/CompanyStep1.html';
+      window.location.href = '/CompanyStep1';
   });
   }
 }
@@ -482,7 +482,7 @@ function initCompanyStep3() {
       }
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
-      window.location.href = '../../company/company steps/CompanyStep2.html';
+      window.location.href = '/CompanyStep2';
   });
   }
 }

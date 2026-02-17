@@ -82,7 +82,7 @@ if (verifyForm) {
         // التوجيه بناءً على نوع الحساب
         if (user.accountType === 'company') {
           window.location.href =
-            '/src/pages/company/company steps/CompanyStep1.html';
+            '/CompanyStep1';
         } else {
           window.location.href =
             'SeekerStep1';

@@ -29,15 +29,15 @@ function handleLoginRedirect(user) {
     switch (registrationStep) {
       case 1:
         window.location.href =
-          '/src/pages/company/company steps/CompanyStep1.html';
+          '/CompanyStep1';
         break;
       case 2:
         window.location.href =
-          '/src/pages/company/company steps/CompanyStep2.html';
+          '/CompanyStep2';
         break;
       case 3:
         window.location.href =
-          '/src/pages/company/company steps/CompanyStep3.html';
+          '/CompanyStep3';
         break;
       default:
         window.location.href =

@@ -90,6 +90,18 @@
     {
       "source": "/edit_job",
       "destination": "/src/pages/company/company portal/edit_job.html"
+    },
+    {
+      "source": "/CompanyStep1",
+      "destination": "/src/pages/company/company steps/CompanyStep1.html"
+    },
+    {
+      "source": "/CompanyStep2",
+      "destination": "/src/pages/company/company steps/CompanyStep2.html"
+    },
+    {
+      "source": "/CompanyStep3",
+      "destination": "/src/pages/company/company steps/CompanyStep3.html"
     }
   ]
 }

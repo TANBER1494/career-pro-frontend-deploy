@@ -204,28 +204,18 @@ function renderApplications(apps) {
                    <div class="text-right">
                 <span class="text-xs text-gray-400 block mb-1">Applied on ${date}</span>
                 ${
-                  // ✅ محاولة قراءة الرابط بأكثر من اسم محتمل لتفادي الأخطاء
-                  (function () {
-                    const cvLink =
-                      app.resume ||
-                      app.cv ||
-                      app.cvFile ||
-                      (app.jobSeekerId && app.jobSeekerId.resume);
-
-                    if (cvLink) {
-                      return `<a 
-                        href="${cvLink}" 
+                  // ✅ التعديل: استخدام الاسم الصحيح القادم من الباك إند (cvUrl)
+                  app.cvUrl
+                    ? `<a 
+                        href="${app.cvUrl}" 
                         target="_blank" 
                         class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer transition-colors"
                        >
                          <i class="fas fa-eye"></i> View CV
-                       </a>`;
-                    } else {
-                      return `<span class="text-sm text-gray-400 flex items-center justify-end gap-1 cursor-not-allowed" title="No CV Uploaded">
+                       </a>`
+                    : `<span class="text-sm text-gray-400 flex items-center justify-end gap-1 cursor-not-allowed" title="No CV Uploaded">
                          <i class="fas fa-eye-slash"></i> No CV
-                       </span>`;
-                    }
-                  })()
+                       </span>`
                 }
             </div>
                     

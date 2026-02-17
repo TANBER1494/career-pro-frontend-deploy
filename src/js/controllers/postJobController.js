@@ -184,7 +184,7 @@ const handleSubmit = async (status) => {
       showConfirmButton: false,
     }).then(() => {
       // Redirect to Jobs List
-      window.location.href = "jobs.html";
+      window.location.href = "/Company_jobs";
     });
   } catch (error) {
     console.error("Post Job Error:", error);

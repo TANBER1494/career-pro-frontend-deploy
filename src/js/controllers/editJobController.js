@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       text: "No job selected for editing.",
       confirmButtonText: "Back to Jobs",
     }).then(() => {
-      window.location.href = "jobs.html";
+      window.location.href = "/Company_jobs";
     });
     return;
   }
@@ -90,7 +90,7 @@ async function loadJobDetails() {
       text: "Could not fetch job details. Please try again.",
       confirmButtonText: "Back to Jobs",
     }).then(() => {
-      window.location.href = "jobs.html";
+      window.location.href = "/Company_jobs";
     });
   }
 }
@@ -242,7 +242,7 @@ btnSaveChanges.addEventListener("click", async (e) => {
       timer: 1500,
       showConfirmButton: false,
     }).then(() => {
-      window.location.href = "jobs.html";
+      window.location.href = "/Company_jobs";
     });
   } catch (error) {
     console.error("Update Error:", error);

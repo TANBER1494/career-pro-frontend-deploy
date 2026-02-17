@@ -74,6 +74,10 @@
     {
       "source": "/Company_profile",
       "destination": "/src/pages/company/company portal/profile.html"
+    },
+    {
+      "source": "/Company_jobs",
+      "destination": "/src/pages/company/company portal/jobs.html"
     }
   ]
 }

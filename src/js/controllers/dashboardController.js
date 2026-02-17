@@ -120,7 +120,7 @@ function renderRecentJobs(jobs) {
       const postedDate = new Date(job.postedAt).toLocaleDateString();
 
       return `
-        <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='jobs.html'">
+        <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='/Company_jobs'">
             <div>
                 <h4 class="font-bold text-gray-800 text-sm">${job.title}</h4>
                 <div class="text-xs text-gray-500 mt-1 flex gap-3">

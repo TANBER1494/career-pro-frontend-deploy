@@ -61,6 +61,10 @@
     {
       "source": "/SeekerStep3",
       "destination": "/src/pages/seeker/seeker steps/ProfileStep3.html"
+    },
+    {
+      "source": "/applications",
+      "destination": "/src/pages/company/company portal/applications.html"
     }
   ]
 }

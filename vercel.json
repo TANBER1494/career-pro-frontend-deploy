@@ -78,6 +78,10 @@
     {
       "source": "/Company_jobs",
       "destination": "/src/pages/company/company portal/jobs.html"
+    },
+    {
+      "source": "/verification",
+      "destination": "/src/pages/company/company portal/verification.html"
     }
   ]
 }

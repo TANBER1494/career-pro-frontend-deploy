@@ -16,6 +16,7 @@ initPixelBlast('#pixel-blast-container', {
 // 1. Initialization
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('loaded');
   initAuthButtons();
   initNavbarScrolling();
   initSearch();
@@ -24,6 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTopCompanies();
 
   initModalEvents();
+});
+window.addEventListener('pageshow', (event) => {
+  if (!document.body.classList.contains('loaded')) {
+    document.body.classList.remove('fade-out');
+    document.body.classList.add('loaded');
+  }
 });
 
 // ============================================================

@@ -903,70 +903,35 @@
     ></script>
 
     <script>
-      // ============================================================
-      // 1. حل مشكلة الشاشة البيضاء (Back Button Fix) - الحل الجذري
-      // ============================================================
-      window.addEventListener('pageshow', function (event) {
-        // سواء الصفحة حملت جديد أو جاية من الكاش (Back)، رجع الشفافية 1
-        // event.persisted تعني أن الصفحة جاءت من الذاكرة المؤقتة (bfcache)
-        if (event.persisted || !document.body.classList.contains('loaded')) {
-          document.body.classList.add('loaded');
-          document.body.style.opacity = '1'; // تأكيد إضافي
-        }
-      });
-
-      // إضافة الكلاس عند التحميل العادي
-      window.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.add('loaded');
-      });
-
-      // ============================================================
-      // 2. ضبط التبويب النشط (Active Tab) مع معالجة الروابط المختلفة
-      // ============================================================
+      // 1. Navigation Logic (تحديد العنصر النشط في القائمة)
       document.addEventListener('DOMContentLoaded', () => {
         const path = window.location.pathname;
+        // تأكد إن المسار الافتراضي يناسب صفحة السيكر
+        const page = path.split('/').pop() || 'profile';
 
-        // تنظيف المسار: لو هو "/" نعتبره "CareerPro" أو "home"
-        let pageName = path.split('/').pop();
-        if (path === '/' || pageName === '') {
-          pageName = 'CareerPro'; // الاسم الافتراضي للهوم
-        }
-
-        const navItems = document.querySelectorAll('.magic-menu li');
-
-        navItems.forEach((item) => {
+        document.querySelectorAll('.magic-menu li').forEach((item) => {
           item.classList.remove('active');
+          const onClickAttr = item.getAttribute('onclick');
 
-          // بنجيب الرابط اللي في الزرار عشان نقارنه
-          // (ملاحظة: لو بتستخدمي data-target أو onclick هاتي القيمة منها)
-          const itemLink =
-            item.getAttribute('onclick') || item.getAttribute('href') || '';
-
-          // المنطق: لو اسم الصفحة موجود في رابط الزرار -> نشطه
-          // أو لو الصفحة هي البروفايل وده زرار البروفايل
-          if (
-            itemLink.includes(pageName) ||
-            (path.includes('profile') && itemLink.includes('profile'))
-          ) {
+          // مطابقة الرابط لتفعيل الكلاس
+          if (onClickAttr && onClickAttr.includes(page)) {
             item.classList.add('active');
           }
         });
       });
 
-      // ============================================================
-      // 3. زر العودة للرئيسية (Home Button Animation)
-      // ============================================================
-      const hbtn = document.getElementById('homeBtn'); // تأكد إن ده الـ ID الصح لزرار الهوم في البروفايل
+      // ✅ 2. الحل الجذري لمشكلة الشاشة البيضاء عند الرجوع
+      // pageshow بيشتغل سواء الصفحة فتحت أول مرة أو رجعت من الكاش
+      window.addEventListener('pageshow', function (event) {
+        document.body.classList.add('loaded');
+      });
+
+      // 3. Home Button Transition Logic
+      const hbtn = document.getElementById('homeBtn');
       if (hbtn) {
-        hbtn.addEventListener('click', (e) => {
-          e.preventDefault(); // نوقف الانتقال الطبيعي لحظة
-
-          document.body.classList.remove('loaded'); // نخفي الصفحة
-
-          setTimeout(() => {
-            // نوديه للرئيسية (الجذر /) لأنه الأصح في Vercel
-            window.location.href = '/';
-          }, 350);
+        hbtn.addEventListener('click', () => {
+          document.body.classList.remove('loaded');
+          setTimeout(() => (window.location.href = '/CareerPro'), 350);
         });
       }
     </script>

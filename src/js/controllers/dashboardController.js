@@ -164,7 +164,7 @@ function renderRecentApplications(apps) {
         statusClass = "bg-green-50 text-green-600 border-green-100";
 
       return `
-        <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='applications.html'">
+        <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='/applications'">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold uppercase">
                     ${app.candidateName.charAt(0)}

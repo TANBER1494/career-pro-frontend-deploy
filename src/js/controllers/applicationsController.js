@@ -203,17 +203,15 @@ function renderApplications(apps) {
                 <div class="flex flex-col items-end justify-between gap-4 pl-4 border-l border-gray-100 min-w-[180px]">
                     <div class="text-right">
                         <span class="text-xs text-gray-400 block mb-1">Applied on ${date}</span>
-                        <button onclick="handleDownloadCV('${
-                          app.resume || app.cv
-                            ? `<a href="${app.resume || app.cv}" target="_blank" class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
+                        ${
+                          app.resume
+                            ? `<a href="${app.resume}" target="_blank" class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
          <i class="fas fa-eye"></i> View CV
        </a>`
-                            : `<span class="text-sm text-gray-400 flex items-center justify-end gap-1 cursor-not-allowed">
+                            : `<span class="text-sm text-gray-400 flex items-center justify-end gap-1 cursor-not-allowed" title="No CV uploaded">
          <i class="fas fa-eye-slash"></i> No CV
        </span>`
-                        }')" class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer">
-                            <i class="fas fa-file-download"></i> Download CV
-                        </button>
+                        }
                     </div>
                     
                     <div class="flex gap-2 mt-auto">

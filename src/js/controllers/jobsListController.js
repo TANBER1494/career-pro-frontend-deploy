@@ -261,7 +261,7 @@ window.handleDelete = async (id) => {
 };
 
 window.handleEdit = (id) => {
-  window.location.href = `edit_job.html?id=${id}`;
+  window.location.href = `/edit_job?id=${id}`;
 };
 
 // ============================================================

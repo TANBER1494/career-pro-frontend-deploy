@@ -86,6 +86,10 @@
     {
       "source": "/post_job",
       "destination": "/src/pages/company/company portal/post_job.html"
+    },
+    {
+      "source": "/edit_job",
+      "destination": "/src/pages/company/company portal/edit_job.html"
     }
   ]
 }

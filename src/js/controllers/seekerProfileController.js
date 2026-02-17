@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function init() {
   setupProfileTabs();
   initModalEvents();
+  initProfileImageUpload();
 
   if (loadingState) loadingState.classList.remove('hidden');
   if (viewMode) viewMode.classList.add('hidden');
@@ -45,6 +46,69 @@ async function init() {
 
   if (loadingState) loadingState.classList.add('hidden');
   if (viewMode) viewMode.classList.remove('hidden');
+}
+
+function initProfileImageUpload() {
+  const fileInput = document.getElementById('profile-photo-input');
+
+  if (fileInput) {
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // تحقق سريع من النوع والحجم
+      if (!file.type.startsWith('image/')) {
+        Swal.fire('Error', 'Please upload an image file', 'error');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB limit
+        Swal.fire('Error', 'Image size should be less than 5MB', 'error');
+        return;
+      }
+
+      try {
+        // إظهار لودينج بسيط (اختياري: ممكن تغير أيقونة الكاميرا لسبينر)
+        Swal.fire({
+          title: 'Uploading...',
+          text: 'Please wait while we update your profile picture',
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+        });
+
+        // 1. استدعاء السيرفس
+        const res = await seekerService.uploadProfilePicture(file);
+
+        // 2. تحديث الصورة فوراً في الصفحة
+        const newImageUrl = res.data.profilePicture;
+
+        // تحديث الـ View Mode
+        const imgEl = document.getElementById('view-profileImage');
+        const initialsContainer = document.getElementById(
+          'view-initials-container'
+        );
+
+        if (imgEl && initialsContainer) {
+          imgEl.src = newImageUrl;
+          imgEl.classList.remove('hidden');
+          initialsContainer.classList.add('hidden');
+        }
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'Profile picture updated successfully',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error', 'Failed to upload image', 'error');
+      } finally {
+        fileInput.value = ''; // تصفير الانبوت عشان لو اختار نفس الصورة تاني تشتغل
+      }
+    });
+  }
 }
 
 // ============================================================
@@ -109,6 +173,7 @@ async function loadProfileData() {
 
     currentProfile = {
       fullName: finalName || 'User',
+      profilePicture: personal.profilePicture,
       firstName: localUser.firstName,
       lastName: localUser.lastName,
       email: localUser.email || personal.email,
@@ -140,18 +205,41 @@ async function loadProfileData() {
 
 function renderViewMode(data) {
   if (!data) return;
-  const setText = (id, val) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val && val !== 'undefined' ? val : '--';
-  };
 
-  setText('view-fullName', data.fullName);
+  // ==== منطق عرض الصورة ====
+  const imgEl = document.getElementById('view-profileImage');
+  const initialsContainer = document.getElementById('view-initials-container');
+  const initialsEl = document.getElementById('view-initials');
+
+  // استخراج الحروف الأولى
   const initials = (data.fullName || 'ME')
     .split(' ')
     .map((n) => n[0])
     .join('')
     .substring(0, 2)
     .toUpperCase();
+
+  if (data.profilePicture && data.profilePicture !== '') {
+    // لو فيه صورة: اظهر الصورة واخفي الحروف
+    if (imgEl) {
+      imgEl.src = data.profilePicture;
+      imgEl.classList.remove('hidden');
+    }
+    if (initialsContainer) initialsContainer.classList.add('hidden');
+  } else {
+    // لو مفيش صورة: اظهر الحروف واخفي الصورة
+    if (imgEl) imgEl.classList.add('hidden');
+    if (initialsContainer) initialsContainer.classList.remove('hidden');
+    if (initialsEl) initialsEl.textContent = initials;
+  }
+  // ==========================
+
+  const setText = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val && val !== 'undefined' ? val : '--';
+  };
+
+  setText('view-fullName', data.fullName);
   setText('view-initials', initials);
   setText('view-industry', data.jobTitle || data.industry || 'Job Seeker');
   setText(

@@ -41,7 +41,6 @@ function initAuthButtons() {
   authContainer.className = 'flex items-center gap-3 justify-end';
 
   if (token && user) {
-    // 🛑 فحص نوع الحساب (الحل للمشكلة)
     // لو المستخدم شركة -> وجهه فوراً للوحة التحكم الخاصة به
     if (user.accountType === 'company' || user.role === 'company') {
       // قم بتغيير الرابط أدناه إذا كان مسار الداشبورد مختلفاً (مثلاً dashboard.html)

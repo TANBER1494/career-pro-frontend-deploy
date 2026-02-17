@@ -1,11 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile - AI-Career Guidance</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="website icon" type="png" href="../../../../assets/imgs/Logo.png"/>
+    <link
+      rel="website icon"
+      type="png"
+      href="../../../../assets/imgs/Logo.png"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -27,10 +31,13 @@
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: { sans: ["Poppins", "sans-serif"] ,lexend: ['Lexend', 'sans-serif']},
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+              lexend: ['Lexend', 'sans-serif'],
+            },
             colors: {
-              primary: "#06b6d4",
-              secondary: "#3b82f6",
+              primary: '#06b6d4',
+              secondary: '#3b82f6',
             },
           },
         },
@@ -54,7 +61,7 @@
         margin: 0;
         overflow-x: hidden;
         background-attachment: fixed;
-        font-family: "Poppins", sans-serif;
+        font-family: 'Poppins', sans-serif;
       }
       /* Magic Navigation Styles */
       .nav-container {
@@ -86,7 +93,7 @@
         transition: 0.5s;
       }
       .magic-menu li::before {
-        content: "";
+        content: '';
         position: absolute;
         inset: 0;
         border-radius: 60px;
@@ -95,7 +102,7 @@
         transition: 0.5s;
       }
       .magic-menu li::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 10px;
         width: 100%;
@@ -161,7 +168,7 @@
         color: #2563eb;
       }
       .profile-tab-btn.active::after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: 0;
         left: 0;
@@ -179,10 +186,16 @@
       <a
         href="/CareerPro"
         class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer"
-        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
-      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
+        <img
+          src="../../../../assets/imgs/Logo.png"
+          alt="CareerGuidance Logo"
+          class="h-12 w-auto object-contain"
+        />
+        <span class="font-lexend font-simibold not-italic"
+          >AI-Career Guidance</span
+        >
       </a>
       <div class="hidden md:flex flex-1 nav-container">
         <div
@@ -198,7 +211,7 @@
             <li
               style="--i: #5eb6fd; --j: #0576d3"
               class="active"
-              onclick="window.location.href='/Company_profile'"
+              onclick="window.location.href = '/Company_profile'"
             >
               <span class="icon"
                 ><ion-icon name="person-outline"></ion-icon
@@ -209,26 +222,25 @@
         </div>
       </div>
       <div class="min-w-[150px] flex justify-end">
-        <button 
-        id="btnLogout"
-  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
->
-  <div
-    class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
-  >
-    <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-      <path
-        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-      ></path>
-    </svg>
-  </div>
-  <div
-    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-  >
-    Logout
-  </div>
-</button>
-
+        <button
+          id="btnLogout"
+          class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+        >
+          <div
+            class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+              <path
+                d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+              ></path>
+            </svg>
+          </div>
+          <div
+            class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
+          >
+            Logout
+          </div>
+        </button>
       </div>
     </nav>
 
@@ -256,10 +268,35 @@
           <div
             class="flex flex-col md:flex-row gap-8 items-center md:items-start"
           >
-            <div
-              class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-4xl font-bold text-blue-500 border-4 border-white shadow-md"
-            >
-              <span id="view-initials">--</span>
+            <div class="relative group">
+              <img
+                id="view-profileImage"
+                src=""
+                alt="Profile Picture"
+                class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md hidden"
+              />
+
+              <div
+                id="view-initials-container"
+                class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-4xl font-bold text-blue-500 border-4 border-white shadow-md"
+              >
+                <span id="view-initials">--</span>
+              </div>
+
+              <label
+                for="profile-photo-input"
+                class="absolute bottom-0 right-0 bg-white text-gray-600 p-2 rounded-full shadow-lg border border-gray-200 cursor-pointer hover:text-blue-600 hover:bg-blue-50 transition-all duration-300"
+                title="Change Profile Picture"
+              >
+                <i class="fas fa-camera text-sm"></i>
+              </label>
+
+              <input
+                type="file"
+                id="profile-photo-input"
+                class="hidden"
+                accept="image/png, image/jpeg, image/jpg"
+              />
             </div>
             <div class="flex-1 text-center md:text-left mt-2">
               <h1
@@ -830,7 +867,7 @@
               class="w-full px-3 py-2 -mb-4 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
             ></textarea>
           </div>
-          <div class="flex gap-3 pt-2 ">
+          <div class="flex gap-3 pt-2">
             <button
               type="button"
               id="btnCancelModal"
@@ -867,28 +904,25 @@
 
     <script>
       // Navigation Logic
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener('DOMContentLoaded', () => {
         const path = window.location.pathname;
-        const page = path.split("/").pop() || "/Company_profile";
-        document.querySelectorAll(".magic-menu li").forEach((item) => {
-          item.classList.remove("active");
-          const onClickAttr = item.getAttribute("onclick");
+        const page = path.split('/').pop() || '/Company_profile';
+        document.querySelectorAll('.magic-menu li').forEach((item) => {
+          item.classList.remove('active');
+          const onClickAttr = item.getAttribute('onclick');
           if (onClickAttr && onClickAttr.includes(page)) {
-            item.classList.add("active");
+            item.classList.add('active');
           }
         });
       });
-      window.addEventListener("DOMContentLoaded", () =>
-        document.body.classList.add("loaded")
+      window.addEventListener('DOMContentLoaded', () =>
+        document.body.classList.add('loaded')
       );
-      const hbtn = document.getElementById("homeBtn");
+      const hbtn = document.getElementById('homeBtn');
       if (hbtn) {
-        hbtn.addEventListener("click", () => {
-          document.body.classList.remove("loaded");
-          setTimeout(
-            () => (window.location.href = "/CareerPro"),
-            350
-          );
+        hbtn.addEventListener('click', () => {
+          document.body.classList.remove('loaded');
+          setTimeout(() => (window.location.href = '/CareerPro'), 350);
         });
       }
     </script>

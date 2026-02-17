@@ -44,7 +44,7 @@ function handleLoginRedirect(user) {
         break;
       default: // Step 4 (Completed)
         window.location.href =
-          '/src/pages/company/company portal/dashboard.html';
+          '/Company_dashboard';
         break;
     }
   } else if (accountType === 'admin') {

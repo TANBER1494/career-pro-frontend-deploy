@@ -65,6 +65,10 @@
     {
       "source": "/applications",
       "destination": "/src/pages/company/company portal/applications.html"
+    },
+    {
+      "source": "/Company_dashboard",
+      "destination": "/src/pages/company/company portal/dashboard.html"
     }
   ]
 }

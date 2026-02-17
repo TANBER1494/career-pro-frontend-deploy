@@ -41,7 +41,7 @@ function handleLoginRedirect(user) {
         break;
       default:
         window.location.href =
-          '/src/pages/company/company portal/dashboard.html';
+          '/Company_dashboard';
         break;
     }
   }

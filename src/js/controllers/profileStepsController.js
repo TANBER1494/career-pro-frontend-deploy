@@ -453,7 +453,7 @@ function initCompanyStep3() {
             showConfirmButton: false,
           }).then(() => {
             window.location.href =
-              "/src/pages/company/company portal/dashboard.html";
+              "/Company_dashboard";
           });
         } else {
           // Scenario 2: Skip
@@ -467,7 +467,7 @@ function initCompanyStep3() {
             showConfirmButton: false,
           }).then(() => {
             window.location.href =
-              "/src/pages/company/company portal/dashboard.html";
+              "/Company_dashboard";
           });
         }
       } catch (error) {

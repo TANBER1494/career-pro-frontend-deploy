@@ -158,7 +158,7 @@ function renderJobs(jobs) {
 
                 <div class="flex flex-row md:flex-col justify-between items-end gap-4 border-t md:border-t-0 md:border-l border-gray-100 md:pl-6 pt-4 md:pt-0 mt-4 md:mt-0">
                     <div class="text-right hidden md:block">
-                         <a href="applications.html?jobId=${
+                         <a href="/applications?jobId=${
                            job._id
                          }" class="text-sm text-blue-600 hover:underline font-medium flex items-center justify-end gap-1">
                             View Applications <i class="fas fa-arrow-right text-xs"></i>

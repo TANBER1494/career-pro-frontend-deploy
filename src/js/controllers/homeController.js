@@ -119,7 +119,7 @@ function initSearch() {
   const performSearch = () => {
     const query = searchInput.value.trim();
     if (query) {
-      window.location.href = `/src/pages/public%20jobs/jobs.html?search=${encodeURIComponent(
+      window.location.href = `/jobs?search=${encodeURIComponent(
         query
       )}`;
     }

@@ -1,21 +1,32 @@
-import { seekerService } from "../services/seekerService.js";
-import { companyService } from "../services/companyService.js";
-import Swal from "sweetalert2";
+import { seekerService } from '../services/seekerService.js';
+import { companyService } from '../services/companyService.js';
+import Swal from 'sweetalert2';
+
+// ============================================================
+// Helper: Update LocalStorage Step
+// ============================================================
+function updateLocalRegistrationStep(stepNumber) {
+  const localUser = JSON.parse(localStorage.getItem('user'));
+  if (localUser) {
+    localUser.registrationStep = stepNumber;
+    localStorage.setItem('user', JSON.stringify(localUser));
+  }
+}
 
 // ============================================================
 // 1. Initialization & Router Logic
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   const path = window.location.pathname;
 
   // --- Seeker Pages ---
-  if (path.includes("SeekerStep1")) initSeekerStep1();
-  else if (path.includes("SeekerStep2")) initSeekerStep2();
-  else if (path.includes("SeekerStep3")) initSeekerStep3();
+  if (path.includes('SeekerStep1')) initSeekerStep1();
+  else if (path.includes('SeekerStep2')) initSeekerStep2();
+  else if (path.includes('SeekerStep3')) initSeekerStep3();
   // --- Company Pages ---
-  else if (path.includes("CompanyStep1")) initCompanyStep1();
-  else if (path.includes("CompanyStep2")) initCompanyStep2();
-  else if (path.includes("CompanyStep3")) initCompanyStep3();
+  else if (path.includes('CompanyStep1')) initCompanyStep1();
+  else if (path.includes('CompanyStep2')) initCompanyStep2();
+  else if (path.includes('CompanyStep3')) initCompanyStep3();
 });
 
 // ============================================================
@@ -23,49 +34,109 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 
 function initSeekerStep1() {
-  const form = document.getElementById("step1Form");
+  const form = document.getElementById('step1Form');
 
   // Country/City Logic
-  const countrySelect = document.getElementById("country");
-  const citySelect = document.getElementById("city");
+  const countrySelect = document.getElementById('country');
+  const citySelect = document.getElementById('city');
 
   if (countrySelect && citySelect) {
     const citiesByCountry = {
-    "Egypt": ["Cairo", "Giza", "Alexandria", "Mansoura", "Luxor", "Aswan", "Asyut", "Port Said", "Suez", "Tanta"],
-    "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Khobar", "Abha", "Tabuk", "Hail"],
-    "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"],
-    "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba", "Madaba", "Jerash"],
-    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Baalbek", "Zahle"],
-    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Kirkuk", "Najaf", "Karbala"],
-    "Syria": ["Damascus", "Aleppo", "Homs", "Hama", "Latakia", "Tartus"],
-    "Kuwait": ["Kuwait City", "Al Ahmadi", "Hawalli", "Al Farwaniyah", "Al Jahra"],
-    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Buraimi"],
-    "Qatar": ["Doha", "Al Rayyan", "Al Wakrah", "Al Khor", "Umm Salal"],
-    "Bahrain": ["Manama", "Riffa", "Muharraq", "Hamad Town", "Isa Town"],
-    "Yemen": ["Sana'a", "Aden", "Taiz", "Al Hudaydah", "Ibb"],
-    "Palestine": ["Jerusalem", "Gaza City", "Ramallah", "Nablus", "Hebron", "Bethlehem", "Jenin", "Jericho"],
-    "Libya": ["Tripoli", "Benghazi", "Misrata", "Tobruk", "Sebha"],
-    "Tunisia": ["Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte", "Gabes"],
-    "Algeria": ["Algiers", "Oran", "Constantine", "Annaba", "Blida", "Batna"],
-    "Morocco": ["Casablanca", "Rabat", "Fes", "Marrakech", "Tangier", "Agadir", "Meknes"],
-    "Sudan": ["Khartoum", "Omdurman", "Port Sudan", "Nyala", "Kassala"],
-    "Mauritania": ["Nouakchott", "Nouadhibou", "Kiffa", "Rosso"],
-    "Somalia": ["Mogadishu", "Hargeisa", "Bosaso", "Kismayo", "Berbera"],
-    "Djibouti": ["Djibouti City", "Ali Sabieh", "Tadjoura"],
-    "Comoros": ["Moroni", "Mutsamudu", "Fomboni"]
+      Egypt: [
+        'Cairo',
+        'Giza',
+        'Alexandria',
+        'Mansoura',
+        'Luxor',
+        'Aswan',
+        'Asyut',
+        'Port Said',
+        'Suez',
+        'Tanta',
+      ],
+      'Saudi Arabia': [
+        'Riyadh',
+        'Jeddah',
+        'Mecca',
+        'Medina',
+        'Dammam',
+        'Khobar',
+        'Abha',
+        'Tabuk',
+        'Hail',
+      ],
+      'United Arab Emirates': [
+        'Dubai',
+        'Abu Dhabi',
+        'Sharjah',
+        'Ajman',
+        'Ras Al Khaimah',
+        'Fujairah',
+        'Umm Al Quwain',
+      ],
+      Jordan: ['Amman', 'Zarqa', 'Irbid', 'Aqaba', 'Madaba', 'Jerash'],
+      Lebanon: ['Beirut', 'Tripoli', 'Sidon', 'Tyre', 'Baalbek', 'Zahle'],
+      Iraq: [
+        'Baghdad',
+        'Basra',
+        'Mosul',
+        'Erbil',
+        'Kirkuk',
+        'Najaf',
+        'Karbala',
+      ],
+      Syria: ['Damascus', 'Aleppo', 'Homs', 'Hama', 'Latakia', 'Tartus'],
+      Kuwait: [
+        'Kuwait City',
+        'Al Ahmadi',
+        'Hawalli',
+        'Al Farwaniyah',
+        'Al Jahra',
+      ],
+      Oman: ['Muscat', 'Salalah', 'Sohar', 'Nizwa', 'Sur', 'Buraimi'],
+      Qatar: ['Doha', 'Al Rayyan', 'Al Wakrah', 'Al Khor', 'Umm Salal'],
+      Bahrain: ['Manama', 'Riffa', 'Muharraq', 'Hamad Town', 'Isa Town'],
+      Yemen: ["Sana'a", 'Aden', 'Taiz', 'Al Hudaydah', 'Ibb'],
+      Palestine: [
+        'Jerusalem',
+        'Gaza City',
+        'Ramallah',
+        'Nablus',
+        'Hebron',
+        'Bethlehem',
+        'Jenin',
+        'Jericho',
+      ],
+      Libya: ['Tripoli', 'Benghazi', 'Misrata', 'Tobruk', 'Sebha'],
+      Tunisia: ['Tunis', 'Sfax', 'Sousse', 'Kairouan', 'Bizerte', 'Gabes'],
+      Algeria: ['Algiers', 'Oran', 'Constantine', 'Annaba', 'Blida', 'Batna'],
+      Morocco: [
+        'Casablanca',
+        'Rabat',
+        'Fes',
+        'Marrakech',
+        'Tangier',
+        'Agadir',
+        'Meknes',
+      ],
+      Sudan: ['Khartoum', 'Omdurman', 'Port Sudan', 'Nyala', 'Kassala'],
+      Mauritania: ['Nouakchott', 'Nouadhibou', 'Kiffa', 'Rosso'],
+      Somalia: ['Mogadishu', 'Hargeisa', 'Bosaso', 'Kismayo', 'Berbera'],
+      Djibouti: ['Djibouti City', 'Ali Sabieh', 'Tadjoura'],
+      Comoros: ['Moroni', 'Mutsamudu', 'Fomboni'],
     };
 
-    countrySelect.addEventListener("change", (e) => {
+    countrySelect.addEventListener('change', (e) => {
       const country = e.target.value;
       citySelect.disabled = false;
       citySelect.innerHTML =
         '<option value="" disabled selected>Select city</option>';
-      citySelect.classList.remove("bg-gray-200", "cursor-not-allowed");
-      citySelect.classList.add("bg-gray-50");
+      citySelect.classList.remove('bg-gray-200', 'cursor-not-allowed');
+      citySelect.classList.add('bg-gray-50');
 
-      const cities = citiesByCountry[country] || ["Main City", "Other"];
+      const cities = citiesByCountry[country] || ['Main City', 'Other'];
       cities.forEach((city) => {
-        const option = document.createElement("option");
+        const option = document.createElement('option');
         option.value = city;
         option.textContent = city;
         citySelect.appendChild(option);
@@ -74,7 +145,7 @@ function initSeekerStep1() {
   }
 
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       const originalText = btn.innerHTML;
@@ -84,24 +155,25 @@ function initSeekerStep1() {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
         const formData = {
-          phoneNumber: document.getElementById("phoneNumber").value,
-          birthDate: document.getElementById("birthDate").value,
-          gender: document.getElementById("gender").value,
-          experienceLevel: document.getElementById("experienceLevel").value,
-          yearsOfExperience: document.getElementById("yearsOfExperience").value,
-          industry: document.getElementById("industry").value,
-          country: document.getElementById("country").value,
-          city: document.getElementById("city").value,
+          phoneNumber: document.getElementById('phoneNumber').value,
+          birthDate: document.getElementById('birthDate').value,
+          gender: document.getElementById('gender').value,
+          experienceLevel: document.getElementById('experienceLevel').value,
+          yearsOfExperience: document.getElementById('yearsOfExperience').value,
+          industry: document.getElementById('industry').value,
+          country: document.getElementById('country').value,
+          city: document.getElementById('city').value,
         };
 
         await seekerService.updateProfileStep1(formData);
-        window.location.href = "SeekerStep2";
+        updateLocalRegistrationStep(2);
+        window.location.href = 'SeekerStep2';
       } catch (error) {
         console.error(error);
         Swal.fire(
-          "Error",
-          error.response?.data?.message || "Failed to update profile",
-          "error"
+          'Error',
+          error.response?.data?.message || 'Failed to update profile',
+          'error'
         );
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -111,9 +183,9 @@ function initSeekerStep1() {
 }
 
 function initSeekerStep2() {
-  const form = document.getElementById("step2Form");
+  const form = document.getElementById('step2Form');
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       const originalText = btn.innerHTML;
@@ -123,24 +195,25 @@ function initSeekerStep2() {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
         const formData = {
-          degree: document.getElementById("degree").value,
-          university: document.getElementById("university").value,
-          graduationYear: document.getElementById("graduationYear").value,
-          gpa: document.getElementById("gpa")
-            ? document.getElementById("gpa").value
+          degree: document.getElementById('degree').value,
+          university: document.getElementById('university').value,
+          graduationYear: document.getElementById('graduationYear').value,
+          gpa: document.getElementById('gpa')
+            ? document.getElementById('gpa').value
             : undefined,
-          jobType: document.getElementById("jobType").value,
-          workplaceSetting: document.getElementById("workplaceSetting").value,
+          jobType: document.getElementById('jobType').value,
+          workplaceSetting: document.getElementById('workplaceSetting').value,
         };
 
         await seekerService.updateProfileStep2(formData);
-        window.location.href = "SeekerStep3";
+        updateLocalRegistrationStep(3);
+        window.location.href = 'SeekerStep3';
       } catch (error) {
         console.error(error);
         Swal.fire(
-          "Error",
-          error.response?.data?.message || "Update failed",
-          "error"
+          'Error',
+          error.response?.data?.message || 'Update failed',
+          'error'
         );
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -148,30 +221,30 @@ function initSeekerStep2() {
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
       window.location.href = 'SeekerStep1';
-  });
+    });
   }
 }
 
 function initSeekerStep3() {
-  const form = document.getElementById("step3Form");
-  const fileInput = document.getElementById("cvFile");
-  const fileNameDisplay = document.getElementById("fileName");
+  const form = document.getElementById('step3Form');
+  const fileInput = document.getElementById('cvFile');
+  const fileNameDisplay = document.getElementById('fileName');
 
   // File Name Display Logic
   if (fileInput) {
-    fileInput.addEventListener("change", (e) => {
+    fileInput.addEventListener('change', (e) => {
       if (e.target.files[0]) {
         fileNameDisplay.textContent = e.target.files[0].name;
-        fileNameDisplay.classList.remove("hidden");
+        fileNameDisplay.classList.remove('hidden');
       }
     });
   }
 
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!fileInput.files[0]) {
-        Swal.fire("Warning", "Please upload your CV.", "warning");
+        Swal.fire('Warning', 'Please upload your CV.', 'warning');
         return;
       }
 
@@ -183,22 +256,23 @@ function initSeekerStep3() {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
         await seekerService.uploadCV(fileInput.files[0]);
+        updateLocalRegistrationStep(4);
 
         Swal.fire({
-          icon: "success",
-          title: "Profile Completed!",
-          text: "Redirecting to dashboard...",
+          icon: 'success',
+          title: 'Profile Completed!',
+          text: 'Redirecting to dashboard...',
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.href = "/profile";
+          window.location.href = '/profile';
         });
       } catch (error) {
         console.error(error);
         Swal.fire(
-          "Error",
-          error.response?.data?.message || "Upload failed",
-          "error"
+          'Error',
+          error.response?.data?.message || 'Upload failed',
+          'error'
         );
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -206,7 +280,7 @@ function initSeekerStep3() {
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
       window.location.href = 'SeekerStep2';
-  });
+    });
   }
 }
 
@@ -215,10 +289,10 @@ function initSeekerStep3() {
 // ============================================================
 
 function initCompanyStep1() {
-  const form = document.getElementById("companyStep1Form");
+  const form = document.getElementById('companyStep1Form');
 
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       const originalText = btn.innerHTML;
@@ -228,24 +302,25 @@ function initCompanyStep1() {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
         const formData = {
-          location: document.getElementById("location").value,
-          industry: document.getElementById("industry").value,
-          foundedYear: document.getElementById("foundedYear").value,
-          numberOfEmployees: document.getElementById("numberOfEmployees").value,
-          phone: document.getElementById("phone").value,
-          website: document.getElementById("website").value,
+          location: document.getElementById('location').value,
+          industry: document.getElementById('industry').value,
+          foundedYear: document.getElementById('foundedYear').value,
+          numberOfEmployees: document.getElementById('numberOfEmployees').value,
+          phone: document.getElementById('phone').value,
+          website: document.getElementById('website').value,
           companyDescription:
-            document.getElementById("companyDescription").value,
+            document.getElementById('companyDescription').value,
         };
 
         await companyService.updateProfileStep1(formData);
-        window.location.href = "/CompanyStep2";
+        updateLocalRegistrationStep(2);
+        window.location.href = '/CompanyStep2';
       } catch (error) {
         console.error(error);
         Swal.fire(
-          "Error",
-          error.response?.data?.message || "Update failed",
-          "error"
+          'Error',
+          error.response?.data?.message || 'Update failed',
+          'error'
         );
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -255,36 +330,36 @@ function initCompanyStep1() {
 }
 
 function initCompanyStep2() {
-  const form = document.getElementById("companyStep2Form");
+  const form = document.getElementById('companyStep2Form');
 
   // Tags Management Logic
   const technologies = [];
   const benefits = [];
 
   setupTagsInput(
-    "techInput",
-    "addTechBtn",
-    "techTagsContainer",
-    "techCounter",
+    'techInput',
+    'addTechBtn',
+    'techTagsContainer',
+    'techCounter',
     technologies,
     3
   );
   setupTagsInput(
-    "benefitInput",
-    "addBenefitBtn",
-    "benefitTagsContainer",
+    'benefitInput',
+    'addBenefitBtn',
+    'benefitTagsContainer',
     null,
     benefits,
     0
   );
 
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       // Validation
       if (technologies.length < 3) {
-        Swal.fire("Warning", "Please add at least 3 technologies.", "warning");
+        Swal.fire('Warning', 'Please add at least 3 technologies.', 'warning');
         return;
       }
 
@@ -298,20 +373,21 @@ function initCompanyStep2() {
         const formData = {
           technologies: technologies,
           benefits: benefits,
-          linkedin: document.getElementById("linkedin").value,
-          twitter: document.getElementById("twitter").value,
-          facebook: document.getElementById("facebook").value,
-          instagram: document.getElementById("instagram").value,
+          linkedin: document.getElementById('linkedin').value,
+          twitter: document.getElementById('twitter').value,
+          facebook: document.getElementById('facebook').value,
+          instagram: document.getElementById('instagram').value,
         };
 
         await companyService.updateProfileStep2(formData);
-        window.location.href = "/CompanyStep3";
+        updateLocalRegistrationStep(3);
+        window.location.href = '/CompanyStep3';
       } catch (error) {
         console.error(error);
         Swal.fire(
-          "Error",
-          error.response?.data?.message || "Update failed",
-          "error"
+          'Error',
+          error.response?.data?.message || 'Update failed',
+          'error'
         );
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -319,7 +395,7 @@ function initCompanyStep2() {
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
       window.location.href = '/CompanyStep1';
-  });
+    });
   }
 }
 
@@ -349,13 +425,13 @@ function setupTagsInput(
     if (val && !exists) {
       dataArray.push(val);
       renderTags();
-      input.value = "";
-      input.classList.remove("border-red-500", "ring-red-500"); 
+      input.value = '';
+      input.classList.remove('border-red-500', 'ring-red-500');
     } else if (exists) {
-      input.classList.add("border-red-500", "focus:ring-red-500");
+      input.classList.add('border-red-500', 'focus:ring-red-500');
 
       input.addEventListener('input', function removeError() {
-        input.classList.remove("border-red-500", "focus:ring-red-500");
+        input.classList.remove('border-red-500', 'focus:ring-red-500');
         input.removeEventListener('input', removeError);
       });
     }
@@ -371,32 +447,32 @@ function setupTagsInput(
             </span>
         `
       )
-      .join("");
+      .join('');
 
     if (counter) {
       counter.textContent = `${dataArray.length} of ${minRequired} added`;
       counter.classList.toggle(
-        "text-green-500",
+        'text-green-500',
         dataArray.length >= minRequired
       );
       counter.classList.toggle(
-        "text-orange-500",
+        'text-orange-500',
         dataArray.length < minRequired
       );
     }
   };
 
-  btn.addEventListener("click", addTag);
-  input.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
+  btn.addEventListener('click', addTag);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
       e.preventDefault();
       addTag();
     }
   });
 
-  container.addEventListener("click", (e) => {
-    if (e.target.classList.contains("fa-times")) {
-      const val = e.target.getAttribute("data-val");
+  container.addEventListener('click', (e) => {
+    if (e.target.classList.contains('fa-times')) {
+      const val = e.target.getAttribute('data-val');
       const index = dataArray.indexOf(val);
       if (index > -1) {
         dataArray.splice(index, 1);
@@ -407,32 +483,32 @@ function setupTagsInput(
 }
 
 function initCompanyStep3() {
-  const form = document.getElementById("companyStep3Form");
-  const fileInput = document.getElementById("verificationFile");
-  const fileNameDisplay = document.getElementById("fileNameDisplay");
-  const finishBtn = document.getElementById("finishBtn");
+  const form = document.getElementById('companyStep3Form');
+  const fileInput = document.getElementById('verificationFile');
+  const fileNameDisplay = document.getElementById('fileNameDisplay');
+  const finishBtn = document.getElementById('finishBtn');
 
   // UI: File Name & Button Change
   if (fileInput) {
-    fileInput.addEventListener("change", (e) => {
+    fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) {
         fileNameDisplay.textContent = e.target.files[0].name;
-        fileNameDisplay.classList.add("text-green-600");
+        fileNameDisplay.classList.add('text-green-600');
 
-        const span = finishBtn.querySelector("span");
-        if (span) span.textContent = "Complete Registration";
+        const span = finishBtn.querySelector('span');
+        if (span) span.textContent = 'Complete Registration';
 
-        finishBtn.classList.remove("bg-green-500", "hover:bg-green-600"); // Remove skip style
-        finishBtn.classList.add("bg-blue-600", "hover:bg-blue-700"); // Add upload style
+        finishBtn.classList.remove('bg-green-500', 'hover:bg-green-600'); // Remove skip style
+        finishBtn.classList.add('bg-blue-600', 'hover:bg-blue-700'); // Add upload style
       } else {
-        fileNameDisplay.textContent = "No file chosen";
-        fileNameDisplay.classList.remove("text-green-600");
+        fileNameDisplay.textContent = 'No file chosen';
+        fileNameDisplay.classList.remove('text-green-600');
       }
     });
   }
 
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = finishBtn;
       const originalText = btn.innerHTML;
@@ -444,38 +520,37 @@ function initCompanyStep3() {
           btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
           await companyService.uploadVerificationDoc(fileInput.files[0]);
-
+          updateLocalRegistrationStep(4);
           Swal.fire({
-            icon: "success",
-            title: "Registration Complete!",
-            text: "Document uploaded. Redirecting to dashboard...",
+            icon: 'success',
+            title: 'Registration Complete!',
+            text: 'Document uploaded. Redirecting to dashboard...',
             timer: 2000,
             showConfirmButton: false,
           }).then(() => {
-            window.location.href =
-              "/Company_dashboard";
+            window.location.href = '/Company_dashboard';
           });
         } else {
           // Scenario 2: Skip
           // بما أن الباك إند لا يحتوي على endpoint "skip" مخصص، سنوجه للداشبورد مباشرة
           // التوثيق سيظل "Unverified"
+          updateLocalRegistrationStep(4);
           Swal.fire({
-            icon: "info",
-            title: "Skipping Verification",
-            text: "You can verify your company later from the dashboard.",
+            icon: 'info',
+            title: 'Skipping Verification',
+            text: 'You can verify your company later from the dashboard.',
             timer: 2000,
             showConfirmButton: false,
           }).then(() => {
-            window.location.href =
-              "/Company_dashboard";
+            window.location.href = '/Company_dashboard';
           });
         }
       } catch (error) {
         console.error(error);
         Swal.fire(
-          "Error",
-          error.response?.data?.message || "Operation failed",
-          "error"
+          'Error',
+          error.response?.data?.message || 'Operation failed',
+          'error'
         );
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -483,6 +558,6 @@ function initCompanyStep3() {
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
       window.location.href = '/CompanyStep2';
-  });
+    });
   }
 }

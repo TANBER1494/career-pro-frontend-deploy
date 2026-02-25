@@ -44,18 +44,31 @@ function initAuthButtons() {
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
 
-  // تنظيف الكلاسات القديمة وضبط المحاذاة
   authContainer.className = 'flex items-center gap-3 justify-end';
 
   if (token && user) {
-    // لو المستخدم شركة -> وجهه فوراً للوحة التحكم الخاصة به
-    if (user.accountType === 'company' || user.role === 'company') {
-      // قم بتغيير الرابط أدناه إذا كان مسار الداشبورد مختلفاً (مثلاً dashboard.html)
-      window.location.href = '/Company_dashboard';
-      return; // وقف تنفيذ باقي الكود عشان ما يحملش عناصر الصفحة عالفاضي
+    // 🚨 [الحماية الجديدة] التوجيه الإجباري لاستكمال البيانات 🚨
+    if (user.registrationStep < 4) {
+      let stepPage = '';
+      if (user.accountType === 'job_seeker' || user.role === 'job_seeker') {
+        stepPage = `/SeekerStep${user.registrationStep}`;
+      } else if (user.accountType === 'company' || user.role === 'company') {
+        stepPage = `/CompanyStep${user.registrationStep}`;
+      }
+      
+      if (stepPage) {
+        window.location.href = stepPage;
+        return; // إيقاف تحميل باقي الصفحة وطرد المستخدم فوراً
+      }
     }
 
-    // ✅ لو المستخدم طالب (Seeker) -> اعرض زر البروفايل وتسجيل الخروج
+    // لو المستخدم شركة ومكمل بياناته -> وجهه فوراً للوحة التحكم الخاصة به
+    if (user.accountType === 'company' || user.role === 'company') {
+      window.location.href = '/Company_dashboard';
+      return; 
+    }
+
+    // ✅ لو المستخدم طالب (Seeker) ومكمل بياناته -> اعرض زر البروفايل وتسجيل الخروج
     const navLinkHtml = `
           <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
             <i class="fas fa-user-circle text-lg"></i> Profile
@@ -77,12 +90,10 @@ function initAuthButtons() {
             </div>
         `;
 
-    // تفعيل زر الخروج
     document.getElementById('btnLogout').addEventListener('click', () => {
       authService.logout();
     });
   } else {
-    // 👤 لو زائر (Guest) -> اعرض زر الدخول والتسجيل
     authContainer.innerHTML = `
             <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
             <a href="/signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>

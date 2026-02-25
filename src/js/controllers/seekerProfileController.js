@@ -495,8 +495,10 @@ function populateEditForm(data) {
     } catch (e) {}
   }
   setVal('input-gender', data.gender);
-  setVal('input-country', data.country);
-  setVal('input-city', data.city);
+  setVal(
+    'input-location',
+    data.city && data.country ? `${data.city}, ${data.country}` : ''
+  );
   setVal('input-experienceLevel', data.experienceLevel);
   setVal('input-yearsOfExperience', data.yearsOfExperience);
   setVal('input-industry', data.industry);
@@ -519,8 +521,8 @@ btnSaveChanges.addEventListener('click', async (e) => {
     yearsOfExperience: Number(getVal('input-yearsOfExperience')) || 0,
     experienceLevel: getVal('input-experienceLevel'),
     industry: getVal('input-industry'),
-    country: getVal('input-country'),
-    city: getVal('input-city'),
+    country: getVal('input-location').split(', ')[1] || '',
+    city: getVal('input-location').split(', ')[0] || '',
     degree: getVal('input-degree'),
     university: getVal('input-university'),
     graduationYear: Number(getVal('input-graduationYear')) || null,

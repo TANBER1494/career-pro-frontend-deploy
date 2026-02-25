@@ -101,18 +101,207 @@
               <option value="Cloud">Cloud Computing</option>
             </select>
 
-            <select
+           <select
               id="filter-location"
               class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none focus:border-blue-500 bg-white"
             >
               <option value="">All Locations</option>
-              <option value="Cairo">Cairo, EG</option>
-              <option value="Alexandria">Alexandria, EG</option>
-              <option value="Remote">Remote</option>
-              <option value="San Francisco">San Francisco, CA</option>
-              <option value="New York">New York, NY</option>
-              <option value="London">London, UK</option>
-              <option value="Berlin">Berlin, DE</option>
+              <option value="Remote" class="font-bold text-blue-600">🌍 Remote / Anywhere</option>
+
+              <optgroup label="Egypt">
+                  <option value="Cairo, Egypt">Cairo, Egypt</option>
+                  <option value="Giza, Egypt">Giza, Egypt</option>
+                  <option value="Alexandria, Egypt">Alexandria, Egypt</option>
+                  <option value="Mansoura, Egypt">Mansoura, Egypt</option>
+                  <option value="Luxor, Egypt">Luxor, Egypt</option>
+                  <option value="Aswan, Egypt">Aswan, Egypt</option>
+                  <option value="Asyut, Egypt">Asyut, Egypt</option>
+                  <option value="Port Said, Egypt">Port Said, Egypt</option>
+                  <option value="Suez, Egypt">Suez, Egypt</option>
+                  <option value="Tanta, Egypt">Tanta, Egypt</option>
+              </optgroup>
+
+              <optgroup label="Saudi Arabia">
+                  <option value="Riyadh, Saudi Arabia">Riyadh, Saudi Arabia</option>
+                  <option value="Jeddah, Saudi Arabia">Jeddah, Saudi Arabia</option>
+                  <option value="Mecca, Saudi Arabia">Mecca, Saudi Arabia</option>
+                  <option value="Medina, Saudi Arabia">Medina, Saudi Arabia</option>
+                  <option value="Dammam, Saudi Arabia">Dammam, Saudi Arabia</option>
+                  <option value="Khobar, Saudi Arabia">Khobar, Saudi Arabia</option>
+                  <option value="Abha, Saudi Arabia">Abha, Saudi Arabia</option>
+                  <option value="Tabuk, Saudi Arabia">Tabuk, Saudi Arabia</option>
+                  <option value="Hail, Saudi Arabia">Hail, Saudi Arabia</option>
+              </optgroup>
+
+              <optgroup label="United Arab Emirates">
+                  <option value="Dubai, United Arab Emirates">Dubai, UAE</option>
+                  <option value="Abu Dhabi, United Arab Emirates">Abu Dhabi, UAE</option>
+                  <option value="Sharjah, United Arab Emirates">Sharjah, UAE</option>
+                  <option value="Ajman, United Arab Emirates">Ajman, UAE</option>
+                  <option value="Ras Al Khaimah, United Arab Emirates">Ras Al Khaimah, UAE</option>
+                  <option value="Fujairah, United Arab Emirates">Fujairah, UAE</option>
+                  <option value="Umm Al Quwain, United Arab Emirates">Umm Al Quwain, UAE</option>
+              </optgroup>
+
+              <optgroup label="Jordan">
+                  <option value="Amman, Jordan">Amman, Jordan</option>
+                  <option value="Zarqa, Jordan">Zarqa, Jordan</option>
+                  <option value="Irbid, Jordan">Irbid, Jordan</option>
+                  <option value="Aqaba, Jordan">Aqaba, Jordan</option>
+                  <option value="Madaba, Jordan">Madaba, Jordan</option>
+                  <option value="Jerash, Jordan">Jerash, Jordan</option>
+              </optgroup>
+
+              <optgroup label="Lebanon">
+                  <option value="Beirut, Lebanon">Beirut, Lebanon</option>
+                  <option value="Tripoli, Lebanon">Tripoli, Lebanon</option>
+                  <option value="Sidon, Lebanon">Sidon, Lebanon</option>
+                  <option value="Tyre, Lebanon">Tyre, Lebanon</option>
+                  <option value="Baalbek, Lebanon">Baalbek, Lebanon</option>
+                  <option value="Zahle, Lebanon">Zahle, Lebanon</option>
+              </optgroup>
+
+              <optgroup label="Iraq">
+                  <option value="Baghdad, Iraq">Baghdad, Iraq</option>
+                  <option value="Basra, Iraq">Basra, Iraq</option>
+                  <option value="Mosul, Iraq">Mosul, Iraq</option>
+                  <option value="Erbil, Iraq">Erbil, Iraq</option>
+                  <option value="Kirkuk, Iraq">Kirkuk, Iraq</option>
+                  <option value="Najaf, Iraq">Najaf, Iraq</option>
+                  <option value="Karbala, Iraq">Karbala, Iraq</option>
+              </optgroup>
+
+              <optgroup label="Syria">
+                  <option value="Damascus, Syria">Damascus, Syria</option>
+                  <option value="Aleppo, Syria">Aleppo, Syria</option>
+                  <option value="Homs, Syria">Homs, Syria</option>
+                  <option value="Hama, Syria">Hama, Syria</option>
+                  <option value="Latakia, Syria">Latakia, Syria</option>
+                  <option value="Tartus, Syria">Tartus, Syria</option>
+              </optgroup>
+
+              <optgroup label="Kuwait">
+                  <option value="Kuwait City, Kuwait">Kuwait City, Kuwait</option>
+                  <option value="Al Ahmadi, Kuwait">Al Ahmadi, Kuwait</option>
+                  <option value="Hawalli, Kuwait">Hawalli, Kuwait</option>
+                  <option value="Al Farwaniyah, Kuwait">Al Farwaniyah, Kuwait</option>
+                  <option value="Al Jahra, Kuwait">Al Jahra, Kuwait</option>
+              </optgroup>
+
+              <optgroup label="Oman">
+                  <option value="Muscat, Oman">Muscat, Oman</option>
+                  <option value="Salalah, Oman">Salalah, Oman</option>
+                  <option value="Sohar, Oman">Sohar, Oman</option>
+                  <option value="Nizwa, Oman">Nizwa, Oman</option>
+                  <option value="Sur, Oman">Sur, Oman</option>
+                  <option value="Buraimi, Oman">Buraimi, Oman</option>
+              </optgroup>
+
+              <optgroup label="Qatar">
+                  <option value="Doha, Qatar">Doha, Qatar</option>
+                  <option value="Al Rayyan, Qatar">Al Rayyan, Qatar</option>
+                  <option value="Al Wakrah, Qatar">Al Wakrah, Qatar</option>
+                  <option value="Al Khor, Qatar">Al Khor, Qatar</option>
+                  <option value="Umm Salal, Qatar">Umm Salal, Qatar</option>
+              </optgroup>
+
+              <optgroup label="Bahrain">
+                  <option value="Manama, Bahrain">Manama, Bahrain</option>
+                  <option value="Riffa, Bahrain">Riffa, Bahrain</option>
+                  <option value="Muharraq, Bahrain">Muharraq, Bahrain</option>
+                  <option value="Hamad Town, Bahrain">Hamad Town, Bahrain</option>
+                  <option value="Isa Town, Bahrain">Isa Town, Bahrain</option>
+              </optgroup>
+
+              <optgroup label="Yemen">
+                  <option value="Sana'a, Yemen">Sana'a, Yemen</option>
+                  <option value="Aden, Yemen">Aden, Yemen</option>
+                  <option value="Taiz, Yemen">Taiz, Yemen</option>
+                  <option value="Al Hudaydah, Yemen">Al Hudaydah, Yemen</option>
+                  <option value="Ibb, Yemen">Ibb, Yemen</option>
+              </optgroup>
+
+              <optgroup label="Palestine">
+                  <option value="Jerusalem, Palestine">Jerusalem, Palestine</option>
+                  <option value="Gaza City, Palestine">Gaza City, Palestine</option>
+                  <option value="Ramallah, Palestine">Ramallah, Palestine</option>
+                  <option value="Nablus, Palestine">Nablus, Palestine</option>
+                  <option value="Hebron, Palestine">Hebron, Palestine</option>
+                  <option value="Bethlehem, Palestine">Bethlehem, Palestine</option>
+                  <option value="Jenin, Palestine">Jenin, Palestine</option>
+                  <option value="Jericho, Palestine">Jericho, Palestine</option>
+              </optgroup>
+
+              <optgroup label="Libya">
+                  <option value="Tripoli, Libya">Tripoli, Libya</option>
+                  <option value="Benghazi, Libya">Benghazi, Libya</option>
+                  <option value="Misrata, Libya">Misrata, Libya</option>
+                  <option value="Tobruk, Libya">Tobruk, Libya</option>
+                  <option value="Sebha, Libya">Sebha, Libya</option>
+              </optgroup>
+
+              <optgroup label="Tunisia">
+                  <option value="Tunis, Tunisia">Tunis, Tunisia</option>
+                  <option value="Sfax, Tunisia">Sfax, Tunisia</option>
+                  <option value="Sousse, Tunisia">Sousse, Tunisia</option>
+                  <option value="Kairouan, Tunisia">Kairouan, Tunisia</option>
+                  <option value="Bizerte, Tunisia">Bizerte, Tunisia</option>
+                  <option value="Gabes, Tunisia">Gabes, Tunisia</option>
+              </optgroup>
+
+              <optgroup label="Algeria">
+                  <option value="Algiers, Algeria">Algiers, Algeria</option>
+                  <option value="Oran, Algeria">Oran, Algeria</option>
+                  <option value="Constantine, Algeria">Constantine, Algeria</option>
+                  <option value="Annaba, Algeria">Annaba, Algeria</option>
+                  <option value="Blida, Algeria">Blida, Algeria</option>
+                  <option value="Batna, Algeria">Batna, Algeria</option>
+              </optgroup>
+
+              <optgroup label="Morocco">
+                  <option value="Casablanca, Morocco">Casablanca, Morocco</option>
+                  <option value="Rabat, Morocco">Rabat, Morocco</option>
+                  <option value="Fes, Morocco">Fes, Morocco</option>
+                  <option value="Marrakech, Morocco">Marrakech, Morocco</option>
+                  <option value="Tangier, Morocco">Tangier, Morocco</option>
+                  <option value="Agadir, Morocco">Agadir, Morocco</option>
+                  <option value="Meknes, Morocco">Meknes, Morocco</option>
+              </optgroup>
+
+              <optgroup label="Sudan">
+                  <option value="Khartoum, Sudan">Khartoum, Sudan</option>
+                  <option value="Omdurman, Sudan">Omdurman, Sudan</option>
+                  <option value="Port Sudan, Sudan">Port Sudan, Sudan</option>
+                  <option value="Nyala, Sudan">Nyala, Sudan</option>
+                  <option value="Kassala, Sudan">Kassala, Sudan</option>
+              </optgroup>
+
+              <optgroup label="Mauritania">
+                  <option value="Nouakchott, Mauritania">Nouakchott, Mauritania</option>
+                  <option value="Nouadhibou, Mauritania">Nouadhibou, Mauritania</option>
+                  <option value="Kiffa, Mauritania">Kiffa, Mauritania</option>
+                  <option value="Rosso, Mauritania">Rosso, Mauritania</option>
+              </optgroup>
+
+              <optgroup label="Somalia">
+                  <option value="Mogadishu, Somalia">Mogadishu, Somalia</option>
+                  <option value="Hargeisa, Somalia">Hargeisa, Somalia</option>
+                  <option value="Bosaso, Somalia">Bosaso, Somalia</option>
+                  <option value="Kismayo, Somalia">Kismayo, Somalia</option>
+                  <option value="Berbera, Somalia">Berbera, Somalia</option>
+              </optgroup>
+
+              <optgroup label="Djibouti">
+                  <option value="Djibouti City, Djibouti">Djibouti City, Djibouti</option>
+                  <option value="Ali Sabieh, Djibouti">Ali Sabieh, Djibouti</option>
+                  <option value="Tadjoura, Djibouti">Tadjoura, Djibouti</option>
+              </optgroup>
+
+              <optgroup label="Comoros">
+                  <option value="Moroni, Comoros">Moroni, Comoros</option>
+                  <option value="Mutsamudu, Comoros">Mutsamudu, Comoros</option>
+                  <option value="Fomboni, Comoros">Fomboni, Comoros</option>
+              </optgroup>
             </select>
 
             <select

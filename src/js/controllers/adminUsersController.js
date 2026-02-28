@@ -1,14 +1,14 @@
-import { adminService } from "../services/adminService.js";
-import { authService } from "../services/authService.js";
-import axiosClient from "../utils/axiosClient.js"; // نحتاج هذا لاستدعاء APIs الجديدة إذا لم تكن في Service
-import Swal from "sweetalert2";
+import { adminService } from '../services/adminService.js';
+import { authService } from '../services/authService.js';
+import axiosClient from '../utils/axiosClient.js'; // نحتاج هذا لاستدعاء APIs الجديدة إذا لم تكن في Service
+import Swal from 'sweetalert2';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   checkAdminAccess();
-  
+
   // Default Tab
-  let activeTab = "seekers"; 
-  
+  let activeTab = 'seekers';
+
   // Initial Render
   updateTableHeaders(activeTab);
   fetchData(activeTab);
@@ -17,31 +17,31 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function checkAdminAccess() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user || user.accountType !== "admin") {
-    window.location.href = "/CareerPro";
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || user.accountType !== 'admin') {
+    window.location.href = '/CareerPro';
   }
 }
 
-let currentTab = "seekers"; // Global state for current tab
+let currentTab = 'seekers'; // Global state for current tab
 
 function setupEventListeners() {
-  const tabSeekers = document.getElementById("tab-seekers");
-  const tabCompanies = document.getElementById("tab-companies");
-  const searchInput = document.getElementById("searchInput");
+  const tabSeekers = document.getElementById('tab-seekers');
+  const tabCompanies = document.getElementById('tab-companies');
+  const searchInput = document.getElementById('searchInput');
 
   // A. Tab Switching
-  tabSeekers.addEventListener("click", () => {
-    switchTab("seekers");
+  tabSeekers.addEventListener('click', () => {
+    switchTab('seekers');
   });
 
-  tabCompanies.addEventListener("click", () => {
-    switchTab("companies");
+  tabCompanies.addEventListener('click', () => {
+    switchTab('companies');
   });
 
   // B. Search (Debounced)
   let timeoutId;
-  searchInput.addEventListener("input", (e) => {
+  searchInput.addEventListener('input', (e) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       fetchData(currentTab, e.target.value);
@@ -49,39 +49,54 @@ function setupEventListeners() {
   });
 
   // C. Refresh
-  document.getElementById("refreshBtn")?.addEventListener("click", () => {
+  document.getElementById('refreshBtn')?.addEventListener('click', () => {
     fetchData(currentTab, searchInput.value);
   });
 
-  // D. Delete Action
-  document.getElementById("usersTableBody").addEventListener("click", (e) => {
-    const btn = e.target.closest(".delete-btn");
-    if (btn) {
-      handleDelete(btn.dataset.id);
+  // D. Table Actions (Delete, Suspend, Reactivate)
+  document.getElementById('usersTableBody').addEventListener('click', (e) => {
+    const deleteBtn = e.target.closest('.delete-btn');
+    const suspendBtn = e.target.closest('.suspend-btn');
+    const reactivateBtn = e.target.closest('.reactivate-btn');
+
+    if (deleteBtn) {
+      handleDelete(deleteBtn.dataset.id);
+    }
+    if (suspendBtn) {
+      handleSuspend(suspendBtn.dataset.authId);
+    }
+    if (reactivateBtn) {
+      handleReactivate(reactivateBtn.dataset.authId);
     }
   });
 
   // E. Logout
-  document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
     authService.logout();
   });
 }
 
 function switchTab(tab) {
   currentTab = tab;
-  
-  // Update UI Classes
-  const tabSeekers = document.getElementById("tab-seekers");
-  const tabCompanies = document.getElementById("tab-companies");
 
-  if (tab === "seekers") {
-    tabSeekers.className = "tab-active px-6 py-2 transition-all focus:outline-none";
-    tabCompanies.className = "tab-inactive px-6 py-2 transition-all focus:outline-none";
-    document.getElementById("searchInput").placeholder = "Search seekers by name...";
+  // Update UI Classes
+  const tabSeekers = document.getElementById('tab-seekers');
+  const tabCompanies = document.getElementById('tab-companies');
+
+  if (tab === 'seekers') {
+    tabSeekers.className =
+      'tab-active px-6 py-2 transition-all focus:outline-none';
+    tabCompanies.className =
+      'tab-inactive px-6 py-2 transition-all focus:outline-none';
+    document.getElementById('searchInput').placeholder =
+      'Search seekers by name...';
   } else {
-    tabCompanies.className = "tab-active px-6 py-2 transition-all focus:outline-none";
-    tabSeekers.className = "tab-inactive px-6 py-2 transition-all focus:outline-none";
-    document.getElementById("searchInput").placeholder = "Search companies by name...";
+    tabCompanies.className =
+      'tab-active px-6 py-2 transition-all focus:outline-none';
+    tabSeekers.className =
+      'tab-inactive px-6 py-2 transition-all focus:outline-none';
+    document.getElementById('searchInput').placeholder =
+      'Search companies by name...';
   }
 
   // Update Table & Fetch
@@ -90,19 +105,20 @@ function switchTab(tab) {
 }
 
 function updateTableHeaders(tab) {
-  const headerRow = document.getElementById("tableHeaderRow");
-  if (tab === "seekers") {
+  const headerRow = document.getElementById('tableHeaderRow');
+  if (tab === 'seekers') {
     headerRow.innerHTML = `
         <th class="px-6 py-4">Name & Info</th>
-        <th class="px-6 py-4">Email Status</th>
+        <th class="px-6 py-4">Account Status</th> <th class="px-6 py-4">Email Status</th>
         <th class="px-6 py-4">Joined At</th>
         <th class="px-6 py-4 text-right">Actions</th>
     `;
   } else {
     headerRow.innerHTML = `
         <th class="px-6 py-4">Company Name</th>
-        <th class="px-6 py-4">Email Status</th>
-        <th class="px-6 py-4">Verification Doc</th> <th class="px-6 py-4">Joined At</th>
+        <th class="px-6 py-4">Account Status</th> <th class="px-6 py-4">Email Status</th>
+        <th class="px-6 py-4">Verification Doc</th> 
+        <th class="px-6 py-4">Joined At</th>
         <th class="px-6 py-4 text-right">Actions</th>
     `;
   }
@@ -112,23 +128,23 @@ function updateTableHeaders(tab) {
 // Data Fetching & Rendering
 // ============================================================
 
-async function fetchData(tab, search = "") {
-  const tableBody = document.getElementById("usersTableBody");
-  
+async function fetchData(tab, search = '') {
+  const tableBody = document.getElementById('usersTableBody');
+
   try {
     tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i> Loading...</td></tr>`;
 
     // 1. Determine Endpoint
-    const endpoint = tab === "seekers" ? "/admin/users/seekers" : "/admin/users/companies";
-    
+    const endpoint =
+      tab === 'seekers' ? '/admin/users/seekers' : '/admin/users/companies';
+
     // 2. Call API (Using axiosClient directly or via service)
     const response = await axiosClient.get(endpoint, { params: { search } });
     const users = response.data.data.users;
 
     // 3. Render
-    if (tab === "seekers") renderSeekers(users);
+    if (tab === 'seekers') renderSeekers(users);
     else renderCompanies(users);
-
   } catch (error) {
     console.error(error);
     tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-500">Failed to load data.</td></tr>`;
@@ -136,24 +152,46 @@ async function fetchData(tab, search = "") {
 }
 
 function renderSeekers(users) {
-  const tableBody = document.getElementById("usersTableBody");
-  
+  const tableBody = document.getElementById('usersTableBody');
+
   if (users.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">No job seekers found.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">No job seekers found.</td></tr>`;
     return;
   }
 
-  tableBody.innerHTML = users.map(user => {
-    const name = user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || "No Name";
-    const email = user.authId?.email || "N/A";
-    const isVerified = user.authId?.isVerified;
-    const date = new Date(user.createdAt).toLocaleDateString();
+  tableBody.innerHTML = users
+    .map((user) => {
+      const name =
+        user.fullName ||
+        `${user.firstName || ''} ${user.lastName || ''}`.trim() ||
+        'No Name';
+      const email = user.authId?.email || 'N/A';
+      const isVerified = user.authId?.isVerified;
+      const date = new Date(user.createdAt).toLocaleDateString();
 
-    const emailBadge = isVerified 
+      // 💡 لوجيك حالة الحساب الجديد
+      const authStatus = user.authId?.status || 'active';
+      const authId = user.authId?._id;
+
+      const accountBadge =
+        authStatus === 'active'
+          ? `<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">Active</span>`
+          : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold" title="Reason: ${user.authId?.suspensionReason}">Suspended</span>`;
+
+      const emailBadge = isVerified
         ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">Verified</span>`
         : `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold">Unverified</span>`;
 
-    return `
+      // 💡 زراير الأكشن الديناميكية
+      let actionButtons = '';
+      if (authStatus === 'active') {
+        actionButtons += `<button class="suspend-btn text-orange-500 hover:bg-orange-50 p-2 rounded-full mr-1" data-auth-id="${authId}" title="Suspend User"><i class="fas fa-ban"></i></button>`;
+      } else {
+        actionButtons += `<button class="reactivate-btn text-green-500 hover:bg-green-50 p-2 rounded-full mr-1" data-auth-id="${authId}" title="Reactivate User"><i class="fas fa-check-circle"></i></button>`;
+      }
+      actionButtons += `<button class="delete-btn text-red-500 hover:bg-red-50 p-2 rounded-full" data-id="${user._id}" title="Delete User"><i class="fas fa-trash-alt"></i></button>`;
+
+      return `
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="px-6 py-4">
             <div class="flex items-center gap-3">
@@ -166,44 +204,61 @@ function renderSeekers(users) {
                 </div>
             </div>
         </td>
+        <td class="px-6 py-4">${accountBadge}</td>
         <td class="px-6 py-4">${emailBadge}</td>
         <td class="px-6 py-4 text-sm text-gray-500">${date}</td>
-        <td class="px-6 py-4 text-right">
-            <button class="delete-btn text-red-400 hover:bg-red-50 p-2 rounded-full" data-id="${user._id}">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </td>
+        <td class="px-6 py-4 text-right">${actionButtons}</td>
       </tr>
     `;
-  }).join("");
+    })
+    .join('');
 }
 
 function renderCompanies(users) {
-  const tableBody = document.getElementById("usersTableBody");
+  const tableBody = document.getElementById('usersTableBody');
 
   if (users.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">No companies found.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">No companies found.</td></tr>`;
     return;
   }
 
-  tableBody.innerHTML = users.map(user => {
-    const name = user.companyName || "Unknown Company";
-    const email = user.authId?.email || "N/A";
-    const isEmailVerified = user.authId?.isVerified;
-    const docStatus = user.verificationStatus || "unverified"; // unverified, pending, verified, rejected
-    const date = new Date(user.createdAt).toLocaleDateString();
+  tableBody.innerHTML = users
+    .map((user) => {
+      const name = user.companyName || 'Unknown Company';
+      const email = user.authId?.email || 'N/A';
+      const isEmailVerified = user.authId?.isVerified;
+      const docStatus = user.verificationStatus || 'unverified';
+      const date = new Date(user.createdAt).toLocaleDateString();
 
-    // Badges
-    const emailBadge = isEmailVerified 
+      // 💡 لوجيك حالة الحساب الجديد
+      const authStatus = user.authId?.status || 'active';
+      const authId = user.authId?._id;
+
+      const accountBadge =
+        authStatus === 'active'
+          ? `<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">Active</span>`
+          : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold" title="Reason: ${user.authId?.suspensionReason}">Suspended</span>`;
+
+      const emailBadge = isEmailVerified
         ? `<span class="text-green-600 text-xs"><i class="fas fa-check-circle"></i> Email Verified</span>`
         : `<span class="text-yellow-600 text-xs"><i class="fas fa-clock"></i> Email Pending</span>`;
 
-    let docBadgeClass = "bg-gray-100 text-gray-600";
-    if (docStatus === 'verified') docBadgeClass = "bg-blue-100 text-blue-700";
-    if (docStatus === 'pending') docBadgeClass = "bg-orange-100 text-orange-700";
-    if (docStatus === 'rejected') docBadgeClass = "bg-red-100 text-red-700";
+      let docBadgeClass = 'bg-gray-100 text-gray-600';
+      if (docStatus === 'verified') docBadgeClass = 'bg-blue-100 text-blue-700';
+      if (docStatus === 'pending')
+        docBadgeClass = 'bg-orange-100 text-orange-700';
+      if (docStatus === 'rejected') docBadgeClass = 'bg-red-100 text-red-700';
 
-    return `
+      // 💡 زراير الأكشن الديناميكية
+      let actionButtons = '';
+      if (authStatus === 'active') {
+        actionButtons += `<button class="suspend-btn text-orange-500 hover:bg-orange-50 p-2 rounded-full mr-1" data-auth-id="${authId}" title="Suspend Company"><i class="fas fa-ban"></i></button>`;
+      } else {
+        actionButtons += `<button class="reactivate-btn text-green-500 hover:bg-green-50 p-2 rounded-full mr-1" data-auth-id="${authId}" title="Reactivate Company"><i class="fas fa-check-circle"></i></button>`;
+      }
+      actionButtons += `<button class="delete-btn text-red-500 hover:bg-red-50 p-2 rounded-full" data-id="${user._id}" title="Delete Company"><i class="fas fa-trash-alt"></i></button>`;
+
+      return `
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="px-6 py-4">
             <div class="flex items-center gap-3">
@@ -216,19 +271,17 @@ function renderCompanies(users) {
                 </div>
             </div>
         </td>
+        <td class="px-6 py-4">${accountBadge}</td>
         <td class="px-6 py-4">${emailBadge}</td>
         <td class="px-6 py-4">
             <span class="${docBadgeClass} px-2 py-1 rounded text-xs font-bold uppercase">${docStatus}</span>
         </td>
         <td class="px-6 py-4 text-sm text-gray-500">${date}</td>
-        <td class="px-6 py-4 text-right">
-            <button class="delete-btn text-red-400 hover:bg-red-50 p-2 rounded-full" data-id="${user._id}">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </td>
+        <td class="px-6 py-4 text-right">${actionButtons}</td>
       </tr>
     `;
-  }).join("");
+    })
+    .join('');
 }
 
 // ============================================================
@@ -237,24 +290,81 @@ function renderCompanies(users) {
 
 async function handleDelete(id) {
   const result = await Swal.fire({
-    title: "Are you sure?",
+    title: 'Are you sure?',
     text: `This will permanently delete this ${currentTab === 'seekers' ? 'job seeker' : 'company'} and all their data.`,
-    icon: "warning",
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#ef4444",
-    confirmButtonText: "Yes, delete it!"
+    confirmButtonColor: '#ef4444',
+    confirmButtonText: 'Yes, delete it!',
   });
 
   if (result.isConfirmed) {
     try {
       const typeParam = currentTab === 'seekers' ? 'job_seeker' : 'company';
-      await axiosClient.delete(`/admin/users/${id}`, { params: { type: typeParam } });
+      await axiosClient.delete(`/admin/users/${id}`, {
+        params: { type: typeParam },
+      });
 
-      Swal.fire("Deleted!", "User has been removed.", "success");
+      Swal.fire('Deleted!', 'User has been removed.', 'success');
       fetchData(currentTab); // Refresh
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "Failed to delete user.", "error");
+      Swal.fire('Error', 'Failed to delete user.', 'error');
+    }
+  }
+}
+
+
+async function handleSuspend(authId) {
+  const { value: reason } = await Swal.fire({
+    title: 'Suspend Account',
+    text: "This will suspend the user for 3 days. They will receive an email notice.",
+    input: 'text',
+    inputLabel: 'Reason for suspension (Required)',
+    inputPlaceholder: 'e.g., Policy violation, Spam...',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#f97316',
+    confirmButtonText: 'Suspend User',
+    inputValidator: (value) => {
+      if (!value) {
+        return 'You must provide a reason!';
+      }
+    }
+  });
+
+  if (reason) {
+    try {
+      Swal.fire({ title: 'Suspending...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      await adminService.suspendUser(authId, reason);
+      Swal.fire("Suspended!", "The user has been suspended successfully.", "success");
+      fetchData(currentTab); // تحديث الجدول فوراً
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", error.response?.data?.message || "Failed to suspend user.", "error");
+    }
+  }
+}
+
+async function handleReactivate(authId) {
+  const result = await Swal.fire({
+    title: "Reactivate Account?",
+    text: "This will lift the suspension and notify the user.",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#22c55e",
+    confirmButtonText: "Yes, reactivate!"
+  });
+
+  if (result.isConfirmed) {
+    try {
+      Swal.fire({ title: 'Reactivating...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      await adminService.reactivateUser(authId);
+      Swal.fire("Reactivated!", "The user account is now active.", "success");
+      fetchData(currentTab); // تحديث الجدول فوراً
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", error.response?.data?.message || "Failed to reactivate user.", "error");
     }
   }
 }

@@ -19,6 +19,17 @@ export const adminService = {
     return response.data;
   },
 
+  // ==========================================
+  async suspendUser(userId, reason) {
+    const response = await axiosClient.patch(`/admin/users/${userId}/suspend`, { reason });
+    return response.data;
+  },
+
+  async reactivateUser(userId) {
+    const response = await axiosClient.patch(`/admin/users/${userId}/reactivate`);
+    return response.data;
+  },
+
   // 3. Manage Jobs (إدارة الوظائف)
   async getAllJobs(params = {}) {
     const response = await axiosClient.get("/admin/jobs", { params });

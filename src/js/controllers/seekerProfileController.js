@@ -440,7 +440,7 @@ function createSavedJobCard(job) {
                 <img src="${logo}" alt="${companyName}" class="w-full h-full object-cover">
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/job-details.html?id=${jobId}'">
+                <h4 class="font-bold text-slate-800 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/jobs?id=${jobId}'">
                     ${job.title}
                 </h4>
                 <div class="flex items-center gap-2 text-xs text-slate-500 mt-1.5">

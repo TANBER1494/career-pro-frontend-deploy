@@ -265,7 +265,7 @@ function createJobCard(job) {
     )
     .join('');
 
-  const jobLink = `/job-details.html?id=${job.id || job._id}`;
+  const jobLink = `/jobs?id=${job.id || job._id}`;
   const companyLink = companyLinkId
     ? `/company-details?id=${companyLinkId}`
     : '#';

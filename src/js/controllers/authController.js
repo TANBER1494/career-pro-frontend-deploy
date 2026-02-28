@@ -11,16 +11,13 @@ function handleLoginRedirect(user) {
   if (accountType === 'job_seeker') {
     switch (registrationStep) {
       case 1:
-        window.location.href =
-          'SeekerStep1';
+        window.location.href = 'SeekerStep1';
         break;
       case 2:
-        window.location.href =
-          'SeekerStep2';
+        window.location.href = 'SeekerStep2';
         break;
       case 3:
-        window.location.href =
-          'SeekerStep3';
+        window.location.href = 'SeekerStep3';
         break;
       default: // Step 4 (Completed)
         window.location.href = '/profile';
@@ -31,20 +28,16 @@ function handleLoginRedirect(user) {
   else if (accountType === 'company') {
     switch (registrationStep) {
       case 1:
-        window.location.href =
-          '/CompanyStep1';
+        window.location.href = '/CompanyStep1';
         break;
       case 2:
-        window.location.href =
-          '/CompanyStep2';
+        window.location.href = '/CompanyStep2';
         break;
       case 3:
-        window.location.href =
-          '/CompanyStep3';
+        window.location.href = '/CompanyStep3';
         break;
       default: // Step 4 (Completed)
-        window.location.href =
-          '/Company_dashboard';
+        window.location.href = '/Company_dashboard';
         break;
     }
   } else if (accountType === 'admin') {
@@ -63,7 +56,7 @@ if (loginForm) {
 
     const btn = loginForm.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
-    
+
     // 👇👇 التصحيح هنا: لازم نتأكد إننا بناخد .value
     const emailInput = document.getElementById('email');
     const email = emailInput.value.trim(); // 👈 ده النص اللي احنا عايزينه
@@ -86,16 +79,38 @@ if (loginForm) {
           handleLoginRedirect(result.data.user);
         }
       });
-
     } catch (error) {
       console.error(error);
 
-      // 🔥 معالجة الحساب غير المفعل (Dead Area Fix)
+      // 🔥 التوجيه الذكي (Smart Interception) لرسائل الـ 403
       if (error.response && error.response.status === 403) {
-        
-        // 👇👇 هنا كان الخطأ: كنا بنحفظ العنصر بدل النص
-        localStorage.setItem('tempEmail', email); // ✅ دلوقتي بنحفظ النص (String)
-        
+        const errorMessage = error.response.data.message || '';
+
+        // 1. حالة الإيقاف المؤقت (Suspended)
+        if (errorMessage.toLowerCase().includes('suspended')) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Account Suspended ⚠️',
+            text: errorMessage, // هيعرض الرسالة اللي جاية من الباك إند بالوقت والتفاصيل
+            confirmButtonColor: '#f97316',
+          });
+          return;
+        }
+
+        // 2. حالة الحذف النهائي (Lazy Deletion)
+        if (errorMessage.toLowerCase().includes('deleted')) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Account Deleted ❌',
+            text: errorMessage, // هيعرض إن الحساب تم حذفه لانتهاء مهلة الطعن
+            confirmButtonColor: '#ef4444',
+          });
+          return;
+        }
+
+        // 3. حالة عدم التفعيل (Unverified - الافتراضي)
+        localStorage.setItem('tempEmail', email);
+
         Swal.fire({
           icon: 'info',
           title: 'Verification Required',
@@ -108,6 +123,7 @@ if (loginForm) {
         return;
       }
 
+      // أي خطأ آخر (مثل الباسوورد الغلط 401)
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',

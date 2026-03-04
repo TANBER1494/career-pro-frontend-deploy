@@ -26,26 +26,54 @@ const totalPages = 5;
 // Initialization
 // 💡 Initialization & Check Existing Result
 // 💡 Initialization & Check Existing Result
+// 💡 Initialization, Auth Guard & Check Existing Result
 window.addEventListener('DOMContentLoaded', async () => {
-  initAuthButtons();
-
-  try {
-    const res = await aiFeaturesService.getExistingResult();
-
-    if (res.data) {
-      // لو عنده نتيجة، نعرض النتيجة فوراً
-      renderResults(res.data);
-    } else {
-      // لو معندوش، نظهر شاشة البداية
-      startView.classList.remove('hidden');
+    initAuthButtons(); 
+    
+    // 🚨 1. نقطة التفتيش: التحقق من تسجيل الدخول أولاً
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+        // إظهار خلفية الصفحة والنافبار فقط (المحتوى هيفضل مخفي)
+        document.body.classList.add('loaded'); 
+        
+        Swal.fire({
+            icon: 'info',
+            title: 'Login Required',
+            text: 'You need to create an account or login to use our AI Features.',
+            showCancelButton: true,
+            confirmButtonColor: '#4361ee',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Login Now',
+            cancelButtonText: 'Back to Home',
+            allowOutsideClick: false, // نمنعه يقفلها ويفضل باصص لصفحة فاضية
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/login';
+            } else {
+                window.location.href = '/'; // أو '/CareerPro' حسب مسار الصفحة الرئيسية عندك
+            }
+        });
+        
+        return; // 🛑 إيقاف تنفيذ باقي الكود عشان ميكلمش الباك إند
     }
-  } catch (error) {
-    console.error('Error checking existing result:', error);
-    startView.classList.remove('hidden'); // في حالة الخطأ نظهر البداية
-  } finally {
-    // بعد ما نحدد هنعرض إيه، نظهر الـ Body بـ Fade in ناعم
-    document.body.classList.add('loaded');
-  }
+
+    // 🚨 2. لو مسجل دخول، نكمل اللوجيك العادي
+    try {
+        const res = await aiFeaturesService.getExistingResult();
+        
+        if (res.data) {
+            renderResults(res.data);
+        } else {
+            startView.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error("Error checking existing result:", error);
+        startView.classList.remove('hidden'); 
+    } finally {
+        document.body.classList.add('loaded'); 
+    }
 });
 
 // 💡 Start Quiz Logic (بدون الخط الأزرق القبيح)

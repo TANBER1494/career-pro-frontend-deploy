@@ -248,10 +248,10 @@ function renderResults(data) {
   const [code, title] = data.personalityType.split(': ');
 
   // حقن العنوان
-  document.getElementById('result-title').innerHTML = `
-        <span class="text-dark">${title}</span> 
-        <span class="text-primary">(${code})</span>
-    `;
+  document.getElementById('rv-title').innerHTML = `
+    <span class="text-indigo-600 font-extrabold text-[11px] uppercase tracking-[0.2em] block mb-3">Personality Type</span>
+    ${result.title} <span class="text-indigo-600 font-bold">(${type})</span>
+`;
 
   // حقن الملخص
   document.getElementById('result-summary').innerText = data.summary;

@@ -1,6 +1,5 @@
 import { aiFeaturesService } from '../services/aiFeaturesService.js';
 import Swal from 'sweetalert2';
-import Toastify from 'toastify-js';
 import { authService } from '../services/authService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,23 +24,44 @@ const questionsPerPage = 6;
 const totalPages = 5;
 
 // Initialization
-window.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('loaded');
+// 💡 Initialization & Check Existing Result
+window.addEventListener('DOMContentLoaded', async () => {
+  initAuthButtons(); // تشغيل زراير النافبار
+
+  try {
+    // فحص لو المستخدم امتحن قبل كدا
+    const res = await aiFeaturesService.getExistingResult();
+
+    if (res.data) {
+      // لو عنده نتيجة، نخفي شاشة البداية ونعرض النتيجة فوراً
+      startView.classList.add('hidden');
+      renderResults(res.data); // هنعرض النتيجة
+      document.body.classList.add('loaded'); // نظهر الصفحة
+    } else {
+      // لو معندوش نتيجة، نظهرله زرار البداية عادي
+      document.body.classList.add('loaded');
+    }
+  } catch (error) {
+    console.error('Error checking existing result:', error);
+    document.body.classList.add('loaded'); // نظهر الصفحة على أي حال
+  }
 });
 
-// Start Quiz Logic
+// 💡 Start Quiz Logic (بدون الخط الأزرق القبيح)
 window.goToQuiz = async () => {
   try {
-    Toastify({
-      text: 'Loading AI Assessment...',
-      gravity: 'bottom',
-      position: 'right',
-      backgroundColor: '#4361ee',
-    }).showToast();
+    // استخدام SweetAlert الأنيق للتحميل
+    Swal.fire({
+      title: 'Loading Assessment...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
     // 1. جلب الـ 30 سؤال من الباك إند
     const res = await aiFeaturesService.getPersonalityQuestions();
     allQuestions = res.data.questions;
+
+    Swal.close(); // إغلاق شاشة التحميل
 
     // 2. إظهار شاشة الاختبار
     startView.classList.add('opacity-0');
@@ -50,7 +70,7 @@ window.goToQuiz = async () => {
       quizView.classList.remove('hidden');
       setTimeout(() => quizView.classList.add('opacity-100'), 50);
       renderPage();
-    }, 500);
+    }, 300);
   } catch (error) {
     console.error(error);
     Swal.fire(

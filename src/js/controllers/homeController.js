@@ -459,7 +459,7 @@ window.checkAiFeatureAccess = function (event, targetUrl) {
   if (!token) {
     Swal.fire({
       icon: 'info',
-      title: 'Login Required 🔒',
+      title: 'Login Required',
       text: 'You need to login or create an account to unlock our AI Features.',
       showCancelButton: true,
       confirmButtonColor: '#4361ee',

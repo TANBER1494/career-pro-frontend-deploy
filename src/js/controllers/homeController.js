@@ -444,9 +444,40 @@ function createCompanyCard(company) {
     `;
 }
 
+
+
+
 // ============================================================
 // 5. Actions (Global Helpers)
 // ============================================================
+window.checkAiFeatureAccess = function (event, targetUrl) {
+  // منع الانتقال للصفحة فوراً
+  event.preventDefault(); 
+  
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Login Required 🔒',
+      text: 'You need to login or create an account to unlock our AI Features.',
+      showCancelButton: true,
+      confirmButtonColor: '#4361ee',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Login Now',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '/login'; // مسار صفحة الدخول عندك
+      }
+    });
+    return false; // إيقاف العملية
+  }
+
+  // لو معاه توكن، نسمحله يروح لصفحة الاختبار
+  window.location.href = targetUrl;
+};
+
 
 window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem('token');

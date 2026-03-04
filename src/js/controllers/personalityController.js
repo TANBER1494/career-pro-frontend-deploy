@@ -27,39 +27,22 @@ const totalPages = 5;
 // 💡 Initialization & Check Existing Result
 // 💡 Initialization & Check Existing Result
 // 💡 Initialization, Auth Guard & Check Existing Result
+// 💡 Initialization, Strict Auth Guard & Check Existing Result
 window.addEventListener('DOMContentLoaded', async () => {
-    initAuthButtons(); 
     
-    // 🚨 1. نقطة التفتيش: التحقق من تسجيل الدخول أولاً
+    // 🚨 نقطة التفتيش الصارمة (Direct URL Guard)
     const token = localStorage.getItem('token');
     
     if (!token) {
-        // إظهار خلفية الصفحة والنافبار فقط (المحتوى هيفضل مخفي)
-        document.body.classList.add('loaded'); 
-        
-        Swal.fire({
-            icon: 'info',
-            title: 'Login Required',
-            text: 'You need to create an account or login to use our AI Features.',
-            showCancelButton: true,
-            confirmButtonColor: '#4361ee',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'Login Now',
-            cancelButtonText: 'Back to Home',
-            allowOutsideClick: false, // نمنعه يقفلها ويفضل باصص لصفحة فاضية
-            allowEscapeKey: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/login';
-            } else {
-                window.location.href = '/'; // أو '/CareerPro' حسب مسار الصفحة الرئيسية عندك
-            }
-        });
-        
-        return; // 🛑 إيقاف تنفيذ باقي الكود عشان ميكلمش الباك إند
+        // لو دخل اللينك بإيده، اطرده فوراً لصفحة الدخول بدون أي رسائل
+        // الـ body مش هياخد class 'loaded' فالمستخدم مش هيشوف غير شاشة بيضا لجزء من الثانية
+        window.location.replace('/login'); 
+        return; 
     }
 
-    // 🚨 2. لو مسجل دخول، نكمل اللوجيك العادي
+    // 🟢 لو عدى من التفتيش (مسجل دخول)، نكمل اللوجيك العادي
+    initAuthButtons(); 
+    
     try {
         const res = await aiFeaturesService.getExistingResult();
         
@@ -72,7 +55,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         console.error("Error checking existing result:", error);
         startView.classList.remove('hidden'); 
     } finally {
-        document.body.classList.add('loaded'); 
+        document.body.classList.add('loaded'); // إظهار محتوى الصفحة للمستخدم الشرعي
     }
 });
 

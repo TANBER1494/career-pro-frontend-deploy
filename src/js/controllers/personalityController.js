@@ -77,50 +77,64 @@ function renderPage() {
     startIndex + questionsPerPage
   );
 
+  // =========================================================
+  // 💡 مصفوفات البيانات الثابتة لتوليد الـ 7 خيارات (للتدرج اللوني)
+  // =========================================================
+
+  // 1. النصوص التوضيحية (من اليسار لليمين: Disagree -> Agree)
+  const labelsText = [
+    '<span class="long-text">Strongly </span>Disagree',
+    'Disagree',
+    '<span class="long-text">Slightly </span>Disagree',
+    'Neutral',
+    '<span class="long-text">Slightly </span>Agree',
+    'Agree',
+    '<span class="long-text">Strongly </span>Agree',
+  ];
+
+  // 2. الأحجام المتدرجة (lg -> md -> sm -> sm -> sm -> md -> lg)
+  const sizes = ['lg', 'md', 'sm', 'sm', 'sm', 'md', 'lg'];
+
+  // =========================================================
+  // 💡 رسم الأسئلة والاختيارات
+  // =========================================================
   optionsBox.innerHTML = currentQuestions
     .map((qText, index) => {
       const globalIndex = startIndex + index;
+
+      // توليد الـ 7 خيارات ديناميكياً باستخدام مصفوفات الألوان والأحجام
+      const scaleOptionsHtml = labelsText
+        .map((labelText, optIdx) => {
+          const value = optIdx + 1; // القيمة من 1 لـ 7
+
+          // 💡 التحقق لو المستخدم مجاوب السؤال ده قبل كدا عشان نحتفظ بعلامة الـ checked
+          const isChecked = userAnswers[globalIndex] === value ? 'checked' : '';
+
+          // تنظيف النص لاستخدامه في الـ title (بدون HTML tags)
+          const cleanTitle = labelText
+            .replace('<span class="long-text">', '')
+            .replace('</span>', '');
+
+          return `
+                <label class="scale-option opt-${value}" title="${cleanTitle}">
+                    <input type="radio" 
+                           name="q${globalIndex}" 
+                           value="${value}" 
+                           ${isChecked} 
+                           onchange="handleAnswer(${globalIndex}, ${value})">
+                    <div class="circle size-${sizes[optIdx]}"></div>
+                    <span class="scale-label">${labelText}</span>
+                </label>
+            `;
+        })
+        .join('');
+
+      // تجميع السؤال الواحد
       return `
-            <div class="mb-6 p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm">
-                <h4 class="text-lg md:text-xl font-semibold text-dark mb-8 text-center">${globalIndex + 1}. ${qText}</h4>
+            <div class="mb-8 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-md">
+                <h4 class="text-lg md:text-xl font-semibold text-dark mb-10 text-center">${globalIndex + 1}. ${qText}</h4>
                 <div class="scale-group">
-                    <label class="scale-option disagree" title="Strongly Disagree">
-                        <input type="radio" name="q${globalIndex}" value="1" onchange="handleAnswer(${globalIndex}, 1)">
-                        <div class="circle size-lg"></div>
-                        <span class="text-[10px] font-bold text-slate-400 mt-3 text-center uppercase tracking-wider hidden md:block">Strongly<br>Disagree</span>
-                    </label>
-                    
-                    <label class="scale-option disagree" title="Disagree">
-                        <input type="radio" name="q${globalIndex}" value="2" onchange="handleAnswer(${globalIndex}, 2)">
-                        <div class="circle size-md"></div>
-                    </label>
-                    
-                    <label class="scale-option disagree" title="Slightly Disagree">
-                        <input type="radio" name="q${globalIndex}" value="3" onchange="handleAnswer(${globalIndex}, 3)">
-                        <div class="circle size-sm"></div>
-                    </label>
-                    
-                    <label class="scale-option neutral" title="Neutral">
-                        <input type="radio" name="q${globalIndex}" value="4" onchange="handleAnswer(${globalIndex}, 4)">
-                        <div class="circle size-sm"></div>
-                        <span class="text-[10px] font-bold text-slate-400 mt-3 uppercase tracking-wider hidden md:block">Neutral</span>
-                    </label>
-                    
-                    <label class="scale-option agree" title="Slightly Agree">
-                        <input type="radio" name="q${globalIndex}" value="5" onchange="handleAnswer(${globalIndex}, 5)">
-                        <div class="circle size-sm"></div>
-                    </label>
-                    
-                    <label class="scale-option agree" title="Agree">
-                        <input type="radio" name="q${globalIndex}" value="6" onchange="handleAnswer(${globalIndex}, 6)">
-                        <div class="circle size-md"></div>
-                    </label>
-                    
-                    <label class="scale-option agree" title="Strongly Agree">
-                        <input type="radio" name="q${globalIndex}" value="7" onchange="handleAnswer(${globalIndex}, 7)">
-                        <div class="circle size-lg"></div>
-                        <span class="text-[10px] font-bold text-slate-400 mt-3 text-center uppercase tracking-wider hidden md:block">Strongly<br>Agree</span>
-                    </label>
+                    ${scaleOptionsHtml}
                 </div>
             </div>
         `;

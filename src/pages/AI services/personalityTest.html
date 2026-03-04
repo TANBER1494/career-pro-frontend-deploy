@@ -26,28 +26,36 @@
     </script>
     <style>
 
-
-/* 💡 Custom Styles for 7-Scale Radio Buttons */
+/* ============================================================
+         💡 Custom Styles for 7-Scale Radio Buttons (mbti Vibe)
+         ============================================================ */
+      
+      /* 1. الحاوية الأساسية (Container) */
       .scale-group {
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 100%;
-          max-w: 600px;
+          max-width: 700px; /* جعلناها أوسع قليلاً لتناسب النصوص */
           margin: 0 auto;
           position: relative;
+          padding-bottom: 2.5rem; /* مساحة للنصوص بالأسفل */
       }
+      
+      /* 2. خط الربط الخلفي (Connect Line) */
       .scale-group::before {
           content: '';
           position: absolute;
-          top: 50%;
+          top: calc(50% - 1.25rem); /* تعديل المكان ليناسب وجود النصوص */
           left: 5%;
           right: 5%;
           height: 2px;
-          background-color: #e2e8f0;
+          background-color: #e2e8f0; /* slater-200 */
           z-index: 0;
           transform: translateY(-50%);
       }
+      
+      /* 3. حاوية كل خيار (Option Label) */
       .scale-option {
           position: relative;
           z-index: 1;
@@ -55,32 +63,105 @@
           flex-direction: column;
           align-items: center;
           cursor: pointer;
+          width: 14%; /* لتوزيع الـ 7 خيارات بالتساوي */
       }
+      
+      /* إخفاء الـ Radio التقليدي */
       .scale-option input[type="radio"] {
-          display: none; /* إخفاء الـ Radio التقليدي */
+          display: none;
       }
+      
+      /* 4. الدائرة الأساسية (The Circle) */
       .circle {
           border-radius: 50%;
-          border: 3px solid;
+          border: 3px solid #cbd5e1; /* border-slate-300 */
           background-color: white;
-          transition: all 0.2s ease-in-out;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* تأثير سلس جداً */
+          margin-bottom: 0.75rem; /* مسافة قبل النص */
       }
-      /* أحجام متدرجة */
+      
+      /* أحجام الدوائر (متدرجة: كبيرة عند الأطراف وصغيرة في المنتصف) */
       .size-lg { width: 50px; height: 50px; }
       .size-md { width: 40px; height: 40px; }
       .size-sm { width: 30px; height: 30px; }
       
-      /* ألوان الدوائر عند التحديد أو الـ Hover */
-      .scale-option:hover .circle { transform: scale(1.1); }
+      /* 5. النصوص التوضيحية أسفل الدوائر (Label Text) */
+      .scale-label {
+          font-size: 11px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          text-align: center;
+          color: #94a3b8; /* text-slate-400 */
+          transition: color 0.3s ease;
+          line-height: 1.3;
+          pointer-events: none; /* عشان ميمنعش الضغط على الدائرة */
+          white-space: nowrap; /* منع النص من الالتفاف لسطر جديد */
+      }
       
-      .agree input:checked + .circle { background-color: #22c55e; border-color: #22c55e; } /* أخضر */
-      .agree .circle { border-color: #22c55e; }
+      /* أخفاء النصوص على الشاشات الصغيرة جداً وعرضها بذكاء */
+      @media (max-width: 640px) {
+          .scale-label { font-size: 9px; }
+          /* إخفاء الكلمات الأولى الطويلة في الموبيل */
+          .scale-label .long-text { display: none; } 
+      }
+
+      /* 6. تأثير الـ Hover السلس والمريح (Eye-pleasing Hover) */
+      .scale-option:hover .circle {
+          transform: scale(1.15) translateY(-3px); /* تكبير ورفع قليلاً للأعلى */
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* ظل ناعم */
+      }
       
-      .neutral input:checked + .circle { background-color: #94a3b8; border-color: #94a3b8; } /* رمادي */
-      .neutral .circle { border-color: #94a3b8; }
+      /* 7. تدرج الألوان الصارم (The Gradient Color Rules) */
+      /* الترتيب من اليسار (Disagre/Red) لليومين (Agree/Green) */
       
-      .disagree input:checked + .circle { background-color: #ef4444; border-color: #ef4444; } /* أحمر */
-      .disagree .circle { border-color: #ef4444; }
+      /* متغيرات الألوان للحفاظ على الصرامة */
+      :root {
+          --color-disagree-3: #b91c1c; /* red-700 (strongly) */
+          --color-disagree-2: #ef4444; /* red-500 */
+          --color-disagree-1: #fca5a5; /* red-300 (slightly) */
+          --color-neutral:    #94a3b8; /* slate-400 */
+          --color-agree-1:    #86efac; /* green-300 (slightly) */
+          --color-agree-2:    #22c55e; /* green-500 */
+          --color-agree-3:    #15803d; /* green-700 (strongly) */
+      }
+
+      /* قواعد التطبيق (Hover + Checked) لكل نوع */
+      
+      /* Strongly Disagree (opt-1) */
+      .opt-1:hover .circle { border-color: var(--color-disagree-3); }
+      .opt-1 input:checked + .circle { background-color: var(--color-disagree-3); border-color: var(--color-disagree-3); }
+      .opt-1 input:checked ~ .scale-label { color: var(--color-disagree-3); }
+      
+      /* Disagree (opt-2) */
+      .opt-2:hover .circle { border-color: var(--color-disagree-2); }
+      .opt-2 input:checked + .circle { background-color: var(--color-disagree-2); border-color: var(--color-disagree-2); }
+      .opt-2 input:checked ~ .scale-label { color: var(--color-disagree-2); }
+      
+      /* Slightly Disagree (opt-3) */
+      .opt-3:hover .circle { border-color: var(--color-disagree-1); }
+      .opt-3 input:checked + .circle { background-color: var(--color-disagree-1); border-color: var(--color-disagree-1); }
+      .opt-3 input:checked ~ .scale-label { color: var(--color-disagree-1); }
+      
+      /* Neutral (opt-4) */
+      .opt-4:hover .circle { border-color: var(--color-neutral); }
+      .opt-4 input:checked + .circle { background-color: var(--color-neutral); border-color: var(--color-neutral); }
+      .opt-4 input:checked ~ .scale-label { color: var(--color-neutral); }
+      
+      /* Slightly Agree (opt-5) */
+      .opt-5:hover .circle { border-color: var(--color-agree-1); }
+      .opt-5 input:checked + .circle { background-color: var(--color-agree-1); border-color: var(--color-agree-1); }
+      .opt-5 input:checked ~ .scale-label { color: var(--color-agree-1); }
+      
+      /* Agree (opt-6) */
+      .opt-6:hover .circle { border-color: var(--color-agree-2); }
+      .opt-6 input:checked + .circle { background-color: var(--color-agree-2); border-color: var(--color-agree-2); }
+      .opt-6 input:checked ~ .scale-label { color: var(--color-agree-2); }
+      
+      /* Strongly Agree (opt-7) */
+      .opt-7:hover .circle { border-color: var(--color-agree-3); }
+      .opt-7 input:checked + .circle { background-color: var(--color-agree-3); border-color: var(--color-agree-3); }
+      .opt-7 input:checked ~ .scale-label { color: var(--color-agree-3); }
 
 
       body.loaded { opacity: 1; }
@@ -110,7 +191,7 @@
 href="/CareerPro"
 class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
 >
-<img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+<img src="/assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
 <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
 </a>
 <div class="w-auto flex justify-end min-w-0">

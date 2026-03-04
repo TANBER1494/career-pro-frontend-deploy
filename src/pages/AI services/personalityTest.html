@@ -184,7 +184,7 @@ class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer oncl
     <main class="pt-[50px] pb-12 flex justify-center min-h-screen px-4">
         <div class="w-full">
 
-            <div id="start-view" class="transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
+            <div id="start-view" class="hidden transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
                 <div class="flex items-center gap-4 mt-6 mb-10">
                   <a id="backBtn" href="index.html" class="flex items-center text-slate-500 hover:text-blue-600 transition-colors group shrink-0">
                     <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
@@ -245,7 +245,7 @@ class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer oncl
                 </div>
 
                 <div class="flex justify-center md:justify-start pb-12">
-                    <button onclick="location.reload()" class="px-8 py-3 bg-white text-slate-700 border border-slate-300 shadow-sm rounded-xl font-semibold hover:bg-slate-50 transition">
+                    <button onclick="retakeTest()" class="px-8 py-3 bg-white text-slate-700 border border-slate-300 shadow-sm rounded-xl font-semibold hover:bg-slate-50 transition">
                         <i class="fa-solid fa-rotate-right mr-2"></i> Retake Test
                     </button>
                     <a href="/CareerPro" class="ml-4 px-8 py-3 bg-blue-600 text-white shadow-md rounded-xl font-semibold hover:bg-blue-700 transition">

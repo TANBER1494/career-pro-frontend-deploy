@@ -25,25 +25,26 @@ const totalPages = 5;
 
 // Initialization
 // 💡 Initialization & Check Existing Result
+// 💡 Initialization & Check Existing Result
 window.addEventListener('DOMContentLoaded', async () => {
-  initAuthButtons(); // تشغيل زراير النافبار
+  initAuthButtons();
 
   try {
-    // فحص لو المستخدم امتحن قبل كدا
     const res = await aiFeaturesService.getExistingResult();
 
     if (res.data) {
-      // لو عنده نتيجة، نخفي شاشة البداية ونعرض النتيجة فوراً
-      startView.classList.add('hidden');
-      renderResults(res.data); // هنعرض النتيجة
-      document.body.classList.add('loaded'); // نظهر الصفحة
+      // لو عنده نتيجة، نعرض النتيجة فوراً
+      renderResults(res.data);
     } else {
-      // لو معندوش نتيجة، نظهرله زرار البداية عادي
-      document.body.classList.add('loaded');
+      // لو معندوش، نظهر شاشة البداية
+      startView.classList.remove('hidden');
     }
   } catch (error) {
     console.error('Error checking existing result:', error);
-    document.body.classList.add('loaded'); // نظهر الصفحة على أي حال
+    startView.classList.remove('hidden'); // في حالة الخطأ نظهر البداية
+  } finally {
+    // بعد ما نحدد هنعرض إيه، نظهر الـ Body بـ Fade in ناعم
+    document.body.classList.add('loaded');
   }
 });
 
@@ -79,6 +80,19 @@ window.goToQuiz = async () => {
       'error'
     );
   }
+};
+
+// 💡 إعادة الاختبار بدون ريفريش للصفحة
+window.retakeTest = () => {
+  // 1. تصفير العدادات والإجابات
+  userAnswers = Array(30).fill(null);
+  currentPage = 0;
+
+  // 2. إخفاء النتيجة
+  resultView.classList.add('hidden');
+
+  // 3. الدخول فوراً على الاختبار
+  goToQuiz();
 };
 
 // 💡 دالة رسم 6 أسئلة في الصفحة الواحدة
@@ -278,20 +292,30 @@ function initAuthButtons() {
     }
 
     authContainer.innerHTML = `
-          ${navLinkHtml}
-          <div class="min-w-[150px] flex justify-end">
-              <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1">
-                  <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
-                      <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-                          <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                      </svg>
-                  </div>
-                  <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
-                      Logout
-                  </div>
-              </button>
-          </div>
-      `;
+            ${navLinkHtml}
+            <div class="min-w-[150px] flex justify-end">
+        <button 
+        id="btnLogout"
+  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+>
+  <div
+    class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
+  >
+    <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+      <path
+        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+      ></path>
+    </svg>
+  </div>
+  <div
+    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
+  >
+    Logout
+  </div>
+</button>
+
+      </div>
+        `;
 
     document.getElementById('btnLogout').addEventListener('click', () => {
       authService.logout();

@@ -47,6 +47,10 @@ function initAuthButtons() {
   authContainer.className = 'flex items-center gap-3 justify-end';
 
   if (token && user) {
+    if (user.accountType === 'admin' || user.role === 'admin') {
+      window.location.href = '/admin';
+      return; // إيقاف تنفيذ باقي الكود
+    }
     // 🚨 [الحماية الجديدة] التوجيه الإجباري لاستكمال البيانات 🚨
     if (user.registrationStep < 4) {
       let stepPage = '';
@@ -55,7 +59,7 @@ function initAuthButtons() {
       } else if (user.accountType === 'company' || user.role === 'company') {
         stepPage = `/CompanyStep${user.registrationStep}`;
       }
-      
+
       if (stepPage) {
         window.location.href = stepPage;
         return; // إيقاف تحميل باقي الصفحة وطرد المستخدم فوراً
@@ -65,7 +69,7 @@ function initAuthButtons() {
     // لو المستخدم شركة ومكمل بياناته -> وجهه فوراً للوحة التحكم الخاصة به
     if (user.accountType === 'company' || user.role === 'company') {
       window.location.href = '/Company_dashboard';
-      return; 
+      return;
     }
 
     // ✅ لو المستخدم طالب (Seeker) ومكمل بياناته -> اعرض زر البروفايل وتسجيل الخروج
@@ -444,16 +448,13 @@ function createCompanyCard(company) {
     `;
 }
 
-
-
-
 // ============================================================
 // 5. Actions (Global Helpers)
 // ============================================================
 window.checkAiFeatureAccess = function (event, targetUrl) {
   // منع الانتقال للصفحة فوراً
-  event.preventDefault(); 
-  
+  event.preventDefault();
+
   const token = localStorage.getItem('token');
 
   if (!token) {
@@ -477,7 +478,6 @@ window.checkAiFeatureAccess = function (event, targetUrl) {
   // لو معاه توكن، نسمحله يروح لصفحة الاختبار
   window.location.href = targetUrl;
 };
-
 
 window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem('token');

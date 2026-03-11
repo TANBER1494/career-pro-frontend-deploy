@@ -12,7 +12,6 @@
 
       // --- أ. حماية الأدمن ---
       if (user.accountType === 'admin' || user.role === 'admin') {
-        // لو هو أدمن ومش في صفحة الأدمن، اطرده على الداشبورد بتاعته
         if (!currentPath.startsWith('/admin')) {
           document.documentElement.style.display = 'none';
           window.location.replace('/admin');
@@ -31,14 +30,14 @@
           targetPage = `/CompanyStep${currentStep}`;
         }
 
-        // 💡 الحماية من اللوب اللانهائي: التوجيه فقط لو هو مش في صفحة الخطوة نفسها
-        if (targetPage && currentPath !== targetPage && currentPath !== '/login' && currentPath !== '/signup') {
-          document.documentElement.style.display = 'none'; // منع وميض الصفحة
+        // الحماية من اللوب: التأكد إن المسار الحالي لا يطابق هدف التوجيه أو مسارات الدخول
+        if (targetPage && currentPath !== targetPage && !currentPath.includes(targetPage) && currentPath !== '/login' && currentPath !== '/signup') {
+          document.documentElement.style.display = 'none';
           window.location.replace(targetPage);
           return;
         }
       } 
-      // --- ج. منع الدخول لصفحات الدخول لو هو مكمل بياناته ومسجل ---
+      // --- ج. منع الدخول لصفحات الدخول والتسجيل لو هو مكمل بياناته ومسجل ---
       else {
         if (currentPath === '/login' || currentPath === '/signup') {
           document.documentElement.style.display = 'none';
@@ -52,10 +51,11 @@
   } 
   // 2. إذا كان المستخدم غير مسجل دخول (ضيف)
   else {
-    // قائمة بالصفحات المحرمة على الزوار (تقدر تزود عليها براحتك)
-    const privateRoutes = ['/profile', '/Company_dashboard', '/admin', '/applications', '/post_job', '/edit_job'];
+    // قائمة بالمسارات النظيفة (حسب vercel.json) المحرمة على الزوار 
+    const privateRoutes = ['/profile', '/Company_dashboard', '/admin', '/applications', '/post_job', '/edit_job', '/Company_profile', '/Company_jobs', '/verification'];
     
-    const isPrivateRoute = privateRoutes.some(route => currentPath.startsWith(route));
+    // فحص إذا كان المسار الحالي يبدأ بأي من المسارات المحرمة
+    const isPrivateRoute = privateRoutes.some(route => currentPath === route || currentPath.startsWith(route + '/'));
     
     if (isPrivateRoute) {
       document.documentElement.style.display = 'none';

@@ -378,3 +378,12 @@ document.addEventListener('click', function (e) {
     }, 350);
   }
 });
+
+// ==========================================
+// 💡 BFCache (Browser Back Button) Fix
+// ==========================================
+window.addEventListener('pageshow', function (event) {
+    // هذا الحدث يعمل دائماً (سواء تحميل جديد أو رجوع من زر المتصفح)
+    // نضمن به إرجاع كلاس الإظهار للصفحة لتجنب الشاشة البيضاء
+    document.body.classList.add('loaded');
+});

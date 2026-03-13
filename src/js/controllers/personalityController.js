@@ -354,3 +354,10 @@ document.addEventListener('click', function (e) {
     }, 350);
   }
 });
+
+// ==========================================
+// 💡 BFCache (Browser Back Button) Fix
+// ==========================================
+window.addEventListener('pageshow', function (event) {
+    document.body.classList.add('loaded');
+});

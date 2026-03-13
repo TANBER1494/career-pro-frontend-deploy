@@ -44,6 +44,10 @@ export const aiFeaturesService = {
     
     return response.data;
   },
+  async getExistingCVResult() {
+    const response = await axiosClient.get('/ai/analyze-cv/latest');
+    return response.data;
+  },
   // ============================================================
   // TODO: 3. Job Matching (سيتم برمجته لاحقاً)
   // ============================================================

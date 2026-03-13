@@ -387,3 +387,20 @@ window.addEventListener('pageshow', function (event) {
     // نضمن به إرجاع كلاس الإظهار للصفحة لتجنب الشاشة البيضاء
     document.body.classList.add('loaded');
 });
+
+// ==========================================
+// 💡 Job Matching (Coming Soon Alert)
+// ==========================================
+const comingSoonBtn = document.getElementById('coming-soon-btn');
+if (comingSoonBtn) {
+    comingSoonBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Swal.fire({
+            icon: 'info',
+            title: 'Coming Soon! 🚀',
+            text: 'Our AI Job Matching engine is currently undergoing final training. It will be available very soon!',
+            confirmButtonColor: '#2563eb',
+            confirmButtonText: 'Stay Tuned!'
+        });
+    });
+}

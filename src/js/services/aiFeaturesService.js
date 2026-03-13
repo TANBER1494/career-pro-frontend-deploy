@@ -26,22 +26,24 @@ export const aiFeaturesService = {
   // 🚀 2. CV Analyzer & ATS Checker
   // ============================================================
 
-  async analyzeCV(cvFile, jobDescription) {
-    // 1. بناء كائن FormData لأننا نتعامل مع رفع ملفات
-    const formData = new FormData();
-    
-    // 2. إضافة البيانات بنفس المفاتيح (Keys) التي ينتظرها الباك إند
-    formData.append('cvFile', cvFile); // هذا ما ينتظره upload.single('cvFile')
-    formData.append('jobDescription', jobDescription); // هذا ما ينتظره req.body.jobDescription
+  // ============================================================
+  // 🚀 2. CV Analyzer & ATS Checker
+  // ============================================================
 
-    // 3. إرسال الطلب
-    // (ملاحظة: Axios ذكي جداً، عندما يرى FormData سيقوم تلقائياً بتغيير الـ Headers إلى multipart/form-data)
-    const response = await axiosClient.post('/ai/analyze-cv', formData);
+  async analyzeCV(cvFile, jobDescription) {
+    const formData = new FormData();
+    formData.append('cvFile', cvFile); 
+    formData.append('jobDescription', jobDescription); 
+
+    // 🚨 التعديل هنا: إجبار Axios على إرسال البيانات كـ (ملفات) وليس JSON
+    const response = await axiosClient.post('/ai/analyze-cv', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     
-    // إرجاع الداتا الصافية (والتي ستحتوي على حالة النجاح ونتيجة الذكاء الاصطناعي)
     return response.data;
   },
-
   // ============================================================
   // TODO: 3. Job Matching (سيتم برمجته لاحقاً)
   // ============================================================

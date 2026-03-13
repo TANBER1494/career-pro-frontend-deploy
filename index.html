@@ -1175,5 +1175,21 @@
     <script type="module" src="/src/js/utils/axiosClient.js"></script>
 
     <script type="module" src="./src/js/controllers/homeController.js"></script>
+
+    <script>
+  // اصطياد أي زرار بيحتوي على هذا الكلاس
+  document.querySelectorAll('.job-matching-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      Swal.fire({
+        icon: 'info',
+        title: 'Feature in Progress 🚧',
+        text: 'The AI Job Matching feature is currently under development. Get ready for something amazing!',
+        confirmButtonColor: '#2563eb',
+        confirmButtonText: 'Got it!'
+      });
+    });
+  });
+</script>
   </body>
 </html>

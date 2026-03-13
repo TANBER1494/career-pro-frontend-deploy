@@ -842,12 +842,12 @@
               >
                 Advanced algorithms match your skills with perfect opportunities
               </p>
-              <a
-                href="/src/pages/AI services/matchedJobs.html"
-                class="w-full mt-auto py-3 border border-blue-600 text-blue-600 font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300 transition-link"
-              >
-                View Jobs
-              </a>
+             <a
+  href="#"
+  class="job-matching-link w-full mt-auto py-3 border border-blue-600 text-blue-600 flex justify-center items-center font-poppins font-medium rounded-lg bg-transparent group-hover:border-white group-hover:text-white group-hover:bg-white/10 transition-all duration-300"
+>
+  View Jobs
+</a>
             </div>
 
             <div
@@ -1175,21 +1175,5 @@
     <script type="module" src="/src/js/utils/axiosClient.js"></script>
 
     <script type="module" src="./src/js/controllers/homeController.js"></script>
-
-    <script>
-  // اصطياد أي زرار بيحتوي على هذا الكلاس
-  document.querySelectorAll('.job-matching-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      Swal.fire({
-        icon: 'info',
-        title: 'Feature in Progress 🚧',
-        text: 'The AI Job Matching feature is currently under development. Get ready for something amazing!',
-        confirmButtonColor: '#2563eb',
-        confirmButtonText: 'Got it!'
-      });
-    });
-  });
-</script>
   </body>
 </html>

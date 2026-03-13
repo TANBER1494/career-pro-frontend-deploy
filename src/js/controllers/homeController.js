@@ -794,3 +794,20 @@ if (checkbox && navContainer) {
     });
   });
 }
+
+
+// ============================================================
+// 💡 Feature Teasing: Job Matching (Coming Soon)
+// ============================================================
+document.querySelectorAll('.job-matching-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    Swal.fire({
+      icon: 'info',
+      title: 'Feature in Progress 🚧',
+      text: 'The AI Job Matching feature is currently under development and final AI training. Get ready for something amazing!',
+      confirmButtonColor: '#2563eb',
+      confirmButtonText: 'Stay Tuned!'
+    });
+  });
+});

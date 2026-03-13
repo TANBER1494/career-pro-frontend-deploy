@@ -1,254 +1,451 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CV Analyzer - AI-Career Guidance</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png" />
     <style>
-        body.loaded {
+      body.loaded {
         opacity: 1;
-      }    
+      }
       body {
-        opacity: 0; 
+        opacity: 0;
         transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
         background: linear-gradient(
-        150deg,
-        rgba(220, 224, 224, 1) 14%,
-        rgba(182, 206, 224, 1) 60%,
-        rgba(95, 106, 115, 1) 100%
+          150deg,
+          rgba(220, 224, 224, 1) 14%,
+          rgba(182, 206, 224, 1) 60%,
+          rgba(95, 106, 115, 1) 100%
         );
         margin: 0;
         overflow-x: hidden;
         background-attachment: fixed;
-        font-family: "Poppins", sans-serif;
+        font-family: 'Poppins', sans-serif;
       }
     </style>
-</head>
-<body class="  bg-grid  min-h-screen text-slate-800 p-0 pb-4 flex flex-col items-center ">
-  
-  <nav
-        class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
-      >
+  </head>
+  <body
+    class="bg-grid min-h-screen text-slate-800 p-0 pb-4 flex flex-col items-center"
+  >
+    <nav
+      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
+    >
       <a
-      href="/CareerPro"
-      class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        href="/CareerPro"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
-      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
+        <img
+          src="../../../../assets/imgs/Logo.png"
+          alt="CareerGuidance Logo"
+          class="h-12 w-auto object-contain"
+        />
+        <span class="font-lexend font-simibold not-italic"
+          >AI-Career Guidance</span
+        >
       </a>
       <div class="w-auto flex justify-end min-w-0">
-        <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-          </div>
+        <div
+          id="auth-buttons-container"
+          class="flex justify-end items-center gap-3"
+        ></div>
       </div>
-      </nav>
-  <div class="w-3/4 space-y-6">
-    
-    <div id="upload-section">
-            
-            <div class="flex items-center gap-4 mb-2">
-                <a
-      id="backBtn"
-      href="index.html"
-      class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group"
-    >
-      <i
-        class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-      ></i>
-      <span class="text-sm font-medium">Back</span>
-    </a>
-                <div>
-                    <h1 class="text-3xl font-semibold text-slate-800">CV Analyzer</h1>
-                    <p class="text-slate-500 ">Get AI-powered insights to improve your resume</p>
-                </div>
-            </div>
+    </nav>
 
-            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 mb-6">
-                <h2 class="text-blue-600 font-medium mb-6 flex items-center gap-2">
-                    <i class="fa-regular fa-file-lines"></i> How CV Analysis Works
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-                    <div class="flex flex-col items-center gap-2 group">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-upload"></i></div>
-                        <h3 class="font-semibold text-slate-800">Upload</h3>
-                        <p class="text-xs text-slate-500">Upload your CV in PDF/Word</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-2 group">
-                        <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-chart-line"></i></div>
-                        <h3 class="font-semibold text-slate-800">Analyze</h3>
-                        <p class="text-xs text-slate-500">AI analyzes content & keywords</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-2 group">
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-regular fa-file-alt"></i></div>
-                        <h3 class="font-semibold text-slate-800">Review</h3>
-                        <p class="text-xs text-slate-500">Check compatibility score</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-2 group">
-                        <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                        <h3 class="font-semibold text-slate-800">Improve</h3>
-                        <p class="text-xs text-slate-500">Get improvement tips</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-                <h2 class="text-lg font-medium text-slate-800 mb-6">Your CV is Ready for Analysis</h2>
-
-                <div class="mb-8">
-                    <input type="file" id="cv-upload" class="hidden" accept=".pdf,.doc,.docx">
-                    
-                    <label for="cv-upload" id="upload-zone" class="border-2 border-dashed border-slate-200 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-all group h-32">
-                        <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3 group-hover:bg-blue-100 group-hover:text-blue-500 transition">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                        </div>
-                        <span class="text-sm font-medium text-slate-600 group-hover:text-blue-600">Click to upload your CV</span>
-                        <span class="text-xs text-slate-400 mt-1">PDF, DOC, DOCX (Max 5MB)</span>
-                    </label>
-
-                    <div id="file-preview" class="hidden border border-slate-200 bg-slate-50 rounded-xl p-4 flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-red-500 text-xl shadow-sm"><i class="fa-regular fa-file-pdf"></i></div>
-                            <div>
-                                <h4 id="file-name" class="text-sm font-semibold text-slate-800">filename.pdf</h4>
-                                <p id="file-size" class="text-xs text-slate-500">0.00 MB</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded">Uploaded</span>
-                            <button id="remove-file-btn" class="text-slate-400 hover:text-red-500 transition px-2"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Job Description <span class="text-red-500">*</span></label>
-                    <textarea id="job-desc" rows="4" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none" placeholder="Paste the job description here..."></textarea>
-                </div>
-
-                <div class="flex justify-center mb-6">
-                    <button id="analyze-btn" disabled class="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none w-full md:w-auto">
-                        Analyze My Profile CV & Find Jobs
-                    </button>
-                </div>
-                
-                <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex gap-3 items-start">
-                    <i class="fa-solid fa-wand-magic-sparkles text-yellow-500 mt-1"></i>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        <span class="font-bold text-slate-800">Tip:</span> Fill in the job description above and upload your CV to get personalized job matches.
-                    </p>
-                </div>
-            </div>
+    <div class="w-3/4 space-y-6 mb-12">
+      <div id="upload-section">
+        <div class="flex items-center gap-4 mb-2">
+          <a
+            id="backBtn"
+            href="index.html"
+            class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group"
+          >
+            <i
+              class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
+            ></i>
+            <span class="text-sm font-medium">Back</span>
+          </a>
+          <div>
+            <h1 class="text-3xl font-semibold text-slate-800">CV Analyzer</h1>
+            <p class="text-slate-500">
+              Get AI-powered insights to improve your resume
+            </p>
+          </div>
         </div>
 
-        <div id="results-section" class="hidden">
-            
-            <div class="flex items-center gap-4 mb-2">
-                <button id="back-to-upload" class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group">
-                  <i
-                    class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform">
-                  </i>
-                  <span class="text-sm font-medium">Back</span>
+        <div
+          class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 mb-6"
+        >
+          <h2 class="text-blue-600 font-medium mb-6 flex items-center gap-2">
+            <i class="fa-regular fa-file-lines"></i> How CV Analysis Works
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+            <div class="flex flex-col items-center gap-2 group">
+              <div
+                class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl mb-1"
+              >
+                <i class="fa-solid fa-upload"></i>
+              </div>
+              <h3 class="font-semibold text-slate-800">Upload</h3>
+              <p class="text-xs text-slate-500">Upload your CV in PDF/Word</p>
+            </div>
+            <div class="flex flex-col items-center gap-2 group">
+              <div
+                class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center text-xl mb-1"
+              >
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <h3 class="font-semibold text-slate-800">Analyze</h3>
+              <p class="text-xs text-slate-500">
+                AI analyzes content & keywords
+              </p>
+            </div>
+            <div class="flex flex-col items-center gap-2 group">
+              <div
+                class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-xl mb-1"
+              >
+                <i class="fa-regular fa-file-alt"></i>
+              </div>
+              <h3 class="font-semibold text-slate-800">Review</h3>
+              <p class="text-xs text-slate-500">Check compatibility score</p>
+            </div>
+            <div class="flex flex-col items-center gap-2 group">
+              <div
+                class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center text-xl mb-1"
+              >
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <h3 class="font-semibold text-slate-800">Improve</h3>
+              <p class="text-xs text-slate-500">Get improvement tips</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+          <h2 class="text-lg font-medium text-slate-800 mb-6">
+            Your CV is Ready for Analysis
+          </h2>
+
+          <div class="mb-8">
+            <input
+              type="file"
+              id="cv-upload"
+              class="hidden"
+              accept=".pdf,.doc,.docx"
+            />
+
+            <label
+              for="cv-upload"
+              id="upload-zone"
+              class="border-2 border-dashed border-slate-200 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-all group h-32"
+            >
+              <div
+                class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3 group-hover:bg-blue-100 group-hover:text-blue-500 transition"
+              >
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+              </div>
+              <span
+                class="text-sm font-medium text-slate-600 group-hover:text-blue-600"
+                >Click to upload your CV</span
+              >
+              <span class="text-xs text-slate-400 mt-1"
+                >PDF, DOC, DOCX (Max 5MB)</span
+              >
+            </label>
+
+            <div
+              id="file-preview"
+              class="hidden border border-slate-200 bg-slate-50 rounded-xl p-4 flex items-center justify-between"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-red-500 text-xl shadow-sm"
+                >
+                  <i class="fa-regular fa-file-pdf"></i>
+                </div>
+                <div>
+                  <h4
+                    id="file-name"
+                    class="text-sm font-semibold text-slate-800"
+                  >
+                    filename.pdf
+                  </h4>
+                  <p id="file-size" class="text-xs text-slate-500">0.00 MB</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded"
+                  >Uploaded</span
+                >
+                <button
+                  id="remove-file-btn"
+                  class="text-slate-400 hover:text-red-500 transition px-2"
+                >
+                  <i class="fa-solid fa-xmark"></i>
                 </button>
-                <div>
-                    <h1 class="text-2xl font-semibold text-slate-800">CV Analysis Results</h1>
-                    <p class="text-slate-500 text-sm">Detailed analysis of your resume</p>
-                </div>
+              </div>
             </div>
+          </div>
 
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-6">
-                <div class="flex items-start gap-3 mb-4">
-                    <i class="fa-solid fa-medal text-blue-600 text-xl mt-1"></i>
-                    <div>
-                        <h2 class="text-lg font-medium text-slate-800">ATS Compatibility Score</h2>
-                        <div class="flex items-baseline gap-2 mt-1">
-                            <span class="text-4xl font-bold text-yellow-500">82</span>
-                            <span class="text-slate-400 font-medium">/ 100</span>
-                        </div>
-                        <span class="inline-block bg-yellow-50 text-yellow-600 text-xs font-semibold px-2 py-1 rounded mt-2">Good</span>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 mb-6 border-b border-slate-100 pb-6">Your CV has good ATS compatibility but could benefit from minor optimizations.</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-700">Keyword Match</span><span class="font-bold text-slate-800">85%</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-700">Formatting</span><span class="font-bold text-slate-800">90%</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-700">Content Quality</span><span class="font-bold text-slate-800">72%</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-yellow-500 h-2 rounded-full" style="width: 72%"></div></div>
-                    </div>
-                </div>
-            </div>
+          <div class="mb-8">
+            <label class="block text-sm font-bold text-slate-700 mb-2"
+              >Job Description <span class="text-red-500">*</span></label
+            >
+            <textarea
+              id="job-desc"
+              rows="4"
+              class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"
+              placeholder="Paste the job description here..."
+            ></textarea>
+          </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-                    <h3 class="flex items-center gap-2 font-semibold text-slate-800 mb-4"><i class="fa-regular fa-circle-check text-green-500"></i> Strengths</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-2 text-sm text-slate-600"><span class="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 shrink-0"></span>Strong technical skills section</li>
-                        <li class="flex items-start gap-2 text-sm text-slate-600"><span class="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 shrink-0"></span>Relevant work experience</li>
-                        <li class="flex items-start gap-2 text-sm text-slate-600"><span class="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 shrink-0"></span>Clear project descriptions</li>
-                    </ul>
-                </div>
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-                    <h3 class="flex items-center gap-2 font-semibold text-slate-800 mb-4"><i class="fa-solid fa-triangle-exclamation text-yellow-500"></i> Suggested Improvements</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-2 text-sm text-slate-600"><span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-1.5 shrink-0"></span>Add more quantifiable achievements</li>
-                        <li class="flex items-start gap-2 text-sm text-slate-600"><span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-1.5 shrink-0"></span>Include keywords for ATS optimization</li>
-                        <li class="flex items-start gap-2 text-sm text-slate-600"><span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-1.5 shrink-0"></span>Expand on leadership experience</li>
-                    </ul>
-                </div>
-            </div>
+          <div class="flex justify-center mb-6">
+            <button
+              id="analyze-btn"
+              disabled
+              class="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none w-full md:w-auto"
+            >
+              Analyze My Profile CV & Find Jobs
+            </button>
+          </div>
 
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-6">
-                <h3 class="font-semibold text-slate-800 mb-4">Keyword Analysis</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-sm font-medium text-green-600 mb-3">Present Keywords</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">React</span>
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">JavaScript</span>
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Python</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-yellow-600 mb-3">Recommended Keywords</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">TypeScript</span>
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">AWS</span>
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">Docker</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div
+            class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex gap-3 items-start"
+          >
+            <i class="fa-solid fa-wand-magic-sparkles text-yellow-500 mt-1"></i>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              <span class="font-bold text-slate-800">Tip:</span> Fill in the job
+              description above and upload your CV to get personalized job
+              matches.
+            </p>
+          </div>
+        </div>
+      </div>
 
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-briefcase"></i></div>
-                    <div>
-                        <h3 class="font-semibold text-slate-800">AI Job Matching</h3>
-                        <p class="text-sm text-slate-500 mt-1">Find jobs that match your CV profile</p>
-                    </div>
-                </div>
-                <a href=matchedJobs.html class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition shadow-md shadow-blue-200 w-full md:w-auto">Find Matching Jobs</a>
-            </div>
-
-            <div class="flex justify-center gap-4 py-4">
-                <button id="analyze-another-btn" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2.5 rounded-lg text-sm font-medium transition shadow-sm">Analyze Another CV</button>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition shadow-md shadow-blue-200">Download Detailed Report</button>
-            </div>
+      <div
+        id="loading-section"
+        class="hidden bg-white rounded-2xl p-12 shadow-sm border border-slate-100 flex flex-col items-center justify-center min-h-[400px]"
+      >
+        <div class="relative w-24 h-24 mb-6">
+          <div
+            class="absolute inset-0 bg-blue-100 rounded-full animate-ping opacity-75"
+          ></div>
+          <div
+            class="relative flex items-center justify-center w-full h-full bg-blue-50 text-blue-600 rounded-full text-4xl shadow-inner"
+          >
+            <i class="fa-solid fa-microchip"></i>
+          </div>
         </div>
 
-    </div>
-        <script type="module" src="/src/js/utils/authGuard.js"></script>
+        <h2
+          id="loading-caption"
+          class="text-xl font-semibold text-slate-800 mb-2 transition-opacity duration-300"
+        >
+          Initializing AI Engine...
+        </h2>
+        <p class="text-sm text-slate-500 mb-8">
+          Please wait while our AI analyzes your document.
+        </p>
 
-<script type="module" src="../../js/controllers/analyzerController.js"></script>
-</body>
+        <div
+          class="w-full max-w-md bg-slate-100 rounded-full h-4 mb-2 overflow-hidden shadow-inner border border-slate-200"
+        >
+          <div
+            id="loading-progress-bar"
+            class="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full transition-all duration-200 ease-out flex items-center justify-end pr-2"
+            style="width: 0%"
+          >
+            <span
+              id="loading-percentage"
+              class="text-[10px] font-bold text-white shadow-sm"
+              >0%</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div id="results-section" class="hidden">
+        <div class="flex items-center gap-4 mb-2">
+          <button
+            id="back-to-upload"
+            class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group"
+          >
+            <i
+              class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
+            ></i>
+            <span class="text-sm font-medium">Back</span>
+          </button>
+          <div>
+            <h1 class="text-2xl font-semibold text-slate-800">
+              CV Analysis Results
+            </h1>
+            <p class="text-slate-500 text-sm">
+              Detailed AI insights for your resume
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-6 flex flex-col items-center justify-center py-10"
+        >
+          <h2 class="text-lg font-medium text-slate-800 mb-4">
+            Overall ATS Match Score
+          </h2>
+          <div
+            class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-slate-100"
+          >
+            <div
+              id="ats-score-circle"
+              class="absolute inset-0 rounded-full border-8 border-transparent transition-all duration-1000"
+            ></div>
+            <span id="ats-score-text" class="text-4xl font-bold text-slate-800"
+              >0%</span
+            >
+          </div>
+          <p
+            id="ats-score-message"
+            class="text-sm font-medium text-slate-500 mt-4"
+          >
+            Analyzing...
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div
+            class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200"
+          >
+            <h3
+              class="flex items-center gap-2 font-semibold text-slate-800 mb-4"
+            >
+              <i class="fa-solid fa-circle-check text-green-500"></i> Strengths
+            </h3>
+            <ul id="strengths-list" class="space-y-3"></ul>
+          </div>
+          <div
+            class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200"
+          >
+            <h3
+              class="flex items-center gap-2 font-semibold text-slate-800 mb-4"
+            >
+              <i class="fa-solid fa-circle-xmark text-red-500"></i> Areas for
+              Improvement
+            </h3>
+            <ul id="weaknesses-list" class="space-y-3"></ul>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-blue-100 bg-blue-50/30 mb-6"
+        >
+          <h3 class="flex items-center gap-2 font-semibold text-blue-800 mb-4">
+            <i class="fa-solid fa-lightbulb text-yellow-500"></i> AI
+            Recommendations
+          </h3>
+          <ul id="recommendations-list" class="space-y-3"></ul>
+        </div>
+
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-6"
+        >
+          <h3 class="font-semibold text-slate-800 mb-6">
+            <i
+              class="fa-solid fa-magnifying-glass-chart text-purple-500 mr-2"
+            ></i>
+            Keyword Analysis
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-green-50/50 p-4 rounded-xl border border-green-100">
+              <h4
+                class="text-sm font-semibold text-green-700 mb-3 flex items-center justify-between"
+              >
+                Matched
+                <span
+                  id="matched-count"
+                  class="bg-green-200 text-green-800 text-xs px-2 py-0.5 rounded-full"
+                  >0</span
+                >
+              </h4>
+              <div id="matched-keywords" class="flex flex-wrap gap-2"></div>
+            </div>
+            <div class="bg-red-50/50 p-4 rounded-xl border border-red-100">
+              <h4
+                class="text-sm font-semibold text-red-700 mb-3 flex items-center justify-between"
+              >
+                Missing
+                <span
+                  id="missing-count"
+                  class="bg-red-200 text-red-800 text-xs px-2 py-0.5 rounded-full"
+                  >0</span
+                >
+              </h4>
+              <div id="missing-keywords" class="flex flex-wrap gap-2"></div>
+            </div>
+            <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+              <h4
+                class="text-sm font-semibold text-blue-700 mb-3 flex items-center justify-between"
+              >
+                Relevant
+                <span
+                  id="relevant-count"
+                  class="bg-blue-200 text-blue-800 text-xs px-2 py-0.5 rounded-full"
+                  >0</span
+                >
+              </h4>
+              <div id="relevant-keywords" class="flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4 mb-6 text-white"
+        >
+          <div class="flex items-start gap-4">
+            <div
+              class="w-12 h-12 bg-slate-700 text-blue-400 rounded-full flex items-center justify-center text-2xl shrink-0"
+            >
+              <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg">AI Job Matching</h3>
+              <p class="text-sm text-slate-400 mt-1">
+                Ready to find jobs that perfectly match this analyzed profile?
+              </p>
+            </div>
+          </div>
+          <a
+            href="/matchedJobs.html"
+            class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-medium transition shadow-lg w-full md:w-auto text-center"
+            >Find Matching Jobs</a
+          >
+        </div>
+
+        <div class="flex justify-center gap-4 py-4">
+          <button
+            id="analyze-another-btn"
+            class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 rounded-xl font-medium transition shadow-sm w-full md:w-auto"
+          >
+            Analyze Another CV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/js/utils/authGuard.js"></script>
+    <script
+      type="module"
+      src="../../js/controllers/analyzerController.js"
+    ></script>
+  </body>
 </html>

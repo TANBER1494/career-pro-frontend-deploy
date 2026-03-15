@@ -1,11 +1,10 @@
-
 document.body.classList.add('loaded');
 import { jobService } from '../services/jobService.js';
 import { companyDiscoveryService } from '../services/companyDiscoveryService.js';
 import { authService } from '../services/authService.js';
 import Swal from 'sweetalert2';
 import { initPixelBlast } from './pixelBlast.js';
-
+import { escapeHTML } from '../utils/security.js';
 initPixelBlast('#pixel-blast-container', {
   // تقدري تعدلي الإعدادات هنا زي ما كنتي بتعملي في React Props
   color: '#3b82f6', // لون أزرق مثلاً
@@ -233,39 +232,43 @@ async function loadFeaturedJobs() {
 
 function createJobCard(job, index) {
   const timeAgo = getTimeAgo(job.postedAt || job.createdAt);
-
   const companyData = job.companyId || job.company || {};
 
-  const companyName =
-    companyData.companyName || companyData.name || 'Confidential Company';
+  // 🚨 1. تنظيف وحماية النصوص قبل عرضها
+  const safeJobTitle = escapeHTML(job.title);
+  const safeCompanyName = escapeHTML(
+    companyData.companyName || companyData.name || 'Confidential Company'
+  );
+  const safeLocation = escapeHTML(
+    job.location || companyData.location || 'Remote'
+  );
+  const safeDescription = escapeHTML(
+    job.description || 'No description available.'
+  );
+  const safeSalaryRange = escapeHTML(job.salaryRange || 'Competitive');
 
   let companyLogo = 'https://placehold.co/48x48?text=Logo';
   const rawLogo = companyData.logo || companyData.logoUrl;
 
   if (rawLogo && !rawLogo.includes('url...') && rawLogo.length > 10) {
-    // التغيير: تعيين القيمة مباشرة
     companyLogo = rawLogo;
   }
 
-  const location = job.location || companyData.location || 'Remote';
-
   const companyLinkId = companyData._id || companyData.id;
-
-  // ============================================================
 
   const saveIconClass = job.isSaved
     ? 'fa-solid text-blue-600'
     : 'fa-regular text-slate-400';
 
+  // تنظيف كل مهارة (Skill) داخل المصفوفة
   const skillsHTML = (job.skills || [])
     .slice(0, 3)
     .map(
       (skill) =>
-        `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
+        `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${escapeHTML(skill)}</span>`
     )
     .join('');
 
-  // روابط الانتقال
   const jobLink = `/jobs?id=${job.id || job._id}`;
   const companyLink = companyLinkId
     ? `/company-details?id=${companyLinkId}`
@@ -273,6 +276,7 @@ function createJobCard(job, index) {
 
   const delay = (index % 6) * 100;
 
+  // 🚨 2. حقن المتغيرات الآمنة (Safe) فقط في الواجهة
   return `
 <div class="job-card-scroll bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full text-left"
         style="transition-delay: ${delay}ms;">  
@@ -285,25 +289,23 @@ function createJobCard(job, index) {
 
         <div class="flex items-start gap-4 mb-4 mt-6">
             <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100">
-                <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover">
+                <img src="${companyLogo}" alt="${safeCompanyName}" class="w-full h-full object-cover">
             </div>
             <div>
-                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'" title="${
-                  job.title
-                }">
-                    ${job.title}
+                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'" title="${safeJobTitle}">
+                    ${safeJobTitle}
                 </h3>
                 <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
                     <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="window.location.href='${companyLink}'">
-                        <i class="fa-regular fa-building mr-1"></i> ${companyName}
+                        <i class="fa-regular fa-building mr-1"></i> ${safeCompanyName}
                     </span>
-                    <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
+                    <span><i class="fa-solid fa-location-dot mr-1"></i> ${safeLocation}</span>
                 </div>
             </div>
         </div>
 
         <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
-            ${job.description || 'No description available.'}
+            ${safeDescription}
         </p>
 
         <div class="flex flex-wrap gap-2 mb-4 h-6 overflow-hidden">
@@ -311,9 +313,7 @@ function createJobCard(job, index) {
         </div>
 
         <div class="flex items-center justify-between mb-4 mt-auto">
-            <span class="text-green-600 font-semibold font-poppins text-sm">${
-              job.salaryRange || 'Competitive'
-            }</span>
+            <span class="text-green-600 font-semibold font-poppins text-sm">${safeSalaryRange}</span>
             <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
         </div>
 
@@ -359,19 +359,29 @@ async function loadTopCompanies() {
 
 function createCompanyCard(company) {
   const logo = company.logo || 'https://placehold.co/64x64?text=C';
-  const name = company.name || company.companyName || 'Company Name';
-  const initial = name.charAt(0).toUpperCase();
-  const desc =
+
+  // 🚨 1. تنظيف المتغيرات
+  const safeName = escapeHTML(
+    company.name || company.companyName || 'Company Name'
+  );
+  const initial = safeName.charAt(0).toUpperCase(); // نأخذ الحرف الأول من الاسم النظيف
+
+  const rawDesc =
     company.companyDescription ||
     company.description ||
     company.about ||
     'No description available.';
-  const shortDesc = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
-  const location = company.location || 'Remote';
-  const industry = company.industry || 'Tech';
+  const shortDesc =
+    rawDesc.length > 100 ? rawDesc.substring(0, 100) + '...' : rawDesc;
+  const safeShortDesc = escapeHTML(shortDesc);
+
+  const safeLocation = escapeHTML(company.location || 'Remote');
+  const safeIndustry = escapeHTML(company.industry || 'Tech');
+
   const positions = company.openPositionsCount || 0;
   const detailsLink = `/company-details?id=${company.id || company._id}`;
 
+  // 🚨 2. حقن المتغيرات الآمنة في الـ HTML
   return `
     <div class="flex flex-col gap-3 group">
         <div class="companyCard ">
@@ -385,13 +395,13 @@ function createCompanyCard(company) {
                         <div class="w-16 h-16 rounded-xl bg-blue-500 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-blue-500/30 overflow-hidden">
                             ${
                               company.logo
-                                ? `<img src="${logo}" class="w-full h-full object-cover">`
+                                ? `<img src="${logo}" class="w-full h-full object-cover" alt="${safeName}">`
                                 : initial
                             }
                         </div>
                         
                         <h3 class="font-medium font-poppins text-lg mb-1 flex items-center gap-2 justify-center">
-                            ${name}
+                            ${safeName}
                             ${
                               company.isVerified
                                 ? '<span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>'
@@ -399,10 +409,10 @@ function createCompanyCard(company) {
                             }
                         </h3>
                         
-                        <p class="text-slate-500 text-sm mb-3">${industry}</p>
+                        <p class="text-slate-500 text-sm mb-3">${safeIndustry}</p>
                         
                         <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
-                            <i class="fa-solid fa-location-dot"></i> ${location}
+                            <i class="fa-solid fa-location-dot"></i> ${safeLocation}
                         </div>
                         
                         <a class="text-blue-600 text-sm font-normal mb-4">
@@ -414,7 +424,7 @@ function createCompanyCard(company) {
                 <div class="companyCard-back bg-white p-6 rounded-xl shadow-md flex flex-col justify-center text-center border border-slate-200">
                     <h3 class="text-lg font-semibold mb-3 text-slate-800">About Company</h3>
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        ${shortDesc}
+                        ${safeShortDesc}
                     </p>
                     <button onclick="window.location.href='/company-details?id=${
                       company.id || company._id
@@ -795,19 +805,18 @@ if (checkbox && navContainer) {
   });
 }
 
-
 // ============================================================
 // 💡 Feature Teasing: Job Matching (Coming Soon)
 // ============================================================
-document.querySelectorAll('.job-matching-link').forEach(link => {
-  link.addEventListener('click', function(e) {
+document.querySelectorAll('.job-matching-link').forEach((link) => {
+  link.addEventListener('click', function (e) {
     e.preventDefault();
     Swal.fire({
       icon: 'info',
       title: 'Feature in Progress 🚧',
       text: 'The AI Job Matching feature is currently under development and final AI training. Get ready for something amazing!',
       confirmButtonColor: '#2563eb',
-      confirmButtonText: 'Stay Tuned!'
+      confirmButtonText: 'Stay Tuned!',
     });
   });
 });

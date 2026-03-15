@@ -19,6 +19,7 @@
     "vite": "^7.2.6"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "axios": "^1.13.2",
     "lucide": "^0.555.0",
     "sweetalert2": "^11.26.4",

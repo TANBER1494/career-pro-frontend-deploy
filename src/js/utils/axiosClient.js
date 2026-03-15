@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { BASE_URL } from '../config/constant.js';
 import Swal from 'sweetalert2';
+import { inject } from '@vercel/analytics';
 
+
+inject();
 // 1. إنشاء نسخة Axios
 const axiosClient = axios.create({
   baseURL: BASE_URL,

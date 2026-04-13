@@ -820,3 +820,31 @@ document.querySelectorAll('.job-matching-link').forEach((link) => {
     });
   });
 });
+function initRevealCards() {
+  const cards = document.querySelectorAll('.reveal-card');
+
+  // نضيف الستايل inline على كل كارت
+  cards.forEach((card) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(40px)';
+    card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach((card, index) => {
+    card.style.transitionDelay = `${(index % 4) * 100}ms`;
+    observer.observe(card);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initRevealCards();
+});

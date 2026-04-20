@@ -383,24 +383,25 @@ document.addEventListener('click', function (e) {
 // 💡 BFCache (Browser Back Button) Fix
 // ==========================================
 window.addEventListener('pageshow', function (event) {
-    // هذا الحدث يعمل دائماً (سواء تحميل جديد أو رجوع من زر المتصفح)
-    // نضمن به إرجاع كلاس الإظهار للصفحة لتجنب الشاشة البيضاء
-    document.body.classList.add('loaded');
+  // هذا الحدث يعمل دائماً (سواء تحميل جديد أو رجوع من زر المتصفح)
+  // نضمن به إرجاع كلاس الإظهار للصفحة لتجنب الشاشة البيضاء
+  document.body.classList.add('loaded');
 });
 
 // ==========================================
-// 💡 Job Matching (Coming Soon Alert)
+// 🚀 Job Matching (Activated)
 // ==========================================
 const comingSoonBtn = document.getElementById('coming-soon-btn');
 if (comingSoonBtn) {
-    comingSoonBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        Swal.fire({
-            icon: 'info',
-            title: 'Coming Soon! 🚀',
-            text: 'Our AI Job Matching engine is currently undergoing final training. It will be available very soon!',
-            confirmButtonColor: '#2563eb',
-            confirmButtonText: 'Stay Tuned!'
-        });
-    });
+  comingSoonBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    // إخفاء الصفحة تدريجياً
+    document.body.classList.remove('loaded');
+
+    // توجيه المستخدم لصفحة المطابقة (تأكد أن المسار يطابق اسم صفحتك لديك)
+    setTimeout(() => {
+      window.location.href = '../../pages/AI services/matchedJobs.html';
+    }, 350);
+  });
 }

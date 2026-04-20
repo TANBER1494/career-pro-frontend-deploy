@@ -806,18 +806,12 @@ if (checkbox && navContainer) {
 }
 
 // ============================================================
-// 💡 Feature Teasing: Job Matching (Coming Soon)
+// 🚀 Feature Activated: Job Matching 
 // ============================================================
 document.querySelectorAll('.job-matching-link').forEach((link) => {
   link.addEventListener('click', function (e) {
-    e.preventDefault();
-    Swal.fire({
-      icon: 'info',
-      title: 'Feature in Progress 🚧',
-      text: 'The AI Job Matching feature is currently under development and final AI training. Get ready for something amazing!',
-      confirmButtonColor: '#2563eb',
-      confirmButtonText: 'Stay Tuned!',
-    });
+    // نستخدم الدالة الأمنية الخاصة بك للتأكد من تسجيل الدخول أولاً
+    checkAiFeatureAccess(e, '../../pages/AI services/matchedJobs.html');
   });
 });
 function initRevealCards() {

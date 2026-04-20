@@ -42,20 +42,23 @@
       <a
         href="/CareerPro"
         class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
         <img
           src="/assets/imgs/Logo.png"
-          alt="Logo"
+          alt="CareerGuidance Logo"
           class="h-12 w-auto object-contain"
         />
-        <span class="font-lexend font-semibold not-italic hidden sm:block"
+        <span class="font-lexend font-simibold not-italic"
           >AI-Career Guidance</span
         >
       </a>
-      <div
-        id="auth-buttons-container"
-        class="flex justify-end items-center gap-3"
-      ></div>
+      <div class="w-auto flex justify-end min-w-0">
+        <div
+          id="auth-buttons-container"
+          class="flex justify-end items-center gap-3"
+        ></div>
+      </div>
     </nav>
 
     <div

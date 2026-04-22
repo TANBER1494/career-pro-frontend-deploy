@@ -27,336 +27,330 @@
       rel="stylesheet"
     />
 
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Poppins', 'sans-serif'],
-              lexend: ['Lexend', 'sans-serif'],
-            },
-            colors: {
-              primary: '#06b6d4',
-              secondary: '#3b82f6',
-            },
-          },
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Poppins', 'sans-serif'],
+          lexend: ['Lexend', 'sans-serif'],
         },
-      };
-    </script>
+        colors: {
+          primary: '#06b6d4',
+          secondary: '#3b82f6',
+        },
+      },
+    },
+  };
+</script>
 
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-      body.loaded {
-        opacity: 1;
-      }
-      body {
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-        background: linear-gradient(
-          150deg,
-          rgba(220, 224, 224, 1) 14%,
-          rgba(182, 206, 224, 1) 60%,
-          rgba(95, 106, 115, 1) 100%
-        );
-        margin: 0;
-        overflow-x: hidden;
-        background-attachment: fixed;
-        font-family: 'Poppins', sans-serif;
-      }
-      /* Magic Navigation Styles */
-      .nav-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin-right: 100px;
-      }
-      .magic-menu {
-        display: flex;
-        position: relative;
-        gap: 20px;
-        align-items: center;
-        padding: 0 10px;
-      }
-      .magic-menu li {
-        position: relative;
-        list-style: none;
-        width: 50px;
-        height: 50px;
-        background: white;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 60px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: 0.5s;
-      }
-      .magic-menu li::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: 60px;
-        background: linear-gradient(45deg, var(--i), var(--j));
-        opacity: 0;
-        transition: 0.5s;
-      }
-      .magic-menu li::after {
-        content: '';
-        position: absolute;
-        top: 10px;
-        width: 100%;
-        height: 100%;
-        border-radius: 60px;
-        background: linear-gradient(45deg, var(--i), var(--j));
-        transition: 0.5s;
-        filter: blur(15px);
-        z-index: -1;
-        opacity: 0;
-      }
-      .magic-menu li:hover,
-      .magic-menu li.active {
-        width: 140px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
-      }
-      .magic-menu li:hover::before,
-      .magic-menu li.active::before {
-        opacity: 1;
-      }
-      .magic-menu li:hover::after,
-      .magic-menu li.active::after {
-        opacity: 0.5;
-      }
-      .magic-menu li ion-icon {
-        color: #777;
-        font-size: 1.5em;
-        transition: 0.5s;
-        transition-delay: 0.25s;
-      }
-      .magic-menu li:hover ion-icon,
-      .magic-menu li.active ion-icon {
-        transform: scale(0);
-        color: #fff;
-        transition-delay: 0s;
-      }
-      .magic-menu li span.title {
-        position: absolute;
-        color: #fff;
-        font-size: 0.9em;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        transform: scale(0);
-        transition: 0.5s;
-        transition-delay: 0s;
-      }
-      .magic-menu li:hover span.title,
-      .magic-menu li.active span.title {
-        transform: scale(1);
-        transition-delay: 0.25s;
-      }
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  body.loaded { opacity: 1; }
+  body {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background: linear-gradient(150deg, rgba(220,224,224,1) 14%, rgba(182,206,224,1) 60%, rgba(95,106,115,1) 100%);
+    margin: 0;
+    overflow-x: hidden;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+  }
 
-      /* Tabs Styles */
-      .profile-tab-btn {
-        position: relative;
-        padding-bottom: 12px;
-        color: #64748b;
-        font-weight: 500;
-        transition: all 0.3s;
-      }
-      .profile-tab-btn.active {
-        color: #2563eb;
-      }
-      .profile-tab-btn.active::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: #2563eb;
-        border-radius: 3px 3px 0 0;
-      }
-    </style>
-  </head>
-  <body class="text-gray-800">
-    <nav
-      class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full"
-    >
-      <a
-        href="/CareerPro"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer"
-        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-      >
-        <img
-          src="../../../../assets/imgs/Logo.png"
-          alt="CareerGuidance Logo"
-          class="h-12 w-auto object-contain"
-        />
-        <span class="font-lexend font-simibold not-italic"
-          >AI-Career Guidance</span
-        >
-      </a>
-      <div class="hidden md:flex flex-1 nav-container">
-        <div
-          class="bg-white/50 px-6 py-2 rounded-full border border-white-200 shadow-inner"
-        >
-          <ul class="magic-menu">
-            <li id="homeBtn" style="--i: #67e3ff; --j: #69a8b8">
-              <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon
-              ></span>
-              <span class="title">Home</span>
-            </li>
-            <li
-              style="--i: #5eb6fd; --j: #0576d3"
-              class="active"
-              onclick="window.location.href = '/profile'"
-            >
-              <span class="icon"
-                ><ion-icon name="person-outline"></ion-icon
-              ></span>
-              <span class="title">Profile</span>
-            </li>
-          </ul>
-        </div>
+  /* Magic Navigation Styles */
+  .nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-right: 100px;
+  }
+  .magic-menu {
+    display: flex;
+    position: relative;
+    gap: 20px;
+    align-items: center;
+    padding: 0 10px;
+  }
+  .magic-menu li {
+    position: relative;
+    list-style: none;
+    width: 50px;
+    height: 50px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 60px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+  }
+  .magic-menu li::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 60px;
+    background: linear-gradient(45deg, var(--i), var(--j));
+    opacity: 0;
+    transition: 0.5s;
+  }
+  .magic-menu li::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 60px;
+    background: linear-gradient(45deg, var(--i), var(--j));
+    transition: 0.5s;
+    filter: blur(15px);
+    z-index: -1;
+    opacity: 0;
+  }
+  .magic-menu li:hover,
+  .magic-menu li.active { width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0); }
+  .magic-menu li:hover::before,
+  .magic-menu li.active::before { opacity: 1; }
+  .magic-menu li:hover::after,
+  .magic-menu li.active::after { opacity: 0.5; }
+  .magic-menu li ion-icon { color: #777; font-size: 1.5em; transition: 0.5s; transition-delay: 0.25s; }
+  .magic-menu li:hover ion-icon,
+  .magic-menu li.active ion-icon { transform: scale(0); color: #fff; transition-delay: 0s; }
+  .magic-menu li span.title {
+    position: absolute;
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transform: scale(0);
+    transition: 0.5s;
+    transition-delay: 0s;
+  }
+  .magic-menu li:hover span.title,
+  .magic-menu li.active span.title { transform: scale(1); transition-delay: 0.25s; }
+
+  /* Tabs Styles */
+  .profile-tab-btn {
+    position: relative;
+    padding-bottom: 12px;
+    color: #64748b;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+  .profile-tab-btn.active { color: #2563eb; }
+  .profile-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #2563eb;
+    border-radius: 3px 3px 0 0;
+  }
+
+  /* ===== RESPONSIVE ONLY ===== */
+  #hamburger { display: none; }
+
+  @media (max-width: 900px) {
+    .nav-container { display: none !important; }
+    #hamburger { display: flex !important; }
+  }
+
+  @media (max-width: 640px) {
+    #btnLogout { display: none !important; }
+    .logo-text { display: none !important; }
+  }
+
+  #mobileMenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    overflow: hidden;
+    z-index: 100;
+  }
+  #mobileMenu.open { display: block; }
+  #mobileMenu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-family: 'Poppins', sans-serif;
+  }
+  #mobileMenu a:last-child { border-bottom: none; color: #dc2626; }
+</style>
+
+<nav class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-[95%] md:w-3/4 mx-auto rounded-full">
+  <a href="/CareerPro" class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain" />
+    <span class="font-lexend font-semibold not-italic logo-text">AI-Career Guidance</span>
+  </a>
+
+  <div class="hidden md:flex flex-1 nav-container">
+    <div class="bg-white/50 px-6 py-2 rounded-full border border-white-200 shadow-inner">
+      <ul class="magic-menu">
+        <li id="homeBtn" style="--i: #67e3ff; --j: #69a8b8">
+          <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+          <span class="title">Home</span>
+        </li>
+        <li style="--i: #5eb6fd; --j: #0576d3" class="active" onclick="window.location.href = '/profile'">
+          <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+          <span class="title">Profile</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="min-w-[150px] flex justify-end items-center gap-3">
+    <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1">
+      <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
+        <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+          <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+        </svg>
       </div>
-      <div class="min-w-[150px] flex justify-end">
+      <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
+        Logout
+      </div>
+    </button>
+
+    <!-- ✅ Hamburger مضاف جديد فقط -->
+    <button id="hamburger" onclick="toggleMobileMenu()" class="flex-col gap-1 p-2 rounded-lg hover:bg-white/30 transition-all border-none bg-transparent cursor-pointer">
+      <span id="hb1" class="block w-5 h-0.5 bg-gray-700 rounded transition-all duration-300"></span>
+      <span id="hb2" class="block w-5 h-0.5 bg-gray-700 rounded transition-all duration-300"></span>
+      <span id="hb3" class="block w-5 h-0.5 bg-gray-700 rounded transition-all duration-300"></span>
+    </button>
+  </div>
+
+  <!-- ✅ Mobile Menu مضاف جديد فقط -->
+  <div id="mobileMenu">
+    <a href="/CareerPro"><ion-icon name="home-outline"></ion-icon> Home</a>
+    <a href="/profile"><ion-icon name="person-outline"></ion-icon> Profile</a>
+    <a href="#" id="mobileLogout">
+      <svg style="width:16px;height:16px;" viewBox="0 0 512 512" fill="#dc2626">
+        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+      </svg>
+      Logout
+    </a>
+  </div>
+
+</nav>
+
+<!-- ✅ Script مضاف جديد فقط -->
+<script>
+  let menuOpen = false;
+  function toggleMobileMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById('mobileMenu').classList.toggle('open', menuOpen);
+    document.getElementById('hb1').style.transform = menuOpen ? 'translateY(7px) rotate(45deg)' : '';
+    document.getElementById('hb2').style.opacity = menuOpen ? '0' : '1';
+    document.getElementById('hb3').style.transform = menuOpen ? 'translateY(-7px) rotate(-45deg)' : '';
+  }
+
+  // مربوط بـ btnLogout الأصلي بتاعك
+  document.getElementById('mobileLogout').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('btnLogout').click();
+  });
+</script>
+
+   <main class="container mx-auto px-4 w-full md:w-3/4 pb-12">
+  <div id="loadingState" class="hidden flex flex-col items-center justify-center py-20">
+    <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
+    <p class="text-gray-500">Loading your profile...</p>
+  </div>
+
+  <div id="viewMode" id="profileContent">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6 relative overflow-hidden">
+
+      <!-- Edit Profile Button -->
+      <div class="flex justify-end mb-4 md:absolute md:top-0 md:right-0 md:p-6">
         <button
-          id="btnLogout"
-          class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+          id="btnEditProfile"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
         >
-          <div
-            class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
-          >
-            <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-              <path
-                d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-              ></path>
-            </svg>
-          </div>
-          <div
-            class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-          >
-            Logout
-          </div>
+          <i class="fas fa-pen"></i> Edit Profile
         </button>
       </div>
-    </nav>
 
-    <main class="container mx-auto px-4 w-3/4 pb-12">
-      <div
-        id="loadingState"
-        class="hidden flex flex-col items-center justify-center py-20"
-      >
-        <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
-        <p class="text-gray-500">Loading your profile...</p>
-      </div>
-
-      <div id="viewMode" id="profileContent">
-        <div
-          class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6 relative overflow-hidden"
-        >
-          <div class="absolute top-0 right-0 p-6">
-            <button
-              id="btnEditProfile"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
-            >
-              <i class="fas fa-pen"></i> Edit Profile
-            </button>
-          </div>
+      <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+        <div class="relative group">
+          <img
+            id="view-profileImage"
+            src=""
+            alt="Profile Picture"
+            class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md hidden"
+          />
           <div
-            class="flex flex-col md:flex-row gap-8 items-center md:items-start"
+            id="view-initials-container"
+            class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-4xl font-bold text-blue-500 border-4 border-white shadow-md"
           >
-            <div class="relative group">
-              <img
-                id="view-profileImage"
-                src=""
-                alt="Profile Picture"
-                class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md hidden"
-              />
+            <span id="view-initials">--</span>
+          </div>
+          <label
+            for="profile-photo-input"
+            class="absolute bottom-0 right-0 bg-white text-gray-600 p-2 rounded-full shadow-lg border border-gray-200 cursor-pointer hover:text-blue-600 hover:bg-blue-50 transition-all duration-300"
+            title="Change Profile Picture"
+          >
+            <i class="fas fa-camera text-sm"></i>
+          </label>
+          <input type="file" id="profile-photo-input" class="hidden" accept="image/png, image/jpeg, image/jpg" />
+        </div>
 
-              <div
-                id="view-initials-container"
-                class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-4xl font-bold text-blue-500 border-4 border-white shadow-md"
-              >
-                <span id="view-initials">--</span>
-              </div>
-
-              <label
-                for="profile-photo-input"
-                class="absolute bottom-0 right-0 bg-white text-gray-600 p-2 rounded-full shadow-lg border border-gray-200 cursor-pointer hover:text-blue-600 hover:bg-blue-50 transition-all duration-300"
-                title="Change Profile Picture"
-              >
-                <i class="fas fa-camera text-sm"></i>
-              </label>
-
-              <input
-                type="file"
-                id="profile-photo-input"
-                class="hidden"
-                accept="image/png, image/jpeg, image/jpg"
-              />
-            </div>
-            <div class="flex-1 text-center md:text-left mt-2">
-              <h1
-                id="view-fullName"
-                class="text-3xl font-bold text-gray-900 mb-1"
-              >
-                --
-              </h1>
-              <p
-                id="view-industry"
-                class="text-lg text-blue-500 font-medium mb-4"
-              >
-                --
-              </p>
-              <div
-                class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500"
-              >
-                <span
-                  class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
-                  ><i class="fas fa-map-marker-alt text-gray-400"></i>
-                  <span id="view-location">--</span></span
-                >
-                <span
-                  class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
-                  ><i class="fas fa-envelope text-gray-400"></i>
-                  <span id="view-email">--</span></span
-                >
-                <span
-                  class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
-                  ><i class="fas fa-phone text-gray-400"></i>
-                  <span id="view-phone">--</span></span
-                >
-              </div>
-            </div>
+        <div class="flex-1 text-center md:text-left mt-2">
+          <h1 id="view-fullName" class="text-3xl font-bold text-gray-900 mb-1">--</h1>
+          <p id="view-industry" class="text-lg text-blue-500 font-medium mb-4">--</p>
+          <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500">
+            <span class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+              <i class="fas fa-map-marker-alt text-gray-400"></i>
+              <span id="view-location">--</span>
+            </span>
+            <span class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+              <i class="fas fa-envelope text-gray-400"></i>
+              <span id="view-email">--</span>
+            </span>
+            <span class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+              <i class="fas fa-phone text-gray-400"></i>
+              <span id="view-phone">--</span>
+            </span>
           </div>
         </div>
-
-        <div
-          class="flex border-b border-gray-200 mb-6 gap-8 px-2 overflow-x-auto"
-        >
-          <button
-            class="profile-tab-btn active text-sm md:text-base whitespace-nowrap"
-            data-target="tab-info"
-          >
-            <i class="far fa-user mr-2"></i> Profile Info
-          </button>
-          <button
-            class="profile-tab-btn text-sm md:text-base whitespace-nowrap"
-            data-target="tab-apps"
-          >
-            <i class="far fa-paper-plane mr-2"></i> My Applications
-          </button>
-          <button
-            class="profile-tab-btn text-sm md:text-base whitespace-nowrap"
-            data-target="tab-saved"
-          >
-            <i class="far fa-bookmark mr-2"></i> Saved Jobs
-          </button>
-        </div>
-
+      </div>
+    </div>
+       <div class="flex border-b border-gray-200 mb-6 gap-4 md:gap-8 px-2 overflow-x-auto scrollbar-hide">
+  <button
+    class="profile-tab-btn active text-sm md:text-base whitespace-nowrap flex-shrink-0"
+    data-target="tab-info"
+  >
+    <i class="far fa-user mr-2"></i> Profile Info
+  </button>
+  <button
+    class="profile-tab-btn text-sm md:text-base whitespace-nowrap flex-shrink-0"
+    data-target="tab-apps"
+  >
+    <i class="far fa-paper-plane mr-2"></i> My Applications
+  </button>
+  <button
+    class="profile-tab-btn text-sm md:text-base whitespace-nowrap flex-shrink-0"
+    data-target="tab-saved"
+  >
+    <i class="far fa-bookmark mr-2"></i> Saved Jobs
+  </button>
+</div>
         <div id="tab-info" class="profile-tab-content block animate-fade-in">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-6">
@@ -569,9 +563,7 @@
       </div>
 
       <div id="editMode" class="hidden">
-        <div
-          class="bg-white rounded-2xl shadow-lg border border-gray-200 w-3/4 mx-auto p-8"
-        >
+  <div class="bg-white rounded-2xl shadow-lg border border-gray-200 w-full md:w-3/4 mx-auto p-8">
           <div
             class="flex justify-between items-center border-b border-gray-100 pb-6 mb-6"
           >

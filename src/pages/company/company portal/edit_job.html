@@ -125,331 +125,706 @@
       }
     </style>
   </head>
-  <body class="bg-gray-50 text-gray-800">
-    <nav
-      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8"
-    >
-    <a
-    href="/Company_dashboard"
-    class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-    >
-    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">Company Portal</span>
-      </a>
-    </nav>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Job – Company Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    <main class="w-full mx-auto p-6 space-y-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <a
-          href="/Company_jobs"
-          class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group"
-        >
-          <i
-            class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-          ></i>
+  <style>
+    /* ══════════════════════════════════════
+       MOBILE BOTTOM BAR  (pill style)
+    ══════════════════════════════════════ */
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: calc(100% - 32px);
+      max-width: 420px;
+    }
+    .mob-pill {
+      background: #e4e8ed;
+      border-radius: 999px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .mob-left  { display:flex; align-items:center; gap:10px; }
+    .mob-right { display:flex; align-items:center; gap:8px;  }
+
+    .mob-hamburger {
+      width:42px; height:42px; border-radius:50%;
+      background:#d0d5db;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:background .2s, transform .15s; flex-shrink:0;
+    }
+    .mob-hamburger:active { transform:scale(.88); background:#bcc3cc; }
+    .mob-hamburger ion-icon { font-size:1.35rem; color:#374151; }
+
+    .mob-logo-icon {
+      width:34px; height:34px;
+      background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+      border-radius:9px;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:800; font-size:1rem;
+      box-shadow:0 2px 8px rgba(59,130,246,.4);
+    }
+    .mob-profile {
+      width:42px; height:42px; border-radius:50%;
+      background:#4b5563;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:.2s; flex-shrink:0;
+    }
+    .mob-profile:active { transform:scale(.88); }
+    .mob-profile ion-icon { font-size:1.3rem; color:#e5e7eb; }
+
+    .mob-logout {
+      width:42px; height:42px; border-radius:50%;
+      background:#dc2626;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      box-shadow:0 3px 10px rgba(220,38,38,.4);
+      transition:.2s; flex-shrink:0;
+    }
+    .mob-logout:active { transform:scale(.88); background:#b91c1c; }
+    .mob-logout ion-icon { font-size:1.3rem; color:#fff; }
+
+    /* Drawer */
+    .mob-drawer {
+      position:fixed; bottom:0; left:0; right:0;
+      background:#fff; border-radius:24px 24px 0 0;
+      box-shadow:0 -8px 40px rgba(0,0,0,.15);
+      z-index:200; padding:12px 0 calc(16px + env(safe-area-inset-bottom));
+      transform:translateY(100%);
+      transition:transform .35s cubic-bezier(.32,.72,0,1);
+    }
+    .mob-drawer.open { transform:translateY(0); }
+    .drawer-handle {
+      width:40px; height:4px; background:#d1d5db;
+      border-radius:99px; margin:0 auto 16px;
+    }
+    .drawer-item {
+      display:flex; align-items:center; gap:14px;
+      padding:13px 24px; cursor:pointer;
+      transition:background .15s;
+      font-size:.95rem; font-weight:600; color:#374151;
+      text-transform:capitalize;
+    }
+    .drawer-item:active { background:#f3f4f6; }
+    .drawer-item.active { color:var(--mob-color); }
+    .drawer-item .d-icon-wrap {
+      width:40px; height:40px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--mob-bg); flex-shrink:0;
+    }
+    .drawer-item ion-icon { font-size:1.3rem; color:var(--mob-color); }
+
+    .mob-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.3); z-index:150;
+      opacity:0; transition:opacity .3s;
+    }
+    .mob-overlay.open { opacity:1; }
+
+    /* ══════════════════════════════════════
+       MOBILE PAGE FIXES
+    ══════════════════════════════════════ */
+
+    /* sticky action bar at top on mobile */
+    .mobile-action-bar {
+      display: none;
+    }
+
+    @media (max-width: 767px) {
+
+      /* show bottom bar + add bottom padding */
+      .mobile-bottom-bar { display:block; }
+      body { padding-bottom: 90px; }
+
+      /* hide desktop nav */
+      .desktop-nav { display:none !important; }
+
+      /* ── Nav ── */
+      nav {
+        padding: 10px 16px !important;
+      }
+      nav span.font-lexend {
+        font-size: 1rem !important;
+      }
+      nav img { height: 36px !important; }
+
+      /* ── Sticky mobile action bar (Preview + Save) ── */
+      .mobile-action-bar {
+        display: flex;
+        position: sticky;
+        top: 0; /* just below the nav via z stacking */
+        z-index: 40;
+        background: #f9fafb;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 10px 16px;
+        gap: 10px;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .mobile-action-bar button {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.82rem;
+        padding: 8px 10px;
+      }
+
+      /* hide the big desktop header row on mobile */
+      .desktop-header-row { display: none !important; }
+
+      /* ── Main padding ── */
+      main { padding: 0 !important; }
+
+      /* ── Back link + Title block ── */
+      .mob-page-header {
+        padding: 14px 16px 0;
+      }
+      .mob-page-header h1 { font-size: 1.4rem !important; }
+      .mob-page-header p  { font-size: 0.82rem; }
+
+      /* ── Cards ── */
+      .form-card {
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 16px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      /* ── Force all grid cols to 1 on mobile ── */
+      .grid-cols-1.md\:grid-cols-2,
+      .grid-cols-1.md\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+      }
+      /* col-span-2 on mobile = still 1 col */
+      .col-span-2 { grid-column: span 1 !important; }
+
+      /* ── Inputs & selects ── */
+      input, select, textarea {
+        font-size: 16px !important; /* prevent iOS zoom */
+      }
+
+      /* ── Labels ── */
+      label { font-size: 0.8rem !important; }
+
+      /* ── Preview mode ── */
+      #previewMode {
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 16px !important;
+      }
+      #prev-title { font-size: 1.5rem !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Job – Company Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    /* ══════════════════════════════════════
+       MOBILE BOTTOM BAR  (pill style)
+    ══════════════════════════════════════ */
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: calc(100% - 32px);
+      max-width: 420px;
+    }
+    .mob-pill {
+      background: #e4e8ed;
+      border-radius: 999px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .mob-left  { display:flex; align-items:center; gap:10px; }
+    .mob-right { display:flex; align-items:center; gap:8px;  }
+
+    .mob-hamburger {
+      width:42px; height:42px; border-radius:50%;
+      background:#d0d5db;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:background .2s, transform .15s; flex-shrink:0;
+    }
+    .mob-hamburger:active { transform:scale(.88); background:#bcc3cc; }
+    .mob-hamburger ion-icon { font-size:1.35rem; color:#374151; }
+
+    .mob-logo-icon {
+      width:34px; height:34px;
+      background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+      border-radius:9px;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:800; font-size:1rem;
+      box-shadow:0 2px 8px rgba(59,130,246,.4);
+    }
+    .mob-profile {
+      width:42px; height:42px; border-radius:50%;
+      background:#4b5563;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:.2s; flex-shrink:0;
+    }
+    .mob-profile:active { transform:scale(.88); }
+    .mob-profile ion-icon { font-size:1.3rem; color:#e5e7eb; }
+
+    .mob-logout {
+      width:42px; height:42px; border-radius:50%;
+      background:#dc2626;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      box-shadow:0 3px 10px rgba(220,38,38,.4);
+      transition:.2s; flex-shrink:0;
+    }
+    .mob-logout:active { transform:scale(.88); background:#b91c1c; }
+    .mob-logout ion-icon { font-size:1.3rem; color:#fff; }
+
+    /* Drawer */
+    .mob-drawer {
+      position:fixed; bottom:0; left:0; right:0;
+      background:#fff; border-radius:24px 24px 0 0;
+      box-shadow:0 -8px 40px rgba(0,0,0,.15);
+      z-index:200; padding:12px 0 calc(16px + env(safe-area-inset-bottom));
+      transform:translateY(100%);
+      transition:transform .35s cubic-bezier(.32,.72,0,1);
+    }
+    .mob-drawer.open { transform:translateY(0); }
+    .drawer-handle {
+      width:40px; height:4px; background:#d1d5db;
+      border-radius:99px; margin:0 auto 16px;
+    }
+    .drawer-item {
+      display:flex; align-items:center; gap:14px;
+      padding:13px 24px; cursor:pointer;
+      transition:background .15s;
+      font-size:.95rem; font-weight:600; color:#374151;
+      text-transform:capitalize;
+    }
+    .drawer-item:active { background:#f3f4f6; }
+    .drawer-item.active { color:var(--mob-color); }
+    .drawer-item .d-icon-wrap {
+      width:40px; height:40px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--mob-bg); flex-shrink:0;
+    }
+    .drawer-item ion-icon { font-size:1.3rem; color:var(--mob-color); }
+
+    .mob-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.3); z-index:150;
+      opacity:0; transition:opacity .3s;
+    }
+    .mob-overlay.open { opacity:1; }
+
+    /* ══════════════════════════════════════
+       MOBILE PAGE FIXES
+    ══════════════════════════════════════ */
+
+    /* hidden by default — shown only on mobile */
+    .mobile-action-bar  { display: none; }
+    .mob-page-header    { display: none; }
+
+    @media (max-width: 767px) {
+
+      /* show bottom bar */
+      .mobile-bottom-bar { display: block; }
+      body { padding-bottom: 90px; }
+
+      /* hide desktop nav logout */
+      .desktop-nav { display: none !important; }
+
+      /* ── Nav tighter ── */
+      nav { padding: 10px 16px !important; }
+      nav img { height: 36px !important; }
+      nav .font-lexend { font-size: 1rem !important; }
+
+      /* ── HIDE the broken desktop header row completely ── */
+      .desktop-header-row { display: none !important; }
+
+      /* ── Show the clean mobile header ── */
+      .mob-page-header { display: block; padding: 16px 16px 8px; }
+
+      /* ── Mobile sticky action bar ── */
+      .mobile-action-bar {
+        display: flex;
+        gap: 10px;
+        padding: 10px 16px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      }
+      .mobile-action-bar button {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.85rem;
+        padding: 9px 12px;
+      }
+
+      /* ── Main ── */
+      main { padding: 0 !important; }
+
+      /* ── Form cards edge-to-edge ── */
+      .form-card {
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 16px !important;
+      }
+
+      /* ── All grids → single column ── */
+      .grid { grid-template-columns: 1fr !important; }
+      .col-span-2 { grid-column: span 1 !important; }
+
+      /* ── iOS zoom fix ── */
+      input, select, textarea { font-size: 16px !important; }
+
+      /* ── Preview ── */
+      #previewMode {
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 16px !important;
+      }
+      #prev-title { font-size: 1.5rem !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- ══════════════ NAVBAR ══════════════ -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm">
+    <a href="/Company_dashboard"
+       class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+       onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+      <span class="font-lexend font-semibold not-italic">Company Portal</span>
+    </a>
+
+    <!-- Desktop logout -->
+    <div class="desktop-nav min-w-[150px] flex justify-end">
+      <button id="btnLogout"
+        class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl">
+        <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
+          <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+          </svg>
+        </div>
+        <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">Logout</div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════ MOBILE STICKY ACTION BAR ══════════════ -->
+  <div class="mobile-action-bar">
+    <button id="btnPreviewMob"
+      class="bg-white border border-gray-700 text-gray-700 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2">
+      <i class="fas fa-eye"></i> Preview
+    </button>
+    <button id="btnSaveMob"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm">
+      <i class="fas fa-save"></i> Save
+    </button>
+  </div>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <main class="w-full mx-auto md:p-6 md:space-y-6 space-y-4">
+
+    <!-- Mobile page header (back + title, no buttons) -->
+    <div class="mob-page-header">
+      <a href="/Company_jobs"
+         class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mb-3 group">
+        <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
+        <span class="text-sm font-medium">Back</span>
+      </a>
+      <h1 id="pageTitleMob" class="text-2xl font-bold text-gray-900">Edit Job</h1>
+      <p class="text-gray-500 mt-1 text-sm">Update your job posting details</p>
+    </div>
+
+    <!-- Desktop header row (back + title + buttons) -->
+    <div class="desktop-header-row flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/Company_jobs"
+           class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-10 group">
+          <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
           <span class="text-sm font-medium">Back</span>
         </a>
+        <div>
+          <h1 id="pageTitle" class="text-3xl font-bold text-gray-900">Edit Job</h1>
+          <p id="pageSubtitle" class="text-gray-500 mt-1">Update your job posting details</p>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button id="btnPreview"
+          class="bg-white border border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2">
+          <i class="fas fa-eye"></i> <span>Preview</span>
+        </button>
+        <button id="btnSaveChanges"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loadingState" class="hidden text-center py-20">
+      <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+      <p class="mt-4 text-gray-500">Loading job details...</p>
+    </div>
+
+    <!-- ── FORM ── -->
+    <form id="jobForm" class="space-y-6">
+
+      <!-- Basic Info -->
+      <div class="form-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Basic Information</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="col-span-2 md:col-span-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
+            <input type="text" id="title"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" required/>
+          </div>
+          <div class="col-span-2 md:col-span-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+            <input type="text" id="department"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
-            <h1 id="pageTitle" class="text-3xl font-bold text-gray-900">
-              Edit Job
-            </h1>
-            <p id="pageSubtitle" class="text-gray-500 mt-1">
-              Update your job posting details
-            </p>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+            <input type="text" id="location"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Employment Type *</label>
+            <select id="type"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white transition">
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Experience Level *</label>
+            <select id="experienceLevel"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white transition">
+              <option value="Entry-level">Entry-level</option>
+              <option value="Mid-level">Mid-level</option>
+              <option value="Senior-level">Senior-level</option>
+              <option value="Executive">Executive</option>
+            </select>
           </div>
         </div>
-        <div class="flex gap-3">
-          <button
-            id="btnPreview"
-            class="bg-white border border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white  px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"
-          >
-            <i class="fas fa-eye"></i> <span>Preview</span>
-          </button>
 
-          <button
-            id="btnSaveChanges"
-            class="bg-blue-600 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm"
-          >
-            <i class="fas fa-save"></i> Save Changes
-          </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Salary ($)</label>
+            <input type="number" id="salaryMin"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Salary ($)</label>
+            <input type="number" id="salaryMax"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"/>
+          </div>
         </div>
       </div>
 
-      <div id="loadingState" class="hidden text-center py-20">
-        <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
-        <p class="mt-4 text-gray-500">Loading job details...</p>
-      </div>
-
-      <form id="jobForm" class="space-y-6">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">
-            Basic Information
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="col-span-2 md:col-span-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Job Title *</label
-              >
-              <input
-                type="text"
-                id="title"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                required
-              />
-            </div>
-            <div class="col-span-2 md:col-span-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Department</label
-              >
-              <input
-                type="text"
-                id="department"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-              />
-            </div>
+      <!-- Job Details -->
+      <div class="form-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Job Details</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Job Description *</label>
+            <textarea id="description" rows="5"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" required></textarea>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Location *</label
-              >
-              <input
-                type="text"
-                id="location"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                required
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Employment Type *</label
-              >
-              <select
-                id="type"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white transition"
-              >
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Experience Level *</label
-              >
-              <select
-                id="experienceLevel"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white transition"
-              >
-                <option value="Entry-level">Entry-level</option>
-                <option value="Mid-level">Mid-level</option>
-                <option value="Senior-level">Senior-level</option>
-                <option value="Executive">Executive</option>
-              </select>
-            </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Requirements</label>
+            <textarea id="requirements" rows="4"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"></textarea>
           </div>
-
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Required Skills (Comma separated) *</label>
+            <input type="text" id="skills"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" required/>
+            <p class="text-xs text-gray-500 mt-1">These will be used for AI matching.</p>
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Minimum Salary ($)</label
-              >
-              <input
-                type="number"
-                id="salaryMin"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-              />
+              <label class="block text-sm font-medium text-gray-700 mb-1">Years of Experience</label>
+              <input type="text" id="yearsOfExperience"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"/>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Maximum Salary ($)</label
-              >
-              <input
-                type="number"
-                id="salaryMax"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-              />
+              <label class="block text-sm font-medium text-gray-700 mb-1">Education</label>
+              <input type="text" id="education"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"/>
             </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">
-            Job Details
-          </h3>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Job Description *</label
-              >
-              <textarea
-                id="description"
-                rows="5"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                required
-              ></textarea>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Requirements</label
-              >
-              <textarea
-                id="requirements"
-                rows="4"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-              ></textarea>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Required Skills (Comma separated) *</label
-              >
-              <input
-                type="text"
-                id="skills"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                required
-              />
-              <p class="text-xs text-gray-500 mt-1">
-                These will be used for AI matching.
-              </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
-                  >Years of Experience</label
-                >
-                <input
-                  type="text"
-                  id="yearsOfExperience"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
-                  >Education</label
-                >
-                <input
-                  type="text"
-                  id="education"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Benefits & Perks</label
-              >
-              <textarea
-                id="benefits"
-                rows="3"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-      </form>
-
-      <div
-        id="previewMode"
-        class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-8 space-y-8"
-      >
-        <div class="border-b border-gray-200 pb-6">
-          <h2 id="prev-title" class="text-3xl font-bold text-gray-900 mb-4">
-            Job Title
-          </h2>
-          <div class="flex flex-wrap gap-4 text-gray-600">
-            <span class="flex items-center gap-1"
-              ><i class="fas fa-map-marker-alt"></i>
-              <span id="prev-location">Location</span></span
-            >
-            <span class="flex items-center gap-1"
-              ><i class="fas fa-briefcase"></i>
-              <span id="prev-type">Type</span></span
-            >
-            <span class="flex items-center gap-1"
-              ><i class="fas fa-layer-group"></i>
-              <span id="prev-level">Level</span></span
-            >
-          </div>
-          <div
-            id="prev-salary"
-            class="mt-3 font-semibold text-blue-600 text-lg"
-          >
-            $0 - $0
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3">Job Description</h3>
-          <p
-            id="prev-description"
-            class="text-gray-700 whitespace-pre-wrap leading-relaxed"
-          >
-            ...
-          </p>
-        </div>
-
-        <div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3">Requirements</h3>
-          <p
-            id="prev-requirements"
-            class="text-gray-700 whitespace-pre-wrap leading-relaxed"
-          >
-            ...
-          </p>
-        </div>
-
-        <div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3">Required Skills</h3>
-          <div id="prev-skills" class="flex flex-wrap gap-2"></div>
-        </div>
-
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg"
-        >
-          <div>
-            <span class="text-sm text-gray-500 font-bold uppercase"
-              >Experience</span
-            >
-            <p id="prev-experience" class="text-gray-900 font-medium">--</p>
           </div>
           <div>
-            <span class="text-sm text-gray-500 font-bold uppercase"
-              >Education</span
-            >
-            <p id="prev-education" class="text-gray-900 font-medium">--</p>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Benefits & Perks</label>
+            <textarea id="benefits" rows="3"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"></textarea>
           </div>
-        </div>
-
-        <div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3">Benefits</h3>
-          <p id="prev-benefits" class="text-gray-700 whitespace-pre-wrap">
-            ...
-          </p>
         </div>
       </div>
-    </main>
-    <script type="module" src="/src/js/utils/authGuard.js"></script>
+    </form>
 
-    <script type="module" src="/src/js/config/constant.js"></script>
-    <script type="module" src="/src/js/utils/axiosClient.js"></script>
-    <script
-      type="module"
-      src="/src/js/services/jobManagementService.js"
-    ></script>
-    <script type="module" src="/src/js/services/jobService.js"></script>
-    <script
-      type="module"
-      src="/src/js/controllers/editJobController.js"
-    ></script>
-  </body>
+    <!-- Preview Mode -->
+    <div id="previewMode"
+      class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-8 space-y-8">
+      <div class="border-b border-gray-200 pb-6">
+        <h2 id="prev-title" class="text-3xl font-bold text-gray-900 mb-4">Job Title</h2>
+        <div class="flex flex-wrap gap-4 text-gray-600">
+          <span class="flex items-center gap-1"><i class="fas fa-map-marker-alt"></i><span id="prev-location">Location</span></span>
+          <span class="flex items-center gap-1"><i class="fas fa-briefcase"></i><span id="prev-type">Type</span></span>
+          <span class="flex items-center gap-1"><i class="fas fa-layer-group"></i><span id="prev-level">Level</span></span>
+        </div>
+        <div id="prev-salary" class="mt-3 font-semibold text-blue-600 text-lg">$0 - $0</div>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Job Description</h3>
+        <p id="prev-description" class="text-gray-700 whitespace-pre-wrap leading-relaxed">...</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Requirements</h3>
+        <p id="prev-requirements" class="text-gray-700 whitespace-pre-wrap leading-relaxed">...</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Required Skills</h3>
+        <div id="prev-skills" class="flex flex-wrap gap-2"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg">
+        <div>
+          <span class="text-sm text-gray-500 font-bold uppercase">Experience</span>
+          <p id="prev-experience" class="text-gray-900 font-medium">--</p>
+        </div>
+        <div>
+          <span class="text-sm text-gray-500 font-bold uppercase">Education</span>
+          <p id="prev-education" class="text-gray-900 font-medium">--</p>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Benefits</h3>
+        <p id="prev-benefits" class="text-gray-700 whitespace-pre-wrap">...</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ══════════════ MOBILE BOTTOM BAR ══════════════ -->
+  <div class="mobile-bottom-bar">
+    <div class="mob-pill">
+      <div class="mob-left">
+        <div class="mob-hamburger" id="mobMenuBtn">
+          <ion-icon name="menu-outline"></ion-icon>
+        </div>
+        <div class="mob-logo-icon">C</div>
+      </div>
+      <div class="mob-right">
+        <div class="mob-profile" id="mobProfileBtn">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+        <div class="mob-logout" id="mobLogoutBtn">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="mob-overlay" id="mobOverlay"></div>
+
+  <!-- ══════════════ SLIDE-UP DRAWER ══════════════ -->
+  <div class="mob-drawer" id="mobDrawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-item" data-url="/Company_dashboard" style="--mob-bg:#eff6ff;--mob-color:#0576d3">
+      <div class="d-icon-wrap"><ion-icon name="easel-outline"></ion-icon></div> Dashboard
+    </div>
+    <div class="drawer-item" data-url="/Company_profile" style="--mob-bg:#ecfeff;--mob-color:#0e7490">
+      <div class="d-icon-wrap"><ion-icon name="person-outline"></ion-icon></div> Profile
+    </div>
+    <div class="drawer-item" data-url="/Company_jobs" style="--mob-bg:#f5f3ff;--mob-color:#4e3085">
+      <div class="d-icon-wrap"><ion-icon name="briefcase-outline"></ion-icon></div> Jobs
+    </div>
+    <div class="drawer-item" data-url="/applications" style="--mob-bg:#f0fdfa;--mob-color:#29a8a8">
+      <div class="d-icon-wrap"><ion-icon name="grid-outline"></ion-icon></div> Applications
+    </div>
+    <div class="drawer-item" data-url="/verification" style="--mob-bg:#f0fdf4;--mob-color:#17741b">
+      <div class="d-icon-wrap"><ion-icon name="shield-outline"></ion-icon></div> Verification
+    </div>
+  </div>
+
+  <script>
+    // ── Drawer ──
+    const menuBtn = document.getElementById('mobMenuBtn');
+    const drawer  = document.getElementById('mobDrawer');
+    const overlay = document.getElementById('mobOverlay');
+    const openDrawer  = () => { drawer.classList.add('open'); overlay.style.display='block'; requestAnimationFrame(()=>overlay.classList.add('open')); };
+    const closeDrawer = () => { drawer.classList.remove('open'); overlay.classList.remove('open'); setTimeout(()=>overlay.style.display='none',300); };
+    menuBtn.addEventListener('click', openDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    document.querySelectorAll('.drawer-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.drawer-item').forEach(i=>i.classList.remove('active'));
+        item.classList.add('active');
+        closeDrawer();
+      });
+    });
+
+    // ── Preview toggle (works for both desktop + mobile buttons) ──
+    let previewing = false;
+    function togglePreview() {
+      previewing = !previewing;
+      document.getElementById('jobForm').classList.toggle('hidden', previewing);
+      document.getElementById('previewMode').classList.toggle('hidden', !previewing);
+    }
+    ['btnPreview','btnPreviewMob'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('click', togglePreview);
+    });
+  </script>
+
+  <!-- Your existing scripts -->
+  <!-- <script type="module" src="/src/js/utils/authGuard.js"></script> -->
+  <!-- <script type="module" src="/src/js/config/constant.js"></script> -->
+  <!-- etc. -->
+
+</body>
 </html>

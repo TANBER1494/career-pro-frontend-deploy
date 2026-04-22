@@ -517,10 +517,27 @@
   top: 10px;
   transform: rotate(225deg);
 }
+/* التعديل المطلوب لوضع الموبايل */
+@media (max-width: 1180px) {
+  nav {
+    width: 100% !important;   /* يفرش بعرض الشاشة */
+    max-width: 100% !important;
+    border-radius: 0 !important; /* يشيل الحواف المدورة عشان يلزق في الشاشة */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;    /* لو عايزاه يلزق فوق خالص شيلي الـ margin-top */
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+
 
     </style>
 
-<button id="backToTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+
+  </head>
+  <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
+    <button id="backToTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
   <svg class="icon" viewBox="0 0 384 512">
     <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
   </svg>
@@ -528,23 +545,21 @@
   <span class="text">Scroll Top</span>
 </button>
     </style>
-  </head>
-  <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
-    <nav class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full">
+   <nav class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 max-[1180px]:w-[95%] mx-auto rounded-full">
   
-      <div class="flex items-center gap-4">
-        <div class="hidden max-[1180px]:block menu-toggle"> 
-          <input type="checkbox" id="checkbox" class="hidden"> 
-          <label for="checkbox" class="toggle">
-            <div class="bar bar--top"></div>
-            <div class="bar bar--middle"></div>
-            <div class="bar bar--bottom"></div>
-          </label>
-        </div>
+  <div class="flex items-center gap-4">
+    <div class="hidden max-[1180px]:block menu-toggle"> 
+      <input type="checkbox" id="checkbox" class="hidden"> 
+      <label for="checkbox" class="toggle">
+        <div class="bar bar--top"></div>
+        <div class="bar bar--middle"></div>
+        <div class="bar bar--bottom"></div>
+      </label>
+    </div>
 
     <a id="logoBtn" href="/Company_dashboard" class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <img src="assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="hidden sm:inline font-lexend font-simibold not-italic">AI-Career Guidance</span>
+      <span class="hidden sm:inline font-lexend font-semibold not-italic">AI-Career Guidance</span>
     </a>
   </div>
 
@@ -567,14 +582,18 @@
           <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
           <span class="title">Jobs</span>
         </li>
+
+    
+       
       </ul>
     </div>
   </div>
 
   <div class="w-auto flex justify-end min-w-0">
     <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-      </div>
+    </div>
   </div>
+
 </nav>
     <section
       class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"
@@ -1225,7 +1244,7 @@
           <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white text-sm font-bold">SY</div>
           <div>
             <p class="text-sm font-semibold text-slate-900">Sara Youssef</p>
-            <p class="text-xs text-slate-400">Frontend Developer</p>
+            <p class="text-xs text-slate-400"></p>
           </div>
         </div>
       </div>
@@ -1338,6 +1357,8 @@
     </div>
   </div>
 </footer>
+
+
     <div id="pixel-blast-container"></div>
         <script type="module" src="/src/js/utils/authGuard.js"></script>
 

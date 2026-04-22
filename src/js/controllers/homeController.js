@@ -54,14 +54,14 @@ function initAuthButtons() {
     }
 
     // ✅ لو المستخدم طالب (Seeker) ومكمل بياناته -> اعرض زر البروفايل وتسجيل الخروج
-    const navLinkHtml = `
-          <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
-            <i class="fas fa-user-circle text-lg"></i> Profile
-        </a>`;
+   const navLinkHtml = `
+  <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center transition duration-300">
+    <i class="fas fa-user-circle text-xl"></i>
+  </a>`;
 
     authContainer.innerHTML = `
             ${navLinkHtml}
-            <div class="min-w-[150px] flex justify-end">
+            <div class="flex justify-end">
                 <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1">
                   <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
                     <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
@@ -80,8 +80,8 @@ function initAuthButtons() {
     });
   } else {
     authContainer.innerHTML = `
-            <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
-            <a href="/signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
+           <a href="/login" class="text-sm font-semibold text-blue-600 border-2 border-blue-500 px-5 py-2.5 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30">Login</a>
+            
         `;
   }
 }

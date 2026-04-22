@@ -37,40 +37,41 @@
     </style>
   </head>
   <body class="font-poppins text-slate-800 flex flex-col min-h-screen">
-    <nav
-        class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
-      >
-      <a
-      href="/CareerPro"
-      class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-      >
-      <img src="/assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
-      </a>
-      <div class="w-auto flex justify-end min-w-0">
-        <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-          </div>
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-full">
+  
+  <a href="/CareerPro" class="flex items-center gap-3 w-auto" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <img src="/assets/imgs/Logo.png" alt="Logo" class="h-10 w-auto object-contain">
+    <span class="font-lexend font-semibold hidden sm:inline text-xl">AI-Career Guidance</span>
+  </a>
+
+  <div class="flex items-center gap-3">
+    
+    
+    <div id="auth-buttons-container" class="hidden sm:flex items-center gap-3">
       </div>
-      </nav>
-    <main class="w-full px-6 lg:px-10 py-8 min-h-screen">
-      <div class="flex items-center gap-5 mb-4">
-        <a
+  </div>
+</nav>
+
+<main class="w-full px-4 sm:px-6 lg:px-10 py-8 min-h-screen">
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 mb-4 px-4 sm:px-0">
+    
+    <a 
       id="backBtn"
       href="/CareerPro"
-      class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors mt-6 ml-6 mb-8 group"
+      class="flex w-fit items-center text-slate-500 hover:text-blue-600 transition-colors group"
     >
-      <i
-        class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-      ></i>
+      <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
       <span class="text-sm font-medium">Back</span>
     </a>
-        <h1 class="text-3xl font-poppins font-medium text-slate-900">
-          All Jobs
-        </h1>
-        <p class="text-slate-500 mt-1" id="jobs-count">
-          Loading available positions...
-        </p>
-      </div>
+
+    <h1 class="text-2xl sm:text-3xl font-poppins font-medium text-slate-900">
+      All Jobs
+    </h1>
+    <p class="text-slate-500 text-sm sm:text-base" id="jobs-count">
+      Loading available positions...
+    </p>
+  </div>
+
 
       <div
         class="relative bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col md:flex-row gap-4 items-center"

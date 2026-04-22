@@ -297,3 +297,28 @@ if (btnLogout) {
     authService.logout();
   });
 }
+  const mobileSidebar = document.getElementById('mobileSidebar');
+  const openBtn = document.querySelector('.md\\:hidden'); // زرار البرجر في الـ Nav
+  const closeBtn = document.getElementById('closeSidebar');
+  const overlay = document.getElementById('closeSidebarOverlay');
+
+  // فتح المنيو
+  openBtn.onclick = () => {
+    mobileSidebar.classList.remove('-translate-x-full');
+  };
+
+  // قفل المنيو
+  const closeMenu = () => {
+    mobileSidebar.classList.add('-translate-x-full');
+  };
+
+  closeBtn.onclick = closeMenu;
+  overlay.onclick = closeMenu;
+
+  // توجيه الروابط (نفس المنطق اللي عندك)
+  document.querySelectorAll('#mobileSidebar li').forEach(item => {
+    item.onclick = () => {
+      const url = item.getAttribute('data-url');
+      if (url) window.location.href = url;
+    };
+  });

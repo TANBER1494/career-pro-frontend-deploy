@@ -130,72 +130,101 @@
     </style>
   </head>
   <body class=" text-gray-800">
-    <nav
-      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8"
-    >
-    <a
-    href="/Company_dashboard"
-    class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-    >
-    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-    <span class="font-lexend font-simibold not-italic">Company Portal</span>
+   <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between shadow-sm mb-8">
+  
+  <div class="flex items-center gap-3">
+    <button class="block md:hidden text-blue-600 focus:outline-none">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+
+    <a href="/Company_dashboard" class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer">
+      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-10 md:h-12 w-auto object-contain">
+      
+      <span class="hidden md:block font-lexend font-semibold not-italic">Company Portal</span>
     </a>
+  </div>
 
-      <div class="hidden md:flex flex-1 nav-container">
-        <div
-          class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
-        >
-        <ul class="magic-menu">
-          <li class="menu-item" data-url="/Company_dashboard" style="--i: #5eb6fd;--j:#0576d3">
-              <span class="icon"><ion-icon name="easel-outline"></ion-icon></span>
-              <span class="title">dashboard</span>
-          </li>
-      
-          <li class="menu-item" data-url="/Company_profile" style="--i: #67e3ff;--j:#69a8b8">
-              <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-              <span class="title">profile</span>
-          </li>
-      
-          <li class="menu-item" data-url="/Company_jobs" style="--i: #8f68d6;--j:#4e3085">
-              <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
-              <span class="title">Jobs</span>
-          </li>
-      
-          <li class="menu-item active" data-url="/applications" style="--i: #72f3f3;--j:#29a8a8">
-              <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
-              <span class="title">Applications</span>
-          </li>
-      
-          <li class="menu-item" data-url="/verification" style="--i: #2cc034;--j:#17741b">
-              <span class="icon"><ion-icon name="shield-outline"></ion-icon></span>
-              <span class="title">Verification</span>
-          </li>
+  <div class="hidden md:flex flex-1 nav-container">
+    <div class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner">
+      <ul class="magic-menu">
+        <li class="menu-item" data-url="/Company_dashboard" style="--i: #5eb6fd;--j:#0576d3">
+            <span class="icon"><ion-icon name="easel-outline"></ion-icon></span>
+            <span class="title">dashboard</span>
+        </li>
+        <li class="menu-item" data-url="/Company_profile" style="--i: #67e3ff;--j:#69a8b8">
+            <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+            <span class="title">profile</span>
+        </li>
+        <li class="menu-item" data-url="/Company_jobs" style="--i: #8f68d6;--j:#4e3085">
+            <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+            <span class="title">Jobs</span>
+        </li>
+        <li class="menu-item active" data-url="/applications" style="--i: #72f3f3;--j:#29a8a8">
+            <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
+            <span class="title">Applications</span>
+        </li>
+        <li class="menu-item" data-url="/verification" style="--i: #2cc034;--j:#17741b">
+            <span class="icon"><ion-icon name="shield-outline"></ion-icon></span>
+            <span class="title">Verification</span>
+        </li>
       </ul>
-        </div>
-      </div>
-      <div class="min-w-[150px] flex justify-end">
-        <button 
-        id="btnLogout"
-  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
->
-  <div
-    class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
-  >
-    <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-      <path
-        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-      ></path>
-    </svg>
+    </div>
   </div>
-  <div
-    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-  >
-    Logout
-  </div>
-</button>
 
+  <div class="flex justify-end ml-auto md:ml-0">
+    <button 
+      id="btnLogout"
+      class="group flex items-center justify-center md:justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg md:hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+    >
+      <div class="flex items-center justify-center w-full transition-all duration-300 md:group-hover:justify-start md:group-hover:px-3">
+        <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+          <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+        </svg>
       </div>
-    </nav>
+      <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 md:group-hover:translate-x-0 md:group-hover:opacity-100 hidden md:block">
+        Logout
+      </div>
+    </button>
+  </div>
+
+</nav>
+<div id="mobileSidebar" class="fixed inset-0 z-[60] transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+  <div id="closeSidebarOverlay" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+  
+  <div class="relative w-64 h-full bg-white shadow-2xl p-6">
+    <div class="flex justify-between items-center mb-8">
+      <span class="text-xl font-bold text-gray-800">Menu</span>
+      <button id="closeSidebar" class="text-gray-500 hover:text-red-500">
+        <ion-icon name="close-outline" class="text-3xl"></ion-icon>
+      </button>
+    </div>
+
+    <ul class="space-y-4">
+      <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/Company_dashboard">
+        <ion-icon name="easel-outline" class="text-2xl text-blue-500"></ion-icon>
+        <span class="font-medium text-gray-700">Dashboard</span>
+      </li>
+      <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/Company_profile">
+        <ion-icon name="person-outline" class="text-2xl text-cyan-500"></ion-icon>
+        <span class="font-medium text-gray-700">Profile</span>
+      </li>
+      <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/Company_jobs">
+        <ion-icon name="briefcase-outline" class="text-2xl text-purple-500"></ion-icon>
+        <span class="font-medium text-gray-700">Jobs</span>
+      </li>
+      <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/applications">
+        <ion-icon name="grid-outline" class="text-2xl text-teal-500"></ion-icon>
+        <span class="font-medium text-gray-700">Applications</span>
+      </li>
+      <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/verification">
+        <ion-icon name="shield-outline" class="text-2xl text-green-500"></ion-icon>
+        <span class="font-medium text-gray-700">Verification</span>
+      </li>
+    </ul>
+  </div>
+</div>
 
     <main class="w-full mx-auto p-6 space-y-6">
       <div class="flex items-center justify-between">

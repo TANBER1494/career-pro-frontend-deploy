@@ -1,220 +1,151 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Matched Jobs - AI-Career Guidance</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV Analyzer - AI-Career Guidance</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
-    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png" />
     <style>
       body.loaded {
         opacity: 1;
-      }    
+      }
       body {
-        opacity: 0; 
+        opacity: 0;
         transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
         background: linear-gradient(
-        150deg,
-        rgba(220, 224, 224, 1) 14%,
-        rgba(182, 206, 224, 1) 60%,
-        rgba(95, 106, 115, 1) 100%
+          150deg,
+          rgba(220, 224, 224, 1) 14%,
+          rgba(182, 206, 224, 1) 60%,
+          rgba(95, 106, 115, 1) 100%
         );
         margin: 0;
         overflow-x: hidden;
         background-attachment: fixed;
-        font-family: "Poppins", sans-serif;
+        font-family: 'Poppins', sans-serif;
       }
-    .hidden { display: none !important; }
-  </style>
-</head>
-<body class="bg-slate-100 text-slate-800 min-h-screen mb-6">
-  <nav
-        class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
-      >
+    </style>
+  </head>
+  <body class="bg-slate-100 text-slate-800 min-h-screen pb-12">
+    <nav
+      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
+    >
       <a
-      href="/CareerPro"
-      class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        href="/CareerPro"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
-      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">AI-Career Guidance</span>
+        <img
+          src="/assets/imgs/Logo.png"
+          alt="CareerGuidance Logo"
+          class="h-12 w-auto object-contain"
+        />
+        <span class="font-lexend font-simibold not-italic"
+          >AI-Career Guidance</span
+        >
       </a>
       <div class="w-auto flex justify-end min-w-0">
-        <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-          </div>
+        <div
+          id="auth-buttons-container"
+          class="flex justify-end items-center gap-3"
+        ></div>
       </div>
-      </nav>
-<div class="w-3/4 mx-auto mb-8 flex items-center gap-4 mt-6">
-  <a
-    id="backBtn"
-    href="index.html"
-    class="flex items-center text-slate-500 hover:text-blue-600 transition-colors group shrink-0"
-  >
-    <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
-    <span class="text-sm font-medium">Back</span>
-  </a>
+    </nav>
 
-  <div>
-    <h1 class="text-3xl font-semibold text-dark">AI-Matched Jobs</h1>
-    <p class="text-slate-500 mt-1">Personalized job recommendations powered by your CV analysis</p>
-  </div>
-</div>
-
-    <div class="w-3/4 mx-auto flex flex-col gap-6">
-
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-shadow relative overflow-hidden">
-            <div class="flex justify-between items-start">
-                
-                <div class="flex-1">
-                    <h2 class="text-xl font-bold text-slate-900">Senior Frontend Developer</h2>
-                    <p class="text-slate-500 font-medium mt-1">TechCorp Solutions</p>
-                    
-                    <div class="flex items-center gap-4 mt-3 text-sm text-slate-600">
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400"></i> San Francisco, CA</span>
-                        <span class="flex items-center gap-1 text-green-600 font-medium"><i class="fa-solid fa-money-bill-wave"></i> $120,000 - $150,000</span>
-                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs font-medium"><i class="fa-solid fa-briefcase mr-1"></i> Full time</span>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">React</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">JavaScript</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Git</span>
-                    </div>
-
-                    <p class="mt-4 mb-4 text-slate-600 text-sm leading-relaxed">
-                        Looking for an experienced frontend developer to join our innovative team working on cutting-edge web applications.
-                    </p>
-                    <button id="apply"
-                        class="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors ml-auto bottom-4 text-center">
-                        Apply Now
-                    </button>
-                </div>
-
-                <div class="flex flex-col items-end pl-4">
-                  <label class="relative cursor-pointer w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-2 hover:bg-gray-50 transition-all">
-                    <input type="checkbox" class="peer sr-only" />
-                    <ion-icon 
-                      name="bookmark-outline" 
-                      class="text-xl text-gray-400 transition-all duration-300 peer-checked:opacity-0 hover:text-blue-500 pointer-events-none">
-                    </ion-icon>
-                    <ion-icon 
-                      name="bookmark" 
-                      class="absolute text-xl text-blue-600 transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:scale-110 pointer-events-none">
-                    </ion-icon>
-                  </label>
-                    <div class="text-3xl font-bold text-green-500">98%</div>
-                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-shadow relative overflow-hidden">
-            <div class="flex justify-between items-start">
-                <div class="flex-1">
-                    <h2 class="text-xl font-bold text-slate-900">Full Stack Engineer</h2>
-                    <p class="text-slate-500 font-medium mt-1">InnovateStart Inc</p>
-                    
-                    <div class="flex items-center gap-4 mt-3 text-sm text-slate-600">
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400"></i> Remote</span>
-                        <span class="flex items-center gap-1 text-green-600 font-medium"><i class="fa-solid fa-money-bill-wave"></i> $100,000 - $130,000</span>
-                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs font-medium"><i class="fa-solid fa-briefcase mr-1"></i> Full time</span>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">React</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Python</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Agile</span>
-                    </div>
-
-                    <p class="mt-4 mb-4 text-slate-600 text-sm leading-relaxed">
-                        Join our startup as a full stack engineer and help build the next generation of software solutions.
-                    </p>
-                    <button id="apply"
-                    class="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors ml-auto bottom-4 text-center">
-                    Apply Now
-                </button>
-                </div>
-
-                <div class="flex flex-col items-end pl-4">
-                  <label class="relative cursor-pointer w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-2 hover:bg-gray-50 transition-all">
-                    <input type="checkbox" class="peer sr-only" />
-                    <ion-icon 
-                      name="bookmark-outline" 
-                      class="text-xl text-gray-400 transition-all duration-300 peer-checked:opacity-0 hover:text-blue-500 pointer-events-none">
-                    </ion-icon>
-                    <ion-icon 
-                      name="bookmark" 
-                      class="absolute text-xl text-blue-600 transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:scale-110 pointer-events-none">
-                    </ion-icon>
-                  </label>
-                    <div class="text-3xl font-bold text-green-500">95%</div>
-                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-shadow relative overflow-hidden">
-            <div class="flex justify-between items-start">
-                <div class="flex-1">
-                    <h2 class="text-xl font-bold text-slate-900">Software Developer</h2>
-                    <p class="text-slate-500 font-medium mt-1">Global Tech Systems</p>
-                    
-                    <div class="flex items-center gap-4 mt-3 text-sm text-slate-600">
-                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-slate-400"></i> New York, NY</span>
-                        <span class="flex items-center gap-1 text-green-600 font-medium"><i class="fa-solid fa-money-bill-wave"></i> $90,000 - $120,000</span>
-                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs font-medium"><i class="fa-solid fa-briefcase mr-1"></i> Full time</span>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">JavaScript</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Git</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium">Python</span>
-                    </div>
-
-                    <p class="mt-4 mb-4 text-slate-600 text-sm leading-relaxed">
-                        We're seeking a talented software developer to contribute to our enterprise solutions.
-                    </p>
-                    <button id="apply"
-                    class="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors ml-auto bottom-4 text-center">
-                    Apply Now
-                </button>
-                </div>
-
-                <div class="flex flex-col items-end pl-4">
-                  <label class="relative cursor-pointer w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-2 hover:bg-gray-50 transition-all">
-                    <input type="checkbox" class="peer sr-only" />
-                    <ion-icon 
-                      name="bookmark-outline" 
-                      class="text-xl text-gray-400 transition-all duration-300 peer-checked:opacity-0 hover:text-blue-500 pointer-events-none">
-                    </ion-icon>
-                    <ion-icon 
-                      name="bookmark" 
-                      class="absolute text-xl text-blue-600 transition-all duration-300 opacity-0 peer-checked:opacity-100 peer-checked:scale-110 pointer-events-none">
-                    </ion-icon>
-                  </label>
-                    <div class="text-3xl font-bold text-yellow-500">88%</div>
-                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wide">Match Score</div>
-                </div>
-            </div>
-        </div>
-
+    <div
+      class="w-full px-4 md:w-5/6 lg:w-3/4 mx-auto mb-8 flex items-center gap-4 mt-6"
+    >
+      <a
+        id="backBtn"
+        href="index.html"
+        class="flex items-center text-slate-500 hover:text-blue-600 transition-colors group shrink-0"
+      >
+        <i
+          class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
+        ></i>
+        <span class="text-sm font-medium">Back</span>
+      </a>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">
+          AI-Matched Jobs
+        </h1>
+        <p class="text-slate-500 mt-1 text-sm sm:text-base">
+          Personalized job recommendations powered by your CV
+        </p>
+      </div>
     </div>
+
+    <div
+      id="loading-section"
+      class="w-full px-4 md:w-5/6 lg:w-3/4 mx-auto flex flex-col items-center justify-center py-20 bg-white rounded-2xl shadow-sm border border-slate-100 transition-opacity"
+    >
+      <i
+        class="fa-solid fa-brain text-5xl text-blue-500 animate-pulse mb-6"
+      ></i>
+      <h3 class="text-2xl font-bold text-slate-800 mb-2">
+        Analyzing Your Profile...
+      </h3>
+      <p
+        id="loading-caption"
+        class="text-slate-500 font-medium mb-8 h-6 text-center"
+      >
+        Loading AI Modules...
+      </p>
+      <div class="w-full max-w-md px-4">
+        <div
+          class="flex justify-between text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider"
+        >
+          <span>AI Matching Engine</span>
+          <span id="loading-percentage">0%</span>
+        </div>
+        <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div
+            id="loading-progress-bar"
+            class="h-full bg-blue-500 w-0 transition-all duration-300 ease-out"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="error-section"
+      class="hidden w-full px-4 md:w-5/6 lg:w-3/4 mx-auto flex-col items-center justify-center py-20 bg-white rounded-2xl shadow-sm border border-red-100 text-center"
+    >
+      <i
+        class="fa-solid fa-triangle-exclamation text-5xl text-red-500 mb-4"
+      ></i>
+      <h3 class="text-2xl font-bold text-slate-800 mb-2" id="error-title">
+        Error
+      </h3>
+      <p class="text-slate-500 mb-8 max-w-md mx-auto" id="error-message">
+        Something went wrong.
+      </p>
+      <a
+        href="/cv-analyzer"
+        class="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-semibold shadow-md"
+        >Go to CV Analyzer</a
+      >
+    </div>
+
+    <div
+      id="matched-jobs-container"
+      class="hidden w-full max-w-4xl mx-auto flex flex-col gap-6 pb-12"
+    ></div>
     <div
       id="applyModal"
       class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300 opacity-0"
     >
       <div
-      class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 md:max-w-xl relative transform transition-all duration-300 scale-95 overflow-y-auto max-h-[90vh]"
+        class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 relative transform transition-all duration-300 scale-95 overflow-y-auto max-h-[90vh]"
       >
         <div class="p-6 pb-2 text-center">
           <button
@@ -238,8 +169,7 @@
               <input
                 type="text"
                 id="applyName"
-                placeholder="Enter your full name"
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:border-blue-500 outline-none"
                 required
               />
             </div>
@@ -250,8 +180,7 @@
               <input
                 type="email"
                 id="applyEmail"
-                placeholder="Enter your email"
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:border-blue-500 outline-none"
                 required
               />
             </div>
@@ -263,8 +192,7 @@
             <input
               type="tel"
               id="applyPhone"
-              placeholder="Enter your phone number"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:border-blue-500 outline-none"
             />
           </div>
           <div>
@@ -272,27 +200,16 @@
               >Upload CV/Resume <span class="text-red-500">*</span></label
             >
             <div
-              class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer group"
+              class="border-2 border-dashed border-slate-300 rounded-xl p-5 text-center hover:bg-slate-50 cursor-pointer group"
               onclick="document.getElementById('applyCv').click()"
             >
-              <div
-                class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-white transition-colors"
-              >
-                <i class="fa-solid fa-arrow-up-from-bracket text-slate-500"></i>
-              </div>
-              <p class="text-sm text-slate-600 font-medium">
+              <i
+                class="fa-solid fa-cloud-arrow-up text-3xl text-slate-400 group-hover:text-blue-500 mb-2"
+              ></i>
+              <p id="cvFileText" class="text-sm text-slate-600 font-medium">
                 Drag and drop your CV here or click to browse
               </p>
-              <p class="text-xs text-slate-400 mt-1">
-                Supported formats: PDF, DOC, DOCX (Max 5MB)
-              </p>
-              <button
-                type="button"
-                class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors"
-              >
-                Choose File
-              </button>
-              <input type="file" id="applyCv" class="hidden" required />
+              <input type="file" id="applyCv" class="hidden" />
             </div>
           </div>
           <div>
@@ -302,20 +219,20 @@
             <textarea
               id="applyCover"
               rows="3"
-              class="w-full px-3 py-2 -mb-4 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm resize-none outline-none focus:border-blue-500"
             ></textarea>
           </div>
-          <div class="flex gap-3 pt-2 ">
+          <div class="flex gap-3 pt-2">
             <button
               type="button"
               id="btnCancelModal"
-              class="flex-1 py-2 border border-slate-300 rounded-lg text-sm"
+              class="flex-1 py-2 border border-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-50"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="flex-1 py-2 bg-blue-600 text-white rounded-lg text-sm"
+              class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors"
             >
               Submit Application
             </button>
@@ -323,10 +240,11 @@
         </form>
       </div>
     </div>
-        <script type="module" src="/src/js/utils/authGuard.js"></script>
 
-    <script type="module" src="../../js/controllers/matchedjobsController.js"></script>
-
-    
-</body>
+    <script type="module" src="/src/js/utils/authGuard.js"></script>
+    <script
+      type="module"
+      src="../../js/controllers/matchedjobsController.js"
+    ></script>
+  </body>
 </html>

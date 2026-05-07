@@ -76,9 +76,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 fileInput.addEventListener('change', function (e) {
   if (this.files && this.files[0]) {
     const file = this.files[0];
-
+    const isDarkMode = document.documentElement.classList.contains('dark');
     if (file.size > 5 * 1024 * 1024) {
-      Swal.fire('Error', 'File size exceeds 5MB limit.', 'error');
+      Swal.fire({
+        text: 'File size exceeds 5MB limit.',
+        background: isDarkMode ? '#1e1b4b' : '#ffffff',
+        color: isDarkMode ? '#f8fafc' : '#1e293b',
+        confirmButtonColor: '#3b82f6',
+      });
       this.value = '';
       return;
     }
@@ -203,6 +208,8 @@ analyzeBtn.addEventListener('click', async function () {
     Swal.fire({
       icon: 'error',
       title: 'Analysis Failed',
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       text:
         error.response?.data?.message ||
         'Our AI is currently busy. Please try again in a few moments.',
@@ -249,19 +256,19 @@ function renderResults(data) {
     'matched-keywords',
     'matched-count',
     data.keywords_analysis.matched,
-    'bg-green-100 text-green-700 border-green-200'
+    'bg-green-100 text-green-700 border-green-200 dark:border-green-700/40 dark:bg-green-700/40 dark:text-green-200'
   );
   renderKeywords(
     'missing-keywords',
     'missing-count',
     data.keywords_analysis.missing,
-    'bg-red-100 text-red-700 border-red-200'
+    'bg-red-100 text-red-700 border-red-200 dark:border-red-700/40 dark:bg-red-700/40 dark:text-red-200'
   );
   renderKeywords(
     'relevant-keywords',
     'relevant-count',
     data.keywords_analysis.relevant,
-    'bg-blue-100 text-blue-700 border-blue-200'
+    'bg-blue-100 text-blue-700 border-blue-200 dark:border-blue-700/40 dark:bg-blue-700/40 dark:text-blue-200'
   );
 }
 
@@ -274,7 +281,7 @@ function renderList(elementId, itemsArray, dotColorClass) {
   ul.innerHTML = itemsArray
     .map(
       (item) => `
-        <li class="flex items-start gap-2 text-sm text-slate-600 font-medium">
+        <li class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
             <span class="w-2 h-2 ${dotColorClass} rounded-full mt-1.5 shrink-0 shadow-sm"></span>
             <span class="leading-relaxed">${item}</span>
         </li>

@@ -9,6 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <style>
       body{
         background: #B6CEE0;
@@ -16,6 +17,92 @@
         margin: 0;
         padding: 0;
       }
+      .toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+}
+
+#checkboxInput {
+  display: none;
+}
+
+.icons {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transform-origin: center center;
+  transition:
+    transform 500ms ease,
+    opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icons--moon {
+  color: #222222;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.icons--sun {
+  color: #ffa600;
+  border-radius: 50%;
+}
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+}
+.icons--moon,
+.icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--moon {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+#light-rays-container {
+    display: none !important;
+}
+
+/* لما يكون فيه كلاس dark على الـ body أو الـ html */
+.dark #light-rays-container {
+    display: block !important;
+}
     </style>
   </head>
   <body
@@ -23,117 +110,290 @@
   >
   <a
       href="../../../index.html"
-      class="absolute top-4 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors mt-6 ml-6 mb-10 group "
+      class="absolute top-4 left-8 z-20 flex items-center gap-2 text-slate-500 dark:text-slate-300 hover:text-blue-600 dark:hover:text-slate-200 font-bold transition-colors mt-6 ml-6 mb-10 group "
     >
       <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
       <span>AI-Career Guidance</span>
     </a>
-    <main class="w-full max-w-xl bg-white p-6 rounded-2xl shadow-lg m-4">
-      <div class="text-center mb-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-1">
-          Company Verification (Step 3 of 3)
-        </h2>
-        <p class="text-gray-500 text-xs">
-          Optional but recommended - Verify your company to build trust
-        </p>
-      </div>
-
-      <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
-        <h3
-          class="text-blue-700 font-bold text-sm mb-3 flex items-center gap-2"
+    <div class="absolute top-4 right-8 z-20">
+      <input id="checkboxInput" type="checkbox" />
+      <label class="toggleSwitch" for="checkboxInput">
+      <div class="icons icons--moon">
+        <svg
+          class="moon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="32"
+          height="32"
         >
-          <i class="fas fa-shield-alt"></i> Why verify your company?
-        </h3>
-        <ul class="space-y-2 mb-3">
-          <li class="flex items-start gap-2 text-xs text-blue-900">
-            <i class="fas fa-check text-blue-500 mt-0.5"></i>
-            <span>Gain a verified badge on your company profile</span>
-          </li>
-          <li class="flex items-start gap-2 text-xs text-blue-900">
-            <i class="fas fa-check text-blue-500 mt-0.5"></i>
-            <span>Build trust with job seekers and candidates</span>
-          </li>
-          <li class="flex items-start gap-2 text-xs text-blue-900">
-            <i class="fas fa-check text-blue-500 mt-0.5"></i>
-            <span>Increase application rates by up to 40%</span>
-          </li>
-          <li class="flex items-start gap-2 text-xs text-blue-900">
-            <i class="fas fa-check text-blue-500 mt-0.5"></i>
-            <span>Stand out from unverified companies</span>
-          </li>
-        </ul>
-        <p class="text-[10px] text-blue-400 italic">
-          This step is optional, but highly recommended. You can also verify
-          later from your company dashboard.
-        </p>
+          <path
+            fill-rule="evenodd"
+            d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
       </div>
+    
+      <div class="icons icons--sun">
+        <svg
+          class="sun"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="32"
+          height="32"
+        >
+          <path
+          d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+          ></path>
+        </svg>
+      </div>
+    </label>
+    </div>
+    <div id="light-rays-container" class="fixed inset-0 w-full h-full hidden bg-indigo-950 z-0 dark:block"></div>
+    <main
+  class="w-full max-w-xl z-20 bg-white dark:bg-black/30 
+  p-6 md:p-8 rounded-2xl shadow-lg m-4
+  border border-gray-100 dark:border-white/10
+  transition-colors duration-300"
+>
+  <!-- heading -->
+  <div class="text-center mb-6">
+    <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200 mb-1">
+      Company Verification (Step 3 of 3)
+    </h2>
+    <p class="text-gray-500 dark:text-slate-400 text-xs">
+      Optional but recommended - Verify your company to build trust
+    </p>
+  </div>
 
-      <form id="companyStep3Form" class="space-y-6">
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-2"
-            >Verification Document (Optional)</label
-          >
+  <!-- info box -->
+  <div class="bg-blue-50 dark:bg-blue-900/20 
+  border border-blue-100 dark:border-blue-800/40 
+  rounded-xl p-4 mb-6">
 
-          <div
-            class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors group cursor-pointer"
-            onclick="document.getElementById('verificationFile').click()"
-          >
-            <i
-              class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2 group-hover:text-blue-500 transition-colors"
-            ></i>
+    <h3 class="text-blue-700 dark:text-blue-300 font-bold text-sm mb-3 flex items-center gap-2">
+      <i class="fas fa-shield-alt"></i>
+      Why verify your company?
+    </h3>
 
-            <h4 class="text-sm font-bold text-black-700 mb-1">
-              Upload business license, registration, or tax document
-            </h4>
-            <p class="text-s text-gray-400 mb-3">PDF, JPG, PNG (Max 5MB)</p>
-            <p class="text-xs text-gray-400 mb-3">
-              Acceptable documents: Business license, incorporation certificate,
-              tax ID, or official registration
-            </p>
+    <ul class="space-y-2 mb-3">
 
-            <span
-              class="inline-block bg-white border border-gray-300 text-gray-600 text-xs font-bold py-2 px-4 rounded shadow-sm hover:bg-gray-50 transition-all"
-            >
-              Choose File
-            </span>
+      <li class="flex items-start gap-2 text-xs text-blue-900 dark:text-blue-200">
+        <i class="fas fa-check text-blue-500 mt-0.5"></i>
+        <span>Gain a verified badge on your company profile</span>
+      </li>
 
-            <p
-              id="fileNameDisplay"
-              class="text-xs text-gray-500 mt-2 font-medium"
-            >
-              No file chosen
-            </p>
+      <li class="flex items-start gap-2 text-xs text-blue-900 dark:text-blue-200">
+        <i class="fas fa-check text-blue-500 mt-0.5"></i>
+        <span>Build trust with job seekers and candidates</span>
+      </li>
 
-            <input
-              type="file"
-              id="verificationFile"
-              accept=".pdf,.jpg,.png,.jpeg"
-              class="hidden"
-              onchange="updateFileName(this)"
-            />
-          </div>
-        </div>
+      <li class="flex items-start gap-2 text-xs text-blue-900 dark:text-blue-200">
+        <i class="fas fa-check text-blue-500 mt-0.5"></i>
+        <span>Increase application rates by up to 40%</span>
+      </li>
 
-        <div class="flex gap-3 pt-2 border-t border-gray-100">
-          <button
-            type="button"
-            id="backBtn"
-            class="px-5 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-lg hover:bg-gray-200 text-sm transition-colors"
-          >
-            Back
-          </button>
+      <li class="flex items-start gap-2 text-xs text-blue-900 dark:text-blue-200">
+        <i class="fas fa-check text-blue-500 mt-0.5"></i>
+        <span>Stand out from unverified companies</span>
+      </li>
 
-          <button
-            type="submit"
-            id="finishBtn"
-            class="flex-1 bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 shadow-md transition-all flex items-center justify-center gap-2 text-sm"
-          >
-            <span>Skip & Complete Registration</span>
-          </button>
-        </div>
-      </form>
-    </main>
+    </ul>
 
+    <p class="text-[10px] text-blue-400 dark:text-blue-300 italic">
+      This step is optional, but highly recommended. You can verify later from dashboard.
+    </p>
+  </div>
+
+  <!-- form -->
+  <form id="companyStep3Form" class="space-y-6">
+
+    <!-- upload -->
+    <div>
+      <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-2">
+        Verification Document (Optional)
+      </label>
+
+      <div
+        class="border-2 border-dashed border-gray-300 dark:border-slate-600 
+        rounded-xl p-6 text-center 
+        bg-gray-50 dark:bg-black/20 
+        hover:bg-gray-100 dark:hover:bg-black/40 
+        transition-colors group cursor-pointer"
+        onclick="document.getElementById('verificationFile').click()"
+      >
+        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 group-hover:text-blue-500 transition-colors mb-2"></i>
+
+        <h4 class="text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
+          Upload business license or registration document
+        </h4>
+
+        <p class="text-xs text-gray-400 dark:text-slate-500 mb-3">
+          PDF, JPG, PNG (Max 5MB)
+        </p>
+
+        <p class="text-xs text-gray-400 dark:text-slate-500 mb-3">
+          Acceptable: Business license, incorporation certificate, tax ID, registration
+        </p>
+
+        <span
+          class="inline-block bg-white dark:bg-black/40 
+          border border-gray-300 dark:border-slate-600 
+          text-gray-600 dark:text-slate-300 
+          text-xs font-bold py-2 px-4 rounded shadow-sm 
+          hover:bg-gray-50 dark:hover:bg-black/60 transition-all"
+        >
+          Choose File
+        </span>
+
+        <p id="fileNameDisplay"
+          class="text-xs text-gray-500 dark:text-slate-400 mt-2 font-medium">
+          No file chosen
+        </p>
+
+        <input
+          type="file"
+          id="verificationFile"
+          accept=".pdf,.jpg,.png,.jpeg"
+          class="hidden"
+          onchange="updateFileName(this)"
+        />
+      </div>
+    </div>
+
+    <!-- buttons -->
+    <div class="flex gap-3 pt-2 border-t border-gray-100 dark:border-white/10">
+
+      <button
+        type="button"
+        id="backBtn"
+        class="px-5 py-2.5 border border-gray-300 dark:border-slate-600 
+        text-gray-600 dark:text-slate-300 
+        font-bold rounded-lg 
+        hover:bg-gray-200 dark:hover:bg-white/10 
+        text-sm transition-colors"
+      >
+        Back
+      </button>
+
+      <button
+        type="submit"
+        id="finishBtn"
+        class="flex-1 bg-blue-600 dark:bg-blue-700 
+        text-white font-bold py-2.5 px-4 rounded-lg 
+        hover:bg-blue-700 dark:hover:bg-blue-800 
+        shadow-md transition-all flex items-center justify-center gap-2 text-sm"
+      >
+        <span>Skip & Complete Registration</span>
+      </button>
+
+    </div>
+
+  </form>
+</main>
+    <script type="module">
+      // 1. أولاً: استيراد المكتبة
+      import { Renderer, Program, Triangle, Mesh } from 'https://cdn.skypack.dev/ogl';
+    
+      // 2. ثانياً: تعريف الدالة (مرة واحدة بس وبشكل صحيح)
+      function initRays(selector) {
+        const container = document.querySelector(selector);
+        if (!container) return;
+    
+        // إعدادات الخلفية
+        const config = {
+          raysColor: '#ffffff',
+            raysSpeed: 0.5,      // قللت السرعة كمان عشان تكون أهدى
+            lightSpread: 0.4,    // كانت 0.5 - تقليل الانتشار بيضعف الإضاءة
+            rayLength: 1.3,      // كانت 3 - كده الشعاع هيقصر جداً ومش هيملى الشاشة كلها
+            mouseInfluence: 0.05
+        };
+    
+        const hexToRgb = hex => {
+          const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+        };
+    
+        const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true });
+        const gl = renderer.gl;
+        container.appendChild(gl.canvas);
+    
+        const vert = `attribute vec2 position;varying vec2 vUv;void main(){vUv=position*0.5+0.5;gl_Position=vec4(position,0.0,1.0);}`;
+        const frag = `
+          precision highp float;
+          uniform float iTime;
+          uniform vec2 iResolution;
+          uniform vec3 raysColor;
+          uniform float lightSpread;
+          uniform float rayLength;
+          
+          float rayStrength(vec2 source, vec2 dir, vec2 coord, float currentSpread) {
+            vec2 toCoord = coord - source;
+            float cosAngle = dot(normalize(toCoord), dir);
+            // التغيير هنا: استخدمنا currentSpread المتحرك
+            float spread = pow(max(cosAngle, 0.0), 1.0 / max(currentSpread, 0.001));
+            float dist = length(toCoord);
+            float falloff = clamp((iResolution.x * rayLength - dist) / (iResolution.x * rayLength), 0.0, 1.0);
+            return spread * falloff;
+          }
+    
+          void main() {
+            vec2 coord = vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y);
+            vec2 rayPos = vec2(iResolution.x * 0.5, -iResolution.y * 0.2);
+            
+            // 1. حركة الأنيميشن: جعل الأشعة تتمايل يميناً ويساراً
+            float move = sin(iTime * 0.8) * 0.15; 
+            vec2 rayDir = normalize(vec2(move, 1.0));
+            
+            // 2. حركة خفيفة في انتشار الضوء (كأنه نبض)
+            float dynamicSpread = lightSpread + sin(iTime * 1.5) * 0.05;
+    
+            float s = rayStrength(rayPos, rayDir, coord, dynamicSpread);
+            gl_FragColor = vec4(raysColor * s, s * 0.8);
+          }
+        `;
+    
+        const uniforms = {
+          iTime: { value: 0 },
+          iResolution: { value: [0, 0] },
+          raysColor: { value: hexToRgb(config.raysColor) },
+          lightSpread: { value: config.lightSpread },
+          rayLength: { value: config.rayLength },
+          mousePos: { value: [0.5, 0.5] },
+          mouseInfluence: { value: config.mouseInfluence }
+        };
+    
+        const geometry = new Triangle(gl);
+        const program = new Program(gl, { vertex: vert, fragment: frag, uniforms, transparent: true });
+        const mesh = new Mesh(gl, { geometry, program });
+    
+        function resize() {
+          const w = container.clientWidth;
+          const h = container.clientHeight;
+          renderer.setSize(w, h);
+          uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
+        }
+        window.addEventListener('resize', resize);
+        resize();
+    
+        function update(t) {
+          if (getComputedStyle(container).display === 'none') {
+            requestAnimationFrame(update);
+            return; 
+        }
+    
+        uniforms.iTime.value = t * 0.001;
+        renderer.render({ scene: mesh });
+        requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      }
+    
+      // 3. ثالثاً: تشغيل الدالة
+      initRays('#light-rays-container');
+    </script>
     <script
       type="module"
       src="/src/js/controllers/profileStepsController.js"

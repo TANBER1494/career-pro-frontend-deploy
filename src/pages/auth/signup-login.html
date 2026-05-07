@@ -10,6 +10,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png"/>
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <style>
       body{
       background: #B6CEE0;
@@ -17,6 +18,7 @@
       margin: 0;
       padding: 0;
       }
+
       .perspective-1000 {
         perspective: 1000px;
       }
@@ -40,20 +42,141 @@
         background: #cbd5e1;
         border-radius: 3px;
       }
+      .toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+}
+
+#checkboxInput {
+  display: none;
+}
+
+.icons {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transform-origin: center center;
+  transition:
+    transform 500ms ease,
+    opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icons--moon {
+  color: #222222;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.icons--sun {
+  color: #ffa600;
+  border-radius: 50%;
+}
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+}
+.icons--moon,
+.icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--moon {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+#light-rays-container {
+    display: none !important;
+}
+
+/* لما يكون فيه كلاس dark على الـ body أو الـ html */
+.dark #light-rays-container {
+    display: block !important;
+}
     </style>
   </head>
-
   <body
-    class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-y-auto py-12 relative text-gray-800"
+  class="bg-gray-50 min-h-screen flex items-center justify-center font-sans overflow-y-auto py-12 relative text-gray-800"
   >
-    <a
-      href="/CareerPro"
-      class="absolute top-4 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors mt-6 ml-6 mb-10 group "
-    >
+  <a
+  href="/CareerPro"
+      class="absolute top-4 left-8 z-20 flex items-center gap-2 text-slate-500 dark:text-slate-300 hover:text-blue-600 dark:hover:text-slate-200 font-bold transition-colors mt-6 ml-6 mb-10 group "
+      >
       <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
       <span>AI-Career Guidance</span>
     </a>
-
+    <div class="absolute top-4 right-8 z-20">
+      <input id="checkboxInput" type="checkbox" />
+      <label class="toggleSwitch" for="checkboxInput">
+      <div class="icons icons--moon">
+        <svg
+          class="moon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="32"
+          height="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </div>
+    
+      <div class="icons icons--sun">
+        <svg
+          class="sun"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="32"
+          height="32"
+        >
+          <path
+          d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+          ></path>
+        </svg>
+      </div>
+    </label>
+    </div>
+    <div id="light-rays-container" class="fixed inset-0 w-full h-full hidden bg-indigo-950 z-0 dark:block"></div>
     <div
       id="mainContainer"
       class="perspective-1000 w-full max-w-md m-4 transition-all duration-500 ease-in-out"
@@ -62,287 +185,410 @@
         id="cardInner"
         class="relative w-full h-full duration-700 transform-style-3d"
       >
-        <div
-          id="frontFace"
-          class="relative w-full backface-hidden bg-white p-10 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
-        >
-          <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-            <p class="text-gray-500 text-sm">Please login to continue</p>
-          </div>
-
-          <form id="loginForm" class="space-y-5">
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-1"
-                >Your Email</label
-              >
-              <div class="relative">
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  placeholder="name@example.com"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 transition-all"
-                />
-                <div
-                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"
-                >
-                  <i class="far fa-envelope"></i>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-1"
-                >Your Password</label
-              >
-              <div class="relative">
-                <input
-                  type="password"
-                  id="password"
-                  required
-                  placeholder="Enter your password"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 pr-10 transition-all"
-                />
-                <div
-                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"
-                >
-                  <i class="fas fa-lock"></i>
-                </div>
-                <div
-                  class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-blue-600 transition-colors"
-                  onclick="togglePassword('password', this)"
-                >
-                  <i class="far fa-eye"></i>
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all shadow-md mt-4"
-            >
-              Log In
-            </button>
-
-            <p class="text-center text-sm text-gray-600 mt-6">
-              Don't have an account?
-              <button
-                type="button"
-                onclick="flipCard()"
-                class="text-blue-600 font-bold hover:underline transition-colors ml-1"
-              >
-                Sign Up
-              </button>
-            </p>
-
-            <div class="text-center mt-3">
-              <a
-                href="/forgot-password"
-                class="text-blue-600 font-bold hover:text-blue-600 transition-colors hover:underline"
-              >
-                Forgot your password ?
-              </a>
-            </div>
-          </form>
-        </div>
-
-        <div
-          id="backFace"
-          class="absolute top-0 left-0 w-full backface-hidden rotate-y-180-default bg-white p-8 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-center"
-        >
-          <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-1">
-              Let's Start Learning
-            </h2>
-            <p class="text-gray-500 text-xs">Please sign up to continue</p>
-          </div>
-
-          <form id="signupForm" class="space-y-4">
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2"
-                >I am a *</label
-              >
-              <div class="grid grid-cols-2 gap-4">
-                <label class="cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="accountTypeRadio"
-                    value="job_seeker"
-                    class="peer sr-only"
-                    checked
-                    onchange="toggleAccountType(this.value)"
-                  />
-                  <div
-                    class="peer-checked:border-blue-600 peer-checked:bg-blue-50 peer-checked:text-blue-700 border-2 border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all group-hover:border-blue-300 h-24 text-gray-500"
-                  >
-                    <i class="far fa-user text-2xl"></i>
-                    <span class="text-sm font-bold">Job Seeker</span>
-                  </div>
-                </label>
-                <label class="cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="accountTypeRadio"
-                    value="company"
-                    class="peer sr-only"
-                    onchange="toggleAccountType(this.value)"
-                  />
-                  <div
-                    class="peer-checked:border-blue-600 peer-checked:bg-blue-50 peer-checked:text-blue-700 border-2 border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all group-hover:border-blue-300 h-24 text-gray-500"
-                  >
-                    <i class="far fa-building text-2xl"></i>
-                    <span class="text-sm font-bold">Company</span>
-                  </div>
-                </label>
-              </div>
-              <select id="accountType" class="hidden">
-                <option value="job_seeker">Job Seeker</option>
-                <option value="company">Company</option>
-              </select>
-            </div>
-
+      <div
+      id="frontFace"
+      class="relative w-full backface-hidden bg-white dark:bg-black/30 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 flex flex-col justify-center"
+    >
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-slate-200 mb-2">
+          Welcome Back
+        </h2>
+        <p class="text-gray-500 dark:text-slate-400 text-sm">
+          Please login to continue
+        </p>
+      </div>
+    
+      <form id="loginForm" class="space-y-5">
+        
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-slate-200 mb-1">
+            Your Email
+          </label>
+          <div class="relative">
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="name@example.com"
+              class="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-lg 
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                     pl-10 transition-all 
+                     dark:bg-black/30 dark:text-white dark:caret-white 
+                     dark:focus:border-slate-200 dark:focus:ring-white/50"
+            />
             <div
-              id="jobSeekerFields"
-              class="grid grid-cols-2 gap-3 transition-all duration-300"
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 dark:text-slate-500"
             >
-              <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1"
-                  >First Name *</label
-                >
-                <div class="relative">
-                  <input
-                    type="text"
-                    id="firstName"
-                    placeholder="John"
-                    required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
-                  />
-                  <i
-                    class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"
-                  ></i>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1"
-                  >Last Name *</label
-                >
-                <div class="relative">
-                  <input
-                    type="text"
-                    id="lastName"
-                    placeholder="Doe"
-                    required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
-                  />
-                  <i
-                    class="far fa-user absolute left-3 top-2.5 text-gray-400 text-xs"
-                  ></i>
-                </div>
-              </div>
+              <i class="far fa-envelope"></i>
             </div>
-
-            <div id="companyFields" class="hidden">
-              <label class="block text-xs font-bold text-gray-700 mb-1"
-                >Company Name *</label
-              >
-              <div class="relative">
-                <input
-                  type="text"
-                  id="companyName"
-                  placeholder="Tech Solutions Inc."
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
-                />
-                <i
-                  class="far fa-building absolute left-3 top-2.5 text-gray-400 text-xs"
-                ></i>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1"
-                >Your Email</label
-              >
-              <div class="relative">
-                <input
-                  type="email"
-                  id="signupEmail"
-                  required
-                  placeholder="name@example.com"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 text-sm transition-all"
-                />
-                <i
-                  class="far fa-envelope absolute left-3 top-2.5 text-gray-400 text-xs"
-                ></i>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1"
-                >Your Password</label
-              >
-              <div class="relative">
-                <input
-                  type="password"
-                  id="signupPassword"
-                  required
-                  placeholder="Create password"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 pr-8 text-sm transition-all"
-                />
-                <i
-                  class="fas fa-lock absolute left-3 top-2.5 text-gray-400 text-xs"
-                ></i>
-                <i
-                  class="far fa-eye absolute right-3 top-2.5 text-gray-400 cursor-pointer text-xs hover:text-blue-600"
-                  onclick="togglePassword('signupPassword', this)"
-                ></i>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1"
-                >Confirm Password</label
-              >
-              <div class="relative">
-                <input
-                  type="password"
-                  id="passwordConfirm"
-                  required
-                  placeholder="Confirm password"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-8 pr-8 text-sm transition-all"
-                />
-                <i
-                  class="fas fa-lock absolute left-3 top-2.5 text-gray-400 text-xs"
-                ></i>
-                <i
-                  class="far fa-eye absolute right-3 top-2.5 text-gray-400 cursor-pointer text-xs hover:text-blue-600"
-                  onclick="togglePassword('passwordConfirm', this)"
-                ></i>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all shadow-md text-sm mt-2"
+          </div>
+        </div>
+    
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-slate-200 mb-1">
+            Your Password
+          </label>
+          <div class="relative">
+            <input
+              type="password"
+              id="password"
+              required
+              placeholder="Enter your password"
+              class="w-full px-4 py-3 border border-gray-300 dark:border-slate-700 rounded-lg 
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                     pl-10 pr-10 transition-all 
+                     dark:bg-black/30 dark:text-white dark:caret-white 
+                     dark:focus:border-slate-200 dark:focus:ring-white/50"
+            />
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 dark:text-slate-500"
             >
-              Sign Up
-            </button>
+              <i class="fas fa-lock"></i>
+            </div>
+            <div
+              class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              onclick="togglePassword('password', this)"
+            >
+              <i class="far fa-eye"></i>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Button -->
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 
+                 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-md mt-4"
+        >
+          Log In
+        </button>
+    
+        <!-- Switch -->
+        <p class="text-center text-sm text-gray-600 dark:text-slate-400 mt-6">
+          Don't have an account?
+          <button
+            type="button"
+            onclick="flipCard()"
+            class="text-blue-600 dark:text-blue-600 font-bold hover:underline transition-colors ml-1"
+          >
+            Sign Up
+          </button>
+        </p>
+    
+        <!-- Forgot -->
+        <div class="text-center mt-3">
+          <a
+            href="/forgot-password"
+            class="text-blue-600 dark:text-blue-600 font-bold hover:underline transition-colors"
+          >
+            Forgot your password ?
+          </a>
+        </div>
+    
+      </form>
+    </div>
 
-            <p class="text-center text-xs text-gray-600 mt-4">
-              Already have an account?
-              <button
-                type="button"
-                onclick="flipCard()"
-                class="text-blue-600 font-bold hover:underline transition-colors ml-1"
-              >
-                Log In
-              </button>
-            </p>
-          </form>
+        <div
+  id="backFace"
+  class="absolute top-0 left-0 w-full backface-hidden rotate-y-180-default 
+  bg-white dark:bg-black/30 p-8 rounded-2xl shadow-xl 
+  border border-gray-100 dark:border-white/10 
+  flex flex-col justify-center transition-colors duration-300"
+>
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-slate-200 mb-1">
+      Create Your Future
+    </h2>
+    <p class="text-gray-500 dark:text-slate-400 text-xs">
+      Please sign up to continue
+    </p>
+  </div>
+
+  <form id="signupForm" class="space-y-4">
+
+    <div>
+      <label class="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-2">
+        I am a *
+      </label>
+
+      <div class="grid grid-cols-2 gap-4">
+        <label class="cursor-pointer group">
+          <input
+            type="radio"
+            name="accountTypeRadio"
+            value="job_seeker"
+            class="peer sr-only"
+            checked
+            onchange="toggleAccountType(this.value)"
+          />
+
+          <div
+            class="peer-checked:border-blue-600 dark:peer-checked:border-slate-200 peer-checked:bg-blue-50 
+            dark:peer-checked:bg-white/10 
+            peer-checked:text-blue-700 dark:peer-checked:text-slate-100 
+            border-2 border-gray-200 dark:border-white/10 
+            rounded-xl p-3 flex flex-col items-center justify-center gap-2 
+            transition-all group-hover:border-blue-300 dark:group-hover:border-slate-600 h-24 
+            text-gray-500 dark:text-slate-400 dark:focus:border-slate-200 dark:focus:ring-white/50 text-sm focus:outline-none"
+          >
+            <i class="far fa-user text-2xl"></i>
+            <span class="text-sm font-bold">Job Seeker</span>
+          </div>
+        </label>
+
+        <label class="cursor-pointer group">
+          <input
+            type="radio"
+            name="accountTypeRadio"
+            value="company"
+            class="peer sr-only"
+            onchange="toggleAccountType(this.value)"
+          />
+
+          <div
+            class="peer-checked:border-blue-600 dark:peer-checked:border-slate-200 peer-checked:bg-blue-50 
+            dark:peer-checked:bg-white/10 
+            peer-checked:text-blue-700 dark:peer-checked:text-slate-100 
+            border-2 border-gray-200 dark:border-white/10 
+            rounded-xl p-3 flex flex-col items-center justify-center gap-2 
+            transition-all group-hover:border-blue-300 dark:group-hover:border-slate-600 h-24 
+            text-gray-500 dark:text-slate-400"
+          >
+            <i class="far fa-building text-2xl"></i>
+            <span class="text-sm font-bold">Company</span>
+          </div>
+        </label>
+      </div>
+
+      <select id="accountType" class="hidden">
+        <option value="job_seeker">Job Seeker</option>
+        <option value="company">Company</option>
+      </select>
+    </div>
+
+    <div
+      id="jobSeekerFields"
+      class="grid grid-cols-2 gap-3 transition-all duration-300"
+    >
+      <div>
+        <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1">
+          First Name *
+        </label>
+
+        <div class="relative">
+          <input
+            type="text"
+            id="firstName"
+            placeholder="John"
+            required
+            class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1">
+          Last Name *
+        </label>
+
+        <div class="relative">
+          <input
+            type="text"
+            id="lastName"
+            placeholder="Doe"
+            required
+            class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+          />
         </div>
       </div>
     </div>
+
+    <div id="companyFields" class="hidden">
+      <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1">
+        Company Name *
+      </label>
+
+      <div class="relative">
+        <input
+          type="text"
+          id="companyName"
+          placeholder="Tech Solutions Inc."
+          required
+          class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1">
+        Your Email
+      </label>
+
+      <input
+        type="email"
+        id="signupEmail"
+        required
+        placeholder="name@example.com"
+        class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+      />
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1">
+        Your Password
+      </label>
+
+      <input
+        type="password"
+        id="signupPassword"
+        required
+        placeholder="Create password"
+        class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+      />
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1">
+        Confirm Password
+      </label>
+
+      <input
+        type="password"
+        id="passwordConfirm"
+        required
+        placeholder="Confirm password"
+        class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+        transition-all"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="w-full bg-blue-600 dark:bg-blue-700 
+      text-white font-bold py-2.5 px-4 rounded-lg 
+      hover:bg-blue-700 dark:hover:bg-blue-800 
+      transition-all shadow-md text-sm mt-2"
+    >
+      Sign Up
+    </button>
+
+    <p class="text-center text-xs text-gray-600 dark:text-slate-400 mt-4">
+      Already have an account?
+      <button
+        type="button"
+        onclick="flipCard()"
+        class="text-blue-600 font-bold hover:underline ml-1"
+      >
+        Log In
+      </button>
+    </p>
+
+  </form>
+</div>
+</div>
+<script type="module">
+  // 1. أولاً: استيراد المكتبة
+  import { Renderer, Program, Triangle, Mesh } from 'https://cdn.skypack.dev/ogl';
+
+  // 2. ثانياً: تعريف الدالة (مرة واحدة بس وبشكل صحيح)
+  function initRays(selector) {
+    const container = document.querySelector(selector);
+    if (!container) return;
+
+    // إعدادات الخلفية
+    const config = {
+      raysColor: '#ffffff',
+        raysSpeed: 0.5,      // قللت السرعة كمان عشان تكون أهدى
+        lightSpread: 0.4,    // كانت 0.5 - تقليل الانتشار بيضعف الإضاءة
+        rayLength: 1,      // كانت 3 - كده الشعاع هيقصر جداً ومش هيملى الشاشة كلها
+        mouseInfluence: 0.05
+    };
+
+    const hexToRgb = hex => {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+    };
+
+    const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true });
+    const gl = renderer.gl;
+    container.appendChild(gl.canvas);
+
+    const vert = `attribute vec2 position;varying vec2 vUv;void main(){vUv=position*0.5+0.5;gl_Position=vec4(position,0.0,1.0);}`;
+    const frag = `
+      precision highp float;
+      uniform float iTime;
+      uniform vec2 iResolution;
+      uniform vec3 raysColor;
+      uniform float lightSpread;
+      uniform float rayLength;
+      
+      float rayStrength(vec2 source, vec2 dir, vec2 coord, float currentSpread) {
+        vec2 toCoord = coord - source;
+        float cosAngle = dot(normalize(toCoord), dir);
+        // التغيير هنا: استخدمنا currentSpread المتحرك
+        float spread = pow(max(cosAngle, 0.0), 1.0 / max(currentSpread, 0.001));
+        float dist = length(toCoord);
+        float falloff = clamp((iResolution.x * rayLength - dist) / (iResolution.x * rayLength), 0.0, 1.0);
+        return spread * falloff;
+      }
+
+      void main() {
+        vec2 coord = vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y);
+        vec2 rayPos = vec2(iResolution.x * 0.5, -iResolution.y * 0.2);
+        
+        // 1. حركة الأنيميشن: جعل الأشعة تتمايل يميناً ويساراً
+        float move = sin(iTime * 0.8) * 0.15; 
+        vec2 rayDir = normalize(vec2(move, 1.0));
+        
+        // 2. حركة خفيفة في انتشار الضوء (كأنه نبض)
+        float dynamicSpread = lightSpread + sin(iTime * 1.5) * 0.05;
+
+        float s = rayStrength(rayPos, rayDir, coord, dynamicSpread);
+        gl_FragColor = vec4(raysColor * s, s * 0.8);
+      }
+    `;
+
+    const uniforms = {
+      iTime: { value: 0 },
+      iResolution: { value: [0, 0] },
+      raysColor: { value: hexToRgb(config.raysColor) },
+      lightSpread: { value: config.lightSpread },
+      rayLength: { value: config.rayLength },
+      mousePos: { value: [0.5, 0.5] },
+      mouseInfluence: { value: config.mouseInfluence }
+    };
+
+    const geometry = new Triangle(gl);
+    const program = new Program(gl, { vertex: vert, fragment: frag, uniforms, transparent: true });
+    const mesh = new Mesh(gl, { geometry, program });
+
+    function resize() {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      renderer.setSize(w, h);
+      uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function update(t) {
+      if (getComputedStyle(container).display === 'none') {
+        requestAnimationFrame(update);
+        return; 
+    }
+
+    uniforms.iTime.value = t * 0.001;
+    renderer.render({ scene: mesh });
+    requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  // 3. ثالثاً: تشغيل الدالة
+  initRays('#light-rays-container');
+</script>
     <script type="module" src="../../js/controllers/authController.js"></script>
     <script>
       function togglePassword(inputId, icon) {

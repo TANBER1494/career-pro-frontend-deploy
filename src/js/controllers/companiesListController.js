@@ -57,7 +57,7 @@ async function loadCompanies() {
   container.innerHTML = `
         <div class="col-span-full text-center py-12">
             <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
-            <p class="mt-2 text-gray-500">Finding companies...</p>
+            <p class="mt-2 text-gray-500 dark:text-gray-500">Finding companies...</p>
         </div>
     `;
 
@@ -92,7 +92,7 @@ async function loadCompanies() {
     container.innerHTML = `
             <div class="col-span-full text-center py-12">
                 <i class="fas fa-exclamation-circle text-4xl text-red-400"></i>
-                <p class="mt-2 text-gray-500">Failed to load companies. Please try again.</p>
+                <p class="mt-2 text-gray-500 dark:text-slate-400">Failed to load companies. Please try again.</p>
             </div>
         `;
   }
@@ -136,17 +136,17 @@ function updatePaginationUI(totalItems) {
   // رسم الأزرار
   pagContainer.innerHTML = `
       <button id="prevBtn" 
-          class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          class="px-4 py-2 dark:bg-black/30 bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           ${isFirstPage ? 'disabled' : ''}>
           <i class="fas fa-chevron-left mr-1"></i> Previous
       </button>
       
-      <span class="text-sm text-gray-600 font-medium px-2">
+      <span class="text-sm text-gray-600 dark:text-slate-400 font-medium px-2">
           Page ${currentFilters.page} of ${totalPages}
       </span>
 
       <button id="nextBtn" 
-          class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          class="px-4 py-2 dark:bg-black/30 bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           ${isLastPage ? 'disabled' : ''}>
           Next <i class="fas fa-chevron-right ml-1"></i>
       </button>
@@ -193,19 +193,19 @@ function createCompanyCard(company) {
 
   // Verified Badge logic...
   const verifiedBadgeHtml = company.isVerified
-    ? `<div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs" title="Verified Company"><i class="fa-solid fa-shield"></i></div>`
+    ? `<div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center text-green-600 dark:text-green-400 text-xs shadow-sm" title="Verified Company"><i class="fa-solid fa-shield"></i></div>`
     : '';
 
-  const verifiedTag = company.isVerified
-    ? `<span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded ml-1">Verified</span>`
+const verifiedTag = company.isVerified
+    ? `<span class="bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 text-[10px] px-1.5 py-0.5 rounded-full ml-1 font-medium">Verified</span>`
     : '';
 
-  return `
-    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 relative hover:shadow-md transition group">
+return `
+    <div class="bg-white dark:bg-black/30 rounded-xl border border-gray-100 dark:border-slate-800 shadow-sm p-5 relative hover:shadow-md dark:hover:shadow-blue-900/20 transition group">
         
         ${verifiedBadgeHtml}
 
-        <div class="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 text-xl font-bold mx-auto mb-4 overflow-hidden border border-blue-100">
+        <div class="w-14 h-14 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold mx-auto mb-4 overflow-hidden border border-blue-100 dark:border-blue-800/50 shadow-sm">
             ${
               company.logo
                 ? `<img src="${logo}" class="w-full h-full object-cover">`
@@ -215,35 +215,35 @@ function createCompanyCard(company) {
 
         <div class="text-center">
             <div class="flex items-center justify-center gap-1 mb-1">
-                <h3 class="font-medium font-poppins text-gray-900 line-clamp-1" title="${name}">
+                <h3 class="font-medium font-poppins text-gray-900 dark:text-slate-200 line-clamp-1" title="${name}">
                     ${name}
                 </h3>
                 ${verifiedTag}
             </div>
             
-            <p class="text-xs text-gray-500 mb-3 line-clamp-1">${industry}</p>
+            <p class="text-xs text-gray-500 dark:text-slate-400 mb-3 line-clamp-1">${industry}</p>
 
-            <span class="inline-block border border-gray-200 text-gray-500 text-xs px-2 py-1 rounded-md mb-4 bg-gray-50">
+            <span class="inline-block border border-gray-200 dark:border-slate-700 text-gray-500 dark:text-slate-300 text-xs px-2 py-1 rounded-md mb-4 bg-gray-50 dark:bg-black/20">
                 ${industry}
             </span>
 
-            <div class="flex flex-col gap-1 text-xs text-gray-500 mb-4">
+            <div class="flex flex-col gap-1 text-xs text-gray-500 dark:text-slate-400 mb-4">
                 <div class="flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-location-dot text-gray-400"></i> ${location}
+                    <i class="fa-solid fa-location-dot text-gray-400 dark:text-slate-500"></i> ${location}
                 </div>
                 <div class="flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-users text-gray-400"></i> ${size}
+                    <i class="fa-solid fa-users text-gray-400 dark:text-slate-500"></i> ${size}
                 </div>
             </div>
 
-            <a class="text-blue-600 text-xs font-medium mb-4 block">
+            <a class="text-blue-600 dark:text-blue-500 text-xs font-medium mb-4 block">
                 ${positions} Open Positions
             </a>
 
             <button onclick="window.location.href='/company-details?id=${
               company.id || company._id
             }'"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition shadow-blue-500/20 shadow-sm">
+                    class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 rounded-lg text-sm font-medium transition shadow-blue-500/20 dark:shadow-blue-900/40 shadow-sm">
                 View Company
             </button>
         </div>

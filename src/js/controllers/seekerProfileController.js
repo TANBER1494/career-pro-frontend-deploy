@@ -126,7 +126,7 @@ function setupProfileTabs() {
           'active',
           'text-blue-600',
           'border-b-2',
-          'border-blue-600'
+          'border-blue-600',
         );
         t.classList.add('text-slate-500');
       });
@@ -290,8 +290,8 @@ async function loadApplications() {
       applicationsContainer.innerHTML = `
         <div class="flex flex-col items-center justify-center py-20 text-center">
             <i class="fas fa-file-signature text-6xl text-slate-200 mb-4"></i>
-            <p class="text-slate-500 font-medium">No applications sent yet</p>
-            <a href="/jobs" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Find Jobs</a>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">No applications sent yet</p>
+            <a href="/jobs" class="mt-3 text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline">Find Jobs</a>
         </div>`;
       return;
     }
@@ -312,19 +312,19 @@ function createApplicationCard(app) {
 
   // Status Logic
   if (statusLower === 'submitted' || statusLower === 'new') {
-    statusClass = 'bg-blue-50 text-blue-600 border-blue-100';
+    statusClass = 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-600 dark:text-blue-50 dark:border-blue-600';
     statusIcon = 'fa-paper-plane';
   } else if (statusLower === 'viewed' || statusLower === 'reviewing') {
-    statusClass = 'bg-yellow-50 text-yellow-600 border-yellow-100';
+    statusClass = 'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-600 dark:text-yellow-50 dark:border-yellow-600';
     statusIcon = 'fa-eye';
   } else if (statusLower === 'interview') {
-    statusClass = 'bg-purple-50 text-purple-600 border-purple-100';
+    statusClass = 'bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-600 dark:text-purple-50 dark:border-purple-600';
     statusIcon = 'fa-user-tie';
   } else if (statusLower === 'accepted' || statusLower === 'hired') {
-    statusClass = 'bg-green-50 text-green-600 border-green-100';
+    statusClass = 'bg-green-50 text-green-600 border-green-100 dark:bg-green-600 dark:text-green-50 dark:border-green-600';
     statusIcon = 'fa-check-circle';
   } else if (statusLower === 'rejected') {
-    statusClass = 'bg-red-50 text-red-600 border-red-100';
+    statusClass = 'bg-red-50 text-red-600 border-red-100 dark:bg-red-600 dark:text-red-50 dark:border-red-600';
     statusIcon = 'fa-times-circle';
   }
 
@@ -351,26 +351,26 @@ function createApplicationCard(app) {
   const canDelete = ['rejected', 'hired', 'accepted'].includes(statusLower);
 
   return `
-    <div class="bg-white border border-slate-200 rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300 group w-full" id="app-card-${appId}">
+    <div class="bg-white border dark:bg-black/30 border-slate-200 dark:border-slate-800 rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300 group w-full" id="app-card-${appId}">
         
         <div class="flex items-center gap-4 w-full sm:w-auto">
-            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center overflow-hidden">
-                 ${logoHtml}
+            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border dark:bg-indigo-950 border-blue-100 dark:border-indigo-950 flex items-center justify-center overflow-hidden">
+                ${logoHtml}
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base leading-tight group-hover:text-blue-600 transition-colors">${title}</h4>
-                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1.5">
-                    <span class="font-medium text-slate-700 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${company}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${location}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${date}</span>
+                <h4 class="font-bold text-slate-800 dark:text-slate-200 text-base leading-tight group-hover:text-blue-600 transition-colors">${title}</h4>
+                <div class="flex flex-wrap items-center gap-2 text-xs mt-1.5">
+                    <span class="font-medium text-slate-400 dark:text-slate-300 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${company}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="flex items-center gap-1 text-slate-400 dark:text-slate-300"><i class="fa-solid fa-location-dot"></i> ${location}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="flex items-center gap-1 text-slate-400 dark:text-slate-300"><i class="fa-regular fa-calendar"></i> ${date}</span>
                 </div>
             </div>
         </div>
 
         <div class="flex items-center gap-3 w-full sm:w-auto justify-end mt-2 sm:mt-0">
-             <span class="px-3 py-1.5 rounded-lg text-xs font-bold border ${statusClass} flex items-center gap-2 shadow-sm capitalize">
+            <span class="px-3 py-1.5 rounded-lg text-xs font-bold border ${statusClass} flex items-center gap-2 shadow-sm capitalize">
                 <i class="fas ${statusIcon}"></i> ${statusLower}
             </span>
 
@@ -403,8 +403,8 @@ async function loadSavedJobs() {
       savedJobsContainer.innerHTML = `
         <div class="flex flex-col items-center justify-center py-20 text-center">
             <i class="fas fa-bookmark text-7xl text-slate-200 mb-4"></i>
-            <p class="text-slate-500 font-medium">No saved jobs yet</p>
-            <a href="/jobs" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Explore Jobs</a>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">No saved jobs yet</p>
+            <a href="/jobs" class="mt-3 text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline">Explore Jobs</a>
         </div>`;
       return;
     }
@@ -434,27 +434,27 @@ function createSavedJobCard(job) {
   const type = job.type || 'Full-time';
 
   return `
-    <div class="group relative w-full bg-white border border-slate-200 rounded-xl p-5 mb-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" id="saved-card-${jobId}">
+    <div class="group relative w-full bg-white border dark:bg-black/30 border-slate-200 dark:border-slate-800 rounded-xl p-5 mb-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" id="saved-card-${jobId}">
         <div class="flex items-center gap-4 w-full sm:w-auto">
-            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center overflow-hidden">
+            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border dark:bg-indigo-950 border-blue-100 dark:border-indigo-950 flex items-center justify-center overflow-hidden">
                 <img src="${logo}" alt="${companyName}" class="w-full h-full object-cover">
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/jobs?id=${jobId}'">
+                <h4 class="font-bold text-slate-800 dark:text-slate-200 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/jobs?id=${jobId}'">
                     ${job.title}
                 </h4>
                 <div class="flex items-center gap-2 text-xs text-slate-500 mt-1.5">
-                    <span class="font-medium text-slate-700 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${companyName}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${location}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">${type}</span>
+                    <span class="font-medium text-slate-400 dark:text-slate-300 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${companyName}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="flex items-center gap-1 text-slate-400 dark:text-slate-300"><i class="fa-solid fa-location-dot"></i> ${location}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="bg-slate-100 dark:bg-indigo-950 dark:border-gray-800 text-slate-400 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200">${type}</span>
                 </div>
             </div>
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto justify-end mt-2 sm:mt-0">
-            <button onclick="openApplyModal('${jobId}')" class="flex-1 sm:flex-none px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm shadow-blue-200">Apply Now</button>
-            <button onclick="removeSavedJob('${jobId}')" class="px-3 py-2 border border-red-100 text-red-500 bg-red-50 hover:bg-red-100 hover:border-red-200 rounded-lg transition-colors"><i class="fa-solid fa-trash-can"></i></button>
+            <button onclick="openApplyModal('${jobId}')" class="flex-1 sm:flex-none px-5 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm">Apply Now</button>
+            <button onclick="removeSavedJob('${jobId}')" class="px-3 py-2 border border-red-100 text-red-500 bg-red-50 dark:bg-red-600 dark:text-red-50 dark:border-red-600 dark:hover:bg-red-700 hover:bg-red-100 hover:border-red-200 rounded-lg transition-colors"><i class="fa-solid fa-trash-can"></i></button>
         </div>
     </div>`;
 }

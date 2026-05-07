@@ -61,11 +61,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 // 💡 Start Quiz Logic (بدون الخط الأزرق القبيح)
 window.goToQuiz = async () => {
+  const isDarkMode = document.documentElement.classList.contains('dark');
   try {
     // استخدام SweetAlert الأنيق للتحميل
     Swal.fire({
       title: 'Loading Assessment...',
       allowOutsideClick: false,
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       didOpen: () => Swal.showLoading(),
     });
 
@@ -85,11 +88,16 @@ window.goToQuiz = async () => {
     }, 300);
   } catch (error) {
     console.error(error);
-    Swal.fire(
-      'Error',
-      'Could not load questions. Check your connection.',
-      'error'
-    );
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Could not load questions. Check your connection.',
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6', 
+      iconColor: isDarkMode ? '#f87171' : '#ef4444'
+    });
   }
 };
 
@@ -176,7 +184,7 @@ function renderPage() {
 
       // تجميع السؤال الواحد
       return `
-            <div class="mb-8 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-md">
+            <div class="mb-8 p-6 bg-white dark:bg-black/30 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
                 <h4 class="text-lg md:text-xl font-semibold text-dark mb-10 text-center">${globalIndex + 1}. ${qText}</h4>
                 <div class="scale-group">
                     ${scaleOptionsHtml}
@@ -236,6 +244,8 @@ async function submitTest() {
       title: 'Analyzing your profile...',
       html: 'Our AI is generating your perfect career match.',
       allowOutsideClick: false,
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       didOpen: () => Swal.showLoading(),
     });
 
@@ -245,7 +255,13 @@ async function submitTest() {
     renderResults(res.data);
   } catch (error) {
     console.error(error);
-    Swal.fire('Error', 'Analysis failed. Please try again.', 'error');
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Analysis failed. Please try again.',
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+    });
   }
 }
 
@@ -260,8 +276,8 @@ function renderResults(data) {
 
   // حقن العنوان
   document.getElementById('result-title').innerHTML = `
-        <span class="text-dark">${title}</span> 
-        <span class="text-primary">(${code})</span>
+        <span class="text-dark dark:text-slate-200">${title}</span> 
+        <span class="text-primary dark:text-slate-300">(${code})</span>
     `;
 
   // حقن الملخص
@@ -271,9 +287,9 @@ function renderResults(data) {
   document.getElementById('careers-container').innerHTML = data.suggestedCareers
     .map(
       (career) => `
-        <div class="p-6 bg-slate-50 border border-slate-100 rounded-xl hover:shadow-md transition">
-            <h4 class="text-lg font-bold text-dark mb-2">${career.title}</h4>
-            <p class="text-sm text-slate-500 font-medium leading-relaxed">${career.reason}</p>
+        <div class="p-6 bg-slate-50 dark:bg-black/30 border border-slate-100 dark:border-gray-800 rounded-xl hover:shadow-md transition">
+            <h4 class="text-lg font-bold text-dark dark:text-slate-200 mb-2">${career.title}</h4>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">${career.reason}</p>
         </div>
     `
     )

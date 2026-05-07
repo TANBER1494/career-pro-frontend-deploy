@@ -129,16 +129,29 @@ function initSeekerStep1() {
     countrySelect.addEventListener('change', (e) => {
       const country = e.target.value;
       citySelect.disabled = false;
-      citySelect.innerHTML =
-        '<option value="" disabled selected>Select city</option>';
+      citySelect.innerHTML = `
+  <option 
+    value="" 
+    disabled 
+    selected
+    class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+  >
+    Select city
+  </option>
+`;
       citySelect.classList.remove('bg-gray-200', 'cursor-not-allowed');
       citySelect.classList.add('bg-gray-50');
 
       const cities = citiesByCountry[country] || ['Main City', 'Other'];
       cities.forEach((city) => {
         const option = document.createElement('option');
+      
         option.value = city;
         option.textContent = city;
+      
+        option.className =
+          'bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200';
+      
         citySelect.appendChild(option);
       });
     });

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile Step 1</title>
     <link rel="stylesheet" href="../../../css/main.css" />
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <link
       rel="website icon"
       type="png"
@@ -25,6 +26,92 @@
         margin: 0;
         padding: 0;
       }
+      .toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+}
+
+#checkboxInput {
+  display: none;
+}
+
+.icons {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transform-origin: center center;
+  transition:
+    transform 500ms ease,
+    opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icons--moon {
+  color: #222222;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.icons--sun {
+  color: #ffa600;
+  border-radius: 50%;
+}
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+}
+.icons--moon,
+.icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--moon {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+#light-rays-container {
+    display: none !important;
+}
+
+/* لما يكون فيه كلاس dark على الـ body أو الـ html */
+.dark #light-rays-container {
+    display: block !important;
+}
     </style>
   </head>
   <body
@@ -32,234 +119,602 @@
   >
     <a
       href="/login"
-      class="absolute top-4 left-8 flex items-center gap-2 text-gray-600 hover:text-blue-600 font-bold transition-colors mt-6 ml-6 mb-10 group"
+      class="absolute top-4 left-8 z-20 flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 font-bold transition-colors mt-6 ml-6 mb-10 group"
     >
       <i
         class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
       ></i>
       <span>AI-Career Guidance</span>
     </a>
-    <main class="w-full max-w-xl bg-white p-6 md:p-8 rounded-2xl shadow-lg m-4">
-      <div class="text-center mb-6">
-        <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-1">
-          Complete Your Profile
-        </h2>
-        <p class="text-gray-500 text-sm">Step 1 of 3: Personal Information</p>
+    <div class="absolute top-4 right-8 z-20">
+      <input id="checkboxInput" type="checkbox" />
+      <label class="toggleSwitch" for="checkboxInput">
+      <div class="icons icons--moon">
+        <svg
+          class="moon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="32"
+          height="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </div>
+    
+      <div class="icons icons--sun">
+        <svg
+          class="sun"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="32"
+          height="32"
+        >
+          <path
+          d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+          ></path>
+        </svg>
+      </div>
+    </label>
+    </div>
+    <div id="light-rays-container" class="fixed inset-0 w-full h-full hidden bg-indigo-950 z-0 dark:block"></div>
+    <main
+  class="w-full max-w-xl z-20 bg-white dark:bg-black/30 
+  p-6 md:p-8 rounded-2xl shadow-lg m-4
+  border border-gray-100 dark:border-white/10
+  transition-colors duration-300"
+>
+  <!-- heading -->
+  <div class="text-center mb-6">
+    <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-slate-200 mb-1">
+      Complete Your Profile
+    </h2>
+
+    <p class="text-gray-500 dark:text-slate-400 text-sm">
+      Step 1 of 3: Personal Information
+    </p>
+  </div>
+
+  <form id="step1Form" class="space-y-4">
+
+    <!-- phone + birth -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div>
+        <label
+          for="phoneNumber"
+          class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+        >
+          Phone Number *
+        </label>
+
+        <input
+          type="tel"
+          id="phoneNumber"
+          placeholder="+20..."
+          required
+          class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+          transition-all"
+        />
       </div>
 
-      <form id="step1Form" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label
-              for="phoneNumber"
-              class="block text-xs font-bold text-gray-700 mb-1"
-              >Phone Number *</label
-            >
-            <input
-              type="tel"
-              id="phoneNumber"
-              placeholder="+20..."
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm transition-all"
-            />
-          </div>
+      <div>
+        <label
+          for="birthDate"
+          class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+        >
+          Birth Date *
+        </label>
 
-          <div>
-            <label
-              for="birthDate"
-              class="block text-xs font-bold text-gray-700 mb-1"
-              >Birth Date *</label
-            >
-            <input
-              type="date"
-              id="birthDate"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-gray-500 text-sm transition-all"
-            />
-          </div>
+        <input
+          type="date"
+          id="birthDate"
+          required
+          class="w-full px-3 py-2 border dark:text-white border-slate-300 dark:border-slate-600 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+          transition-all"
+        />
+      </div>
+
+    </div>
+
+    <!-- gender -->
+    <div>
+      <label
+        for="gender"
+        class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+      >
+        Gender *
+      </label>
+
+      <div class="relative">
+        <select
+  id="gender"
+  required
+  class="w-full px-3 py-2 border dark:text-white 
+  border-slate-300 dark:border-slate-600 
+  rounded-lg dark:bg-black/30 
+  dark:focus:border-slate-200 dark:focus:ring-white/50 
+  dark:caret-white text-sm focus:outline-none 
+  focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+  appearance-none transition-all"
+
+>
+  <option
+    value=""
+    disabled
+    selected
+    class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+  >
+    Select gender
+  </option>
+
+  <option
+    value="male"
+    class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+  >
+    Male
+  </option>
+
+  <option
+    value="female"
+    class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+  >
+    Female
+  </option>
+
+  <option
+    value="other"
+    class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+  >
+    Prefer not to say
+  </option>
+</select>
+
+        <div
+          class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none 
+          text-gray-500 dark:text-slate-400"
+        >
+          <i class="fas fa-chevron-down text-xs"></i>
         </div>
+      </div>
+    </div>
 
-        <div>
-          <label for="gender" class="block text-xs font-bold text-gray-700 mb-1"
-            >Gender *</label
+    <!-- experience -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div>
+        <label
+          for="experienceLevel"
+          class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+        >
+          Experience Level *
+        </label>
+
+        <div class="relative">
+          <select
+            id="experienceLevel"
+            required
+            class="w-full px-3 py-2 border dark:text-white 
+            border-slate-300 dark:border-slate-600 
+            rounded-lg dark:bg-black/30 
+            dark:focus:border-slate-200 dark:focus:ring-white/50 
+            dark:caret-white text-sm focus:outline-none 
+            focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+            appearance-none transition-all"
           >
-          <div class="relative">
-            <select
-              id="gender"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all"
-            >
-              <option value="" disabled selected>Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Prefer not to say</option>
-            </select>
-            <div
-              class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"
-            >
-              <i class="fas fa-chevron-down text-xs"></i>
-            </div>
-          </div>
-        </div>
+          <option
+          value=""
+          disabled
+          selected
+          class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+        >
+          Select level
+        </option>
+        
+        <option
+          value="Entry-level"
+          class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+        >
+          Entry Level
+        </option>
+        
+        <option
+          value="Mid-level"
+          class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+        >
+          Mid-Level
+        </option>
+        
+        <option
+          value="Senior-level"
+          class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+        >
+          Senior-level
+        </option>
+        
+        <option
+          value="Executive"
+          class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+        >
+          Executive
+        </option>
+          </select>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label
-              for="experienceLevel"
-              class="block text-xs font-bold text-gray-700 mb-1"
-              >Experience Level *</label
-            >
-            <div class="relative">
-              <select
-                id="experienceLevel"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all"
-              >
-                <option value="" disabled selected>Select level</option>
-                <option value="Entry-level">Entry Level</option>
-                <option value="Mid-level">Mid-Level</option>
-                <option value="Senior-level">Senior-level</option>
-                <option value="Executive">Executive</option>
-              </select>
-              <div
-                class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"
-              >
-                <i class="fas fa-chevron-down text-xs"></i>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label
-              for="yearsOfExperience"
-              class="block text-xs font-bold text-gray-700 mb-1"
-              >Years of Exp *</label
-            >
-            <input
-              type="number"
-              id="yearsOfExperience"
-              min="0"
-              max="50"
-              placeholder="e.g. 2"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm transition-all"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
-            for="industry"
-            class="block text-xs font-bold text-gray-700 mb-1"
-            >Industry *</label
+          <div
+            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none 
+            text-gray-500 dark:text-slate-400"
           >
-          <div class="relative">
-            <select
-              id="industry"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all"
-            >
-              <option value="" disabled selected>Select industry</option>
-              <option value="Software Development">Software Development</option>
-              <option value="Web Development">Web Development</option>
-              <option value="Mobile Development">Mobile Development</option>
-              <option value="Data Science & Analytics">
-                Data Science & Analytics
-              </option>
-              <option value="AI & Machine Learning">
-                AI & Machine Learning
-              </option>
-              <option value="Cybersecurity">Cybersecurity</option>
-              <option value="Cloud Computing">Cloud Computing</option>
-            </select>
-            <div
-              class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"
-            >
-              <i class="fas fa-chevron-down text-xs"></i>
-            </div>
+            <i class="fas fa-chevron-down text-xs"></i>
           </div>
         </div>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label
-              for="country"
-              class="block text-xs font-bold text-gray-700 mb-1"
-              >Country *</label
-            >
-            <div class="relative">
-              <select
-                id="country"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 text-sm transition-all"
-              >
-                <option value="" disabled selected>Select country</option>
-                <option value="Egypt">Egypt</option>
-                <option value="Saudi Arabia">Saudi Arabia</option>
-                <option value="United Arab Emirates">
-                  United Arab Emirates
-                </option>
-                <option value="Jordan">Jordan</option>
-                <option value="Lebanon">Lebanon</option>
-                <option value="Iraq">Iraq</option>
-                <option value="Syria">Syria</option>
-                <option value="Kuwait">Kuwait</option>
-                <option value="Oman">Oman</option>
-                <option value="Qatar">Qatar</option>
-                <option value="Bahrain">Bahrain</option>
-                <option value="Yemen">Yemen</option>
-                <option value="Palestine">Palestine</option>
-                <option value="Libya">Libya</option>
-                <option value="Tunisia">Tunisia</option>
-                <option value="Algeria">Algeria</option>
-                <option value="Morocco">Morocco</option>
-                <option value="Sudan">Sudan</option>
-                <option value="Mauritania">Mauritania</option>
-                <option value="Somalia">Somalia</option>
-                <option value="Djibouti">Djibouti</option>
-                <option value="Comoros">Comoros</option>
-              </select>
-              <div
-                class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"
-              >
-                <i class="fas fa-chevron-down text-xs"></i>
-              </div>
-            </div>
-          </div>
+      <div>
+        <label
+          for="yearsOfExperience"
+          class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+        >
+          Years of Exp *
+        </label>
 
-          <div>
-            <label for="city" class="block text-xs font-bold text-gray-700 mb-1"
-              >City *</label
-            >
-            <div class="relative">
-              <select
-                id="city"
-                required
-                disabled
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-50 text-gray-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-sm transition-all"
-              >
-                <option value="" disabled selected>Select city</option>
-              </select>
-              <div
-                class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"
-              >
-                <i class="fas fa-chevron-down text-xs"></i>
-              </div>
-            </div>
-          </div>
+        <input
+          type="number"
+          id="yearsOfExperience"
+          min="0"
+          max="50"
+          placeholder="e.g. 2"
+          required
+          class="w-full px-3 py-2 border dark:text-white 
+          border-slate-300 dark:border-slate-600 
+          rounded-lg dark:bg-black/30 
+          dark:focus:border-slate-200 dark:focus:ring-white/50 
+          dark:caret-white text-sm focus:outline-none 
+          focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+          appearance-none transition-all"
+        />
+      </div>
+
+    </div>
+
+    <!-- industry -->
+    <div>
+      <label
+        for="industry"
+        class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+      >
+        Industry *
+      </label>
+
+      <div class="relative">
+        <select
+          id="industry"
+          required
+          class="w-full px-3 py-2 border dark:text-white 
+          border-slate-300 dark:border-slate-600 
+          rounded-lg dark:bg-black/30 
+          dark:focus:border-slate-200 dark:focus:ring-white/50 
+          dark:caret-white text-sm focus:outline-none 
+          focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+          appearance-none transition-all"
+        >
+        <option
+        value=""
+        disabled
+        selected
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Select industry
+      </option>
+      
+      <option
+        value="Software Development"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Software Development
+      </option>
+      
+      <option
+        value="Web Development"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Web Development
+      </option>
+      
+      <option
+        value="Mobile Development"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Mobile Development
+      </option>
+      
+      <option
+        value="Data Science & Analytics"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Data Science & Analytics
+      </option>
+      
+      <option
+        value="AI & Machine Learning"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        AI & Machine Learning
+      </option>
+      
+      <option
+        value="Cybersecurity"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Cybersecurity
+      </option>
+      
+      <option
+        value="Cloud Computing"
+        class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+      >
+        Cloud Computing
+      </option>
+        </select>
+
+        <div
+          class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none 
+          text-gray-500 dark:text-slate-400"
+        >
+          <i class="fas fa-chevron-down text-xs"></i>
         </div>
+      </div>
+    </div>
 
-        <div class="flex gap-3 mt-6 pt-2 border-t border-gray-100">
-          <button
-            type="submit"
-            class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 shadow-md transition-all flex items-center justify-center gap-2 text-sm"
+    <!-- country + city -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div>
+        <label
+          for="country"
+          class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+        >
+          Country *
+        </label>
+
+        <div class="relative">
+          <select
+            id="country"
+            required
+            class="w-full px-3 py-2 border dark:text-white 
+            border-slate-300 dark:border-slate-600 
+            rounded-lg dark:bg-black/30 
+            dark:focus:border-slate-200 dark:focus:ring-white/50 
+            dark:caret-white text-sm focus:outline-none 
+            focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+            appearance-none transition-all"
           >
-            <span>Continue to Education (Step 2)</span>
-            <i class="fas fa-arrow-right"></i>
-          </button>
+          <option
+          value=""
+          disabled
+          selected
+          class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+        >
+          Select country
+        </option>
+        
+        <option value="Egypt" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Egypt</option>
+        
+        <option value="Saudi Arabia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+          Saudi Arabia
+        </option>
+        
+        <option value="United Arab Emirates" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+          United Arab Emirates
+        </option>
+        
+        <option value="Jordan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Jordan</option>
+        
+        <option value="Lebanon" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Lebanon</option>
+        
+        <option value="Iraq" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Iraq</option>
+        
+        <option value="Syria" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Syria</option>
+        
+        <option value="Kuwait" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Kuwait</option>
+        
+        <option value="Oman" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Oman</option>
+        
+        <option value="Qatar" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Qatar</option>
+        
+        <option value="Bahrain" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Bahrain</option>
+        
+        <option value="Yemen" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Yemen</option>
+        
+        <option value="Palestine" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Palestine</option>
+        
+        <option value="Libya" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Libya</option>
+        
+        <option value="Tunisia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Tunisia</option>
+        
+        <option value="Algeria" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Algeria</option>
+        
+        <option value="Morocco" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Morocco</option>
+        
+        <option value="Sudan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Sudan</option>
+        
+        <option value="Mauritania" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+          Mauritania
+        </option>
+        
+        <option value="Somalia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Somalia</option>
+        
+        <option value="Djibouti" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Djibouti</option>
+        
+        <option value="Comoros" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Comoros</option>
+          </select>
+
+          <div
+            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none 
+            text-gray-500 dark:text-slate-400"
+          >
+            <i class="fas fa-chevron-down text-xs"></i>
+          </div>
         </div>
-      </form>
-    </main>
+      </div>
+
+      <div>
+        <label
+          for="city"
+          class="block text-xs font-bold text-gray-700 dark:text-slate-200 mb-1"
+        >
+          City *
+        </label>
+
+        <div class="relative">
+          <select
+            id="city"
+            required
+            disabled
+            class="w-full px-3 py-2 border dark:text-white 
+            border-slate-300 dark:border-slate-600 
+            rounded-lg dark:bg-black/30 
+            dark:focus:border-slate-200 dark:focus:ring-white/50 
+            dark:caret-white text-sm focus:outline-none 
+            focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+            appearance-none transition-all"
+          >
+            <option value="" disabled selected>Select city</option>
+          </select>
+
+          <div
+            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none 
+            text-gray-500 dark:text-slate-400"
+          >
+            <i class="fas fa-chevron-down text-xs"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- button -->
+    <div class="flex gap-3 mt-6 pt-2 border-t border-gray-100 dark:border-white/10">
+      <button
+        type="submit"
+        class="w-full bg-blue-600 dark:bg-blue-700 
+        text-white font-bold py-2.5 px-4 rounded-lg 
+        hover:bg-blue-700 dark:hover:bg-blue-800 
+        shadow-md transition-all flex items-center 
+        justify-center gap-2 text-sm"
+      >
+        <span>Continue to Education (Step 2)</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+
+  </form>
+</main>
+    <script type="module">
+      // 1. أولاً: استيراد المكتبة
+      import { Renderer, Program, Triangle, Mesh } from 'https://cdn.skypack.dev/ogl';
+    
+      // 2. ثانياً: تعريف الدالة (مرة واحدة بس وبشكل صحيح)
+      function initRays(selector) {
+        const container = document.querySelector(selector);
+        if (!container) return;
+    
+        // إعدادات الخلفية
+        const config = {
+          raysColor: '#ffffff',
+            raysSpeed: 0.5,      // قللت السرعة كمان عشان تكون أهدى
+            lightSpread: 0.4,    // كانت 0.5 - تقليل الانتشار بيضعف الإضاءة
+            rayLength: 1,      // كانت 3 - كده الشعاع هيقصر جداً ومش هيملى الشاشة كلها
+            mouseInfluence: 0.05
+        };
+    
+        const hexToRgb = hex => {
+          const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+        };
+    
+        const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true });
+        const gl = renderer.gl;
+        container.appendChild(gl.canvas);
+    
+        const vert = `attribute vec2 position;varying vec2 vUv;void main(){vUv=position*0.5+0.5;gl_Position=vec4(position,0.0,1.0);}`;
+        const frag = `
+          precision highp float;
+          uniform float iTime;
+          uniform vec2 iResolution;
+          uniform vec3 raysColor;
+          uniform float lightSpread;
+          uniform float rayLength;
+          
+          float rayStrength(vec2 source, vec2 dir, vec2 coord, float currentSpread) {
+            vec2 toCoord = coord - source;
+            float cosAngle = dot(normalize(toCoord), dir);
+            // التغيير هنا: استخدمنا currentSpread المتحرك
+            float spread = pow(max(cosAngle, 0.0), 1.0 / max(currentSpread, 0.001));
+            float dist = length(toCoord);
+            float falloff = clamp((iResolution.x * rayLength - dist) / (iResolution.x * rayLength), 0.0, 1.0);
+            return spread * falloff;
+          }
+    
+          void main() {
+            vec2 coord = vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y);
+            vec2 rayPos = vec2(iResolution.x * 0.5, -iResolution.y * 0.2);
+            
+            // 1. حركة الأنيميشن: جعل الأشعة تتمايل يميناً ويساراً
+            float move = sin(iTime * 0.8) * 0.15; 
+            vec2 rayDir = normalize(vec2(move, 1.0));
+            
+            // 2. حركة خفيفة في انتشار الضوء (كأنه نبض)
+            float dynamicSpread = lightSpread + sin(iTime * 1.5) * 0.05;
+    
+            float s = rayStrength(rayPos, rayDir, coord, dynamicSpread);
+            gl_FragColor = vec4(raysColor * s, s * 0.8);
+          }
+        `;
+    
+        const uniforms = {
+          iTime: { value: 0 },
+          iResolution: { value: [0, 0] },
+          raysColor: { value: hexToRgb(config.raysColor) },
+          lightSpread: { value: config.lightSpread },
+          rayLength: { value: config.rayLength },
+          mousePos: { value: [0.5, 0.5] },
+          mouseInfluence: { value: config.mouseInfluence }
+        };
+    
+        const geometry = new Triangle(gl);
+        const program = new Program(gl, { vertex: vert, fragment: frag, uniforms, transparent: true });
+        const mesh = new Mesh(gl, { geometry, program });
+    
+        function resize() {
+          const w = container.clientWidth;
+          const h = container.clientHeight;
+          renderer.setSize(w, h);
+          uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
+        }
+        window.addEventListener('resize', resize);
+        resize();
+    
+        function update(t) {
+          if (getComputedStyle(container).display === 'none') {
+            requestAnimationFrame(update);
+            return; 
+        }
+    
+        uniforms.iTime.value = t * 0.001;
+        renderer.render({ scene: mesh });
+        requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      }
+    
+      // 3. ثالثاً: تشغيل الدالة
+      initRays('#light-rays-container');
+    </script>
     <script type="module" src="/src/js/utils/authGuard.js"></script>
     <script type="module" src="/src/js/config/constant.js"></script>
     <script type="module" src="/src/js/utils/axiosClient.js"></script>

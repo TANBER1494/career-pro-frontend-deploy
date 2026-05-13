@@ -382,11 +382,17 @@ window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem('token');
 
   if (!token) {
+    const isDarkMode = document.documentElement.classList.contains('dark');
+  
     Swal.fire({
       icon: 'info',
       title: 'Login Required',
       text: 'You need to login to apply for jobs.',
       showCancelButton: true,
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+      cancelButtonColor: '#64748b',
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
@@ -416,8 +422,18 @@ window.applyForJobCheck = function (jobId) {
 // ============================================================
 window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem('token');
+
   if (!token) {
-    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+  
+    Swal.fire({
+      title: 'Login Required',
+      text: 'Please login to save jobs.',
+      icon: 'info',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+    });
     return;
   }
 
@@ -437,7 +453,16 @@ window.toggleSaveJob = async function (jobId, btnElement) {
     await jobService.toggleSaveJob(jobId);
   } catch (error) {
     console.error('Save Error:', error);
-    Swal.fire('Error', 'Failed to save job.', 'error');
+  
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Error',
+      text: 'Failed to save job.',
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#ef4444',
+    });
   }
 };
 
@@ -544,7 +569,15 @@ function initModalEvents() {
       const coverInput = document.getElementById('applyCover');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire('Warning', 'Please upload your CV.', 'warning');
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        Swal.fire({
+          title: 'Warning',
+          text: 'Please upload your CV.',
+          icon: 'warning',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
+        });
         return;
       }
 
@@ -565,10 +598,15 @@ function initModalEvents() {
 
         await jobService.applyForJob(jobId, applyData);
 
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
         Swal.fire({
           icon: 'success',
           title: 'Success!',
           text: 'Application submitted successfully.',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
           timer: 2000,
           showConfirmButton: false,
         });
@@ -584,10 +622,15 @@ function initModalEvents() {
           errorMsg = error.response.data.message;
         }
 
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
         Swal.fire({
           icon: 'error',
           title: 'Application Failed',
           text: errorMsg,
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#ef4444',
         });
       } finally {
         if (submitBtn) {

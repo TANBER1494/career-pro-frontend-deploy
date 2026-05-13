@@ -110,7 +110,10 @@ function updateStatusBadge(status) {
       statusBadge.classList.add(
         "bg-green-100",
         "text-green-700",
-        "border-green-200"
+        "border-green-200",
+        "dark:bg-green-600",
+        "dark:text-green-200",
+        "dark:border-green-600"
       );
       statusBadge.textContent = "Verified";
       progressBar.style.width = "100%";
@@ -121,13 +124,23 @@ function updateStatusBadge(status) {
       statusBadge.classList.add(
         "bg-yellow-100",
         "text-yellow-700",
-        "border-yellow-200"
+        "border-yellow-200",
+        "dark:bg-yellow-900/60",
+        "dark:border-yellow-900/60",
+        "dark:text-gray-200"
       );
       statusBadge.textContent = "Pending Review";
       progressBar.style.width = "50%";
       break;
     case "rejected":
-      statusBadge.classList.add("bg-red-100", "text-red-700", "border-red-200");
+      statusBadge.classList.add(
+        "bg-red-100",
+        "text-red-700",
+        "border-red-200",
+        "dark:bg-red-900/60",
+        "dark:border-red-900/60",
+        "dark:text-gray-200"
+      );
       statusBadge.textContent = "Rejected";
       progressBar.style.width = "0%";
       progressBar.classList.replace("bg-blue-600", "bg-red-500");
@@ -136,7 +149,10 @@ function updateStatusBadge(status) {
       statusBadge.classList.add(
         "bg-gray-100",
         "text-gray-600",
-        "border-gray-200"
+        "border-gray-200",
+        "dark:bg-gray-500/30",
+        "dark:text-gray-400",
+        "dark:border-gray-400"
       );
       statusBadge.textContent = "Unverified";
       progressBar.style.width = "0%";
@@ -159,20 +175,33 @@ function renderHistory(docUrl, status) {
   if (status === "rejected") statusColor = "text-red-600";
 
   historyContainer.innerHTML = `
-        <div class="flex items-center justify-between p-4 rounded-lg border border-gray-200 bg-white">
-            <div class="flex items-center gap-3">
-                <i class="fas fa-file-pdf text-red-500 text-xl"></i>
-                <div>
-                    <div class="font-medium text-gray-900">${fileName}</div>
-                    <div class="text-sm text-gray-500 capitalize status-text">${status}</div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <a href="${docUrl}" target="_blank" class="p-2 text-gray-500 hover:text-blue-600 transition" title="View">
-                    <i class="fas fa-eye"></i>
-                </a>
-            </div>
-        </div>
+        <div
+  class="flex items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-black/30"
+>
+  <div class="flex items-center gap-3">
+    <i class="fas fa-file-pdf text-red-500 dark:text-red-400 text-xl"></i>
+    <div>
+      <div class="font-medium text-gray-900 dark:text-slate-100">
+        ${fileName}
+      </div>
+      <div
+        class="text-sm text-gray-500 dark:text-slate-400 capitalize status-text"
+      >
+        ${status}
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <a
+      href="${docUrl}"
+      target="_blank"
+      class="p-2 text-gray-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition"
+      title="View"
+    >
+      <i class="fas fa-eye"></i>
+    </a>
+  </div>
+</div>
     `;
 }
 
@@ -232,10 +261,18 @@ function handleFileSelect(e) {
   if (file) {
     // Validate size (5MB)
     if (file.size > 5 * 1024 * 1024) {
-      Swal.fire("Error", "File size must be less than 5MB", "error");
-      fileInput.value = "";
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      Swal.fire({
+        title:"Error",
+        text:"File size must be less than 5MB", 
+        icon:"error",
+        background: isDarkMode ? '#1e1b4b' : '#ffffff',
+        color: isDarkMode ? '#f8fafc' : '#1e293b',
+        confirmButtonColor: '#4361ee',
+        });
+        fileInput.value = "";
       return;
-    }
+      }
 
     selectedFile = file;
     fileNameDisplay.textContent = `Selected: ${file.name}`;
@@ -256,7 +293,7 @@ async function handleUpload() {
 
     // Call Service
     await companyService.uploadVerificationDoc(selectedFile);
-
+    const isDarkMode = document.documentElement.classList.contains('dark');
     // Success
     Swal.fire({
       icon: "success",
@@ -264,17 +301,23 @@ async function handleUpload() {
       text: "Your document has been submitted for review.",
       timer: 2000,
       showConfirmButton: false,
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#4361ee',
     }).then(() => {
       // Reload page state
       loadVerificationStatus();
     });
   } catch (error) {
+    const isDarkMode = document.documentElement.classList.contains('dark');
     console.error(error);
-    Swal.fire(
-      "Error",
-      error.response?.data?.message || "Upload failed",
-      "error"
-    );
+    Swal.fire({
+      title:"Error",
+      text:error.response?.data?.message || "Upload failed",
+      icon:"error",
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+    });
     btnUpload.disabled = false;
     btnUpload.innerHTML =
       '<i class="fas fa-upload"></i> Upload Verification Document';

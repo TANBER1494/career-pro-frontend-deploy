@@ -155,11 +155,14 @@ const handleSubmit = async (status) => {
 
   // 2. Validate (Basic)
   if (!jobData.title || !jobData.description || !jobData.location) {
-    Swal.fire(
-      "Missing Fields",
-      "Title, Description, and Location are required.",
-      "warning"
-    );
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title:"Missing Fields",
+      text:"Title, Description, and Location are required.",
+      icon:"warning",
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+    });
     return;
   }
 
@@ -172,10 +175,12 @@ const handleSubmit = async (status) => {
       '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
     await jobManagementService.createJob(jobData);
-
+    const isDarkMode = document.documentElement.classList.contains('dark');
     Swal.fire({
       icon: "success",
       title: status === "published" ? "Job Published!" : "Draft Saved",
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       text:
         status === "published"
           ? "Your job is now live and candidates can apply."
@@ -189,7 +194,15 @@ const handleSubmit = async (status) => {
   } catch (error) {
     console.error("Post Job Error:", error);
     const message = error.response?.data?.message || "Failed to post job.";
-    Swal.fire("Error", message, "error");
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: "Error",
+      text: message,
+      icon: "error",
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#4361ee',
+    });
 
     const actionBtn = status === "published" ? btnPublish : btnSaveDraft;
     actionBtn.disabled = false;

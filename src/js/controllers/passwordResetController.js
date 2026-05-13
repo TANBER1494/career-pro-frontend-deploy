@@ -1,5 +1,6 @@
 import { authService } from '../services/authService.js';
 import Swal from 'sweetalert2';
+import { Renderer, Program, Triangle, Mesh } from 'https://cdn.skypack.dev/ogl';
 
 // ============================================================
 // 1. Helper: Smart Redirect (التوجيه الذكي)
@@ -46,7 +47,20 @@ function handleLoginRedirect(user) {
     }
   }
 }
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
 // ============================================================
 // 2. Timer Logic (Exponential Backoff)
 // ============================================================
@@ -130,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = emailInput.value.trim();
 
       if (!email) {
-        Swal.fire('Warning', 'Please enter your email address.', 'warning');
+        swalDarkConfig({title:'Warning', text:'Please enter your email address.', icon:'warning'});
         return;
       }
 
@@ -143,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await authService.forgotPassword(email);
 
         // Success
-        Swal.fire({
+        swalDarkConfig({
           icon: 'success',
           title: 'Email Sent!',
           text: 'Check your inbox for the reset link.',
@@ -155,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (error) {
         console.error(error);
         if (error.response?.status === 429) {
-          Swal.fire({
+          swalDarkConfig({
             icon: 'warning',
             title: 'Too Many Requests',
             text:
@@ -164,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // لو السيرفر هو اللي رفض، نشغل المؤقت بردو احتياطي
           CooldownManager.start(btn);
         } else {
-          Swal.fire({
+          swalDarkConfig({
             icon: 'error',
             title: 'Error',
             text: error.response?.data?.message || 'Failed to send reset link.',
@@ -185,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = urlParams.get('token');
 
     if (!token) {
-      Swal.fire({
+      swalDarkConfig({
         icon: 'error',
         title: 'Invalid Link',
         text: 'Reset token is missing.',
@@ -203,15 +217,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = document.getElementById('submitBtn');
 
       if (password.length < 8) {
-        Swal.fire(
-          'Warning',
-          'Password must be at least 8 characters.',
-          'warning'
-        );
+        swalDarkConfig({
+          title:'Warning',
+          text:'Password must be at least 8 characters.',
+          icon:'warning'
+      });
         return;
       }
       if (password !== passwordConfirm) {
-        Swal.fire('Warning', 'Passwords do not match.', 'warning');
+        swalDarkConfig({title:'Warning', text:'Passwords do not match.', icon:'warning'});
         return;
       }
 
@@ -231,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('user', JSON.stringify(response.data.user));
         }
 
-        await Swal.fire({
+        await swalDarkConfig({
           icon: 'success',
           title: 'Password Changed!',
           text: 'You have been logged in automatically.',
@@ -249,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error(error);
         const errorMsg =
           error.response?.data?.message || 'Token is invalid or expired.';
-        Swal.fire({
+        swalDarkConfig({
           icon: 'error',
           title: 'Reset Failed',
           text: errorMsg,
@@ -261,3 +275,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// 2. ثانياً: تعريف الدالة (مرة واحدة بس وبشكل صحيح)
+function initRays(selector) {
+  const container = document.querySelector(selector);
+  if (!container) return;
+
+  // إعدادات الخلفية
+  const config = {
+    raysColor: '#ffffff',
+      raysSpeed: 0.5,      // قللت السرعة كمان عشان تكون أهدى
+      lightSpread: 0.4,    // كانت 0.5 - تقليل الانتشار بيضعف الإضاءة
+      rayLength: 1,      // كانت 3 - كده الشعاع هيقصر جداً ومش هيملى الشاشة كلها
+      mouseInfluence: 0.05
+  };
+
+  const hexToRgb = hex => {
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+  };
+
+  const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true });
+  const gl = renderer.gl;
+  container.appendChild(gl.canvas);
+
+  const vert = `attribute vec2 position;varying vec2 vUv;void main(){vUv=position*0.5+0.5;gl_Position=vec4(position,0.0,1.0);}`;
+  const frag = `
+    precision highp float;
+    uniform float iTime;
+    uniform vec2 iResolution;
+    uniform vec3 raysColor;
+    uniform float lightSpread;
+    uniform float rayLength;
+    
+    float rayStrength(vec2 source, vec2 dir, vec2 coord, float currentSpread) {
+      vec2 toCoord = coord - source;
+      float cosAngle = dot(normalize(toCoord), dir);
+      // التغيير هنا: استخدمنا currentSpread المتحرك
+      float spread = pow(max(cosAngle, 0.0), 1.0 / max(currentSpread, 0.001));
+      float dist = length(toCoord);
+      float falloff = clamp((iResolution.x * rayLength - dist) / (iResolution.x * rayLength), 0.0, 1.0);
+      return spread * falloff;
+    }
+
+    void main() {
+      vec2 coord = vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y);
+      vec2 rayPos = vec2(iResolution.x * 0.5, -iResolution.y * 0.2);
+      
+      // 1. حركة الأنيميشن: جعل الأشعة تتمايل يميناً ويساراً
+      float move = sin(iTime * 0.8) * 0.15; 
+      vec2 rayDir = normalize(vec2(move, 1.0));
+      
+      // 2. حركة خفيفة في انتشار الضوء (كأنه نبض)
+      float dynamicSpread = lightSpread + sin(iTime * 1.5) * 0.05;
+
+      float s = rayStrength(rayPos, rayDir, coord, dynamicSpread);
+      gl_FragColor = vec4(raysColor * s, s * 0.8);
+    }
+  `;
+
+  const uniforms = {
+    iTime: { value: 0 },
+    iResolution: { value: [0, 0] },
+    raysColor: { value: hexToRgb(config.raysColor) },
+    lightSpread: { value: config.lightSpread },
+    rayLength: { value: config.rayLength },
+    mousePos: { value: [0.5, 0.5] },
+    mouseInfluence: { value: config.mouseInfluence }
+  };
+
+  const geometry = new Triangle(gl);
+  const program = new Program(gl, { vertex: vert, fragment: frag, uniforms, transparent: true });
+  const mesh = new Mesh(gl, { geometry, program });
+
+  function resize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    renderer.setSize(w, h);
+    uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function update(t) {
+    if (getComputedStyle(container).display === 'none') {
+      requestAnimationFrame(update);
+      return; 
+  }
+
+  uniforms.iTime.value = t * 0.001;
+  renderer.render({ scene: mesh });
+  requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// 3. ثالثاً: تشغيل الدالة
+initRays('#light-rays-container');

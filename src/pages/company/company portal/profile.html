@@ -6,7 +6,8 @@
     <title>Company Profile - Company Portal</title>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/src/css/main.css" rel="stylesheet">
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="website icon" type="png" href="../../../../assets/imgs/Logo.png"/>
     <style>
@@ -31,6 +32,11 @@
         overflow-x: hidden;
         background-attachment: fixed;
         font-family: "Poppins", sans-serif;
+      }
+      .dark body {
+        transition: opacity 0.5s ease-in-out;
+        background: #110b36;
+        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
       }
       .nav-container {
         display: flex;
@@ -59,6 +65,9 @@
         justify-content: center;
         align-items: center;
         transition: 0.5s;
+      }.dark .magic-menu li {
+        background: rgba(126, 126, 126, 0.37);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
       /* ... (before & after كما هما) ... */
       .magic-menu li::before {
@@ -105,12 +114,19 @@
         transition: 0.5s;
         transition-delay: 0.25s;
       }
+      .dark .magic-menu li ion-icon {
+        color: #ddd9d9;
+      }
       /* ... باقي الستايل كما هو ... */
       .magic-menu li:hover ion-icon,
       .magic-menu li.active ion-icon {
         transform: scale(0);
         color: #fff;
         transition-delay: 0s;
+      }
+      .dark .magic-menu li:hover ion-icon,
+      .dark .magic-menu li.active ion-icon {
+        color: #030303;
       }
       .magic-menu li span.title {
         position: absolute;
@@ -177,7 +193,10 @@
   /* background-color: #e8e8e8; */
   border-radius: 50%;
 }
-
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 6px rgba(255, 166, 0, 0.6));
+}
 .icons--moon,
 .icons--sun {
   transform: rotate(0deg) scale(0);
@@ -215,19 +234,26 @@
   </head>
   <body class=" text-gray-800 ">
     <nav
-      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8"
+    class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-center justify-between shadow-sm mb-8"
     >
     <a
-    href="/Company_dashboard"
-    class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-    >
-    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">Company Portal</span>
+        href="/Company_dashboard"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+        <img
+          src="../../../../assets/imgs/Logo.png"
+          alt="CareerGuidance Logo"
+          class="h-12 w-auto object-contain"
+        />
+        <span class="font-lexend font-simibold not-italic dark:text-slate-100">
+          Company Portal
+        </span>
       </a>
 
       <div class="hidden md:flex flex-1 nav-container">
         <div
-          class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
+        class="bg-gray-50 dark:bg-black/30 px-6 py-2 rounded-full border border-gray-200 dark:border-slate-800 shadow-inner"
         >
         <ul class="magic-menu">
           <li class="menu-item" data-url="/Company_dashboard" style="--i: #5eb6fd;--j:#0576d3">
@@ -318,7 +344,7 @@
     <main class="w-full mx-auto p-6 space-y-6">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900">Company Profile</h1>
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100">Company Profile</h1>
           <p class="text-gray-500 mt-1">
             Manage your company information and branding
           </p>
@@ -336,7 +362,7 @@
         <div id="editActions" class="hidden flex gap-3">
           <button
             id="btnCancelEdit"
-            class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50"
+            class="dark:bg-black/30 bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm"
           >
             Cancel
           </button>
@@ -350,10 +376,10 @@
       </div>
 
       <div id="viewMode" class="space-y-6">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
           <div class="flex items-start gap-6">
             <div
-              class="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-200 shrink-0"
+              class="w-24 h-24 bg-gray-100 dark:bg-black/30 rounded-lg flex items-center justify-center overflow-hidden border border-gray-200 dark:border-gray-800 shrink-0"
             >
               <img
                 id="view-logo"
@@ -370,7 +396,7 @@
             <div class="flex-1">
               <h2
                 id="view-companyName"
-                class="text-2xl font-bold text-gray-900"
+                class="text-2xl font-bold text-gray-900 dark:text-gray-200"
               >
                 Loading...
               </h2>
@@ -398,9 +424,9 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full"
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 h-full"
           >
-            <h3 class="text-lg font-bold text-gray-900 mb-4">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">
               Company Information
             </h3>
             <div class="space-y-4">
@@ -408,7 +434,7 @@
                 <p class="text-xs font-semibold text-gray-500 uppercase">
                   Industry
                 </p>
-                <p id="view-industry-detail" class="text-gray-900 font-medium">
+                <p id="view-industry-detail" class="text-gray-900 dark:text-gray-400 font-medium">
                   --
                 </p>
               </div>
@@ -416,7 +442,7 @@
                 <p class="text-xs font-semibold text-gray-500 uppercase">
                   Company Size
                 </p>
-                <p id="view-employees-detail" class="text-gray-900 font-medium">
+                <p id="view-employees-detail" class="text-gray-900 dark:text-gray-400 font-medium">
                   --
                 </p>
               </div>
@@ -424,7 +450,7 @@
                 <p class="text-xs font-semibold text-gray-500 uppercase">
                   Founded
                 </p>
-                <p id="view-founded-detail" class="text-gray-900 font-medium">
+                <p id="view-founded-detail" class="text-gray-900 dark:text-gray-400 font-medium">
                   --
                 </p>
               </div>
@@ -432,7 +458,7 @@
                 <p class="text-xs font-semibold text-gray-500 uppercase">
                   Location
                 </p>
-                <p id="view-location-detail" class="text-gray-900 font-medium">
+                <p id="view-location-detail" class="text-gray-900 dark:text-gray-400 font-medium">
                   --
                 </p>
               </div>
@@ -440,9 +466,9 @@
           </div>
 
           <div
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full"
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 h-full"
           >
-            <h3 class="text-lg font-bold text-gray-900 mb-4">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-slate-200 mb-4">
               Contact Information
             </h3>
             <div class="space-y-4">
@@ -462,27 +488,27 @@
                 <p class="text-xs font-semibold text-gray-500 uppercase">
                   Phone
                 </p>
-                <p id="view-phone" class="text-gray-900 font-medium">--</p>
+                <p id="view-phone" class="text-gray-900 dark:text-gray-400 font-medium">--</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">
+        <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">
             Company Description
           </h3>
           <p
             id="view-description"
-            class="text-gray-700 leading-relaxed whitespace-pre-line"
+            class="text-gray-700 dark:text-gray-400 leading-relaxed whitespace-pre-line"
           >
             No description added yet.
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">
+          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">
               Benefits & Perks
             </h3>
             <ul
@@ -493,8 +519,8 @@
             </ul>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">
+          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">
               Technologies We Use
             </h3>
             <div id="view-technologies" class="flex flex-wrap gap-2">
@@ -505,8 +531,8 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Social Media</h3>
+        <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">Social Media</h3>
           <div id="view-socials" class="flex gap-6">
             <span class="text-gray-400 italic text-sm"
               >No social links added.</span
@@ -516,11 +542,11 @@
       </div>
 
       <div id="editMode" class="hidden space-y-6">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Company Logo</h3>
+        <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">Company Logo</h3>
           <div class="flex items-center gap-4">
             <div
-              class="w-20 h-20 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden"
+              class="w-20 h-20 bg-gray-50 dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 flex items-center justify-center overflow-hidden"
             >
               <img
                 id="edit-logo-preview"
@@ -533,20 +559,20 @@
               ></i>
             </div>
             <div class="flex-1">
-              <label class="block mb-2 text-sm font-medium text-gray-900"
+              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
                 >Upload New Logo</label
               >
               <input
                 type="file"
                 id="input-logo"
                 accept="image/*"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-black/30 dark:file:text-indigo-900 cursor-pointer"
               />
               <p class="mt-1 text-xs text-gray-500">PNG, JPG up to 5MB</p>
             </div>
             <button
               id="btnUploadLogo"
-              class="bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-900 transition"
+              class="bg-gray-800 dark:bg-black/30 text-white px-4 py-2 rounded text-sm hover:bg-gray-900 dark:hover:bg-black/50 transition"
             >
               Upload
             </button>
@@ -554,34 +580,30 @@
         </div>
 
         <form id="profileForm" class="space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">
+          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4">
               Basic Information
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Company Name *</label
                 >
                 <input
                   type="text"
                   id="input-companyName"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   required
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
-                  >Industry</label
-                >
-                <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Industry</label
                 >
                 <select
                   id="input-industry"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 >
                   <option value="" disabled>Select industry</option>
                   <option value="Software Development">Software Development</option>
@@ -593,15 +615,14 @@
                   <option value="Cloud Computing">Cloud Computing</option>
                 </select>
               </div>
-              </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Number of Employees</label
                 >
                 <select
                   id="input-numberOfEmployees"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 >
                   <option value="1-10">1-10</option>
                   <option value="11-50">11-50</option>
@@ -613,21 +634,21 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Founded Year</label
                 >
                 <input
                   type="number"
                   id="input-foundedYear"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Location</label
                 >
-                <select id="input-location" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white text-gray-700 text-sm">
+                <select id="input-location" required class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 text-sm">
     <option value="" disabled selected>Select location</option>
     <option value="Remote" class="font-bold text-blue-600">🌍 Remote / Anywhere</option>
 
@@ -829,113 +850,113 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Phone</label
                 >
                 <input
                   type="text"
                   id="input-phone"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Website</label
                 >
                 <input
                   type="url"
                   id="input-website"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   placeholder="https://example.com"
                 />
               </div>
 
               <div class="col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Company Description</label
                 >
                 <textarea
                   id="input-companyDescription"
                   rows="4"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 ></textarea>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">
+          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-slate-200 mb-4">
               Details & Social Media
             </h3>
 
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Technologies (Comma separated)</label
                 >
                 <input
                   type="text"
                   id="input-technologies"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   placeholder="React, Node.js, AWS"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Benefits (Comma separated)</label
                 >
                 <textarea
                   id="input-benefits"
                   rows="2"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   placeholder="Remote Work, Health Insurance"
                 ></textarea>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                     ><i class="fab fa-linkedin text-blue-600"></i>
                     LinkedIn</label
                   >
                   <input
                     type="url"
                     id="input-linkedin"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                     ><i class="fab fa-twitter text-blue-400"></i> Twitter</label
                   >
                   <input
                     type="url"
                     id="input-twitter"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                     ><i class="fab fa-facebook text-blue-800"></i>
                     Facebook</label
                   >
                   <input
                     type="url"
                     id="input-facebook"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                     ><i class="fab fa-instagram text-pink-600"></i>
                     Instagram</label
                   >
                   <input
                     type="url"
                     id="input-instagram"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
               </div>

@@ -28,6 +28,20 @@ const btnUploadLogo = document.getElementById('btnUploadLogo');
 const btnLogout = document.getElementById('btnLogout');
 
 // ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
+
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
+// ============================================================
 // 2. Initialization & Data Fetching
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -41,7 +55,7 @@ async function fetchProfileData() {
     renderViewMode(currentProfile);
   } catch (error) {
     console.error('Error fetching profile:', error);
-    Swal.fire({
+    swalDarkConfig({
       icon: 'error',
       title: 'Error',
       text: 'Failed to load company profile. Please try again.',
@@ -94,7 +108,7 @@ function renderViewMode(data) {
     techContainer.innerHTML = '';
     if (details.technologies && details.technologies.length > 0) {
       details.technologies.forEach((tech) => {
-        techContainer.innerHTML += `<span class="tech-badge">${tech}</span>`;
+        techContainer.innerHTML += `<span class="tech-badge dark:text-slate-400">${tech}</span>`;
       });
     } else {
       techContainer.innerHTML =
@@ -107,7 +121,7 @@ function renderViewMode(data) {
     benContainer.innerHTML = '';
     if (details.benefits && details.benefits.length > 0) {
       details.benefits.forEach((ben) => {
-        benContainer.innerHTML += `<li>${ben}</li>`;
+        benContainer.innerHTML += `<li class="dark:text-slate-400">${ben}</li>`;
       });
     } else {
       benContainer.innerHTML =
@@ -283,7 +297,14 @@ btnUploadLogo.addEventListener('click', async (e) => {
   const file = logoInput.files[0];
 
   if (!file) {
-    Swal.fire('Warning', 'Please select an image first.', 'warning');
+    Swal.fire({
+      Title:'Warning',
+      text: 'Please select an image first.',
+      icon: 'warning',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#4361ee',
+    });
     return;
   }
 
@@ -295,7 +316,7 @@ btnUploadLogo.addEventListener('click', async (e) => {
 
     await companyService.uploadLogo(file);
 
-    Swal.fire({
+    swalDarkConfig({
       icon: 'success',
       title: 'Success',
       text: 'Company logo updated successfully!',
@@ -307,8 +328,16 @@ btnUploadLogo.addEventListener('click', async (e) => {
     btn.disabled = false;
     fetchProfileData(); // Refresh UI
   } catch (error) {
+    const isDarkMode = document.documentElement.classList.contains('dark');
     console.error(error);
-    Swal.fire('Error', 'Failed to upload logo.', 'error');
+    Swal.fire({
+      Title:'Error',
+      text: 'Failed to upload logo.',
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#4361ee',
+    });
     document.getElementById('btnUploadLogo').innerHTML = 'Upload';
     document.getElementById('btnUploadLogo').disabled = false;
   }
@@ -366,7 +395,7 @@ btnSaveChanges.addEventListener('click', async (e) => {
       companyService.updateProfileStep2(step2Data),
     ]);
 
-    Swal.fire({
+    swalDarkConfig({
       icon: 'success',
       title: 'Profile Updated',
       text: 'Company information has been saved successfully.',
@@ -378,8 +407,14 @@ btnSaveChanges.addEventListener('click', async (e) => {
     });
   } catch (error) {
     console.error('Update Error:', error);
+    const isDarkMode = document.documentElement.classList.contains('dark');
     const message = error.response?.data?.message || 'Something went wrong';
-    Swal.fire('Error', message, 'error');
+    Swal.fire({
+      Title:'Error',
+      text: message,
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',});
   } finally {
     const submitBtn = document.getElementById('btnSaveChanges');
     submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';

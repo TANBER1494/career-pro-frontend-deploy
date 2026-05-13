@@ -74,7 +74,10 @@ function renderVerificationStatus(status) {
       verifStatusBadge.classList.add(
         "bg-yellow-100",
         "text-yellow-700",
-        "border-yellow-200"
+        "border-yellow-200",
+        "dark:bg-yellow-900/60",
+        "dark:border-yellow-900/60",
+        "dark:text-gray-200"
       );
       verifProgressText.textContent = "Under Review";
       break;
@@ -83,7 +86,10 @@ function renderVerificationStatus(status) {
       verifStatusBadge.classList.add(
         "bg-red-100",
         "text-red-700",
-        "border-red-200"
+        "border-red-200",
+        "dark:bg-red-900/60",
+        "dark:border-red-900/60",
+        "dark:text-gray-200"
       );
       verifProgressText.textContent = "Action Required";
       break;
@@ -92,7 +98,10 @@ function renderVerificationStatus(status) {
       verifStatusBadge.classList.add(
         "bg-gray-100",
         "text-gray-600",
-        "border-gray-200"
+        "border-gray-200",
+        "dark:bg-orange-900/60",
+        "dark:border-orange-900/60",
+        "dark:text-gray-200",
       );
       verifProgressText.textContent = "Start Verification";
   }
@@ -114,27 +123,45 @@ function renderRecentJobs(jobs) {
     .map((job) => {
       const statusColor =
         job.status === "published"
-          ? "text-green-600 bg-green-50 border-green-100"
-          : "text-gray-600 bg-gray-50 border-gray-100";
+          ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-500/10 border-green-100 dark:border-green-500/20"
+          : "text-gray-600 dark:text-slate-300 bg-gray-50 dark:bg-slate-900/40 border-gray-100 dark:border-slate-700";
+    
       const statusText = job.status === "published" ? "Active" : job.status;
+    
       const postedDate = new Date(job.postedAt).toLocaleDateString();
-
+    
       return `
-        <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='/Company_jobs'">
-            <div>
-                <h4 class="font-bold text-gray-800 text-sm">${job.title}</h4>
-                <div class="text-xs text-gray-500 mt-1 flex gap-3">
-                    <span><i class="fas fa-users"></i> ${
-                      job.applicationsCount || 0
-                    } apps</span>
-                    <span><i class="far fa-clock"></i> ${postedDate}</span>
-                </div>
+        <div
+          class="flex items-center justify-between p-3 rounded-lg dark:bg-black/30 border border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-black/40 transition cursor-pointer"
+          onclick="window.location.href='/Company_jobs'"
+        >
+          <div>
+            <h4 class="font-bold text-gray-800 dark:text-slate-100 text-sm">
+              ${job.title}
+            </h4>
+    
+            <div
+              class="text-xs text-gray-500 dark:text-slate-400 mt-1 flex gap-3"
+            >
+              <span>
+                <i class="fas fa-users"></i>
+                ${job.applicationsCount || 0} apps
+              </span>
+    
+              <span>
+                <i class="far fa-clock"></i>
+                ${postedDate}
+              </span>
             </div>
-            <span class="px-2 py-1 rounded text-[10px] font-bold border uppercase ${statusColor}">
-                ${statusText}
-            </span>
+          </div>
+    
+          <span
+            class="px-2 py-1 rounded text-[10px] font-bold border uppercase ${statusColor}"
+          >
+            ${statusText}
+          </span>
         </div>
-        `;
+      `;
     })
     .join("");
 }
@@ -155,37 +182,51 @@ function renderRecentApplications(apps) {
       const date = new Date(app.appliedAt).toLocaleDateString();
 
       // تحديد لون الحالة
-      let statusClass = "bg-gray-50 text-gray-600 border-gray-200";
+      let statusClass = "bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-500/30 dark:text-gray-400 dark:border-gray-400";
       if (app.status === "New" || app.status === "submitted")
-        statusClass = "bg-blue-50 text-blue-600 border-blue-100";
+        statusClass = "bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:border-blue-500/20";
       if (app.status === "Reviewing")
-        statusClass = "bg-yellow-50 text-yellow-600 border-yellow-100";
+        statusClass = "bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-500/10 dark:text-yellow-300 dark:border-yellow-500/20";
       if (app.status === "Hired")
-        statusClass = "bg-green-50 text-green-600 border-green-100";
+        statusClass = "bg-green-50 text-green-600 border-green-100 dark:text-green-400 dark:bg-green-500/10 dark:border-green-500/20";
 
       return `
-        <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='/applications'">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold uppercase">
-                    ${app.candidateName.charAt(0)}
-                </div>
-                <div>
-                    <h4 class="font-bold text-gray-800 text-sm">${
-                      app.candidateName
-                    }</h4>
-                    <div class="flex items-center gap-2 text-xs text-gray-500">
-                        <span class="truncate max-w-[120px]">${
-                          app.position
-                        }</span>
-                        <span>•</span>
-                        <span>${date}</span>
-                    </div>
-                </div>
-            </div>
-            <span class="text-[10px] font-bold px-2 py-1 rounded border uppercase ${statusClass}">
-                ${app.status}
-            </span>
-        </div>
+        <div
+  class="flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-slate-800 bg-white dark:bg-black/30 hover:bg-gray-50 dark:hover:bg-black/40 transition cursor-pointer"
+  onclick="window.location.href='/applications'"
+>
+  <div class="flex items-center gap-3">
+    <div
+      class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 flex items-center justify-center text-xs font-bold uppercase"
+    >
+      ${app.candidateName.charAt(0)}
+    </div>
+
+    <div>
+      <h4 class="font-bold text-gray-800 dark:text-slate-100 text-sm">
+        ${app.candidateName}
+      </h4>
+
+      <div
+        class="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400"
+      >
+        <span class="truncate max-w-[120px]">
+          ${app.position}
+        </span>
+
+        <span>•</span>
+
+        <span>${date}</span>
+      </div>
+    </div>
+  </div>
+
+  <span
+    class="text-[10px] font-bold px-2 py-1 rounded border uppercase ${statusClass}"
+  >
+    ${app.status}
+  </span>
+</div>
     `;
     })
     .join("");

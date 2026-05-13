@@ -4,6 +4,20 @@ import Swal from 'sweetalert2';
 const verifyForm = document.getElementById('verifyForm');
 const resendBtn = document.getElementById('resendBtn');
 
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
+
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
 // ==========================================
 // 1. Verify Logic (زر التأكيد)
 // ==========================================
@@ -25,7 +39,7 @@ if (verifyForm) {
 
     // التحقق من وجود الإيميل
     if (!email) {
-      Swal.fire({
+      swalDarkConfig({
         icon: 'error',
         title: 'Email Not Found',
         text: 'Please signup or login again.',
@@ -38,7 +52,7 @@ if (verifyForm) {
 
     // التحقق من الكود
     if (!code || code.length < 6) {
-      Swal.fire({
+      swalDarkConfig({
         icon: 'warning',
         title: 'Invalid Code',
         text: 'Please enter the full 6-digit code.',
@@ -71,7 +85,7 @@ if (verifyForm) {
       localStorage.removeItem('pendingVerificationEmail');
       localStorage.removeItem('tempEmail');
 
-      Swal.fire({
+      swalDarkConfig({
         icon: 'success',
         title: 'Verified!',
         text: 'Your email has been successfully verified.',
@@ -92,7 +106,7 @@ if (verifyForm) {
       console.error(error);
       const message =
         error.response?.data?.message || 'Verification failed. Invalid code.';
-      Swal.fire({
+      swalDarkConfig({
         icon: 'error',
         title: 'Verification Failed',
         text: message,
@@ -115,9 +129,16 @@ if (resendBtn) {
     const email =
       localStorage.getItem('pendingVerificationEmail') ||
       localStorage.getItem('tempEmail');
-
+      const isDarkMode = document.documentElement.classList.contains('dark');
     if (!email) {
-      Swal.fire('Error', 'No email found to resend code to.', 'error');
+      Swal.fire({
+        title:'Error', 
+        text:'No email found to resend code to.', 
+        icon:'error',
+        background: isDarkMode ? '#1e1b4b' : '#ffffff',
+        color: isDarkMode ? '#f8fafc' : '#1e293b',
+        confirmButtonColor: '#4361ee',
+      });
       return;
     }
 
@@ -159,9 +180,14 @@ if (resendBtn) {
       resendBtn.innerText = 'Resend Code';
       resendBtn.style.color = '';
       resendBtn.style.cursor = 'pointer';
+      const isDarkMode = document.documentElement.classList.contains('dark');
 
       const message = error.response?.data?.message || 'Failed to resend code';
-      Swal.fire('Error', message, 'error');
+      Swal.fire({
+        title:'Error',
+        text: message,
+        icon: 'error'
+      });
     }
   });
 }

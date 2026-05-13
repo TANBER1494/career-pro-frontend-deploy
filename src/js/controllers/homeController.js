@@ -55,7 +55,7 @@ function initAuthButtons() {
 
     // ✅ لو المستخدم طالب (Seeker) ومكمل بياناته -> اعرض زر البروفايل وتسجيل الخروج
     const navLinkHtml = `
-          <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-700 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+          <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-2 transition duration-300 whitespace-nowrap">
             <i class="fas fa-user-circle text-lg"></i> Profile
         </a>`;
 
@@ -446,40 +446,47 @@ function createCompanyCard(company) {
 window.checkAiFeatureAccess = function (event, targetUrl) {
   // منع الانتقال للصفحة فوراً
   event.preventDefault();
-
+  event.stopPropagation();
   const token = localStorage.getItem('token');
 
   if (!token) {
+    const isDarkMode =document.documentElement.classList.contains('dark');
     Swal.fire({
       icon: 'info',
       title: 'Login Required',
       text: 'You need to login or create an account to unlock our AI Features.',
       showCancelButton: true,
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       confirmButtonColor: '#4361ee',
       cancelButtonColor: '#64748b',
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = '/login'; // مسار صفحة الدخول عندك
+        window.location.href = '/login';
       }
     });
-    return false; // إيقاف العملية
+    return false;
   }
 
   // لو معاه توكن، نسمحله يروح لصفحة الاختبار
   window.location.href = targetUrl;
+  return false;
 };
 
 window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem('token');
-
+  const isDarkMode = document.documentElement.classList.contains('dark');
   if (!token) {
     Swal.fire({
       icon: 'info',
       title: 'Login Required',
       text: 'You need to login to apply for jobs.',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       showCancelButton: true,
+      confirmButtonColor: '#3b82f6',
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
@@ -500,7 +507,15 @@ window.applyForJobCheck = function (jobId) {
 window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem('token');
   if (!token) {
-    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Login Required',
+      text: 'Please login to save jobs.',
+      icon: 'info',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+  });
     return;
   }
 
@@ -526,9 +541,14 @@ window.toggleSaveJob = async function (jobId, btnElement) {
     console.error('Save Error:', error);
     // التراجع في حالة الخطأ
     const icon = btnElement.querySelector('i');
-    // اعكس الحالة مرة أخرى
-    // ...
-    Swal.fire('Error', 'Failed to save job.', 'error');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Error',
+      text: 'Failed to save job.',
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+  });
   }
 };
 
@@ -617,7 +637,15 @@ function initModalEvents() {
       const currentFileInput = document.getElementById('applyCv');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire('Warning', 'Please upload your CV.', 'warning');
+        const isDarkMode = document.documentElement.classList.contains('dark');
+      Swal.fire({
+        title: 'Warning',
+        text: 'Please upload your CV.',
+        icon: 'warning',
+        background: isDarkMode ? '#1e1b4b' : '#ffffff',
+        color: isDarkMode ? '#f8fafc' : '#1e293b',
+        confirmButtonColor: '#3b82f6',
+    });
         return;
       }
 
@@ -635,19 +663,41 @@ function initModalEvents() {
           newSubmitBtn.innerHTML =
             '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
-
+      
         await jobService.applyForJob(jobId, applyData);
-
-        Swal.fire('Success', 'Application submitted successfully!', 'success');
+      
+        const isDarkMode =
+          document.documentElement.classList.contains('dark');
+      
+        Swal.fire({
+          title: 'Success',
+          text: 'Application submitted successfully!',
+          icon: 'success',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
+        });
+      
         close();
       } catch (error) {
         let msg = 'Failed to submit application.';
+      
         if (error.response?.status === 409)
           msg = 'You have already applied for this job.';
         else if (error.response?.data?.message)
           msg = error.response.data.message;
-
-        Swal.fire('Error', msg, 'error');
+      
+        const isDarkMode =
+          document.documentElement.classList.contains('dark');
+      
+        Swal.fire({
+          title: 'Error',
+          text: msg,
+          icon: 'error',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#ef4444',
+        });
       } finally {
         if (newSubmitBtn) {
           newSubmitBtn.disabled = false;

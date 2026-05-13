@@ -7,7 +7,8 @@
     <script type="module"src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/src/css/main.css" rel="stylesheet">
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet"type="text/css"href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
     <link rel="website icon" type="png" href="../../../../assets/imgs/Logo.png"/>
@@ -30,6 +31,11 @@
         overflow-x: hidden;
         background-attachment: fixed;
         font-family: "Poppins", sans-serif;
+      }
+      .dark body {
+        transition: opacity 0.5s ease-in-out;
+        background: #110b36;
+        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
       }
 
       .nav-container {
@@ -59,6 +65,10 @@
         justify-content: center;
         align-items: center;
         transition: 0.5s;
+      }
+      .dark .magic-menu li {
+        background: rgba(126, 126, 126, 0.37);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
       /* ... (before & after كما هما) ... */
       .magic-menu li::before {
@@ -105,12 +115,19 @@
         transition: 0.5s;
         transition-delay: 0.25s;
       }
+      .dark .magic-menu li ion-icon {
+        color: #ddd9d9;
+      }
       /* ... باقي الستايل كما هو ... */
       .magic-menu li:hover ion-icon,
       .magic-menu li.active ion-icon {
         transform: scale(0);
         color: #fff;
         transition-delay: 0s;
+      }
+      .dark .magic-menu li:hover ion-icon,
+      .dark .magic-menu li.active ion-icon {
+        color: #030303;
       }
       .magic-menu li span.title {
         position: absolute;
@@ -128,9 +145,6 @@
         transform: scale(1);
         transition-delay: 0.25s;
       }
-      .typed-cursor {
-  color: #2563eb;
-}
 
 /* From Uiverse.io by zenonaiden_3341 */ 
 .toggleSwitch {
@@ -177,6 +191,10 @@
   /* background-color: #e8e8e8; */
   border-radius: 50%;
 }
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 6px rgba(255, 166, 0, 0.6));
+}
 
 .icons--moon,
 .icons--sun {
@@ -215,19 +233,26 @@
   </head>
   <body class=" text-gray-800 w-full">
     <nav
-    class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8"
+    class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-center justify-between shadow-sm mb-8"
     >
-      <a
-        href="/Company_dashboard"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-    >
-    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="font-lexend font-simibold not-italic">Company Portal</span>
-      </a>
+    <a
+    href="/Company_dashboard"
+    class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+    onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+  >
+    <img
+      src="../../../../assets/imgs/Logo.png"
+      alt="CareerGuidance Logo"
+      class="h-12 w-auto object-contain"
+    />
+    <span class="font-lexend font-simibold not-italic dark:text-slate-100">
+      Company Portal
+    </span>
+  </a>
 
       <div class="hidden md:flex flex-1 nav-container">
         <div
-          class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
+        class="bg-gray-50 dark:bg-black/30 px-6 py-2 rounded-full border border-gray-200 dark:border-slate-800 shadow-inner"
         >
         <ul class="magic-menu">
           <li class="menu-item" data-url="/Company_dashboard" style="--i: #5eb6fd;--j:#0576d3">
@@ -318,39 +343,52 @@
     <main class="w-full mx-auto p-6 space-y-6">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900">Job Management</h1>
-          <p class="text-gray-500 mt-1">
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100">
+            Job Management
+          </h1>
+    
+          <p class="text-gray-500 dark:text-slate-400 mt-1">
             Manage your job postings and applications
           </p>
         </div>
+    
         <a
           href="/post_job"
-          class="bg-blue-600 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-sm"
         >
           <i class="fas fa-plus"></i> Post New Job
         </a>
       </div>
-
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+    
+      <div
+        class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-4"
+      >
         <div
           class="flex flex-col md:flex-row gap-4 items-center justify-between"
         >
-        <div class="relative flex-grow w-full md:w-auto ">
-          <input
-          type="text"
-          id="search-input"
-          placeholder="Search jobs..."
-          class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:border-blue-500 outline-none transition-all duration-300 peer"
-          />
-          <i class="fas fa-search absolute left-4 top-1/2  -translate-y-1/2 text-gray-400 peer-focus:text-blue-500 peer-focus:scale-125 transition-all duration-300 pointer-events-none"></i>
-        </div>
+          <div class="relative flex-grow w-full md:w-auto">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search jobs..."
+              class="w-full pl-10 pr-4 py-2.5 border rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 border-gray-300 dark:border-slate-700 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition-all duration-300 peer"
+            />
+    
+            <i
+              class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 peer-focus:text-blue-500 dark:peer-focus:text-slate-300 peer-focus:scale-125 transition-all duration-300 pointer-events-none"
+            ></i>
+          </div>
+    
           <div class="flex items-center gap-2 w-full md:w-auto">
-            <span class="text-sm text-gray-500 font-medium"
-              >Filter by status:</span
+            <span
+              class="text-sm text-gray-500 dark:text-slate-400 font-medium"
             >
+              Filter by status:
+            </span>
+    
             <select
               id="statusFilter"
-              class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+              class="border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm outline-none bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600"
             >
               <option value="all">All Status</option>
               <option value="published">Active</option>
@@ -360,28 +398,71 @@
           </div>
         </div>
       </div>
-
+    
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-          <h3 class="text-2xl font-bold text-blue-700" id="stat-active">--</h3>
-          <p class="text-sm text-gray-500">Active Jobs</p>
+        <div
+          class="bg-white dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm"
+        >
+          <h3
+            class="text-2xl font-bold text-blue-700 dark:text-blue-400"
+            id="stat-active"
+          >
+            --
+          </h3>
+    
+          <p class="text-sm text-gray-500 dark:text-slate-400">
+            Active Jobs
+          </p>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-          <h3 class="text-2xl font-bold text-violet-700" id="stat-draft">--</h3>
-          <p class="text-sm text-gray-500">Draft Jobs</p>
+    
+        <div
+          class="bg-white dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm"
+        >
+          <h3
+            class="text-2xl font-bold text-violet-700 dark:text-violet-400"
+            id="stat-draft"
+          >
+            --
+          </h3>
+    
+          <p class="text-sm text-gray-500 dark:text-slate-400">
+            Draft Jobs
+          </p>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-          <h3 class="text-2xl font-bold text-cyan-500" id="stat-apps">--</h3>
-          <p class="text-sm text-gray-500">Total Applications</p>
+    
+        <div
+          class="bg-white dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm"
+        >
+          <h3
+            class="text-2xl font-bold text-cyan-500 dark:text-cyan-400"
+            id="stat-apps"
+          >
+            --
+          </h3>
+    
+          <p class="text-sm text-gray-500 dark:text-slate-400">
+            Total Applications
+          </p>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-          <h3 class="text-2xl font-bold text-blue-600" id="stat-views">--</h3>
-          <p class="text-sm text-gray-500">Total Views</p>
+    
+        <div
+          class="bg-white dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm"
+        >
+          <h3
+            class="text-2xl font-bold text-blue-600 dark:text-blue-400"
+            id="stat-views"
+          >
+            --
+          </h3>
+    
+          <p class="text-sm text-gray-500 dark:text-slate-400">
+            Total Views
+          </p>
         </div>
       </div>
-
+    
       <div id="jobsContainer" class="space-y-4">
-        <div class="text-center py-10 text-gray-500">
+        <div class="text-center py-10 text-gray-500 dark:text-slate-500">
           <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
           <p>Loading jobs...</p>
         </div>

@@ -22,7 +22,20 @@ const savedCountBadge = document.getElementById('savedCount');
 const appsCountBadge = document.getElementById('appsCount');
 
 let currentProfile = {};
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
 // ============================================================
 // 2. Initialization
 // ============================================================
@@ -58,18 +71,18 @@ function initProfileImageUpload() {
 
       // تحقق سريع من النوع والحجم
       if (!file.type.startsWith('image/')) {
-        Swal.fire('Error', 'Please upload an image file', 'error');
+        swalDarkConfig({title:'Error', text:'Please upload an image file', icon:'error'});
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
         // 5MB limit
-        Swal.fire('Error', 'Image size should be less than 5MB', 'error');
+        swalDarkConfig({title:'Error', text:'Image size should be less than 5MB', icon:'error'});
         return;
       }
 
       try {
         // إظهار لودينج بسيط (اختياري: ممكن تغير أيقونة الكاميرا لسبينر)
-        Swal.fire({
+        swalDarkConfig({
           title: 'Uploading...',
           text: 'Please wait while we update your profile picture',
           allowOutsideClick: false,
@@ -94,7 +107,7 @@ function initProfileImageUpload() {
           initialsContainer.classList.add('hidden');
         }
 
-        Swal.fire({
+        swalDarkConfig({
           icon: 'success',
           title: 'Updated!',
           text: 'Profile picture updated successfully',
@@ -103,7 +116,7 @@ function initProfileImageUpload() {
         });
       } catch (error) {
         console.error(error);
-        Swal.fire('Error', 'Failed to upload image', 'error');
+        swalDarkConfig({title:'Error', text:'Failed to upload image', icon:'error'});
       } finally {
         fileInput.value = ''; // تصفير الانبوت عشان لو اختار نفس الصورة تاني تشتغل
       }
@@ -536,7 +549,7 @@ btnSaveChanges.addEventListener('click', async (e) => {
     btnSaveChanges.innerHTML =
       '<i class="fas fa-spinner fa-spin"></i> Saving...';
     await seekerService.updateProfile(updatedData);
-    Swal.fire({
+    swalDarkConfig({
       icon: 'success',
       title: 'Profile Updated',
       timer: 1500,
@@ -546,7 +559,7 @@ btnSaveChanges.addEventListener('click', async (e) => {
       toggleView(false);
     });
   } catch (error) {
-    Swal.fire('Error', 'Failed to update profile.', 'error');
+    swalDarkConfig({title:'Error', text:'Failed to update profile.', icon:'error'});
   } finally {
     btnSaveChanges.disabled = false;
     btnSaveChanges.innerHTML = 'Save Changes';
@@ -584,7 +597,7 @@ window.openApplyModal = function (jobId) {
 // 2. Helper Functions (Remove Saved / Delete Application)
 // ============================================================
 window.removeSavedJob = async function (jobId) {
-  const result = await Swal.fire({
+  const result = await swalDarkConfig({
     title: 'Remove?',
     icon: 'warning',
     showCancelButton: true,
@@ -604,12 +617,12 @@ window.removeSavedJob = async function (jobId) {
     )
       loadSavedJobs();
 
-    Swal.fire('Removed!', '', 'success');
+    swalDarkConfig({title:'Removed!',text: '', icon:'success'});
   }
 };
 
 window.deleteApplication = async function (appId) {
-  const result = await Swal.fire({
+  const result = await swalDarkConfig({
     title: 'Delete Application?',
     text: 'This will remove it from your history. Are you sure?',
     icon: 'warning',
@@ -632,9 +645,9 @@ window.deleteApplication = async function (appId) {
       )
         loadApplications();
 
-      Swal.fire('Deleted!', 'Application history removed.', 'success');
+      swalDarkConfig({title:'Deleted!', text:'Application history removed.', icon:'success'});
     } catch (error) {
-      Swal.fire('Error', 'Failed to delete application.', 'error');
+      swalDarkConfig({title:'Error', text:'Failed to delete application.', icon:'error'});
     }
   }
 };
@@ -731,14 +744,14 @@ function initModalEvents() {
 
         await jobService.applyForJob(modal.dataset.jobId, data);
 
-        Swal.fire('Success', 'Application Sent!', 'success');
+        swalDarkConfig({title:'Success', text:'Application Sent!', icon:'success'});
         close();
       } catch (err) {
-        Swal.fire(
-          'Error',
-          err.response?.data?.message || 'Failed to send application',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:err.response?.data?.message || 'Failed to send application',
+          icon:'error'
+      });
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Submit';

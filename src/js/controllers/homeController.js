@@ -893,22 +893,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initRevealCards();
 });
 
-import Typed from 'typed.js';
-
-new Typed('#typewriter', {
-  strings: [
-    'AI-Powered Matching',
-    'Advanced CV Analysis',
-    'Personality test',
-    'Smart Suggestions'
-  ],
-  typeSpeed: 80,
-  backSpeed: 60,
-  backDelay: 2000,
-  loop: true,
-  cursorChar: '|',
-});
-
 const counters = document.querySelectorAll('.number');
 
 const animateCounter = (counter) => {

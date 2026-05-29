@@ -37,7 +37,20 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStats();
   loadApplications();
 });
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
 // ============================================================
 // 3. Data Fetching
 // ============================================================
@@ -115,9 +128,9 @@ function calculateLocalStats(apps) {
 function renderApplications(apps) {
   if (apps.length === 0) {
     container.innerHTML = `
-            <div class="text-center py-12 bg-white rounded-xl border border-gray-200">
+            <div class="text-center py-12 bg-white dark:bg-black/30 rounded-xl border border-gray-200 dark:border-gray-800">
                 <div class="text-gray-400 mb-4"><i class="fas fa-users-slash text-5xl"></i></div>
-                <h3 class="text-lg font-medium text-gray-900">No applications found</h3>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-200">No applications found</h3>
                 <p class="text-gray-500 mt-1">No candidates match your search.</p>
             </div>
         `;
@@ -133,107 +146,132 @@ function renderApplications(apps) {
       let actionsHtml = '';
       if (app.status === 'New' || app.status === 'submitted') {
         actionsHtml = `
-                <button onclick="updateStatus('${app.id}', 'Reviewing')" class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded hover:bg-yellow-200 border border-yellow-200 transition">Review</button>
-                <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 transition">Reject</button>
+                <button onclick="updateStatus('${app.id}', 'Reviewing')" class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded hover:bg-yellow-200 border border-yellow-200 dark:bg-yellow-500/10 dark:hover:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-500/20 transition">Review</button>
+                <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 dark:bg-red-900/30 dark:hover:bg-red-900/40 dark:border-red-900/60 dark:text-red-400 transition">Reject</button>
             `;
       } else if (app.status === 'Reviewing' || app.status === 'under_review') {
         actionsHtml = `
-                <button onclick="updateStatus('${app.id}', 'Interviewed')" class="text-xs bg-purple-100 text-purple-700 px-3 py-1.5 rounded hover:bg-purple-200 border border-purple-200 transition">Interview</button>
-                <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 transition">Reject</button>
+                <button onclick="updateStatus('${app.id}', 'Interviewed')" class="text-xs bg-purple-100 text-purple-700 px-3 py-1.5 rounded hover:bg-purple-200 border border-purple-200 dark:bg-purple-500/10 dark:hover:bg-purple-900/30 dark:text-purple-300 dark:border-purple-500/20 transition">Interview</button>
+                <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 dark:bg-red-900/30 dark:hover:bg-red-900/40 dark:border-red-900/60 dark:text-red-400 transition">Reject</button>
             `;
       } else if (
         app.status === 'Interviewed' ||
         app.status === 'interview_scheduled'
       ) {
         actionsHtml = `
-                <button onclick="updateStatus('${app.id}', 'Hired')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded hover:bg-green-200 border border-green-200 transition font-bold"><i class="fas fa-check mr-1"></i> Hire</button>
-                <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 transition">Reject</button>
+                <button onclick="updateStatus('${app.id}', 'Hired')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded hover:bg-green-200 border border-green-200 dark:bg-green-500/10 dark:hover:bg-green-900/30 dark:text-green-400 dark:border-green-500/20 transition font-bold"><i class="fas fa-check mr-1"></i> Hire</button>
+                <button onclick="updateStatus('${app.id}', 'Rejected')" class="text-xs bg-white text-red-600 px-3 py-1.5 rounded border border-gray-200 hover:bg-red-50 dark:bg-red-900/30 dark:hover:bg-red-900/40 dark:border-red-900/60 dark:text-red-400 transition">Reject</button>
             `;
       } else {
         actionsHtml = `<span class="text-xs text-gray-400">No actions available</span>`;
       }
 
       return `
-        <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex flex-col md:flex-row justify-between gap-6">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 text-xl font-bold border border-gray-200">
-                        ${app.candidateName.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-3 mb-1">
-                            <h3 class="text-lg font-bold text-gray-900">${
-                              app.candidateName
-                            }</h3>
-                            <span class="${statusColor} px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wide">${
-                              app.status
-                            }</span>
-                        </div>
-                        <p class="text-blue-600 text-sm font-medium mb-2">${
-                          app.position
-                        }</p>
-                        
-                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
-                            <span class="flex items-center gap-1"><i class="far fa-envelope"></i> ${
-                              app.email
-                            }</span>
-                            <span class="flex items-center gap-1"><i class="fas fa-phone"></i> ${
-                              app.phone
-                            }</span>
-                            <span class="flex items-center gap-1"><i class="fas fa-briefcase"></i> ${
-                              app.experience
-                            }</span>
-                        </div>
-                        
-                        <div class="mt-3 flex flex-wrap gap-2">
-                            ${
-                              app.skills && app.skills.length > 0
-                                ? app.skills
-                                    .map(
-                                      (s) =>
-                                        `<span class="bg-gray-50 text-gray-600 px-2 py-0.5 rounded text-xs border border-gray-100">${s}</span>`
-                                    )
-                                    .join('')
-                                : '<span class="text-xs text-gray-400">No skills listed</span>'
-                            }
-                        </div>
-                    </div>
-                </div>
+<div
+  class="bg-white dark:bg-black/30 rounded-xl border border-gray-200 dark:border-slate-800 p-6 hover:shadow-md dark:hover:shadow-black/20 transition-shadow"
+>
+  <div class="flex flex-col md:flex-row justify-between gap-6">
+    <div class="flex items-start gap-4">
+      <div
+        class="w-12 h-12 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-gray-500 dark:text-slate-300 text-xl font-bold border border-gray-200 dark:border-slate-700"
+      >
+        ${app.candidateName.charAt(0).toUpperCase()}
+      </div>
 
-                <div class="flex flex-col items-end justify-between gap-4 pl-4 border-l border-gray-100 min-w-[180px]">
-                   <div class="text-right">
-                <span class="text-xs text-gray-400 block mb-1">Applied on ${date}</span>
-                ${
-                  // ✅ التعديل: استخدام الاسم الصحيح القادم من الباك إند (cvUrl)
-                  app.cvUrl
-                    ? `<a 
-                        href="${app.cvUrl}" 
-                        target="_blank" 
-                        class="text-sm text-blue-600 hover:underline flex items-center justify-end gap-1 cursor-pointer transition-colors"
-                       >
-                         <i class="fas fa-eye"></i> View CV
-                       </a>`
-                    : `<span class="text-sm text-gray-400 flex items-center justify-end gap-1 cursor-not-allowed" title="No CV Uploaded">
-                         <i class="fas fa-eye-slash"></i> No CV
-                       </span>`
-                }
-            </div>
-                    
-                    <div class="flex gap-2 mt-auto">
-                        ${actionsHtml}
-                    </div>
-                </div>
-            </div>
-            
-            ${
-              app.coverLetter && app.coverLetter.length > 10
-                ? `
-            <div class="mt-4 pt-4 border-t border-gray-100">
-                <p class="text-sm text-gray-500 italic line-clamp-2">"${app.coverLetter}"</p>
-            </div>`
-                : ''
-            }
+      <div>
+        <div class="flex items-center gap-3 mb-1">
+          <h3
+            class="text-lg font-bold text-gray-900 dark:text-slate-100"
+          >
+            ${app.candidateName}
+          </h3>
+
+          <span
+            class="${statusColor} px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wide"
+          >
+            ${app.status}
+          </span>
         </div>
+
+        <p
+          class="text-blue-600 dark:text-blue-400 text-sm font-medium mb-2"
+        >
+          ${app.position}
+        </p>
+
+        <div
+          class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-slate-400"
+        >
+          <span class="flex items-center gap-1">
+            <i class="far fa-envelope"></i> ${app.email}
+          </span>
+
+          <span class="flex items-center gap-1">
+            <i class="fas fa-phone"></i> ${app.phone}
+          </span>
+
+          <span class="flex items-center gap-1">
+            <i class="fas fa-briefcase"></i> ${app.experience}
+          </span>
+        </div>
+
+        <div class="mt-3 flex flex-wrap gap-2">
+          ${
+            app.skills && app.skills.length > 0
+              ? app.skills
+                  .map(
+                    (s) =>
+                      `<span class="bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-300 px-2 py-0.5 rounded text-xs border border-gray-100 dark:border-slate-700">${s}</span>`
+                  )
+                  .join("")
+              : '<span class="text-xs text-gray-400 dark:text-slate-500">No skills listed</span>'
+          }
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col items-end justify-between gap-4 pl-4 border-l border-gray-100 dark:border-slate-800 min-w-[180px]"
+    >
+      <div class="text-right">
+        <span
+          class="text-xs text-gray-400 dark:text-slate-500 block mb-1"
+        >
+          Applied on ${date}
+        </span>
+
+        ${
+          app.cvUrl
+            ? `<a 
+                href="${app.cvUrl}" 
+                target="_blank" 
+                class="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-end gap-1 cursor-pointer transition-colors"
+               >
+                 <i class="fas fa-eye"></i> View CV
+               </a>`
+            : `<span class="text-sm text-gray-400 dark:text-slate-500 flex items-center justify-end gap-1 cursor-not-allowed" title="No CV Uploaded">
+                 <i class="fas fa-eye-slash"></i> No CV
+               </span>`
+        }
+      </div>
+
+      <div class="flex gap-2 mt-auto">
+        ${actionsHtml}
+      </div>
+    </div>
+  </div>
+
+  ${
+    app.coverLetter && app.coverLetter.length > 10
+      ? `
+  <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-800">
+      <p class="text-sm text-gray-500 dark:text-slate-400 italic line-clamp-2">
+        "${app.coverLetter}"
+      </p>
+  </div>`
+      : ""
+  }
+</div>
         `;
     })
     .join('');
@@ -242,14 +280,14 @@ function renderApplications(apps) {
 function getStatusBadgeColor(status) {
   const s = status.toLowerCase();
   if (s === 'new' || s === 'submitted')
-    return 'bg-blue-50 text-blue-600 border-blue-200';
+    return 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:border-blue-500/20';
   if (s === 'reviewing' || s === 'under_review')
-    return 'bg-yellow-50 text-yellow-600 border-yellow-200';
+    return 'bg-yellow-50 text-yellow-600 border-yellow-200 dark:bg-yellow-500/10 dark:text-yellow-300 dark:border-yellow-500/20';
   if (s === 'interviewed' || s === 'interview_scheduled')
-    return 'bg-purple-50 text-purple-600 border-purple-200';
+    return 'bg-purple-50 text-purple-600 border-purple-200 dark:bg-purple-500/10 dark:text-purple-300 dark:border-purple-500/20';
   if (s === 'hired' || s === 'accepted')
-    return 'bg-green-50 text-green-600 border-green-200';
-  if (s === 'rejected') return 'bg-red-50 text-red-600 border-red-200';
+    return 'bg-green-50 text-green-600 border-green-200 dark:text-green-400 dark:bg-green-500/10 dark:border-green-500/20';
+  if (s === 'rejected') return 'bg-red-50 text-red-600 border-red-200 dark:bg-red-900/30 dark:border-red-900/60 dark:text-red-400';
   return 'bg-gray-50 text-gray-600';
 }
 
@@ -276,7 +314,7 @@ function updatePagination(count) {
 // ============================================================
 
 window.handleDownloadCV = (name) => {
-  Swal.fire({
+  swalDarkConfig({
     icon: 'info',
     title: 'Coming Soon',
     text: `CV download feature for ${name} will be available in the next update!`,
@@ -298,11 +336,11 @@ window.updateStatus = async (id, newStatus) => {
     loadApplications();
   } catch (error) {
     console.error(error);
-    Swal.fire(
-      'Error',
-      error.response?.data?.message || 'Failed to update status',
-      'error'
-    );
+    swalDarkConfig({
+      title:'Error',
+      text:error.response?.data?.message || 'Failed to update status',
+      icon:'error'
+    });
   }
 };
 

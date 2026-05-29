@@ -49,7 +49,7 @@ let currentJobData = null;
 // ============================================================
 document.addEventListener("DOMContentLoaded", async () => {
   if (!jobId) {
-    Swal.fire({
+    swalDarkConfig({
       icon: "error",
       title: "Missing Job ID",
       text: "No job selected for editing.",
@@ -62,6 +62,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadJobDetails();
 });
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
+
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
 
 // ============================================================
 // 3. Fetch & Populate Data
@@ -84,7 +98,7 @@ async function loadJobDetails() {
     jobForm.classList.remove("hidden");
   } catch (error) {
     console.error("Error loading job:", error);
-    Swal.fire({
+    swalDarkConfig({
       icon: "error",
       title: "Load Failed",
       text: "Could not fetch job details. Please try again.",
@@ -179,7 +193,7 @@ function updatePreviewData() {
       .map((s) => s.trim())
       .filter((s) => s);
     skills.forEach((skill) => {
-      skillsContainer.innerHTML += `<span class="skill-badge">${skill}</span>`;
+      skillsContainer.innerHTML += `<span class=" dark:text-slate-300">${skill}</span>`;
     });
   }
 }
@@ -235,7 +249,7 @@ btnSaveChanges.addEventListener("click", async (e) => {
 
     await jobManagementService.editJob(jobId, updateData);
 
-    Swal.fire({
+    swalDarkConfig({
       icon: "success",
       title: "Updated!",
       text: "Job details have been updated successfully.",
@@ -247,7 +261,11 @@ btnSaveChanges.addEventListener("click", async (e) => {
   } catch (error) {
     console.error("Update Error:", error);
     const message = error.response?.data?.message || "Failed to update job.";
-    Swal.fire("Error", message, "error");
+    swalDarkConfig({
+      Title:"Error",
+      text: message, 
+      icon: "error"
+    });
 
     // Reset Button
     btnSaveChanges.disabled = false;

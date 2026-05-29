@@ -192,17 +192,17 @@ function updatePaginationUI(totalItems) {
 
   pagContainer.innerHTML = `
         <button id="prevBtn" 
-            class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="px-4 py-2 dark:bg-black/30 bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             ${isFirstPage ? 'disabled' : ''}>
             <i class="fas fa-chevron-left mr-1"></i> Previous
         </button>
         
-        <span class="text-sm text-slate-600 font-medium px-2">
+        <span class="text-sm text-gray-600 dark:text-slate-400 font-medium px-2">
             Page ${currentFilters.page} of ${totalPages}
         </span>
 
         <button id="nextBtn" 
-            class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="px-4 py-2 dark:bg-black/30 bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             ${isLastPage ? 'disabled' : ''}>
             Next <i class="fas fa-chevron-right ml-1"></i>
         </button>
@@ -257,11 +257,11 @@ function createJobCard(job) {
     ? `<span class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-semibold font-poppins px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider z-10">Featured</span>`
     : '';
 
-  const skillsHTML = (job.skills || [])
+    const skillsHTML = (job.skills || [])
     .slice(0, 3)
     .map(
       (skill) =>
-        `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
+        `<span class="px-2 py-1 bg-slate-100 dark:bg-black/30 text-slate-600 dark:text-slate-200 rounded text-[10px] font-medium ">${skill}</span>`
     )
     .join('');
 
@@ -271,26 +271,26 @@ function createJobCard(job) {
     : '#';
 
   return `
-    <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 flex flex-col h-full text-left">
+    <div class="bg-white dark:bg-black/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 dark:border-slate-800 flex flex-col h-full text-left">
         
         ${featuredBadge}
         
         <button onclick="window.toggleSaveJob('${
           job.id || job._id
-        }', this)" class="absolute top-5 right-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
+        }', this)" class="absolute top-5 right-5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50 dark:hover:bg-slate-800/50" title="Save Job">
             <i class="${saveIconClass} fa-bookmark text-lg"></i>
         </button>
 
         <div class="flex items-start gap-4 mb-3">
-            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 p-1">
+            <div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 dark:border-slate-800 p-1">
                 <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md">
             </div>
             <div>
-                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'">
+                <h3 class="font-medium font-poppins text-slate-900 dark:text-slate-200 leading-tight line-clamp-1 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer" onclick="window.location.href='${jobLink}'">
                     ${job.title}
                 </h3>
-                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                    <span class="font-medium text-slate-700 hover:text-blue-600 cursor-pointer transition-colors" onclick="window.location.href='${companyLink}'">
+                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <span class="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors" onclick="window.location.href='${companyLink}'">
                         <i class="fa-regular fa-building mr-1"></i> ${companyName}
                     </span>
                     <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
@@ -298,7 +298,7 @@ function createJobCard(job) {
             </div>
         </div>
 
-        <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
+        <p class="text-slate-500 dark:text-slate-400 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
             ${job.description || 'No description provided.'}
         </p>
 
@@ -306,20 +306,22 @@ function createJobCard(job) {
             ${skillsHTML}
         </div>
 
-        <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
-            <span class="text-green-600 font-semibold font-poppins text-xs">${
-              job.salaryRange || 'Competitive'
-            }</span>
-            <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
+        <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 dark:border-slate-800 pt-3">
+            <span class="text-green-600 dark:text-green-500 font-semibold font-poppins text-xs">
+                ${job.salaryRange || 'Competitive'}
+            </span>
+            <span class="text-slate-400 dark:text-slate-500 text-xs flex items-center gap-1">
+                <i class="fa-regular fa-clock"></i> ${timeAgo}
+            </span>
         </div>
 
         <div class="flex items-center gap-2">
-            <span class="px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
+            <span class="px-2 py-2 bg-slate-100 dark:bg-black/30 text-slate-600 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg text-[10px] font-medium ">
                 ${type}
             </span>
             <button onclick="window.applyForJobCheck('${
               job.id || job._id
-            }')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
+            }')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
                 Apply Now
             </button>
         </div>
@@ -380,11 +382,17 @@ window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem('token');
 
   if (!token) {
+    const isDarkMode = document.documentElement.classList.contains('dark');
+  
     Swal.fire({
       icon: 'info',
       title: 'Login Required',
       text: 'You need to login to apply for jobs.',
       showCancelButton: true,
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+      cancelButtonColor: '#64748b',
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
@@ -414,8 +422,18 @@ window.applyForJobCheck = function (jobId) {
 // ============================================================
 window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem('token');
+
   if (!token) {
-    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+  
+    Swal.fire({
+      title: 'Login Required',
+      text: 'Please login to save jobs.',
+      icon: 'info',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+    });
     return;
   }
 
@@ -435,7 +453,16 @@ window.toggleSaveJob = async function (jobId, btnElement) {
     await jobService.toggleSaveJob(jobId);
   } catch (error) {
     console.error('Save Error:', error);
-    Swal.fire('Error', 'Failed to save job.', 'error');
+  
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Error',
+      text: 'Failed to save job.',
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#ef4444',
+    });
   }
 };
 
@@ -542,7 +569,15 @@ function initModalEvents() {
       const coverInput = document.getElementById('applyCover');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire('Warning', 'Please upload your CV.', 'warning');
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        Swal.fire({
+          title: 'Warning',
+          text: 'Please upload your CV.',
+          icon: 'warning',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
+        });
         return;
       }
 
@@ -563,10 +598,15 @@ function initModalEvents() {
 
         await jobService.applyForJob(jobId, applyData);
 
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
         Swal.fire({
           icon: 'success',
           title: 'Success!',
           text: 'Application submitted successfully.',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
           timer: 2000,
           showConfirmButton: false,
         });
@@ -582,10 +622,15 @@ function initModalEvents() {
           errorMsg = error.response.data.message;
         }
 
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
         Swal.fire({
           icon: 'error',
           title: 'Application Failed',
           text: errorMsg,
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#ef4444',
         });
       } finally {
         if (submitBtn) {

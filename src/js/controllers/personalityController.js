@@ -61,11 +61,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 // 💡 Start Quiz Logic (بدون الخط الأزرق القبيح)
 window.goToQuiz = async () => {
+  const isDarkMode = document.documentElement.classList.contains('dark');
   try {
     // استخدام SweetAlert الأنيق للتحميل
     Swal.fire({
       title: 'Loading Assessment...',
       allowOutsideClick: false,
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       didOpen: () => Swal.showLoading(),
     });
 
@@ -85,11 +88,16 @@ window.goToQuiz = async () => {
     }, 300);
   } catch (error) {
     console.error(error);
-    Swal.fire(
-      'Error',
-      'Could not load questions. Check your connection.',
-      'error'
-    );
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Could not load questions. Check your connection.',
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6', 
+      iconColor: isDarkMode ? '#f87171' : '#ef4444'
+    });
   }
 };
 
@@ -176,7 +184,7 @@ function renderPage() {
 
       // تجميع السؤال الواحد
       return `
-            <div class="mb-8 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-md">
+            <div class="mb-8 p-6 bg-white dark:bg-black/30 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
                 <h4 class="text-lg md:text-xl font-semibold text-dark mb-10 text-center">${globalIndex + 1}. ${qText}</h4>
                 <div class="scale-group">
                     ${scaleOptionsHtml}
@@ -232,20 +240,29 @@ window.nextQuestion = () => {
 async function submitTest() {
   try {
     progressBar.style.width = `100%`; // اكتمال الشريط
+    const isDarkMode = document.documentElement.classList.contains('dark');
     Swal.fire({
       title: 'Analyzing your profile...',
       html: 'Our AI is generating your perfect career match.',
       allowOutsideClick: false,
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       didOpen: () => Swal.showLoading(),
     });
 
     const res = await aiFeaturesService.submitPersonalityTest(userAnswers);
-
     Swal.close();
     renderResults(res.data);
   } catch (error) {
     console.error(error);
-    Swal.fire('Error', 'Analysis failed. Please try again.', 'error');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Analysis failed. Please try again.',
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+    });
   }
 }
 
@@ -260,8 +277,8 @@ function renderResults(data) {
 
   // حقن العنوان
   document.getElementById('result-title').innerHTML = `
-        <span class="text-dark">${title}</span> 
-        <span class="text-primary">(${code})</span>
+        <span class="text-dark dark:text-slate-200">${title}</span> 
+        <span class="text-primary dark:text-slate-300">(${code})</span>
     `;
 
   // حقن الملخص
@@ -271,9 +288,9 @@ function renderResults(data) {
   document.getElementById('careers-container').innerHTML = data.suggestedCareers
     .map(
       (career) => `
-        <div class="p-6 bg-slate-50 border border-slate-100 rounded-xl hover:shadow-md transition">
-            <h4 class="text-lg font-bold text-dark mb-2">${career.title}</h4>
-            <p class="text-sm text-slate-500 font-medium leading-relaxed">${career.reason}</p>
+        <div class="p-6 bg-slate-50 dark:bg-black/30 border border-slate-100 dark:border-gray-800 rounded-xl hover:shadow-md transition">
+            <h4 class="text-lg font-bold text-dark dark:text-slate-200 mb-2">${career.title}</h4>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">${career.reason}</p>
         </div>
     `
     )
@@ -297,40 +314,15 @@ function initAuthButtons() {
       authService.logout();
     } else {
       navLinkHtml = `
-            <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
-              <i class="fas fa-user-circle text-lg"></i> Profile
+            <a id="profileBtn" href="/profile" class="text-base font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+              <i class="fas fa-user-circle text-xl"></i> Profile
           </a>`;
     }
 
     authContainer.innerHTML = `
             ${navLinkHtml}
-            <div class="min-w-[150px] flex justify-end">
-        <button 
-        id="btnLogout"
-  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
->
-  <div
-    class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
-  >
-    <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-      <path
-        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-      ></path>
-    </svg>
-  </div>
-  <div
-    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-  >
-    Logout
-  </div>
-</button>
-
-      </div>
         `;
 
-    document.getElementById('btnLogout').addEventListener('click', () => {
-      authService.logout();
-    });
   } else {
     authContainer.innerHTML = `
           <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>

@@ -45,6 +45,21 @@ function handleLoginRedirect(user) {
   }
 }
 
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
+
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
+
 // ==========================================
 // 1. Login Logic
 // ==========================================
@@ -69,7 +84,7 @@ if (loginForm) {
       // إرسال الطلب
       const result = await authService.login({ email, password });
 
-      Swal.fire({
+      swalDarkConfig({
         icon: 'success',
         title: 'Welcome Back!',
         timer: 1000,
@@ -88,7 +103,7 @@ if (loginForm) {
 
         // 1. حالة الإيقاف المؤقت (Suspended)
         if (errorMessage.toLowerCase().includes('suspended')) {
-          Swal.fire({
+          swalDarkConfig({
             icon: 'warning',
             title: 'Account Suspended ⚠️',
             text: errorMessage, // هيعرض الرسالة اللي جاية من الباك إند بالوقت والتفاصيل
@@ -99,7 +114,7 @@ if (loginForm) {
 
         // 2. حالة الحذف النهائي (Lazy Deletion)
         if (errorMessage.toLowerCase().includes('deleted')) {
-          Swal.fire({
+          swalDarkConfig({
             icon: 'error',
             title: 'Account Deleted ❌',
             text: errorMessage, // هيعرض إن الحساب تم حذفه لانتهاء مهلة الطعن
@@ -111,7 +126,7 @@ if (loginForm) {
         // 3. حالة عدم التفعيل (Unverified - الافتراضي)
         localStorage.setItem('tempEmail', email);
 
-        Swal.fire({
+        swalDarkConfig({
           icon: 'info',
           title: 'Verification Required',
           text: 'Your account is not verified yet. Redirecting...',
@@ -124,7 +139,7 @@ if (loginForm) {
       }
 
       // أي خطأ آخر (مثل الباسوورد الغلط 401)
-      Swal.fire({
+      swalDarkConfig({
         icon: 'error',
         title: 'Login Failed',
         text: error.response?.data?.message || 'Invalid credentials',
@@ -178,7 +193,7 @@ if (signupForm) {
       // ✅ تصحيح هام: توحيد اسم المفتاح ليكون tempEmail
       localStorage.setItem('tempEmail', email);
 
-      Swal.fire({
+      swalDarkConfig({
         icon: 'success',
         title: 'Account Created!',
         text: 'A verification code has been sent to your email.',
@@ -190,7 +205,7 @@ if (signupForm) {
       });
     } catch (error) {
       console.error('Signup Error:', error);
-      Swal.fire({
+      swalDarkConfig({
         icon: 'error',
         title: 'Signup Failed',
         text: error.response?.data?.message || 'Something went wrong.',

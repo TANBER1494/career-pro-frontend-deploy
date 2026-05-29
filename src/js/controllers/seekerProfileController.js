@@ -22,7 +22,20 @@ const savedCountBadge = document.getElementById('savedCount');
 const appsCountBadge = document.getElementById('appsCount');
 
 let currentProfile = {};
+// ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
 // ============================================================
 // 2. Initialization
 // ============================================================
@@ -58,18 +71,18 @@ function initProfileImageUpload() {
 
       // تحقق سريع من النوع والحجم
       if (!file.type.startsWith('image/')) {
-        Swal.fire('Error', 'Please upload an image file', 'error');
+        swalDarkConfig({title:'Error', text:'Please upload an image file', icon:'error'});
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
         // 5MB limit
-        Swal.fire('Error', 'Image size should be less than 5MB', 'error');
+        swalDarkConfig({title:'Error', text:'Image size should be less than 5MB', icon:'error'});
         return;
       }
 
       try {
         // إظهار لودينج بسيط (اختياري: ممكن تغير أيقونة الكاميرا لسبينر)
-        Swal.fire({
+        swalDarkConfig({
           title: 'Uploading...',
           text: 'Please wait while we update your profile picture',
           allowOutsideClick: false,
@@ -94,7 +107,7 @@ function initProfileImageUpload() {
           initialsContainer.classList.add('hidden');
         }
 
-        Swal.fire({
+        swalDarkConfig({
           icon: 'success',
           title: 'Updated!',
           text: 'Profile picture updated successfully',
@@ -103,7 +116,7 @@ function initProfileImageUpload() {
         });
       } catch (error) {
         console.error(error);
-        Swal.fire('Error', 'Failed to upload image', 'error');
+        swalDarkConfig({title:'Error', text:'Failed to upload image', icon:'error'});
       } finally {
         fileInput.value = ''; // تصفير الانبوت عشان لو اختار نفس الصورة تاني تشتغل
       }
@@ -126,7 +139,7 @@ function setupProfileTabs() {
           'active',
           'text-blue-600',
           'border-b-2',
-          'border-blue-600'
+          'border-blue-600',
         );
         t.classList.add('text-slate-500');
       });
@@ -290,8 +303,8 @@ async function loadApplications() {
       applicationsContainer.innerHTML = `
         <div class="flex flex-col items-center justify-center py-20 text-center">
             <i class="fas fa-file-signature text-6xl text-slate-200 mb-4"></i>
-            <p class="text-slate-500 font-medium">No applications sent yet</p>
-            <a href="/jobs" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Find Jobs</a>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">No applications sent yet</p>
+            <a href="/jobs" class="mt-3 text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline">Find Jobs</a>
         </div>`;
       return;
     }
@@ -312,19 +325,19 @@ function createApplicationCard(app) {
 
   // Status Logic
   if (statusLower === 'submitted' || statusLower === 'new') {
-    statusClass = 'bg-blue-50 text-blue-600 border-blue-100';
+    statusClass = 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-600 dark:text-blue-50 dark:border-blue-600';
     statusIcon = 'fa-paper-plane';
   } else if (statusLower === 'viewed' || statusLower === 'reviewing') {
-    statusClass = 'bg-yellow-50 text-yellow-600 border-yellow-100';
+    statusClass = 'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-600 dark:text-yellow-50 dark:border-yellow-600';
     statusIcon = 'fa-eye';
   } else if (statusLower === 'interview') {
-    statusClass = 'bg-purple-50 text-purple-600 border-purple-100';
+    statusClass = 'bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-600 dark:text-purple-50 dark:border-purple-600';
     statusIcon = 'fa-user-tie';
   } else if (statusLower === 'accepted' || statusLower === 'hired') {
-    statusClass = 'bg-green-50 text-green-600 border-green-100';
+    statusClass = 'bg-green-50 text-green-600 border-green-100 dark:bg-green-600 dark:text-green-50 dark:border-green-600';
     statusIcon = 'fa-check-circle';
   } else if (statusLower === 'rejected') {
-    statusClass = 'bg-red-50 text-red-600 border-red-100';
+    statusClass = 'bg-red-50 text-red-600 border-red-100 dark:bg-red-600 dark:text-red-50 dark:border-red-600';
     statusIcon = 'fa-times-circle';
   }
 
@@ -351,26 +364,26 @@ function createApplicationCard(app) {
   const canDelete = ['rejected', 'hired', 'accepted'].includes(statusLower);
 
   return `
-    <div class="bg-white border border-slate-200 rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300 group w-full" id="app-card-${appId}">
+    <div class="bg-white border dark:bg-black/30 border-slate-200 dark:border-slate-800 rounded-xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300 group w-full" id="app-card-${appId}">
         
         <div class="flex items-center gap-4 w-full sm:w-auto">
-            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center overflow-hidden">
-                 ${logoHtml}
+            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border dark:bg-indigo-950 border-blue-100 dark:border-indigo-950 flex items-center justify-center overflow-hidden">
+                ${logoHtml}
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base leading-tight group-hover:text-blue-600 transition-colors">${title}</h4>
-                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1.5">
-                    <span class="font-medium text-slate-700 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${company}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${location}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${date}</span>
+                <h4 class="font-bold text-slate-800 dark:text-slate-200 text-base leading-tight group-hover:text-blue-600 transition-colors">${title}</h4>
+                <div class="flex flex-wrap items-center gap-2 text-xs mt-1.5">
+                    <span class="font-medium text-slate-400 dark:text-slate-300 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${company}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="flex items-center gap-1 text-slate-400 dark:text-slate-300"><i class="fa-solid fa-location-dot"></i> ${location}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="flex items-center gap-1 text-slate-400 dark:text-slate-300"><i class="fa-regular fa-calendar"></i> ${date}</span>
                 </div>
             </div>
         </div>
 
         <div class="flex items-center gap-3 w-full sm:w-auto justify-end mt-2 sm:mt-0">
-             <span class="px-3 py-1.5 rounded-lg text-xs font-bold border ${statusClass} flex items-center gap-2 shadow-sm capitalize">
+            <span class="px-3 py-1.5 rounded-lg text-xs font-bold border ${statusClass} flex items-center gap-2 shadow-sm capitalize">
                 <i class="fas ${statusIcon}"></i> ${statusLower}
             </span>
 
@@ -403,8 +416,8 @@ async function loadSavedJobs() {
       savedJobsContainer.innerHTML = `
         <div class="flex flex-col items-center justify-center py-20 text-center">
             <i class="fas fa-bookmark text-7xl text-slate-200 mb-4"></i>
-            <p class="text-slate-500 font-medium">No saved jobs yet</p>
-            <a href="/jobs" class="mt-3 text-blue-600 text-sm font-medium hover:underline">Explore Jobs</a>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">No saved jobs yet</p>
+            <a href="/jobs" class="mt-3 text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline">Explore Jobs</a>
         </div>`;
       return;
     }
@@ -434,27 +447,27 @@ function createSavedJobCard(job) {
   const type = job.type || 'Full-time';
 
   return `
-    <div class="group relative w-full bg-white border border-slate-200 rounded-xl p-5 mb-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" id="saved-card-${jobId}">
+    <div class="group relative w-full bg-white border dark:bg-black/30 border-slate-200 dark:border-slate-800 rounded-xl p-5 mb-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" id="saved-card-${jobId}">
         <div class="flex items-center gap-4 w-full sm:w-auto">
-            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center overflow-hidden">
+            <div class="w-14 h-14 shrink-0 rounded-lg bg-blue-50 border dark:bg-indigo-950 border-blue-100 dark:border-indigo-950 flex items-center justify-center overflow-hidden">
                 <img src="${logo}" alt="${companyName}" class="w-full h-full object-cover">
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/jobs?id=${jobId}'">
+                <h4 class="font-bold text-slate-800 dark:text-slate-200 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/jobs?id=${jobId}'">
                     ${job.title}
                 </h4>
                 <div class="flex items-center gap-2 text-xs text-slate-500 mt-1.5">
-                    <span class="font-medium text-slate-700 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${companyName}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${location}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">${type}</span>
+                    <span class="font-medium text-slate-400 dark:text-slate-300 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${companyName}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="flex items-center gap-1 text-slate-400 dark:text-slate-300"><i class="fa-solid fa-location-dot"></i> ${location}</span>
+                    <span class="hidden sm:inline text-slate-400 dark:text-slate-300">|</span>
+                    <span class="bg-slate-100 dark:bg-indigo-950 dark:border-gray-800 text-slate-400 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200">${type}</span>
                 </div>
             </div>
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto justify-end mt-2 sm:mt-0">
-            <button onclick="openApplyModal('${jobId}')" class="flex-1 sm:flex-none px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm shadow-blue-200">Apply Now</button>
-            <button onclick="removeSavedJob('${jobId}')" class="px-3 py-2 border border-red-100 text-red-500 bg-red-50 hover:bg-red-100 hover:border-red-200 rounded-lg transition-colors"><i class="fa-solid fa-trash-can"></i></button>
+            <button onclick="openApplyModal('${jobId}')" class="flex-1 sm:flex-none px-5 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm">Apply Now</button>
+            <button onclick="removeSavedJob('${jobId}')" class="px-3 py-2 border border-red-100 text-red-500 bg-red-50 dark:bg-red-600 dark:text-red-50 dark:border-red-600 dark:hover:bg-red-700 hover:bg-red-100 hover:border-red-200 rounded-lg transition-colors"><i class="fa-solid fa-trash-can"></i></button>
         </div>
     </div>`;
 }
@@ -536,7 +549,7 @@ btnSaveChanges.addEventListener('click', async (e) => {
     btnSaveChanges.innerHTML =
       '<i class="fas fa-spinner fa-spin"></i> Saving...';
     await seekerService.updateProfile(updatedData);
-    Swal.fire({
+    swalDarkConfig({
       icon: 'success',
       title: 'Profile Updated',
       timer: 1500,
@@ -546,7 +559,7 @@ btnSaveChanges.addEventListener('click', async (e) => {
       toggleView(false);
     });
   } catch (error) {
-    Swal.fire('Error', 'Failed to update profile.', 'error');
+    swalDarkConfig({title:'Error', text:'Failed to update profile.', icon:'error'});
   } finally {
     btnSaveChanges.disabled = false;
     btnSaveChanges.innerHTML = 'Save Changes';
@@ -584,7 +597,7 @@ window.openApplyModal = function (jobId) {
 // 2. Helper Functions (Remove Saved / Delete Application)
 // ============================================================
 window.removeSavedJob = async function (jobId) {
-  const result = await Swal.fire({
+  const result = await swalDarkConfig({
     title: 'Remove?',
     icon: 'warning',
     showCancelButton: true,
@@ -604,12 +617,12 @@ window.removeSavedJob = async function (jobId) {
     )
       loadSavedJobs();
 
-    Swal.fire('Removed!', '', 'success');
+    swalDarkConfig({title:'Removed!',text: '', icon:'success'});
   }
 };
 
 window.deleteApplication = async function (appId) {
-  const result = await Swal.fire({
+  const result = await swalDarkConfig({
     title: 'Delete Application?',
     text: 'This will remove it from your history. Are you sure?',
     icon: 'warning',
@@ -632,9 +645,9 @@ window.deleteApplication = async function (appId) {
       )
         loadApplications();
 
-      Swal.fire('Deleted!', 'Application history removed.', 'success');
+      swalDarkConfig({title:'Deleted!', text:'Application history removed.', icon:'success'});
     } catch (error) {
-      Swal.fire('Error', 'Failed to delete application.', 'error');
+      swalDarkConfig({title:'Error', text:'Failed to delete application.', icon:'error'});
     }
   }
 };
@@ -731,14 +744,14 @@ function initModalEvents() {
 
         await jobService.applyForJob(modal.dataset.jobId, data);
 
-        Swal.fire('Success', 'Application Sent!', 'success');
+        swalDarkConfig({title:'Success', text:'Application Sent!', icon:'success'});
         close();
       } catch (err) {
-        Swal.fire(
-          'Error',
-          err.response?.data?.message || 'Failed to send application',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:err.response?.data?.message || 'Failed to send application',
+          icon:'error'
+      });
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Submit';

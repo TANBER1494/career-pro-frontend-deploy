@@ -147,7 +147,7 @@ function renderCompanyAbout(company) {
       benefitsContainer.innerHTML = benefits
         .map(
           (benefit) => `
-                <span class="px-3 py-1.5 bg-green-50 text-green-700 text-xs font-medium rounded-lg border border-green-100 flex items-center gap-2">
+                <span class="px-3 py-1.5 bg-green-50 dark:bg-green-500/60 text-green-400/60 dark:text-green-100 text-xs font-medium rounded-lg border border-green-100 dark:border-green-500/60 flex items-center gap-2">
                     <i class="fa-solid fa-check text-[10px]"></i> ${benefit}
                 </span>
             `
@@ -172,9 +172,9 @@ function renderCompanyJobs(jobs, companyInfo) {
 
   if (jobs.length === 0) {
     jobsList.innerHTML = `
-            <div class="text-center py-10 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
-                <i class="fa-solid fa-briefcase text-slate-300 text-2xl mb-2"></i>
-                <p class="text-slate-500 text-sm">No open positions at the moment.</p>
+            <div class="text-center py-10 bg-slate-50 dark:bg-black/30 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-briefcase text-slate-300 dark:text-slate-200 text-2xl mb-2"></i>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">No open positions at the moment.</p>
             </div>
         `;
     return;
@@ -209,50 +209,52 @@ function renderCompanyJobs(jobs, companyInfo) {
         .slice(0, 3)
         .map(
           (skill) =>
-            `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${skill}</span>`
+            `<span class="px-2 py-1 bg-slate-100 dark:bg-black/30 text-slate-600 dark:text-slate-200 rounded text-[10px] font-medium ">${skill}</span>`
         )
         .join('');
 
-      return `
-        <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 flex flex-col h-full mb-4 text-left">
+        return `
+        <div class="bg-white dark:bg-black/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 relative group border border-slate-200 dark:border-slate-800 flex flex-col h-full mb-4 text-left">
             
-            <button onclick="window.toggleSaveJob('${jobId}', this)" class="absolute top-5 right-5 hover:text-blue-600 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50" title="Save Job">
+            <button onclick="window.toggleSaveJob('${jobId}', this)" class="absolute top-5 right-5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors z-20 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-50 dark:hover:bg-slate-800/50" title="Save Job">
                 <i class="${saveIconClass} fa-bookmark text-lg"></i>
             </button>
-
+        
             <div class="flex items-start gap-4 mb-3">
-                <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 p-1">
+                <div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-black/30 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100 dark:border-slate-800 p-1">
                     <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md" onerror="this.src='https://placehold.co/48x48?text=Error'">
                 </div>
                 <div>
-                    <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1" >
+                    <h3 class="font-medium font-poppins text-slate-900 dark:text-slate-200 leading-tight line-clamp-1">
                         ${job.title}
                     </h3>
-                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
-                        <span class="font-medium text-slate-700">
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        <span class="font-medium text-slate-700 dark:text-slate-300">
                             <i class="fa-regular fa-building mr-1"></i> ${companyName}
                         </span>
                         <span><i class="fa-solid fa-location-dot mr-1"></i> ${location}</span>
                     </div>
                 </div>
             </div>
-
+        
             <div class="flex flex-wrap gap-2 mb-4 h-12 overflow-hidden content-start">
                 ${skillsHTML}
             </div>
-
-            <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 pt-3">
-                <span class="text-green-600 font-semibold font-poppins text-xs">${
-                  job.salaryRange || 'Competitive'
-                }</span>
-                <span class="text-slate-400 text-xs flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${timeAgo}</span>
+        
+            <div class="flex items-center justify-between mb-4 mt-auto border-t border-slate-50 dark:border-slate-800 pt-3">
+                <span class="text-green-600 dark:text-green-500 font-semibold font-poppins text-xs">
+                    ${job.salaryRange || 'Competitive'}
+                </span>
+                <span class="text-slate-400 dark:text-slate-500 text-xs flex items-center gap-1">
+                    <i class="fa-regular fa-clock"></i> ${timeAgo}
+                </span>
             </div>
-
+        
             <div class="flex items-center gap-2">
-                <span class="px-3 py-1 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 bg-slate-50">
+                <span class="px-3 py-1 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-300 bg-slate-50 dark:bg-black/30">
                     ${job.type || 'Full Time'}
                 </span>
-                <button onclick="window.openApplyModal('${jobId}')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
+                <button onclick="window.openApplyModal('${jobId}')" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white text-xs font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm ml-auto text-center">
                     Apply Now
                 </button>
             </div>
@@ -268,10 +270,19 @@ function renderCompanyJobs(jobs, companyInfo) {
 // 1. Toggle Save Logic
 window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem('token');
-  if (!token) {
-    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
-    return;
-  }
+
+if (!token) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
+  Swal.fire({
+    title: 'Login Required',
+    text: 'Please login to save jobs.',
+    icon: 'info',
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+  });
+  return;
+}
 
   try {
     const icon = btnElement.querySelector('i');
@@ -289,7 +300,16 @@ window.toggleSaveJob = async function (jobId, btnElement) {
     await jobService.toggleSaveJob(jobId);
   } catch (error) {
     console.error('Save Error:', error);
-    Swal.fire('Error', 'Failed to save job.', 'error');
+  
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Error',
+      text: 'Failed to save job.',
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#ef4444',
+    });
     // Revert UI on error (optional but recommended)
   }
 };
@@ -298,19 +318,27 @@ window.toggleSaveJob = async function (jobId, btnElement) {
 // 2. Open Apply Modal (Using the Profile Page Logic)
 window.openApplyModal = function (jobId) {
   const token = localStorage.getItem('token');
-  if (!token) {
-    Swal.fire({
-      icon: 'info',
-      title: 'Login Required',
-      text: 'You need to login to apply.',
-      showCancelButton: true,
-      confirmButtonText: 'Login',
-    }).then((res) => {
-      if (res.isConfirmed)
-        window.location.href = '/login';
-    });
-    return;
-  }
+
+if (!token) {
+  const isDarkMode =
+    document.documentElement.classList.contains('dark');
+
+  Swal.fire({
+    icon: 'info',
+    title: 'Login Required',
+    text: 'You need to login to apply.',
+    showCancelButton: true,
+    confirmButtonText: 'Login',
+    cancelButtonText: 'Cancel',
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+  }).then((res) => {
+    if (res.isConfirmed) window.location.href = '/login';
+  });
+  return;
+}
 
   const modal = document.getElementById('applyModal');
   if (modal) {
@@ -416,7 +444,16 @@ function initModalEvents() {
       const currentFileInput = document.getElementById('applyCv');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire('Warning', 'Please upload your CV.', 'warning');
+        const isDarkMode = document.documentElement.classList.contains('dark');
+      
+        Swal.fire({
+          title: 'Warning',
+          text: 'Please upload your CV.',
+          icon: 'warning',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
+        });
         return;
       }
 
@@ -437,16 +474,35 @@ function initModalEvents() {
 
         await jobService.applyForJob(jobId, applyData);
 
-        Swal.fire('Success', 'Application submitted successfully!', 'success');
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        Swal.fire({
+          title: 'Success',
+          text: 'Application submitted successfully!',
+          icon: 'success',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
+        });
         close();
-      } catch (error) {
+      } catch (error){
         let msg = 'Failed to submit application.';
+      
         if (error.response?.status === 409)
           msg = 'You have already applied for this job.';
         else if (error.response?.data?.message)
           msg = error.response.data.message;
-
-        Swal.fire('Error', msg, 'error');
+      
+        const isDarkMode = document.documentElement.classList.contains('dark');
+      
+        Swal.fire({
+          title: 'Error',
+          text: msg,
+          icon: 'error',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#ef4444',
+        });
       } finally {
         if (newSubmitBtn) {
           newSubmitBtn.disabled = false;

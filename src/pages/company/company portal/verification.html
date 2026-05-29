@@ -7,7 +7,8 @@
     <script type="module"src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/src/css/main.css" rel="stylesheet">
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <link rel="website icon" type="png" href="../../../../assets/imgs/Logo.png"/>
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet"type="text/css"href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
@@ -30,6 +31,11 @@
         overflow-x: hidden;
         background-attachment: fixed;
         font-family: "Poppins", sans-serif;
+      }
+      .dark body {
+        transition: opacity 0.5s ease-in-out;
+        background: #110b36;
+        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
       }
       .nav-container {
         display: flex;
@@ -58,6 +64,9 @@
         justify-content: center;
         align-items: center;
         transition: 0.5s;
+      }.dark .magic-menu li {
+        background: rgba(126, 126, 126, 0.37);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
       /* ... (before & after كما هما) ... */
       .magic-menu li::before {
@@ -104,12 +113,19 @@
         transition: 0.5s;
         transition-delay: 0.25s;
       }
+      .dark .magic-menu li ion-icon {
+        color: #ddd9d9;
+      }
       /* ... باقي الستايل كما هو ... */
       .magic-menu li:hover ion-icon,
       .magic-menu li.active ion-icon {
         transform: scale(0);
         color: #fff;
         transition-delay: 0s;
+      }
+      .dark .magic-menu li:hover ion-icon,
+      .dark .magic-menu li.active ion-icon {
+        color: #030303;
       }
       .magic-menu li span.title {
         position: absolute;
@@ -127,23 +143,113 @@
         transform: scale(1);
         transition-delay: 0.25s;
       }
+
+/* From Uiverse.io by zenonaiden_3341 */ 
+.toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+  margin-left: 2%;
+}
+
+#checkboxInput {
+  display: none;
+}
+
+.icons {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transform-origin: center center;
+  transition:
+    transform 500ms ease,
+    opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icons--moon {
+  color: #212121;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.icons--sun {
+  color: #ffa600;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 6px rgba(255, 166, 0, 0.6));
+}
+.icons--moon,
+.icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--moon {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+
     </style>
   </head>
   <body class=" text-gray-800">
     <nav
-      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8"
+    class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-center justify-between shadow-sm mb-8"
     >
     <a
-    href="/Company_dashboard"
-    class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-    >
-    <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-    <span class="font-lexend font-simibold not-italic">Company Portal</span>
-    </a>
+        href="/Company_dashboard"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+        <img
+          src="../../../../assets/imgs/Logo.png"
+          alt="CareerGuidance Logo"
+          class="h-12 w-auto object-contain"
+        />
+        <span class="font-lexend font-simibold not-italic dark:text-slate-100">
+          Company Portal
+        </span>
+      </a>
 
       <div class="hidden md:flex flex-1 nav-container">
         <div
-          class="bg-gray-50 px-6 py-2 rounded-full border border-gray-200 shadow-inner"
+        class="bg-gray-50 dark:bg-black/30 px-6 py-2 rounded-full border border-gray-200 dark:border-slate-800 shadow-inner"
         >
         <ul class="magic-menu">
           <li class="menu-item" data-url="/Company_dashboard" style="--i: #5eb6fd;--j:#0576d3">
@@ -195,74 +301,121 @@
 </button>
 
       </div>
+      <input id="checkboxInput" type="checkbox" />
+      <label class="toggleSwitch" for="checkboxInput">
+        <div class="icons icons--moon">
+          <svg
+            class="moon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="32"
+            height="32"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+      
+        <div class="icons icons--sun">
+          <svg
+            class="sun"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="32"
+            height="32"
+          >
+            <path
+              d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+            ></path>
+          </svg>
+        </div>
+      </label>
     </nav>
 
     <main class="w-full mx-auto p-6 space-y-6">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900">Company Verification</h1>
-          <p class="text-gray-500 mt-1">
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100">
+            Company Verification
+          </h1>
+    
+          <p class="text-gray-500 dark:text-slate-400 mt-1">
             Verify your company to access premium features and build trust
           </p>
         </div>
       </div>
-
+    
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6"
+          >
             <div class="flex items-center justify-between mb-4">
               <h3
-                class="text-lg font-bold text-gray-900 flex items-center gap-2"
+                class="text-lg font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2"
               >
-                <i class="fas fa-shield-alt text-blue-600"></i> Verification
-                Status
+                <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400"></i>
+                Verification Status
               </h3>
+    
               <span
                 id="statusBadge"
-                class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold border capitalize"
+                class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 px-3 py-1 rounded-full text-sm font-semibold border border-gray-200 dark:border-slate-700 capitalize"
               >
                 Unverified
               </span>
             </div>
-
-            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+    
+            <div
+              class="w-full bg-gray-200 dark:bg-slate-800 rounded-full h-2.5 mb-4"
+            >
               <div
                 id="progressBar"
                 class="bg-blue-600 h-2.5 rounded-full"
                 style="width: 0%"
               ></div>
             </div>
-
-            <p id="statusText" class="text-sm text-gray-500">
+    
+            <p
+              id="statusText"
+              class="text-sm text-gray-500 dark:text-slate-400"
+            >
               Please upload the required document to start the verification
               process.
             </p>
-
+    
             <div
               id="rejectionAlert"
-              class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-start gap-2"
+              class="hidden mt-4 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-lg text-red-700 dark:text-red-300 text-sm flex items-start gap-2"
             >
               <i class="fas fa-exclamation-circle mt-0.5"></i>
+    
               <div>
                 <strong class="block">Verification Rejected</strong>
                 <span id="rejectionReason">--</span>
               </div>
             </div>
           </div>
-
+    
           <div
             id="uploadCard"
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6"
           >
             <h3
-              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+              class="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2"
             >
-              <i class="fas fa-upload text-blue-600"></i> Upload Documents
+              <i class="fas fa-upload text-blue-600 dark:text-blue-400"></i>
+              Upload Documents
             </h3>
-
+    
             <div class="space-y-4">
               <div
-                class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition cursor-pointer relative bg-gray-50"
+                class="border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition cursor-pointer relative bg-gray-50 dark:bg-slate-900/40"
               >
                 <input
                   type="file"
@@ -270,100 +423,154 @@
                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
+    
                 <div class="space-y-2">
-                  <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
-                  <p class="text-gray-600 font-medium">
+                  <i
+                    class="fas fa-cloud-upload-alt text-4xl text-gray-400 dark:text-slate-500"
+                  ></i>
+    
+                  <p
+                    class="text-gray-600 dark:text-slate-300 font-medium"
+                  >
                     Drag and drop your file here or click to browse
                   </p>
-                  <p class="text-xs text-gray-400">
+    
+                  <p class="text-xs text-gray-400 dark:text-slate-500">
                     Supported formats: PDF, JPG, PNG (Max 5MB)
                   </p>
+    
                   <p
                     id="fileNameDisplay"
-                    class="text-blue-600 font-semibold mt-2 hidden"
+                    class="text-blue-600 dark:text-blue-400 font-semibold mt-2 hidden"
                   ></p>
                 </div>
               </div>
-
+    
               <button
                 id="btnUpload"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled
               >
-                <i class="fas fa-upload"></i> Upload Verification Document
+                <i class="fas fa-upload"></i>
+                Upload Verification Document
               </button>
             </div>
           </div>
-
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    
+          <div
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6"
+          >
             <h3
-              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+              class="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2"
             >
-              <i class="fas fa-history text-blue-600"></i> Upload History
+              <i class="fas fa-history text-blue-600 dark:text-blue-400"></i>
+              Upload History
             </h3>
-
+    
             <div id="historyContainer" class="space-y-3">
-              <p class="text-gray-500 text-sm italic">
+              <p
+                class="text-gray-500 dark:text-slate-400 text-sm italic"
+              >
                 No documents uploaded yet.
               </p>
             </div>
           </div>
         </div>
-
+    
         <div class="space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6"
+          >
             <h3
-              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+              class="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2"
             >
-              <i class="fas fa-check-circle text-green-500"></i> Verification
-              Benefits
+              <i
+                class="fas fa-check-circle text-green-500 dark:text-green-400"
+              ></i>
+    
+              Verification Benefits
             </h3>
-            <ul class="space-y-3 text-sm text-gray-600">
+    
+            <ul
+              class="space-y-3 text-sm text-gray-600 dark:text-slate-300"
+            >
               <li class="flex items-start gap-2">
-                <i class="fas fa-certificate text-green-500 mt-0.5"></i>
+                <i
+                  class="fas fa-certificate text-green-500 dark:text-green-400 mt-0.5"
+                ></i>
+    
                 <span>Verified company badge on your profile</span>
               </li>
+    
               <li class="flex items-start gap-2">
-                <i class="fas fa-search-plus text-green-500 mt-0.5"></i>
+                <i
+                  class="fas fa-search-plus text-green-500 dark:text-green-400 mt-0.5"
+                ></i>
+    
                 <span>Priority candidate matching</span>
               </li>
+    
               <li class="flex items-start gap-2">
-                <i class="fas fa-shield-alt text-green-500 mt-0.5"></i>
+                <i
+                  class="fas fa-shield-alt text-green-500 dark:text-green-400 mt-0.5"
+                ></i>
+    
                 <span>Enhanced trust and credibility</span>
               </li>
+    
               <li class="flex items-start gap-2">
-                <i class="fas fa-star text-green-500 mt-0.5"></i>
+                <i
+                  class="fas fa-star text-green-500 dark:text-green-400 mt-0.5"
+                ></i>
+    
                 <span>Access to premium job posting features</span>
               </li>
             </ul>
           </div>
-
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    
+          <div
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6"
+          >
             <h3
-              class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+              class="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2"
             >
-              <i class="far fa-envelope text-blue-600"></i> Contact Support
+              <i
+                class="far fa-envelope text-blue-600 dark:text-blue-400"
+              ></i>
+    
+              Contact Support
             </h3>
-            <p class="text-sm text-gray-500 mb-4">
+    
+            <p
+              class="text-sm text-gray-500 dark:text-slate-400 mb-4"
+            >
               Have questions about the verification process? Contact our support
               team directly.
             </p>
-
+    
             <div
-              class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition cursor-pointer mb-3"
+              class="p-4 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-900/50 transition cursor-pointer mb-3"
             >
               <a
                 href="mailto:verification@careerpro.com"
                 class="flex items-center gap-3"
               >
                 <div
-                  class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600"
+                  class="w-10 h-10 bg-blue-100 dark:bg-blue-500/10 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400"
                 >
                   <i class="fas fa-paper-plane"></i>
                 </div>
+    
                 <div>
-                  <p class="text-sm font-bold text-gray-900">Send Email</p>
-                  <p class="text-xs text-gray-500">
+                  <p
+                    class="text-sm font-bold text-gray-900 dark:text-slate-100"
+                  >
+                    Send Email
+                  </p>
+    
+                  <p
+                    class="text-xs text-gray-500 dark:text-slate-400"
+                  >
                     verification@careerpro.com
                   </p>
                 </div>
@@ -373,7 +580,7 @@
         </div>
       </div>
     </main>
-   <script>
+    <script>
       // ✅ الحل: استخدام pageshow بدلاً من load
       // هذا الحدث يعمل حتى عند الضغط على زر Back
       window.addEventListener('pageshow', function(event) {

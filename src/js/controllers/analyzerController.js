@@ -76,9 +76,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 fileInput.addEventListener('change', function (e) {
   if (this.files && this.files[0]) {
     const file = this.files[0];
-
+    const isDarkMode = document.documentElement.classList.contains('dark');
     if (file.size > 5 * 1024 * 1024) {
-      Swal.fire('Error', 'File size exceeds 5MB limit.', 'error');
+      Swal.fire({
+        text: 'File size exceeds 5MB limit.',
+        background: isDarkMode ? '#1e1b4b' : '#ffffff',
+        color: isDarkMode ? '#f8fafc' : '#1e293b',
+        confirmButtonColor: '#3b82f6',
+      });
       this.value = '';
       return;
     }
@@ -200,9 +205,12 @@ analyzeBtn.addEventListener('click', async function () {
   } catch (error) {
     console.error('Analysis Failed:', error);
     stopLoadingWithError();
+    const isDarkMode = document.documentElement.classList.contains('dark');
     Swal.fire({
       icon: 'error',
       title: 'Analysis Failed',
+      background: isDarkMode ? '#0c0a1d' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       text:
         error.response?.data?.message ||
         'Our AI is currently busy. Please try again in a few moments.',
@@ -249,19 +257,19 @@ function renderResults(data) {
     'matched-keywords',
     'matched-count',
     data.keywords_analysis.matched,
-    'bg-green-100 text-green-700 border-green-200'
+    'bg-green-100 text-green-700 border-green-200 dark:border-green-700/40 dark:bg-green-700/40 dark:text-green-200'
   );
   renderKeywords(
     'missing-keywords',
     'missing-count',
     data.keywords_analysis.missing,
-    'bg-red-100 text-red-700 border-red-200'
+    'bg-red-100 text-red-700 border-red-200 dark:border-red-700/40 dark:bg-red-700/40 dark:text-red-200'
   );
   renderKeywords(
     'relevant-keywords',
     'relevant-count',
     data.keywords_analysis.relevant,
-    'bg-blue-100 text-blue-700 border-blue-200'
+    'bg-blue-100 text-blue-700 border-blue-200 dark:border-blue-700/40 dark:bg-blue-700/40 dark:text-blue-200'
   );
 }
 
@@ -274,7 +282,7 @@ function renderList(elementId, itemsArray, dotColorClass) {
   ul.innerHTML = itemsArray
     .map(
       (item) => `
-        <li class="flex items-start gap-2 text-sm text-slate-600 font-medium">
+        <li class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
             <span class="w-2 h-2 ${dotColorClass} rounded-full mt-1.5 shrink-0 shadow-sm"></span>
             <span class="leading-relaxed">${item}</span>
         </li>
@@ -335,30 +343,15 @@ function initAuthButtons() {
       authService.logout();
     } else {
       navLinkHtml = `
-            <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
-              <i class="fas fa-user-circle text-lg"></i> Profile
+            <a id="profileBtn" href="/profile" class="text-base font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+              <i class="fas fa-user-circle text-xl"></i> Profile
           </a>`;
     }
 
     authContainer.innerHTML = `
               ${navLinkHtml}
-              <div class="min-w-[150px] flex justify-end">
-          <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1">
-            <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
-              <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-                <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-              </svg>
-            </div>
-            <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
-              Logout
-            </div>
-          </button>
-        </div>
           `;
 
-    document.getElementById('btnLogout').addEventListener('click', () => {
-      authService.logout();
-    });
   } else {
     authContainer.innerHTML = `
               <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>

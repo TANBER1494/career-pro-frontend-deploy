@@ -55,7 +55,7 @@ function initAuthButtons() {
 
     // ✅ لو المستخدم طالب (Seeker) ومكمل بياناته -> اعرض زر البروفايل وتسجيل الخروج
     const navLinkHtml = `
-          <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+          <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-2 transition duration-300 whitespace-nowrap">
             <i class="fas fa-user-circle text-lg"></i> Profile
         </a>`;
 
@@ -80,7 +80,7 @@ function initAuthButtons() {
     });
   } else {
     authContainer.innerHTML = `
-            <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
+            <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-500">Login</a>
             <a href="/signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
         `;
   }
@@ -265,7 +265,7 @@ function createJobCard(job, index) {
     .slice(0, 3)
     .map(
       (skill) =>
-        `<span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${escapeHTML(skill)}</span>`
+        `<span class="px-2 py-1 bg-slate-100 dark:bg-black/30 text-slate-600 dark:text-slate-200 rounded text-[10px] font-medium ">${escapeHTML(skill)}</span>`
     )
     .join('');
 
@@ -278,7 +278,7 @@ function createJobCard(job, index) {
 
   // 🚨 2. حقن المتغيرات الآمنة (Safe) فقط في الواجهة
   return `
-<div class="job-card-scroll bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 flex flex-col h-full text-left"
+<div class="job-card-scroll bg-white dark:bg-black/30 rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group border border-slate-100 dark:border-slate-800 flex flex-col h-full text-left"
         style="transition-delay: ${delay}ms;">  
 
         <button onclick="toggleSaveJob('${
@@ -288,14 +288,14 @@ function createJobCard(job, index) {
         </button>
 
         <div class="flex items-start gap-4 mb-4 mt-6">
-            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center overflow-hidden shrink-0 border border-blue-100">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
                 <img src="${companyLogo}" alt="${safeCompanyName}" class="w-full h-full object-cover">
             </div>
             <div>
-                <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1 hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'" title="${safeJobTitle}">
+                <h3 class="font-medium font-poppins text-slate-900 dark:text-slate-200 leading-tight line-clamp-1 hover:text-blue-600 dark:hover:text-blue-600 cursor-pointer" onclick="window.location.href='${jobLink}'" title="${safeJobTitle}">
                     ${safeJobTitle}
                 </h3>
-                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
+                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-1">
                     <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="window.location.href='${companyLink}'">
                         <i class="fa-regular fa-building mr-1"></i> ${safeCompanyName}
                     </span>
@@ -304,22 +304,22 @@ function createJobCard(job, index) {
             </div>
         </div>
 
-        <p class="text-slate-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
+        <p class="text-slate-500 dark:text-slate-400 text-xs mb-4 line-clamp-2 leading-relaxed flex-grow">
             ${safeDescription}
         </p>
 
-        <div class="flex flex-wrap gap-2 mb-4 h-6 overflow-hidden">
+        <div class=" flex flex-wrap gap-2 mb-4 h-6 overflow-hidden">
             ${skillsHTML}
         </div>
 
         <div class="flex items-center justify-between mb-4 mt-auto">
-            <span class="text-green-600 font-semibold font-poppins text-sm">${safeSalaryRange}</span>
-            <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
+            <span class="text-green-600 dark:text-green-500 font-semibold font-poppins text-sm">${safeSalaryRange}</span>
+            <span class="text-slate-400 dark:text-slate-300 text-xs"><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
         </div>
 
         <button onclick="applyForJobCheck('${
           job.id || job._id
-        }')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
+        }')" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
             Apply Now
         </button>
     </div>
@@ -386,8 +386,8 @@ function createCompanyCard(company) {
     <div class="flex flex-col gap-3 group">
         <div class="companyCard ">
             <div class="companyCard-inner">
-                <div class="companyCard-front bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative group h-full">
-                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+                <div class="companyCard-front bg-white dark:bg-black/30 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 relative group h-full">
+                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 dark:bg-green-900 dark:text-green-300 text-xs">
                         <i class="fa-solid fa-shield"></i>
                     </div>
                     
@@ -400,18 +400,18 @@ function createCompanyCard(company) {
                             }
                         </div>
                         
-                        <h3 class="font-medium font-poppins text-lg mb-1 flex items-center gap-2 justify-center">
+                        <h3 class="font-medium text-black dark:text-slate-200 font-poppins text-lg mb-1 flex items-center gap-2 justify-center">
                             ${safeName}
                             ${
                               company.isVerified
-                                ? '<span class="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>'
+                                ? '<span class="bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 text-[10px] px-2 py-0.5 rounded-full font-medium">Verified</span>'
                                 : ''
                             }
                         </h3>
                         
-                        <p class="text-slate-500 text-sm mb-3">${safeIndustry}</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-3">${safeIndustry}</p>
                         
-                        <div class="text-slate-400 text-xs flex items-center gap-1 mb-4">
+                        <div class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1 mb-4">
                             <i class="fa-solid fa-location-dot"></i> ${safeLocation}
                         </div>
                         
@@ -421,14 +421,14 @@ function createCompanyCard(company) {
                     </div>
                 </div>
                 
-                <div class="companyCard-back bg-white p-6 rounded-xl shadow-md flex flex-col justify-center text-center border border-slate-200">
-                    <h3 class="text-lg font-semibold mb-3 text-slate-800">About Company</h3>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                <div class="companyCard-back bg-white dark:bg-black/30 p-6 rounded-xl shadow-md flex flex-col justify-center text-center border border-slate-200 dark:border-slate-800">
+                    <h3 class="text-lg font-semibold mb-3 text-slate-800 dark:text-slate-200">About Company</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
                         ${safeShortDesc}
                     </p>
                     <button onclick="window.location.href='/company-details?id=${
                       company.id || company._id
-                    }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
+                    }'" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white text-sm font-medium rounded-lg transition-colors shadow-blue-500/20 shadow-sm">
                         View Jobs
                     </button>
                 </div>
@@ -446,40 +446,47 @@ function createCompanyCard(company) {
 window.checkAiFeatureAccess = function (event, targetUrl) {
   // منع الانتقال للصفحة فوراً
   event.preventDefault();
-
+  event.stopPropagation();
   const token = localStorage.getItem('token');
 
   if (!token) {
+    const isDarkMode =document.documentElement.classList.contains('dark');
     Swal.fire({
       icon: 'info',
       title: 'Login Required',
       text: 'You need to login or create an account to unlock our AI Features.',
       showCancelButton: true,
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       confirmButtonColor: '#4361ee',
       cancelButtonColor: '#64748b',
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = '/login'; // مسار صفحة الدخول عندك
+        window.location.href = '/login';
       }
     });
-    return false; // إيقاف العملية
+    return false;
   }
 
   // لو معاه توكن، نسمحله يروح لصفحة الاختبار
   window.location.href = targetUrl;
+  return false;
 };
 
 window.applyForJobCheck = function (jobId) {
   const token = localStorage.getItem('token');
-
+  const isDarkMode = document.documentElement.classList.contains('dark');
   if (!token) {
     Swal.fire({
       icon: 'info',
       title: 'Login Required',
       text: 'You need to login to apply for jobs.',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
       showCancelButton: true,
+      confirmButtonColor: '#3b82f6',
       confirmButtonText: 'Login Now',
       cancelButtonText: 'Cancel',
     }).then((result) => {
@@ -500,7 +507,15 @@ window.applyForJobCheck = function (jobId) {
 window.toggleSaveJob = async function (jobId, btnElement) {
   const token = localStorage.getItem('token');
   if (!token) {
-    Swal.fire('Login Required', 'Please login to save jobs.', 'info');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Login Required',
+      text: 'Please login to save jobs.',
+      icon: 'info',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+  });
     return;
   }
 
@@ -526,9 +541,14 @@ window.toggleSaveJob = async function (jobId, btnElement) {
     console.error('Save Error:', error);
     // التراجع في حالة الخطأ
     const icon = btnElement.querySelector('i');
-    // اعكس الحالة مرة أخرى
-    // ...
-    Swal.fire('Error', 'Failed to save job.', 'error');
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    Swal.fire({
+      title: 'Error',
+      text: 'Failed to save job.',
+      icon: 'error',
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+  });
   }
 };
 
@@ -617,7 +637,15 @@ function initModalEvents() {
       const currentFileInput = document.getElementById('applyCv');
 
       if (!currentFileInput.files || currentFileInput.files.length === 0) {
-        Swal.fire('Warning', 'Please upload your CV.', 'warning');
+        const isDarkMode = document.documentElement.classList.contains('dark');
+      Swal.fire({
+        title: 'Warning',
+        text: 'Please upload your CV.',
+        icon: 'warning',
+        background: isDarkMode ? '#1e1b4b' : '#ffffff',
+        color: isDarkMode ? '#f8fafc' : '#1e293b',
+        confirmButtonColor: '#3b82f6',
+    });
         return;
       }
 
@@ -635,19 +663,41 @@ function initModalEvents() {
           newSubmitBtn.innerHTML =
             '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
-
+      
         await jobService.applyForJob(jobId, applyData);
-
-        Swal.fire('Success', 'Application submitted successfully!', 'success');
+      
+        const isDarkMode =
+          document.documentElement.classList.contains('dark');
+      
+        Swal.fire({
+          title: 'Success',
+          text: 'Application submitted successfully!',
+          icon: 'success',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
+        });
+      
         close();
       } catch (error) {
         let msg = 'Failed to submit application.';
+      
         if (error.response?.status === 409)
           msg = 'You have already applied for this job.';
         else if (error.response?.data?.message)
           msg = error.response.data.message;
-
-        Swal.fire('Error', msg, 'error');
+      
+        const isDarkMode =
+          document.documentElement.classList.contains('dark');
+      
+        Swal.fire({
+          title: 'Error',
+          text: msg,
+          icon: 'error',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#ef4444',
+        });
       } finally {
         if (newSubmitBtn) {
           newSubmitBtn.disabled = false;
@@ -842,3 +892,44 @@ function initRevealCards() {
 document.addEventListener('DOMContentLoaded', () => {
   initRevealCards();
 });
+
+const counters = document.querySelectorAll('.number');
+
+const animateCounter = (counter) => {
+  const target = +counter.getAttribute('data-target');
+  const speed = +counter.getAttribute('data-speed') || 1000;
+  let currentCount = 0; // متغير داخلي للاحتفاظ بالقيمة الدقيقة
+
+  const updateCount = () => {
+    const inc = target / (speed / 10);
+
+    if (currentCount < target) {
+      currentCount += inc;
+      
+      if (target % 1 !== 0) {
+        // للأرقام العشرية (4.9)
+        counter.innerText = currentCount.toFixed(1);
+      } else {
+        // للأرقام الصحيحة (500)
+        counter.innerText = Math.ceil(currentCount);
+      }
+      
+      setTimeout(updateCount, 10);
+    } else {
+      counter.innerText = target;
+    }
+  };
+  updateCount();
+};
+
+// مراقب الشاشة (Intersection Observer)
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target); // عشان يشتغل مرة واحدة بس
+        }
+    });
+}, { threshold: 0.5 }); // يشتغل لما يبان 50% من الكارت
+
+counters.forEach(counter => observer.observe(counter));

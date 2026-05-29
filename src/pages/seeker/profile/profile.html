@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile - AI-Career Guidance</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="website icon"
       type="png"
@@ -14,6 +13,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -26,23 +26,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Poppins', 'sans-serif'],
-              lexend: ['Lexend', 'sans-serif'],
-            },
-            colors: {
-              primary: '#06b6d4',
-              secondary: '#3b82f6',
-            },
-          },
-        },
-      };
-    </script>
+    <link href="/src/css/main.css" rel="stylesheet">
 
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -63,6 +47,11 @@
         background-attachment: fixed;
         font-family: 'Poppins', sans-serif;
       }
+      .dark body {
+        transition: opacity 0.5s ease-in-out;
+        background: #110b36;
+        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
+      }
       /* Magic Navigation Styles */
       .nav-container {
         display: flex;
@@ -70,6 +59,10 @@
         align-items: center;
         width: 100%;
         margin-right: 100px;
+      }
+      .dark .nav-container.active #bg {
+        display: block !important; /* تظهر فقط عند الضغط */
+        background: #221E4E !important;
       }
       .magic-menu {
         display: flex;
@@ -91,6 +84,10 @@
         justify-content: center;
         align-items: center;
         transition: 0.5s;
+      }
+      .dark .magic-menu li {
+        background: rgba(126, 126, 126, 0.37);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
       .magic-menu li::before {
         content: '';
@@ -133,11 +130,18 @@
         transition: 0.5s;
         transition-delay: 0.25s;
       }
+      .dark .magic-menu li ion-icon {
+        color: #ddd9d9;
+      }
       .magic-menu li:hover ion-icon,
       .magic-menu li.active ion-icon {
         transform: scale(0);
         color: #fff;
         transition-delay: 0s;
+      }
+      .dark .magic-menu li:hover ion-icon,
+      .dark .magic-menu li.active ion-icon {
+        color: #030303;
       }
       .magic-menu li span.title {
         position: absolute;
@@ -167,6 +171,9 @@
       .profile-tab-btn.active {
         color: #2563eb;
       }
+      .dark .profile-tab-btn.active {
+        color: #3397E9;
+      }
       .profile-tab-btn.active::after {
         content: '';
         position: absolute;
@@ -177,15 +184,103 @@
         background: #2563eb;
         border-radius: 3px 3px 0 0;
       }
+      .profile-tab-btn.active::after {
+        background: #3397E9;
+      }
+      .typed-cursor {
+  color: #2563eb;
+}
+
+/* From Uiverse.io by zenonaiden_3341 */ 
+.toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+}
+
+#checkboxInput {
+  display: none;
+}
+
+.icons {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transform-origin: center center;
+  transition:
+    transform 500ms ease,
+    opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icons--moon {
+  color: #212121;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.icons--sun {
+  color: #ffa600;
+  border-radius: 50%;
+}
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+}
+
+.icons--moon,
+.icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--moon {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+
     </style>
   </head>
   <body class="text-gray-800">
     <nav
-      class="sticky top-0 z-50 bg-white/40 backdrop-blur-md border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full"
+      class="sticky top-0 z-50 bg-white/40 dark:bg-black/20 border-gray-200 dark:border-gray-800 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full"
     >
       <a
         href="/CareerPro"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black cursor-pointer"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black dark:text-white cursor-pointer"
         onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
         <img
@@ -199,7 +294,7 @@
       </a>
       <div class="hidden md:flex flex-1 nav-container">
         <div
-          class="bg-white/50 px-6 py-2 rounded-full border border-white-200 shadow-inner"
+          class=" px-6 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/30 shadow-inner"
         >
           <ul class="magic-menu">
             <li id="homeBtn" style="--i: #67e3ff; --j: #69a8b8">
@@ -221,6 +316,40 @@
           </ul>
         </div>
       </div>
+      <input id="checkboxInput" type="checkbox" />
+  <label class="toggleSwitch" for="checkboxInput">
+    <div class="icons icons--moon">
+      <svg
+        class="moon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        width="32"
+        height="32"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+    </div>
+  
+    <div class="icons icons--sun">
+      <svg
+        class="sun"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        width="32"
+        height="32"
+      >
+        <path
+          d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+        ></path>
+      </svg>
+    </div>
+  </label>
       <div class="min-w-[150px] flex justify-end">
         <button
           id="btnLogout"
@@ -249,18 +378,18 @@
         id="loadingState"
         class="hidden flex flex-col items-center justify-center py-20"
       >
-        <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
-        <p class="text-gray-500">Loading your profile...</p>
+        <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 dark:text-blue-600 mb-4"></i>
+        <p class="text-gray-500 dark:text-gray-400">Loading your profile...</p>
       </div>
 
       <div id="viewMode" id="profileContent">
         <div
-          class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6 relative overflow-hidden"
+          class="bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 p-8 mb-6 relative overflow-hidden"
         >
           <div class="absolute top-0 right-0 p-6">
             <button
               id="btnEditProfile"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
+              class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
             >
               <i class="fas fa-pen"></i> Edit Profile
             </button>
@@ -273,19 +402,19 @@
                 id="view-profileImage"
                 src=""
                 alt="Profile Picture"
-                class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md hidden"
+                class="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-e-indigo-950 shadow-md hidden"
               />
 
               <div
                 id="view-initials-container"
-                class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-4xl font-bold text-blue-500 border-4 border-white shadow-md"
+                class="w-32 h-32 rounded-full bg-blue-50 dark:bg-black/30 flex items-center justify-center text-4xl font-bold text-blue-500 dark:text-blue-500 border-4 border-white dark:border-e-indigo-950 shadow-md"
               >
                 <span id="view-initials">--</span>
               </div>
 
               <label
                 for="profile-photo-input"
-                class="absolute bottom-0 right-0 bg-white text-gray-600 p-2 rounded-full shadow-lg border border-gray-200 cursor-pointer hover:text-blue-600 hover:bg-blue-50 transition-all duration-300"
+                class="absolute bottom-0 right-0 bg-white dark:bg-indigo-950 text-gray-600 p-2 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:text-blue-600 dark:hover:text-gray-300 hover:bg-blue-50 dark:hover:border-gray-300 transition-all duration-300"
                 title="Change Profile Picture"
               >
                 <i class="fas fa-camera text-sm"></i>
@@ -301,7 +430,7 @@
             <div class="flex-1 text-center md:text-left mt-2">
               <h1
                 id="view-fullName"
-                class="text-3xl font-bold text-gray-900 mb-1"
+                class="text-3xl font-bold text-gray-900 dark:text-slate-200 mb-1"
               >
                 --
               </h1>
@@ -315,17 +444,17 @@
                 class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500"
               >
                 <span
-                  class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
+                  class="flex items-center gap-1 bg-gray-50 dark:bg-black/30 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700"
                   ><i class="fas fa-map-marker-alt text-gray-400"></i>
                   <span id="view-location">--</span></span
                 >
                 <span
-                  class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
+                  class="flex items-center gap-1 bg-gray-50 dark:bg-black/30 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700"
                   ><i class="fas fa-envelope text-gray-400"></i>
                   <span id="view-email">--</span></span
                 >
                 <span
-                  class="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
+                  class="flex items-center gap-1 bg-gray-50 dark:bg-black/30 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700"
                   ><i class="fas fa-phone text-gray-400"></i>
                   <span id="view-phone">--</span></span
                 >
@@ -335,7 +464,7 @@
         </div>
 
         <div
-          class="flex border-b border-gray-200 mb-6 gap-8 px-2 overflow-x-auto"
+          class="flex border-b border-gray-200 dark:border-gray-700 mb-6 gap-8 px-2 overflow-x-auto"
         >
           <button
             class="profile-tab-btn active text-sm md:text-base whitespace-nowrap"
@@ -361,27 +490,27 @@
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-6">
               <div
-                class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+                class="bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6"
               >
                 <h3
-                  class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+                  class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4 flex items-center gap-2"
                 >
                   <i class="fas fa-graduation-cap text-blue-500"></i> Education
                 </h3>
-                <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+                <div class="bg-slate-50 dark:bg-black/30 rounded-lg p-4 border border-slate-100 dark:border-slate-800">
                   <div class="flex justify-between items-start">
                     <div>
                       <h4
                         id="view-degree"
-                        class="font-bold text-gray-800 text-lg"
+                        class="font-bold text-gray-800 dark:text-gray-200 text-lg"
                       >
                         --
                       </h4>
-                      <p id="view-university" class="text-gray-600">--</p>
+                      <p id="view-university" class="text-gray-600 dark:text-gray-400">--</p>
                     </div>
                     <span
                       id="view-gradYear"
-                      class="bg-white border border-gray-200 px-3 py-1 rounded text-sm font-bold text-gray-600 shadow-sm"
+                      class="bg-white border border-gray-200 dark:bg-indigo-950 dark:border-gray-800 px-3 py-1 rounded text-sm font-bold text-gray-600 dark:text-gray-400 shadow-sm"
                       >--</span
                     >
                   </div>
@@ -396,40 +525,40 @@
               </div>
 
               <div
-                class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6"
               >
                 <h3
-                  class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+                  class="text-lg font-bold text-gray-900 dark:text-slate-200 mb-4 flex items-center gap-2"
                 >
                   <i class="fas fa-briefcase text-blue-500"></i> Career Info
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label
-                      class="text-xs font-bold text-gray-400 uppercase block mb-1"
+                      class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block mb-1"
                       >Experience Level</label
                     >
-                    <p id="view-expLevel" class="font-medium text-gray-800">
+                    <p id="view-expLevel" class="font-medium text-gray-800 dark:text-gray-400">
                       --
                     </p>
                   </div>
                   <div>
                     <label
-                      class="text-xs font-bold text-gray-400 uppercase block mb-1"
+                      class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block mb-1"
                       >Years of Experience</label
                     >
-                    <p id="view-yearsExp" class="font-medium text-gray-800">
+                    <p id="view-yearsExp" class="font-medium text-gray-800 dark:text-gray-400">
                       --
                     </p>
                   </div>
                   <div>
                     <label
-                      class="text-xs font-bold text-gray-400 uppercase block mb-1"
+                      class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block mb-1"
                       >Industry</label
                     >
                     <p
                       id="view-industryDetail"
-                      class="font-medium text-gray-800"
+                      class="font-medium text-gray-800 dark:text-gray-400"
                     >
                       --
                     </p>
@@ -440,70 +569,70 @@
 
             <div class="space-y-6">
               <div
-                class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6"
               >
                 <h3
-                  class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+                  class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4 flex items-center gap-2"
                 >
                   <i class="fas fa-user text-blue-500"></i> Personal Details
                 </h3>
                 <ul class="space-y-3">
                   <li
-                    class="flex justify-between items-center text-sm border-b border-gray-50 pb-2"
+                    class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
                   >
-                    <span class="text-gray-500">Birth Date</span
-                    ><span id="view-birthDate" class="font-medium">--</span>
+                    <span class="text-gray-500 dark:text-gray-400">Birth Date</span
+                    ><span id="view-birthDate" class="font-medium dark:text-gray-400">--</span>
                   </li>
                   <li
-                    class="flex justify-between items-center text-sm border-b border-gray-50 pb-2"
+                    class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
                   >
-                    <span class="text-gray-500">Gender</span
-                    ><span id="view-gender" class="font-medium capitalize"
+                    <span class="text-gray-500 dark:text-gray-400">Gender</span
+                    ><span id="view-gender" class="font-medium capitalize dark:text-gray-400"
                       >--</span
                     >
                   </li>
                   <li
-                    class="flex justify-between items-center text-sm border-b border-gray-50 pb-2"
+                    class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
                   >
-                    <span class="text-gray-500">Nationality</span
-                    ><span id="view-country" class="font-medium">--</span>
+                    <span class="text-gray-500 dark:text-gray-400">Nationality</span
+                    ><span id="view-country" class="font-medium dark:text-gray-400">--</span>
                   </li>
                 </ul>
               </div>
               <div
-                class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6"
               >
                 <h3
-                  class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"
+                  class="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4 flex items-center gap-2"
                 >
                   <i class="fas fa-sliders-h text-blue-500"></i> Preferences
                 </h3>
                 <div class="space-y-3">
                   <div>
-                    <span class="block text-xs text-gray-400 uppercase mb-1"
+                    <span class="block text-xs text-gray-600 dark:text-gray-400 uppercase mb-1"
                       >Job Type</span
                     ><span
                       id="view-jobType"
-                      class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold border border-blue-100"
+                      class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold border border-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:border-blue-500/20"
                       >--</span
                     >
                   </div>
                   <div>
-                    <span class="block text-xs text-gray-400 uppercase mb-1"
+                    <span class="block text-xs text-gray-600 dark:text-gray-400 uppercase mb-1"
                       >Workplace Setting</span
                     ><span
                       id="view-workplace"
-                      class="inline-block bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs font-bold border border-purple-100"
+                      class="inline-block bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs font-bold border border-purple-100 dark:bg-purple-500/10 dark:hover:bg-purple-900/30 dark:text-purple-300 dark:border-purple-500/20"
                       >--</span
                     >
                   </div>
                 </div>
               </div>
               <div
-                class="bg-gradient-to-br bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-gray-900"
+                class="bg-gradient-to-br bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 text-gray-900 "
               >
                 <div class="flex items-center justify-between mb-4">
-                  <h3 class="font-bold">My CV</h3>
+                  <h3 class="font-bold dark:text-slate-200">My CV</h3>
                   <i class="fas fa-file-pdf text-2xl text-gray-400"></i>
                 </div>
                 <p id="view-cvName" class="text-sm text-gray-400 mb-4 truncate">
@@ -522,12 +651,12 @@
         </div>
 
         <div id="tab-apps" class="profile-tab-content hidden animate-fade-in">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-gray-800">My Applications</h2>
+              <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200">My Applications</h2>
               <span
                 id="appsCount"
-                class="bg-purple-100 text-purple-600 text-xs font-bold px-3 py-1 rounded-full"
+                class="bg-purple-100 text-purple-600 dark:bg-purple-600 dark:text-purple-100 text-xs font-bold px-3 py-1 rounded-full"
                 >0 Applied</span
               >
             </div>
@@ -538,7 +667,7 @@
                 <i
                   class="fas fa-file-signature text-6xl text-slate-200 mb-4"
                 ></i>
-                <p class="text-slate-500 font-medium">
+                <p class="text-slate-500 dark:text-slate-400 font-medium">
                   No applications sent yet
                 </p>
               </div>
@@ -547,12 +676,12 @@
         </div>
 
         <div id="tab-saved" class="profile-tab-content hidden animate-fade-in">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-gray-800">Saved Jobs</h2>
+              <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200">Saved Jobs</h2>
               <span
                 id="savedCount"
-                class="bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1 rounded-full"
+                class="bg-blue-100 text-blue-600 dark:text-blue-100 dark:bg-blue-600 text-xs font-bold px-3 py-1 rounded-full"
                 >0 Saved</span
               >
             </div>
@@ -561,7 +690,7 @@
                 class="flex flex-col items-center justify-center py-20 text-center"
               >
                 <i class="fas fa-bookmark text-7xl text-slate-200 mb-4"></i>
-                <p class="text-slate-500 font-medium">No saved jobs yet</p>
+                <p class="text-slate-500 dark:text-slate-400 font-medium">No saved jobs yet</p>
               </div>
             </div>
           </div>
@@ -570,15 +699,15 @@
 
       <div id="editMode" class="hidden">
         <div
-          class="bg-white rounded-2xl shadow-lg border border-gray-200 w-3/4 mx-auto p-8"
+          class="bg-white dark:bg-black/30 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 w-3/4 mx-auto p-8"
         >
           <div
-            class="flex justify-between items-center border-b border-gray-100 pb-6 mb-6"
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-500 pb-6 mb-6"
           >
-            <h2 class="text-2xl font-bold text-gray-900">Edit Profile</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-slate-200">Edit Profile</h2>
             <button
               id="btnCancelEdit"
-              class="text-gray-500 hover:text-gray-700 font-medium transition"
+              class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium transition"
             >
               <i class="fas fa-times"></i> Cancel
             </button>
@@ -586,45 +715,45 @@
           <form id="profileForm" class="space-y-8">
             <div>
               <h4
-                class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4"
+                class="text-sm font-bold text-gray-400 dark:text-slate-300 uppercase tracking-wider mb-4"
               >
                 Personal Information
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Full Name</label
                   ><input
                     type="text"
                     id="input-fullName"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Phone Number</label
                   ><input
                     type="tel"
                     id="input-phoneNumber"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Birth Date</label
                   ><input
                     type="date"
                     id="input-birthDate"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Gender</label
                   >
                   <select
                     id="input-gender"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -632,12 +761,12 @@
                   </select>
                 </div>
                 <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Location (City, Country)</label
                   >
                   <select
                     id="input-location"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition transition"
                   >
                     <option value="" disabled selected>Select location</option>
                     <option value="Remote" class="font-bold text-blue-600">
@@ -936,18 +1065,18 @@
             </div>
             <div>
               <h4
-                class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-t pt-6"
+                class="text-sm font-bold text-gray-400 dark:text-slate-300 dark:border-gray-500 uppercase tracking-wider mb-4 border-t pt-6"
               >
                 Career Details
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Experience Level</label
                   >
                   <select
                     id="input-experienceLevel"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
                     <option value="Entry-level">Entry Level</option>
                     <option value="Mid-Level">Mid-Level</option>
@@ -956,21 +1085,21 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Years of Exp</label
                   ><input
                     type="number"
                     id="input-yearsOfExperience"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Industry</label
                   >
                   <select
                     id="input-industry"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition transition"
                   >
                     <option value="" disabled>Select industry</option>
                     <option value="Software Development">
@@ -994,55 +1123,55 @@
             </div>
             <div>
               <h4
-                class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-t pt-6"
+                class="text-sm font-bold text-gray-400 dark:text-slate-300 dark:border-gray-500 uppercase tracking-wider mb-4 border-t pt-6"
               >
                 Education & Preferences
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Degree</label
                   ><input
                     type="text"
                     id="input-degree"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >University</label
                   ><input
                     type="text"
                     id="input-university"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Graduation Year</label
                   ><input
                     type="number"
                     id="input-graduationYear"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >GPA (Optional)</label
                   ><input
                     type="number"
                     step="0.01"
                     id="input-gpa"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Job Type</label
                   >
                   <select
                     id="input-jobType"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
                     <option value="Full Time">Full Time</option>
                     <option value="Part Time">Part Time</option>
@@ -1051,12 +1180,12 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Workplace Setting</label
                   >
                   <select
                     id="input-workplaceSetting"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
                     <option value="on_site">On-Site</option>
                     <option value="remote">Remote</option>
@@ -1065,7 +1194,7 @@
                 </div>
               </div>
             </div>
-            <div class="flex justify-end pt-6 border-t border-gray-100">
+            <div class="flex justify-end pt-6 border-t border-gray-500">
               <button
                 type="submit"
                 id="btnSaveChanges"

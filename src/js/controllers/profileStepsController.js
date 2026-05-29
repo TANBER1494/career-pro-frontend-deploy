@@ -30,6 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
+// 2. SWALS 
+// ============================================================
+function swalDarkConfig(options) {
+  const isDarkMode = document.documentElement.classList.contains('dark');
+
+  return Swal.fire({
+    background: isDarkMode ? '#1e1b4b' : '#ffffff',
+    color: isDarkMode ? '#f8fafc' : '#1e293b',
+    confirmButtonColor: '#3b82f6',
+    cancelButtonColor: '#64748b',
+    ...options,
+  });
+}
+
+// ============================================================
 // SECTION A: JOB SEEKER LOGIC
 // ============================================================
 
@@ -129,16 +144,29 @@ function initSeekerStep1() {
     countrySelect.addEventListener('change', (e) => {
       const country = e.target.value;
       citySelect.disabled = false;
-      citySelect.innerHTML =
-        '<option value="" disabled selected>Select city</option>';
+      citySelect.innerHTML = `
+  <option 
+    value="" 
+    disabled 
+    selected
+    class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+  >
+    Select city
+  </option>
+`;
       citySelect.classList.remove('bg-gray-200', 'cursor-not-allowed');
       citySelect.classList.add('bg-gray-50');
 
       const cities = citiesByCountry[country] || ['Main City', 'Other'];
       cities.forEach((city) => {
         const option = document.createElement('option');
+      
         option.value = city;
         option.textContent = city;
+      
+        option.className =
+          'bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200';
+      
         citySelect.appendChild(option);
       });
     });
@@ -170,11 +198,11 @@ function initSeekerStep1() {
         window.location.href = 'SeekerStep2';
       } catch (error) {
         console.error(error);
-        Swal.fire(
-          'Error',
-          error.response?.data?.message || 'Failed to update profile',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:error.response?.data?.message || 'Failed to update profile',
+          icon:'error',
+      });
         btn.disabled = false;
         btn.innerHTML = originalText;
       }
@@ -210,11 +238,11 @@ function initSeekerStep2() {
         window.location.href = 'SeekerStep3';
       } catch (error) {
         console.error(error);
-        Swal.fire(
-          'Error',
-          error.response?.data?.message || 'Update failed',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:error.response?.data?.message || 'Update failed',
+          icon:'error'
+      });
         btn.disabled = false;
         btn.innerHTML = originalText;
       }
@@ -244,7 +272,7 @@ function initSeekerStep3() {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!fileInput.files[0]) {
-        Swal.fire('Warning', 'Please upload your CV.', 'warning');
+        swalDarkConfig({title:'Warning', text:'Please upload your CV.',icon:'warning'});
         return;
       }
 
@@ -258,7 +286,7 @@ function initSeekerStep3() {
         await seekerService.uploadCV(fileInput.files[0]);
         updateLocalRegistrationStep(4);
 
-        Swal.fire({
+        swalDarkConfig({
           icon: 'success',
           title: 'Profile Completed!',
           text: 'Redirecting to dashboard...',
@@ -269,11 +297,11 @@ function initSeekerStep3() {
         });
       } catch (error) {
         console.error(error);
-        Swal.fire(
-          'Error',
-          error.response?.data?.message || 'Upload failed',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:error.response?.data?.message || 'Upload failed',
+          icon:'error'
+      });
         btn.disabled = false;
         btn.innerHTML = originalText;
       }
@@ -317,11 +345,11 @@ function initCompanyStep1() {
         window.location.href = '/CompanyStep2';
       } catch (error) {
         console.error(error);
-        Swal.fire(
-          'Error',
-          error.response?.data?.message || 'Update failed',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:error.response?.data?.message || 'Update failed',
+          icon:'error'
+      });
         btn.disabled = false;
         btn.innerHTML = originalText;
       }
@@ -359,7 +387,7 @@ function initCompanyStep2() {
 
       // Validation
       if (technologies.length < 3) {
-        Swal.fire('Warning', 'Please add at least 3 technologies.', 'warning');
+        swalDarkConfig({title:'Warning', text:'Please add at least 3 technologies.', icon:'warning'});
         return;
       }
 
@@ -384,11 +412,11 @@ function initCompanyStep2() {
         window.location.href = '/CompanyStep3';
       } catch (error) {
         console.error(error);
-        Swal.fire(
-          'Error',
-          error.response?.data?.message || 'Update failed',
-          'error'
-        );
+        swalDarkConfig({
+          title:'Error',
+          text:error.response?.data?.message || 'Update failed',
+          icon:'error'
+      });
         btn.disabled = false;
         btn.innerHTML = originalText;
       }
@@ -521,7 +549,7 @@ function initCompanyStep3() {
 
           await companyService.uploadVerificationDoc(fileInput.files[0]);
           updateLocalRegistrationStep(4);
-          Swal.fire({
+          swalDarkConfig({
             icon: 'success',
             title: 'Registration Complete!',
             text: 'Document uploaded. Redirecting to dashboard...',
@@ -535,7 +563,7 @@ function initCompanyStep3() {
           // بما أن الباك إند لا يحتوي على endpoint "skip" مخصص، سنوجه للداشبورد مباشرة
           // التوثيق سيظل "Unverified"
           updateLocalRegistrationStep(4);
-          Swal.fire({
+          swalDarkConfig({
             icon: 'info',
             title: 'Skipping Verification',
             text: 'You can verify your company later from the dashboard.',
@@ -547,10 +575,10 @@ function initCompanyStep3() {
         }
       } catch (error) {
         console.error(error);
-        Swal.fire(
-          'Error',
-          error.response?.data?.message || 'Operation failed',
-          'error'
+        swalDarkConfig({
+          title:'Error',
+          text:error.response?.data?.message || 'Operation failed',
+          icon:'error'}
         );
         btn.disabled = false;
         btn.innerHTML = originalText;

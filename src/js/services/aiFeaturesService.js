@@ -26,10 +26,6 @@ export const aiFeaturesService = {
   // 🚀 2. CV Analyzer & ATS Checker
   // ============================================================
 
-  // ============================================================
-  // 🚀 2. CV Analyzer & ATS Checker
-  // ============================================================
-
   async analyzeCV(cvFile, jobDescription) {
     const formData = new FormData();
     formData.append('cvFile', cvFile);
@@ -44,18 +40,25 @@ export const aiFeaturesService = {
 
     return response.data;
   },
+
   async getExistingCVResult() {
     const response = await axiosClient.get('/ai/analyze-cv/latest');
     return response.data;
   },
+
   // ============================================================
   // 🚀 3. AI Job Matching Engine
   // ============================================================
 
-  async getJobMatches() {
+  // 🚨 التعديل الجديد: استقبال متغير isForceRefresh لتحديد نوع الطلب
+  async getJobMatches(isForceRefresh = false) {
+    // بناء المسار (Endpoint) بناءً على طلب التحديث
+    const endpoint = isForceRefresh 
+      ? '/job-seeker/ai-matches?refresh=true' 
+      : '/job-seeker/ai-matches';
+
     // 🚨 اللمسة المعمارية: إجبار Axios على الانتظار 45 ثانية لأن الـ AI يحتاج وقتاً للتفكير
-    // الـ Endpoint يجب أن يطابق مسار الباك إند الخاص بطلبة العمل
-    const response = await axiosClient.get('/job-seeker/ai-matches', {
+    const response = await axiosClient.get(endpoint, {
       timeout: 45000, // 45 seconds
     });
 

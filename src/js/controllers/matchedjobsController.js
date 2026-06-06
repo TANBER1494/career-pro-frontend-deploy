@@ -25,7 +25,7 @@ const loadingCaptions = [
 ];
 
 // ============================================================
-// 2. SWALS 
+// 2. SWALS
 // ============================================================
 function swalDarkConfig(options) {
   const isDarkMode = document.documentElement.classList.contains('dark');
@@ -40,7 +40,7 @@ function swalDarkConfig(options) {
 }
 
 // ==========================================
-// 🚀 2. Initialization (The Fix for Module Scripts)
+// 🚀 2. Initialization
 // ==========================================
 const initializePage = async () => {
   const token = localStorage.getItem('token');
@@ -50,12 +50,12 @@ const initializePage = async () => {
   }
 
   initAuthButtons();
-  initModalEvents(); // 🚨 تم وضعها هنا لتعمل فوراً وتفعل زر التقديم
-  startMatchingProcess();
+  initModalEvents();
+  initRefreshButton(); // 🚨 NEW: تفعيل زر التحديث
+  startMatchingProcess(false); // false يعني جلب الكاش أولاً
   document.body.classList.add('loaded');
 };
 
-// ضمان التشغيل حتى لو كان Script Module
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializePage);
 } else {
@@ -63,21 +63,62 @@ if (document.readyState === 'loading') {
 }
 
 // ==========================================
+// 🔄 NEW: Refresh Button Event Listener
+// ==========================================
+function initRefreshButton() {
+  const refreshBtn = document.getElementById('btn-refresh-matches');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      // تفريغ الوظائف الحالية قبل التحديث
+      if (jobsContainer) jobsContainer.innerHTML = '';
+
+      // إيقاف الزر مؤقتاً لتجنب الضغط المزدوج
+      refreshBtn.disabled = true;
+      const icon = refreshBtn.querySelector('i');
+      if (icon) icon.classList.add('fa-spin');
+
+      // تشغيل عملية المطابقة مع إجبار التحديث
+      startMatchingProcess(true);
+    });
+  }
+}
+
+// ==========================================
 // ⚙️ 3. Logic: Matching Engine Flow
 // ==========================================
-async function startMatchingProcess() {
-  showLoading();
+async function startMatchingProcess(isForceRefresh = false) {
+  showLoading(isForceRefresh);
   try {
-    const response = await aiFeaturesService.getJobMatches();
+    // 🚨 تمرير المتغير للسيرفيس
+    const response = await aiFeaturesService.getJobMatches(isForceRefresh);
+
     if (response.status === 'success' && response.data.matches.length > 0) {
       finishLoading(() => {
         renderJobs(response.data.matches);
+
+        // إظهار رسالة نجاح إذا كان الطلب تحديث
+        if (isForceRefresh) {
+          swalDarkConfig({
+            icon: 'success',
+            title: 'Updated!',
+            text: response.message || 'Successfully found new matches!',
+            timer: 3000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'bottom-end',
+          });
+        }
       });
     } else {
-      showError('No matches found', "We couldn't find jobs matching your current skills.");
+      showError(
+        'No matches found',
+        "We couldn't find jobs matching your current skills."
+      );
     }
   } catch (error) {
-    const backendMessage = error.response?.data?.message || 'Something went wrong while connecting to the AI.';
+    const backendMessage =
+      error.response?.data?.message ||
+      'Something went wrong while connecting to the AI.';
     if (error.response?.status === 400) {
       showError('Action Required', backendMessage);
     } else if (error.response?.status === 404) {
@@ -85,16 +126,32 @@ async function startMatchingProcess() {
     } else {
       showError('System Error', backendMessage);
     }
+  } finally {
+    // إعادة الزر لحالته الطبيعية
+    const refreshBtn = document.getElementById('btn-refresh-matches');
+    if (refreshBtn && isForceRefresh) {
+      refreshBtn.disabled = false;
+      const icon = refreshBtn.querySelector('i');
+      if (icon) icon.classList.remove('fa-spin');
+    }
   }
 }
 
 // ==========================================
 // 🎨 4. UI Transitions
 // ==========================================
-function showLoading() {
+function showLoading(isForceRefresh = false) {
   loadingSection?.classList.remove('hidden');
   errorSection?.classList.add('hidden');
   jobsContainer?.classList.add('hidden');
+
+  // 🚨 تغيير النص بناءً على نوع الطلب
+  const loadingTitle = document.querySelector('#loading-section h3');
+  if (loadingTitle) {
+    loadingTitle.textContent = isForceRefresh
+      ? 'Finding New Jobs...'
+      : 'Analyzing Your Profile...';
+  }
 
   let progress = 0;
   let capIdx = 0;
@@ -145,20 +202,23 @@ function showError(title, message) {
 }
 
 // ==========================================
-// 🖼️ 5. Dynamic Rendering (Responsive Design Fix)
-// ==========================================
-// ==========================================
-// 🖼️ 5. Dynamic Rendering (The UI Masterpiece)
+// 🖼️ 5. Dynamic Rendering
 // ==========================================
 function renderJobs(matches) {
   if (!jobsContainer) return;
 
-  jobsContainer.innerHTML = matches.map((match) => {
-    const job = match.jobDetails;
-    const score = match.matchPercentage;
-    const scoreColor = score >= 80 ? 'text-green-500' : score >= 50 ? 'text-yellow-500' : 'text-red-500';
+  jobsContainer.innerHTML = matches
+    .map((match) => {
+      const job = match.jobDetails;
+      const score = match.matchPercentage;
+      const scoreColor =
+        score >= 80
+          ? 'text-green-500'
+          : score >= 50
+            ? 'text-yellow-500'
+            : 'text-red-500';
 
-    return `
+      return `
       <div class="bg-white dark:bg-black/30 rounded-2xl p-5 md:p-7 mb-8 shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all flex flex-col">
           
   <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
@@ -226,7 +286,7 @@ function renderJobs(matches) {
       ${(job.skills || [])
         .slice(0, 6)
         .map(
-          skill => `
+          (skill) => `
             <span class="px-3 py-1.5 bg-slate-100 dark:bg-indigo-950 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-bold border border-slate-200/60 dark:border-slate-800">
               ${skill}
             </span>
@@ -254,7 +314,8 @@ function renderJobs(matches) {
   </div>
           
 </div>`;
-  }).join('');
+    })
+    .join('');
 }
 
 // ==========================================
@@ -274,7 +335,14 @@ window.handleSaveJob = async function (jobId, btnElement) {
 
   try {
     await jobService.toggleSaveJob(jobId);
-    swalDarkConfig({ icon: 'success', title: isSaved ? 'Removed' : 'Saved', toast: true, position: 'bottom-end', showConfirmButton: false, timer: 2000 });
+    swalDarkConfig({
+      icon: 'success',
+      title: isSaved ? 'Removed' : 'Saved',
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 2000,
+    });
   } catch (error) {
     if (isSaved) {
       icon.classList.replace('fa-regular', 'fa-solid');
@@ -283,7 +351,14 @@ window.handleSaveJob = async function (jobId, btnElement) {
       icon.classList.replace('fa-solid', 'fa-regular');
       icon.classList.replace('text-blue-600', 'text-slate-400');
     }
-    swalDarkConfig({ icon: 'error', title: 'Action Failed', toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000 });
+    swalDarkConfig({
+      icon: 'error',
+      title: 'Action Failed',
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+    });
   }
 };
 
@@ -301,8 +376,11 @@ window.applyForJobCheck = function (jobId) {
     modal.dataset.jobId = jobId;
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (document.getElementById('applyName')) document.getElementById('applyName').value = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-    if (document.getElementById('applyEmail')) document.getElementById('applyEmail').value = user.email || '';
+    if (document.getElementById('applyName'))
+      document.getElementById('applyName').value =
+        `${user.firstName || ''} ${user.lastName || ''}`.trim();
+    if (document.getElementById('applyEmail'))
+      document.getElementById('applyEmail').value = user.email || '';
   }
 };
 
@@ -313,20 +391,34 @@ window.closeApplyModal = function () {
     modal.querySelector('div')?.classList.add('scale-95');
     setTimeout(() => modal.classList.add('hidden'), 300);
   }
+
   const form = document.getElementById('applyForm');
   if (form) form.reset();
+
+  // إعادة مربع الـ CV لحالته الأصلية
   const fileText = document.getElementById('cvFileText');
-  if (fileText) fileText.textContent = 'Drag and drop your CV here or click to browse';
+  if (fileText) {
+    fileText.textContent = 'Drag and drop your CV here or click to browse';
+    fileText.classList.remove(
+      'text-blue-600',
+      'dark:text-blue-400',
+      'font-bold'
+    );
+    fileText.classList.add('text-slate-600', 'dark:text-slate-500');
+  }
 };
 
 function initModalEvents() {
   const modal = document.getElementById('applyModal');
   let form = document.getElementById('applyForm');
 
-  document.getElementById('btnCloseModal')?.addEventListener('click', window.closeApplyModal);
-  window.addEventListener('click', (e) => { if (e.target === modal) window.closeApplyModal(); });
+  // إغلاق المودال عند الضغط في أي مكان فارغ بالخارج
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) window.closeApplyModal();
+  });
 
   if (form) {
+    // استنساخ الفورم لتنظيف أي Events قديمة
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
     form = newForm;
@@ -337,29 +429,48 @@ function initModalEvents() {
       cancelBtn.onclick = window.closeApplyModal;
     }
 
+    // 🚨 تفعيل وظيفة تغيير النص عند اختيار CV
     const fileInput = form.querySelector('#applyCv');
     const fileText = form.querySelector('#cvFileText');
+
     if (fileInput && fileText) {
       fileInput.addEventListener('change', function () {
         if (this.files && this.files[0]) {
+          // في حالة اختيار ملف، يتغير النص للون الأزرق و يظهر اسم الملف
           fileText.textContent = `Selected: ${this.files[0].name}`;
-          fileText.classList.add('font-bold', 'text-blue-600');
+          fileText.classList.remove('text-slate-600', 'dark:text-slate-500');
+          fileText.classList.add(
+            'text-blue-600',
+            'dark:text-blue-400',
+            'font-bold'
+          );
+        } else {
+          // في حالة الإلغاء، يعود للون الرمادي
+          fileText.textContent =
+            'Drag and drop your CV here or click to browse';
+          fileText.classList.remove(
+            'text-blue-600',
+            'dark:text-blue-400',
+            'font-bold'
+          );
+          fileText.classList.add('text-slate-600', 'dark:text-slate-500');
         }
       });
     }
 
+    // منطق الإرسال (Submit)
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       e.stopPropagation();
 
       const jobId = modal.dataset.jobId;
       const cvFile = form.querySelector('#applyCv').files[0];
-      
+
       if (!cvFile) {
         swalDarkConfig({
-          title:'Warning',
+          title: 'Warning',
           text: 'Please upload your CV.',
-          icon: 'warning'
+          icon: 'warning',
         });
         return;
       }
@@ -374,15 +485,35 @@ function initModalEvents() {
 
       const submitBtn = form.querySelector('button[type="submit"]');
       try {
-        if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; }
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        }
         await jobService.applyForJob(jobId, applyData);
-        swalDarkConfig({ icon: 'success', title: 'Success!', text: 'Application submitted successfully.', timer: 2000, showConfirmButton: false });
+        swalDarkConfig({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Application submitted successfully.',
+          timer: 2000,
+          showConfirmButton: false,
+        });
         window.closeApplyModal();
       } catch (error) {
-        let errorMsg = error.response?.status === 409 ? 'You have already applied for this job.' : (error.response?.data?.message || 'Failed to submit application.');
-        swalDarkConfig({ icon: 'error', title: 'Application Failed', text: errorMsg });
+        let errorMsg =
+          error.response?.status === 409
+            ? 'You have already applied for this job.'
+            : error.response?.data?.message || 'Failed to submit application.';
+        swalDarkConfig({
+          icon: 'error',
+          title: 'Application Failed',
+          text: errorMsg,
+        });
       } finally {
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = 'Submit Application'; }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Submit Application';
+        }
       }
     });
   }

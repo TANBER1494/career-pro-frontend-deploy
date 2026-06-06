@@ -364,7 +364,7 @@ window.addEventListener('pageshow', function (event) {
 });
 
 // ==========================================
-// 💡 Job Matching (Coming Soon Alert)
+// 🚀 Job Matching (Activated)
 // ==========================================
 const comingSoonBtn = document.getElementById('coming-soon-btn');
 if (comingSoonBtn) {

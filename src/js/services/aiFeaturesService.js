@@ -16,7 +16,7 @@ export const aiFeaturesService = {
     });
     return response.data;
   },
-  
+
   async getExistingResult() {
     const response = await axiosClient.get('/personality/result');
     return response.data;
@@ -32,8 +32,8 @@ export const aiFeaturesService = {
 
   async analyzeCV(cvFile, jobDescription) {
     const formData = new FormData();
-    formData.append('cvFile', cvFile); 
-    formData.append('jobDescription', jobDescription); 
+    formData.append('cvFile', cvFile);
+    formData.append('jobDescription', jobDescription);
 
     // 🚨 التعديل هنا: إجبار Axios على إرسال البيانات كـ (ملفات) وليس JSON
     const response = await axiosClient.post('/ai/analyze-cv', formData, {
@@ -41,7 +41,7 @@ export const aiFeaturesService = {
         'Content-Type': 'multipart/form-data',
       },
     });
-    
+
     return response.data;
   },
   async getExistingCVResult() {
@@ -49,6 +49,16 @@ export const aiFeaturesService = {
     return response.data;
   },
   // ============================================================
-  // TODO: 3. Job Matching (سيتم برمجته لاحقاً)
+  // 🚀 3. AI Job Matching Engine
   // ============================================================
+
+  async getJobMatches() {
+    // 🚨 اللمسة المعمارية: إجبار Axios على الانتظار 45 ثانية لأن الـ AI يحتاج وقتاً للتفكير
+    // الـ Endpoint يجب أن يطابق مسار الباك إند الخاص بطلبة العمل
+    const response = await axiosClient.get('/job-seeker/ai-matches', {
+      timeout: 45000, // 45 seconds
+    });
+
+    return response.data;
+  },
 };

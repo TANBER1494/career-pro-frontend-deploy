@@ -225,7 +225,7 @@ function renderCompanyJobs(jobs, companyInfo) {
                     <img src="${companyLogo}" alt="${companyName}" class="w-full h-full object-cover rounded-md" onerror="this.src='https://placehold.co/48x48?text=Error'">
                 </div>
                 <div>
-                    <h3 class="font-medium font-poppins text-slate-900 leading-tight line-clamp-1" >
+                    <h3 class="font-medium font-poppins text-slate-900 leading-tight">
                         ${job.title}
                     </h3>
                     <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">

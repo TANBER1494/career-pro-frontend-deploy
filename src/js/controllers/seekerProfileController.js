@@ -443,13 +443,17 @@ function createSavedJobCard(job) {
                 <h4 class="font-bold text-slate-800 text-base leading-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="window.location.href='/jobs?id=${jobId}'">
                     ${job.title}
                 </h4>
-                <div class="flex items-center gap-2 text-xs text-slate-500 mt-1.5">
-                    <span class="font-medium text-slate-700 flex items-center gap-1"><i class="fa-regular fa-building"></i> ${companyName}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${location}</span>
-                    <span class="hidden sm:inline text-slate-300">|</span>
-                    <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">${type}</span>
-                </div>
+            
+<div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500 mt-1.5">
+    <span class="font-medium text-slate-700 flex items-center gap-1 shrink-0">
+        <i class="fa-regular fa-building"></i> ${companyName}
+    </span>
+    <span class="text-slate-300 shrink-0">|</span>
+    <span class="flex items-center gap-1 shrink-0">
+        <i class="fa-solid fa-location-dot"></i> ${location}
+    </span>
+    <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 shrink-0">${type}</span>
+</div>
             </div>
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto justify-end mt-2 sm:mt-0">

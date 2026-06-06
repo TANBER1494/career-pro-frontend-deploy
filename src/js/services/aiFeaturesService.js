@@ -52,10 +52,18 @@ export const aiFeaturesService = {
   // 🚀 3. AI Job Matching Engine
   // ============================================================
 
-  async getJobMatches() {
-    // 🚨 اللمسة المعمارية: إجبار Axios على الانتظار 45 ثانية لأن الـ AI يحتاج وقتاً للتفكير
-    // الـ Endpoint يجب أن يطابق مسار الباك إند الخاص بطلبة العمل
-    const response = await axiosClient.get('/job-seeker/ai-matches', {
+  // ============================================================
+  // 🚀 3. AI Job Matching Engine
+  // ============================================================
+
+  async getJobMatches(refresh = false) {
+    // اللمسة المعمارية: إضافة باراميتر refresh لتجاوز الكاش إذا طلب اليوزر ذلك
+    const url = refresh
+      ? '/job-seeker/ai-matches?refresh=true'
+      : '/job-seeker/ai-matches';
+
+    // إجبار Axios على الانتظار 45 ثانية لأن الـ AI يحتاج وقتاً للتفكير
+    const response = await axiosClient.get(url, {
       timeout: 45000, // 45 seconds
     });
 

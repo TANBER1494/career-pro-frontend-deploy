@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <script>
@@ -14,32 +14,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareerPro - personality test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link href="/src/css/main.css" rel="stylesheet" />
-    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png"/>
-    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
+    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png" />
+    <script
+      type="module"
+      src="/src/js/controllers/DarkModeController.js"
+    ></script>
     <style>
-
-/* ============================================================
+      /* ============================================================
         💡 Clean & Modern 7-Scale Radio Buttons (Updated UI)
    ============================================================ */
-      
+
       :root {
-          --color-disagree-3: #ef4444; /* Strongly Disagree (Red) */
-          --color-disagree-2: #f87171; /* Disagree */
-          --color-disagree-1: #fca5a5; /* Slightly Disagree */
-          --color-neutral:    #94a3b8; /* Neutral (Gray) */
-          --color-agree-1:    #86efac; /* Slightly Agree */
-          --color-agree-2:    #4ade80; /* Agree */
-          --color-agree-3:    #22c55e; /* Strongly Agree (Green) */
+        --color-disagree-3: #ef4444; /* Strongly Disagree (Red) */
+        --color-disagree-2: #f87171; /* Disagree */
+        --color-disagree-1: #fca5a5; /* Slightly Disagree */
+        --color-neutral: #94a3b8; /* Neutral (Gray) */
+        --color-agree-1: #86efac; /* Slightly Agree */
+        --color-agree-2: #4ade80; /* Agree */
+        --color-agree-3: #22c55e; /* Strongly Agree (Green) */
       }
       .dark {
-          --color-disagree-3: #960a0aaf; /* أفتح شوية */
-          --color-disagree-2: #c92222a4;
-          --color-disagree-1: #b834349a;
+        --color-disagree-3: #960a0aaf; /* أفتح شوية */
+        --color-disagree-2: #c92222a4;
+        --color-disagree-1: #b834349a;
 
-          --color-neutral:    #cbd5f5; /* أفتح علشان يبان */
+        --color-neutral: #cbd5f5; /* أفتح علشان يبان */
 
           --color-agree-1:    #5b9c729a;
           --color-agree-2:    #279e539a;
@@ -84,37 +92,85 @@
       /* ==========================================
         🎨 الألوان الديناميكية لكل دائرة (حواف، امتلاء، نصوص)
          ========================================== */
-      
+
       /* Strongly Disagree (opt-1) */
-      .opt-1 .circle { border-color: var(--color-disagree-3); }
-      .opt-1:hover .circle, .opt-1 input:checked + .circle { background-color: var(--color-disagree-3); }
-      .opt-1:hover .scale-label, .opt-1 input:checked ~ .scale-label { color: var(--color-disagree-3); }
-      
+      .opt-1 .circle {
+        border-color: var(--color-disagree-3);
+      }
+      .opt-1:hover .circle,
+      .opt-1 input:checked + .circle {
+        background-color: var(--color-disagree-3);
+      }
+      .opt-1:hover .scale-label,
+      .opt-1 input:checked ~ .scale-label {
+        color: var(--color-disagree-3);
+      }
+
       /* Disagree (opt-2) */
-      .opt-2 .circle { border-color: var(--color-disagree-2); }
-      .opt-2:hover .circle, .opt-2 input:checked + .circle { background-color: var(--color-disagree-2); }
-      .opt-2:hover .scale-label, .opt-2 input:checked ~ .scale-label { color: var(--color-disagree-2); }
-      
+      .opt-2 .circle {
+        border-color: var(--color-disagree-2);
+      }
+      .opt-2:hover .circle,
+      .opt-2 input:checked + .circle {
+        background-color: var(--color-disagree-2);
+      }
+      .opt-2:hover .scale-label,
+      .opt-2 input:checked ~ .scale-label {
+        color: var(--color-disagree-2);
+      }
+
       /* Slightly Disagree (opt-3) */
-      .opt-3 .circle { border-color: var(--color-disagree-1); }
-      .opt-3:hover .circle, .opt-3 input:checked + .circle { background-color: var(--color-disagree-1); }
-      .opt-3:hover .scale-label, .opt-3 input:checked ~ .scale-label { color: var(--color-disagree-1); }
-      
+      .opt-3 .circle {
+        border-color: var(--color-disagree-1);
+      }
+      .opt-3:hover .circle,
+      .opt-3 input:checked + .circle {
+        background-color: var(--color-disagree-1);
+      }
+      .opt-3:hover .scale-label,
+      .opt-3 input:checked ~ .scale-label {
+        color: var(--color-disagree-1);
+      }
+
       /* Neutral (opt-4) */
-      .opt-4 .circle { border-color: var(--color-neutral); }
-      .opt-4:hover .circle, .opt-4 input:checked + .circle { background-color: var(--color-neutral); }
-      .opt-4:hover .scale-label, .opt-4 input:checked ~ .scale-label { color: var(--color-neutral); }
-      
+      .opt-4 .circle {
+        border-color: var(--color-neutral);
+      }
+      .opt-4:hover .circle,
+      .opt-4 input:checked + .circle {
+        background-color: var(--color-neutral);
+      }
+      .opt-4:hover .scale-label,
+      .opt-4 input:checked ~ .scale-label {
+        color: var(--color-neutral);
+      }
+
       /* Slightly Agree (opt-5) */
-      .opt-5 .circle { border-color: var(--color-agree-1); }
-      .opt-5:hover .circle, .opt-5 input:checked + .circle { background-color: var(--color-agree-1); }
-      .opt-5:hover .scale-label, .opt-5 input:checked ~ .scale-label { color: var(--color-agree-1); }
-      
+      .opt-5 .circle {
+        border-color: var(--color-agree-1);
+      }
+      .opt-5:hover .circle,
+      .opt-5 input:checked + .circle {
+        background-color: var(--color-agree-1);
+      }
+      .opt-5:hover .scale-label,
+      .opt-5 input:checked ~ .scale-label {
+        color: var(--color-agree-1);
+      }
+
       /* Agree (opt-6) */
-      .opt-6 .circle { border-color: var(--color-agree-2); }
-      .opt-6:hover .circle, .opt-6 input:checked + .circle { background-color: var(--color-agree-2); }
-      .opt-6:hover .scale-label, .opt-6 input:checked ~ .scale-label { color: var(--color-agree-2); }
-      
+      .opt-6 .circle {
+        border-color: var(--color-agree-2);
+      }
+      .opt-6:hover .circle,
+      .opt-6 input:checked + .circle {
+        background-color: var(--color-agree-2);
+      }
+      .opt-6:hover .scale-label,
+      .opt-6 input:checked ~ .scale-label {
+        color: var(--color-agree-2);
+      }
+
       /* Strongly Agree (opt-7) */
       .opt-7 .circle { border-color: var(--color-agree-3); }
       .opt-7:hover .circle, .opt-7 input:checked + .circle { background-color: var(--color-agree-3); }
@@ -247,86 +303,92 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
-.dark body {
+      .dark body {
         transition: opacity 0.5s ease-in-out;
         background: #110b36;
-        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
+        background: linear-gradient(
+          131deg,
+          rgba(17, 11, 54, 1) 0%,
+          rgba(38, 42, 102, 1) 35%,
+          rgba(55, 31, 89, 1) 100%
+        );
       }
 
-/* From Uiverse.io by zenonaiden_3341 */ 
-.toggleSwitch {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  border-radius: 50%;
-  position: relative;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  line-height: 1;
-  overflow: hidden;
-  margin-left: 2%;
-}
+      /* From Uiverse.io by zenonaiden_3341 */
+      .toggleSwitch {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        border-radius: 50%;
+        position: relative;
+        place-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        line-height: 1;
+        overflow: hidden;
+        margin-left: 2%;
+      }
 
-#checkboxInput {
-  display: none;
-}
+      #checkboxInput {
+        display: none;
+      }
 
-.icons {
-  grid-column: 1 / 1;
-  grid-row: 1 / 1;
-  width: 80%;
-  height: 80%;
-  display: grid;
-  place-items: center;
-  z-index: 2;
-  transform-origin: center center;
-  transition:
-    transform 500ms ease,
-    opacity 300ms ease;
-  opacity: 0;
-  pointer-events: none;
-}
+      .icons {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+        width: 80%;
+        height: 80%;
+        display: grid;
+        place-items: center;
+        z-index: 2;
+        transform-origin: center center;
+        transition:
+          transform 500ms ease,
+          opacity 300ms ease;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-.icons--moon {
-  color: #212121;
-  /* background-color: #e8e8e8; */
-  border-radius: 50%;
-}
-.icons--sun {
-  color: #ffa600;
-  border-radius: 50%;
-}
-.dark .icons--sun {
-  color: #ffa600;
-  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
-}
+      .icons--moon {
+        color: #212121;
+        /* background-color: #e8e8e8; */
+        border-radius: 50%;
+      }
+      .icons--sun {
+        color: #ffa600;
+        border-radius: 50%;
+      }
+      .dark .icons--sun {
+        color: #ffa600;
+        filter: drop-shadow(0 0 5px #ffa600)
+          drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+      }
 
-.icons--moon,
-.icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      .icons--moon,
+      .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--moon {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--moon {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
 #checkboxInput:active + .toggleSwitch {
   transform: scale(0.94);
@@ -406,7 +468,7 @@
 
             <div id="start-view" class="hidden transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
                 <div class="flex items-center gap-4 mt-6 sm:mt-6 mb-6 sm:mb-10">
-                  <a id="backBtn" href="index.html" class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0">
+                  <a id="backBtn" href="/CareerPro" class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0">
                     <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
                     <span class="text-sm font-medium">Back</span>
                   </a>
@@ -480,6 +542,9 @@
         </div>
     </main>
     <script type="module" src="/src/js/utils/authGuard.js"></script>
-    <script type="module" src="../../js/controllers/personalityController.js"></script>
+    <script
+      type="module"
+      src="../../js/controllers/personalityController.js"
+    ></script>
   </body>
 </html>

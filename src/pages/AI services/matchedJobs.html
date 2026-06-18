@@ -15,7 +15,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CV Analyzer - AI-Career Guidance</title>
     <link href="/src/css/main.css" rel="stylesheet" />
-    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
+    <script
+      type="module"
+      src="/src/js/controllers/DarkModeController.js"
+    ></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -47,83 +50,89 @@
       .dark body {
         transition: opacity 0.5s ease-in-out;
         background: #110b36;
-        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
+        background: linear-gradient(
+          131deg,
+          rgba(17, 11, 54, 1) 0%,
+          rgba(38, 42, 102, 1) 35%,
+          rgba(55, 31, 89, 1) 100%
+        );
       }
 
-/* From Uiverse.io by zenonaiden_3341 */ 
-.toggleSwitch {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  border-radius: 50%;
-  position: relative;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  line-height: 1;
-  overflow: hidden;
-  margin-left: 2%;
-}
+      /* From Uiverse.io by zenonaiden_3341 */
+      .toggleSwitch {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        border-radius: 50%;
+        position: relative;
+        place-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        line-height: 1;
+        overflow: hidden;
+        margin-left: 2%;
+      }
 
-#checkboxInput {
-  display: none;
-}
+      #checkboxInput {
+        display: none;
+      }
 
-.icons {
-  grid-column: 1 / 1;
-  grid-row: 1 / 1;
-  width: 80%;
-  height: 80%;
-  display: grid;
-  place-items: center;
-  z-index: 2;
-  transform-origin: center center;
-  transition:
-    transform 500ms ease,
-    opacity 300ms ease;
-  opacity: 0;
-  pointer-events: none;
-}
+      .icons {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+        width: 80%;
+        height: 80%;
+        display: grid;
+        place-items: center;
+        z-index: 2;
+        transform-origin: center center;
+        transition:
+          transform 500ms ease,
+          opacity 300ms ease;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-.icons--moon {
-  color: #212121;
-  /* background-color: #e8e8e8; */
-  border-radius: 50%;
-}
-.icons--sun {
-  color: #ffa600;
-  border-radius: 50%;
-}
-.dark .icons--sun {
-  color: #ffa600;
-  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
-}
+      .icons--moon {
+        color: #212121;
+        /* background-color: #e8e8e8; */
+        border-radius: 50%;
+      }
+      .icons--sun {
+        color: #ffa600;
+        border-radius: 50%;
+      }
+      .dark .icons--sun {
+        color: #ffa600;
+        filter: drop-shadow(0 0 5px #ffa600)
+          drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+      }
 
-.icons--moon,
-.icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      .icons--moon,
+      .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--moon {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--moon {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
 #checkboxInput:active + .toggleSwitch {
   transform: scale(0.94);
@@ -206,7 +215,7 @@
 >
   <a
     id="backBtn"
-    href="index.html"
+    href="/CareerPro"
     class="flex w-fit items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors mt-2 ml-4 mb-2 group"
     >
     <i
@@ -215,89 +224,103 @@
     <span class="text-sm font-medium">Back</span>
   </a>
 
-  <div>
-    <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-200">
-      AI-Matched Jobs
-    </h1>
+        <div>
+          <h1
+            class="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-200"
+          >
+            AI-Matched Jobs
+          </h1>
+          <p
+            class="text-slate-500 dark:text-slate-400 mt-1 text-sm sm:text-base"
+          >
+            Personalized job recommendations powered by your CV
+          </p>
+        </div>
+      </div>
 
-    <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm sm:text-base">
-      Personalized job recommendations powered by your CV
-    </p>
-  </div>
-</div>
+      <button
+        id="btn-refresh-matches"
+        class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white text-sm font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+      >
+        <i class="fa-solid fa-rotate-right" id="refresh-icon"></i>
+        <span>Find New Jobs</span>
+      </button>
+    </div>
 
-<div
-  id="loading-section"
-  class="w-full px-4 md:w-5/6 lg:w-3/4 mx-auto flex flex-col items-center justify-center py-20 bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-opacity"
->
-  <i
-    class="fa-solid fa-brain text-5xl text-blue-500 dark:text-blue-400 animate-pulse mb-6"
-  ></i>
-
-  <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2">
-    Analyzing Your Profile...
-  </h3>
-
-  <p
-    id="loading-caption"
-    class="text-slate-500 dark:text-slate-400 font-medium mb-8 h-6 text-center"
-  >
-    Loading AI Modules...
-  </p>
-
-  <div class="w-full max-w-md px-4">
     <div
-      class="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-300 mb-2 uppercase tracking-wider"
+      id="loading-section"
+      class="w-full px-4 md:w-5/6 lg:w-3/4 mx-auto flex flex-col items-center justify-center py-20 bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-opacity"
     >
-      <span>AI Matching Engine</span>
-      <span id="loading-percentage">0%</span>
+      <i
+        class="fa-solid fa-brain text-5xl text-blue-500 dark:text-blue-400 animate-pulse mb-6"
+      ></i>
+
+      <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+        Analyzing Your Profile...
+      </h3>
+
+      <p
+        id="loading-caption"
+        class="text-slate-500 dark:text-slate-400 font-medium mb-8 h-6 text-center"
+      >
+        Loading AI Modules...
+      </p>
+
+      <div class="w-full max-w-md px-4">
+        <div
+          class="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-300 mb-2 uppercase tracking-wider"
+        >
+          <span>AI Matching Engine</span>
+          <span id="loading-percentage">0%</span>
+        </div>
+
+        <div
+          class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"
+        >
+          <div
+            id="loading-progress-bar"
+            class="h-full bg-blue-500 dark:bg-blue-400 w-0 transition-all duration-300 ease-out"
+          ></div>
+        </div>
+      </div>
     </div>
 
-    <div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-      <div
-        id="loading-progress-bar"
-        class="h-full bg-blue-500 dark:bg-blue-400 w-0 transition-all duration-300 ease-out"
-      ></div>
+    <div
+      id="error-section"
+      class="hidden w-full px-4 md:w-5/6 lg:w-3/4 mx-auto flex-col items-center justify-center py-20 bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-red-100 dark:border-red-900 text-center"
+    >
+      <i
+        class="fa-solid fa-triangle-exclamation text-5xl text-red-500 dark:text-red-400 mb-4"
+      ></i>
+
+      <h3
+        class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2"
+        id="error-title"
+      >
+        Error
+      </h3>
+
+      <p
+        class="text-slate-500 dark:text-slate-400 mb-8 max-w-md mx-auto"
+        id="error-message"
+      >
+        Something went wrong.
+      </p>
+
+      <a
+        href="/cv-analyzer"
+        class="px-6 py-2.5 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-xl font-semibold shadow-md transition-colors"
+      >
+        Go to CV Analyzer
+      </a>
     </div>
-  </div>
-</div>
-
-<div
-  id="error-section"
-  class="hidden w-full px-4 md:w-5/6 lg:w-3/4 mx-auto flex-col items-center justify-center py-20 bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-red-100 dark:border-red-900 text-center"
->
-  <i
-    class="fa-solid fa-triangle-exclamation text-5xl text-red-500 dark:text-red-400 mb-4"
-  ></i>
-
-  <h3
-    class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2"
-    id="error-title"
-  >
-    Error
-  </h3>
-
-  <p
-    class="text-slate-500 dark:text-slate-400 mb-8 max-w-md mx-auto"
-    id="error-message"
-  >
-    Something went wrong.
-  </p>
-
-  <a
-    href="/cv-analyzer"
-    class="px-6 py-2.5 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-xl font-semibold shadow-md transition-colors"
-  >
-    Go to CV Analyzer
-  </a>
-</div>
 
 <div
   id="matched-jobs-container"
   class="hidden w-full max-w-5xl mx-auto flex flex-col gap-6 pb-12"
 ></div>
 
-<div
+    <div
       id="applyModal"
       class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
     >
@@ -306,12 +329,16 @@
       >
         <div class="p-6 pb-2 text-center">
           <button
+            type="button"
             id="btnCloseModal"
-            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            onclick="window.closeApplyModal()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
           >
             <i class="fa-solid fa-xmark text-xl"></i>
           </button>
-          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-200">Apply for Job</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-200">
+            Apply for Job
+          </h2>
           <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Submit your application and CV for this position
           </p>
@@ -320,7 +347,8 @@
         <form id="applyForm" class="p-6 pt-2 space-y-4" novalidate>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+              <label
+                class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
                 >Full Name <span class="text-red-500">*</span></label
               >
               <input
@@ -332,7 +360,8 @@
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+              <label
+                class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
                 >Email <span class="text-red-500">*</span></label
               >
               <input
@@ -346,7 +375,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+            <label
+              class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Phone Number</label
             >
             <input
@@ -358,7 +388,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+            <label
+              class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Upload CV/Resume <span class="text-red-500">*</span></label
             >
             <div
@@ -370,7 +401,10 @@
               >
                 <i class="fa-solid fa-arrow-up-from-bracket text-slate-500"></i>
               </div>
-              <p class="text-sm text-slate-600 dark:text-slate-500 font-medium">
+              <p
+                id="cvFileText"
+                class="text-sm text-slate-600 dark:text-slate-500 font-medium"
+              >
                 Drag and drop your CV here or click to browse
               </p>
               <p class="text-xs text-slate-400 mt-1">
@@ -386,7 +420,8 @@
             </div>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+            <label
+              class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Cover Letter (Optional)</label
             >
             <textarea
@@ -396,13 +431,7 @@
             ></textarea>
           </div>
           <div class="flex gap-3 pt-2 -mt-30">
-            <button
-              type="button"
-              id="btnCancelModal"
-              class="flex-1 py-2 border border-slate-400 hover:border-slate-200 dark:text-slate-400 hover:dark:text-slate-200 transition-colors rounded-lg text-sm"
-            >
-              Cancel
-            </button>
+            
             <button
               type="submit"
               class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white transition-colors rounded-lg text-sm"

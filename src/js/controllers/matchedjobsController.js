@@ -25,7 +25,7 @@ const loadingCaptions = [
 ];
 
 // ============================================================
-// 2. SWALS 
+// 2. SWALS
 // ============================================================
 function swalDarkConfig(options) {
   const isDarkMode = document.documentElement.classList.contains('dark');
@@ -40,7 +40,7 @@ function swalDarkConfig(options) {
 }
 
 // ==========================================
-// 🚀 2. Initialization (The Fix for Module Scripts)
+// 🚀 2. Initialization
 // ==========================================
 const initializePage = async () => {
   const token = localStorage.getItem('token');
@@ -50,12 +50,12 @@ const initializePage = async () => {
   }
 
   initAuthButtons();
-  initModalEvents(); // 🚨 تم وضعها هنا لتعمل فوراً وتفعل زر التقديم
-  startMatchingProcess();
+  initModalEvents();
+  initRefreshButton(); // 🚨 NEW: تفعيل زر التحديث
+  startMatchingProcess(false); // false يعني جلب الكاش أولاً
   document.body.classList.add('loaded');
 };
 
-// ضمان التشغيل حتى لو كان Script Module
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializePage);
 } else {
@@ -63,21 +63,62 @@ if (document.readyState === 'loading') {
 }
 
 // ==========================================
+// 🔄 NEW: Refresh Button Event Listener
+// ==========================================
+function initRefreshButton() {
+  const refreshBtn = document.getElementById('btn-refresh-matches');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      // تفريغ الوظائف الحالية قبل التحديث
+      if (jobsContainer) jobsContainer.innerHTML = '';
+
+      // إيقاف الزر مؤقتاً لتجنب الضغط المزدوج
+      refreshBtn.disabled = true;
+      const icon = refreshBtn.querySelector('i');
+      if (icon) icon.classList.add('fa-spin');
+
+      // تشغيل عملية المطابقة مع إجبار التحديث
+      startMatchingProcess(true);
+    });
+  }
+}
+
+// ==========================================
 // ⚙️ 3. Logic: Matching Engine Flow
 // ==========================================
-async function startMatchingProcess() {
-  showLoading();
+async function startMatchingProcess(isForceRefresh = false) {
+  showLoading(isForceRefresh);
   try {
-    const response = await aiFeaturesService.getJobMatches();
+    // 🚨 تمرير المتغير للسيرفيس
+    const response = await aiFeaturesService.getJobMatches(isForceRefresh);
+
     if (response.status === 'success' && response.data.matches.length > 0) {
       finishLoading(() => {
         renderJobs(response.data.matches);
+
+        // إظهار رسالة نجاح إذا كان الطلب تحديث
+        if (isForceRefresh) {
+          swalDarkConfig({
+            icon: 'success',
+            title: 'Updated!',
+            text: response.message || 'Successfully found new matches!',
+            timer: 3000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'bottom-end',
+          });
+        }
       });
     } else {
-      showError('No matches found', "We couldn't find jobs matching your current skills.");
+      showError(
+        'No matches found',
+        "We couldn't find jobs matching your current skills."
+      );
     }
   } catch (error) {
-    const backendMessage = error.response?.data?.message || 'Something went wrong while connecting to the AI.';
+    const backendMessage =
+      error.response?.data?.message ||
+      'Something went wrong while connecting to the AI.';
     if (error.response?.status === 400) {
       showError('Action Required', backendMessage);
     } else if (error.response?.status === 404) {
@@ -85,16 +126,32 @@ async function startMatchingProcess() {
     } else {
       showError('System Error', backendMessage);
     }
+  } finally {
+    // إعادة الزر لحالته الطبيعية
+    const refreshBtn = document.getElementById('btn-refresh-matches');
+    if (refreshBtn && isForceRefresh) {
+      refreshBtn.disabled = false;
+      const icon = refreshBtn.querySelector('i');
+      if (icon) icon.classList.remove('fa-spin');
+    }
   }
 }
 
 // ==========================================
 // 🎨 4. UI Transitions
 // ==========================================
-function showLoading() {
+function showLoading(isForceRefresh = false) {
   loadingSection?.classList.remove('hidden');
   errorSection?.classList.add('hidden');
   jobsContainer?.classList.add('hidden');
+
+  // 🚨 تغيير النص بناءً على نوع الطلب
+  const loadingTitle = document.querySelector('#loading-section h3');
+  if (loadingTitle) {
+    loadingTitle.textContent = isForceRefresh
+      ? 'Finding New Jobs...'
+      : 'Analyzing Your Profile...';
+  }
 
   let progress = 0;
   let capIdx = 0;
@@ -145,21 +202,24 @@ function showError(title, message) {
 }
 
 // ==========================================
-// 🖼️ 5. Dynamic Rendering (Responsive Design Fix)
-// ==========================================
-// ==========================================
-// 🖼️ 5. Dynamic Rendering (The UI Masterpiece)
+// 🖼️ 5. Dynamic Rendering
 // ==========================================
 function renderJobs(matches) {
   if (!jobsContainer) return;
 
-  jobsContainer.innerHTML = matches.map((match) => {
-    const job = match.jobDetails;
-    const score = match.matchPercentage;
-    const scoreColor = score >= 80 ? 'text-green-500' : score >= 50 ? 'text-yellow-500' : 'text-red-500';
+  jobsContainer.innerHTML = matches
+    .map((match) => {
+      const job = match.jobDetails;
+      const score = match.matchPercentage;
+      const scoreColor =
+        score >= 80
+          ? 'text-green-500'
+          : score >= 50
+            ? 'text-yellow-500'
+            : 'text-red-500';
 
-    return `
-      <div class="bg-white dark:bg-black/30 rounded-2xl p-5 md:p-7 shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all flex flex-col">
+      return `
+      <div class="bg-white dark:bg-black/30 rounded-2xl p-5 md:p-7 mb-8 shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all flex flex-col">
           
   <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
               
@@ -226,7 +286,7 @@ function renderJobs(matches) {
       ${(job.skills || [])
         .slice(0, 6)
         .map(
-          skill => `
+          (skill) => `
             <span class="px-3 py-1.5 bg-slate-100 dark:bg-indigo-950 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-bold border border-slate-200/60 dark:border-slate-800">
               ${skill}
             </span>
@@ -254,7 +314,8 @@ function renderJobs(matches) {
   </div>
           
 </div>`;
-  }).join('');
+    })
+    .join('');
 }
 
 // ==========================================
@@ -274,7 +335,14 @@ window.handleSaveJob = async function (jobId, btnElement) {
 
   try {
     await jobService.toggleSaveJob(jobId);
-    swalDarkConfig({ icon: 'success', title: isSaved ? 'Removed' : 'Saved', toast: true, position: 'bottom-end', showConfirmButton: false, timer: 2000 });
+    swalDarkConfig({
+      icon: 'success',
+      title: isSaved ? 'Removed' : 'Saved',
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 2000,
+    });
   } catch (error) {
     if (isSaved) {
       icon.classList.replace('fa-regular', 'fa-solid');
@@ -283,10 +351,16 @@ window.handleSaveJob = async function (jobId, btnElement) {
       icon.classList.replace('fa-solid', 'fa-regular');
       icon.classList.replace('text-blue-600', 'text-slate-400');
     }
-    swalDarkConfig({ icon: 'error', title: 'Action Failed', toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000 });
+    swalDarkConfig({
+      icon: 'error',
+      title: 'Action Failed',
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+    });
   }
 };
-
 // ==========================================
 // 💼 7. Global Actions (Apply Form Logic)
 // ==========================================
@@ -516,25 +590,30 @@ function initAuthButtons() {
     } else {
       navLinkHtml = `
           <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-2 transition duration-300 whitespace-nowrap">
-            <i class="fas fa-user-circle text-2xl"></i>
+            <i class="fas fa-user-circle text-3xl"></i>
             <span class="hidden md:inline">Profile</span>
           </a>`;
     }
 
     // 💡 تم تبديل الترتيب هنا: الـ Logout أولاً ثم الـ Profile
     authContainer.innerHTML = `
-
-    ${navLinkHtml}
     <div class="flex items-center">
         <button 
-  id="btnLogout"
-  class="flex items-center justify-center mr-4 w-8 h-8 bg-red-600 rounded-full cursor-pointer shadow-lg "
->
-  <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-  </svg>
-</button>
+          id="btnLogout"
+          class="group flex items-center justify-start mr-4 w-8 h-8 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg md:hover:w-32 md:hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+        >
+          <div class="flex items-center justify-center w-full transition-all duration-300 md:group-hover:justify-start md:group-hover:px-3">
+            <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+              <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+            </svg>
+          </div>
+          <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 md:group-hover:translate-x-0 md:group-hover:opacity-100">
+            Logout
+          </div>
+        </button>
     </div>
+    
+    ${navLinkHtml}
 `;
 
     document.getElementById('btnLogout').addEventListener('click', () => {

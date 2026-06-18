@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <script>
@@ -14,24 +14,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>All Companies - AI-Career Guidance</title>
-    <script type="module" src="./src/js/controllers/DarkModeController.js"></script>
     <link href="/src/css/main.css" rel="stylesheet" />
+    <script type="module" src="../../js/controllers/DarkModeController.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png"/>
+    <link rel="website icon" type="png" href="../../../assets/imgs/Logo.png" />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
       body.loaded {
         opacity: 1;
       }
       body {
-        opacity: 0; 
+        opacity: 0;
         transition: opacity 0.5s ease-in-out;
-        font-family: "Poppins", sans-serif;
+        font-family: 'Poppins', sans-serif;
         background: linear-gradient(
           150deg,
           rgba(220, 224, 224, 1) 14%,
@@ -45,82 +45,88 @@
       .dark body {
         transition: opacity 0.5s ease-in-out;
         background: #110b36;
-        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
+        background: linear-gradient(
+          131deg,
+          rgba(17, 11, 54, 1) 0%,
+          rgba(38, 42, 102, 1) 35%,
+          rgba(55, 31, 89, 1) 100%
+        );
       }
 
-/* From Uiverse.io by zenonaiden_3341 */ 
-.toggleSwitch {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  border-radius: 50%;
-  position: relative;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  line-height: 1;
-  overflow: hidden;
-}
+      /* From Uiverse.io by zenonaiden_3341 */
+      .toggleSwitch {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        border-radius: 50%;
+        position: relative;
+        place-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        line-height: 1;
+        overflow: hidden;
+      }
 
-#checkboxInput {
-  display: none;
-}
+      #checkboxInput {
+        display: none;
+      }
 
-.icons {
-  grid-column: 1 / 1;
-  grid-row: 1 / 1;
-  width: 80%;
-  height: 80%;
-  display: grid;
-  place-items: center;
-  z-index: 2;
-  transform-origin: center center;
-  transition:
-    transform 500ms ease,
-    opacity 300ms ease;
-  opacity: 0;
-  pointer-events: none;
-}
+      .icons {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+        width: 80%;
+        height: 80%;
+        display: grid;
+        place-items: center;
+        z-index: 2;
+        transform-origin: center center;
+        transition:
+          transform 500ms ease,
+          opacity 300ms ease;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-.icons--moon {
-  color: #212121;
-  /* background-color: #e8e8e8; */
-  border-radius: 50%;
-}
-.icons--sun {
-  color: #ffa600;
-  border-radius: 50%;
-}
-.dark .icons--sun {
-  color: #ffa600;
-  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
-}
+      .icons--moon {
+        color: #212121;
+        /* background-color: #e8e8e8; */
+        border-radius: 50%;
+      }
+      .icons--sun {
+        color: #ffa600;
+        border-radius: 50%;
+      }
+      .dark .icons--sun {
+        color: #ffa600;
+        filter: drop-shadow(0 0 5px #ffa600)
+          drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+      }
 
-.icons--moon,
-.icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      .icons--moon,
+      .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--moon {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--moon {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
 #checkboxInput:active + .toggleSwitch {
   transform: scale(0.94);
@@ -219,15 +225,17 @@
       <div
         class="bg-white dark:bg-black/30 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 mb-8"
       >
-      <div class="relative flex-grow w-full md:w-auto ">
-        <input
-        type="text"
-        id="search-input"
-        placeholder="Search jobs..."
-        class="w-full pl-10 pr-4 py-2.5 border dark:bg-black/30 border-gray-300 dark:border-gray-500 focus:border-blue-500 dark:focus:border-gray-300 rounded-lg outline-none transition-all duration-300 peer"
-        />
-        <i class="fas fa-search absolute left-4 top-1/2  -translate-y-1/2 text-gray-400 peer-focus:text-blue-500 dark:peer-focus:text-gray-300 peer-focus:scale-125 transition-all duration-300 pointer-events-none"></i>
-      </div>
+        <div class="relative flex-grow w-full md:w-auto">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search jobs..."
+            class="w-full pl-10 pr-4 py-2.5 border dark:bg-black/30 border-gray-300 dark:border-gray-500 focus:border-blue-500 dark:focus:border-gray-300 rounded-lg outline-none transition-all duration-300 peer"
+          />
+          <i
+            class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 peer-focus:text-blue-500 dark:peer-focus:text-gray-300 peer-focus:scale-125 transition-all duration-300 pointer-events-none"
+          ></i>
+        </div>
 
         <div
           class="flex flex-col md:flex-row gap-3 items-center justify-between mt-2"
@@ -475,16 +483,15 @@
       >
         <div class="col-span-full text-center py-12">
           <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
-          <p class="mt-2 text-gray-500 dark:text-gray-400">Loading companies...</p>
+          <p class="mt-2 text-gray-500 dark:text-gray-400">
+            Loading companies...
+          </p>
         </div>
       </div>
 
-      <div
-        id="pagination-container"
-        class="mt-8 flex justify-between "
-      ></div>
+      <div id="pagination-container" class="mt-8 flex justify-between"></div>
     </main>
-    
+
     <script type="module" src="../../js/utils/authGuard.js"></script>
     <script type="module" src="../../js/config/constant.js"></script>
     <script type="module" src="../../js/utils/axiosClient.js"></script>

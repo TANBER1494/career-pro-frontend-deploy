@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          if (savedTheme === 'dark') {
+              document.documentElement.classList.add('dark');
+          } else {
+              document.documentElement.classList.remove('dark');
+          }
+      })();
+  </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CV Analyzer - AI-Career Guidance</title>
@@ -121,78 +131,84 @@
 .icons svg {
   fill: currentColor !important;
 }
+
+@media (max-width: 639px) {
+  .logout-container {
+    min-width: fit-content;
+  }
+}
+
     </style>
   </head>
-  <body class="bg-slate-100 text-slate-800 dark:text-white min-h-screen pb-12">
+  <body class="bg-slate-100 text-slate-800 dark:text-white min-h-screen ">
     <nav
       class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
     >
       <a
         href="/CareerPro"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        class="flex items-center gap-2 sm:gap-3 w-auto text-xl sm:text-2xl font-semibold cursor-pointer"
         onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
         <img
           src="/assets/imgs/Logo.png"
           alt="CareerGuidance Logo"
-          class="h-12 w-auto object-contain"
+          class="h-10 sm:h-12 w-auto object-contain"
         />
-        <span class="font-lexend font-simibold not-italic"
-          >AI-Career Guidance</span
-        >
+        <span class="nav-title font-lexend font-semibold not-italic hidden sm:block dark:text-white">
+          AI-Career Guidance
+        </span>
       </a>
       <div class="flex items-center gap-3">
-      <div class="flex items-center gap-3 w-auto flex justify-end min-w-0">
-        <div
-          id="auth-buttons-container"
-          class="flex justify-end items-center gap-3"
-        ></div>
+        <input id="checkboxInput" type="checkbox" />
+        <label class="toggleSwitch" for="checkboxInput">
+          <div class="icons icons--moon">
+            <svg
+              class="moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="32"
+              height="32"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </div>
+        
+          <div class="icons icons--sun">
+            <svg
+              class="sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="32"
+              height="32"
+            >
+              <path
+                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+              ></path>
+            </svg>
+          </div>
+        </label>
+        <div class="w-auto flex justify-end min-w-0">
+          <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+          </div>
+          </div>
       </div>
-      <input id="checkboxInput" type="checkbox" />
-<label class="toggleSwitch" for="checkboxInput">
-  <div class="icons icons--moon">
-    <svg
-      class="moon"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      width="32"
-      height="32"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
-        clip-rule="evenodd"
-      ></path>
-    </svg>
-  </div>
-
-  <div class="icons icons--sun">
-    <svg
-      class="sun"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      width="32"
-      height="32"
-    >
-      <path
-        d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
-      ></path>
-    </svg>
-  </div>
-</label>
-</div>
+      </div>
     </nav>
-
+<main class="w-full px-6 sm:px-6 lg:px-10 py-6 min-h-screen">
     <div
-  class="w-full px-4 md:w-5/6 lg:w-3/4 mx-auto mb-8 flex items-center gap-4 mt-6"
+  class="w-full max-w-7xl mx-auto flex pb-4flex flex-col sm:flex-row sm:items-center gap-4 mb-8 px-2 sm:px-0"
 >
   <a
     id="backBtn"
     href="index.html"
-    class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0"
-  >
+    class="flex w-fit items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors mt-2 ml-4 mb-2 group"
+    >
     <i
       class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
     ></i>
@@ -278,7 +294,7 @@
 
 <div
   id="matched-jobs-container"
-  class="hidden w-full max-w-4xl mx-auto flex flex-col gap-6 pb-12"
+  class="hidden w-full max-w-5xl mx-auto flex flex-col gap-6 pb-12"
 ></div>
 
 <div
@@ -397,7 +413,7 @@
         </form>
       </div>
     </div>
-
+  </main>
     <script type="module" src="/src/js/utils/authGuard.js"></script>
     <script
       type="module"

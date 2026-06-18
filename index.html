@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          if (savedTheme === 'dark') {
+              document.documentElement.classList.add('dark');
+          } else {
+              document.documentElement.classList.remove('dark');
+          }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI-Career Guidance</title>
@@ -40,7 +50,7 @@
         opacity: 1;
       }
       body {
-        opacity: 0;
+        /* opacity: 0; */
         transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
         background: linear-gradient(
@@ -627,6 +637,114 @@
   fill: currentColor !important;
 }
 
+/* From Uiverse.io by zenonaiden_3341 */ 
+.toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+}
+
+#checkboxInput {
+  display: none;
+}
+
+.icons {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transform-origin: center center;
+  transition:
+    transform 500ms ease,
+    opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icons--moon {
+  color: #212121;
+  /* background-color: #e8e8e8; */
+  border-radius: 50%;
+}
+.icons--sun {
+  color: #ffa600;
+  border-radius: 50%;
+}
+.dark .icons--sun {
+  color: #ffa600;
+  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+}
+
+.icons--moon,
+.icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--moon {
+  transform: rotate(360deg) scale(1);
+  opacity: 1;
+}
+
+#checkboxInput:checked + .toggleSwitch .icons--sun {
+  transform: rotate(0deg) scale(0);
+  opacity: 0;
+}
+
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+@media (max-width: 1180px) {
+  nav {
+    width: 100% !important;   /* يفرش بعرض الشاشة */
+    max-width: 100% !important;
+    border-radius: 0 !important; /* يشيل الحواف المدورة عشان يلزق في الشاشة */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;    /* لو عايزاه يلزق فوق خالص شيلي الـ margin-top */
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+@media (min-width: 640px) {
+  #btnLogout:hover {
+    width: 8rem; /* 128px = w-32 */
+    border-radius: 1.5rem;
+  }
+
+  #btnLogout:hover .logout-text {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 639px) {
+  .logout-container {
+    min-width: fit-content;
+  }
+}
     </style>
 
 </head>
@@ -637,22 +755,22 @@
   
   <span class="text">Scroll Top</span>
 </button>
-  <body class="font-poppins flex flex-col min-h-screen">
-    <nav class="sticky top-0 z-50 bg-white/40 dark:bg-black/20 border-gray-200 dark:border-gray-800 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full">
-  
-      <div class="flex items-center gap-4">
-        <div class="hidden max-[1180px]:block menu-toggle"> 
-          <input type="checkbox" id="checkbox" class="hidden"> 
-          <label for="checkbox" class="toggle">
-            <div class="bar bar--top"></div>
-            <div class="bar bar--middle"></div>
-            <div class="bar bar--bottom"></div>
-          </label>
-        </div>
+<body class="font-poppins flex flex-col min-h-screen">
+  <nav class="sticky top-0 z-50 bg-white/40 dark:bg-black/20 border-gray-200 dark:border-gray-800 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full">
+
+  <div class="flex items-center gap-4">
+    <div class="hidden max-[1180px]:block menu-toggle"> 
+      <input type="checkbox" id="checkbox" class="hidden"> 
+      <label for="checkbox" class="toggle">
+        <div class="bar bar--top"></div>
+        <div class="bar bar--middle"></div>
+        <div class="bar bar--bottom"></div>
+      </label>
+    </div>
 
     <a id="logoBtn" href="/Company_dashboard" class="flex items-center gap-3 w-auto text-2xl font-semibold text-black dark:text-white cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <img src="assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="hidden sm:inline font-lexend font-simibold not-italic">AI-Career Guidance</span>
+      <span class="hidden sm:inline font-lexend font-semibold not-italic">AI-Career Guidance</span>
     </a>
   </div>
 
@@ -682,6 +800,7 @@
       </ul>
     </div>
   </div>
+  <div class="flex items-center gap-3">
   <input id="checkboxInput" type="checkbox" />
   <label class="toggleSwitch" for="checkboxInput">
     <div class="icons icons--moon">
@@ -718,8 +837,11 @@
   </label>
   <div class="w-auto flex justify-end min-w-0">
     <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
-      </div>
-  </div>
+    </div>
+    </div>
+</div>
+</div>
+
 </nav>
     <section
       class="relative bg-grid-pattern flex-grow flex flex-col justify-center overflow-hidden"
@@ -748,11 +870,11 @@
                   type="text"
                   id="heroSearchInput"
                   placeholder="Search for jobs"
-                  class="w-full py-3 pl-12 pr-4 rounded-lg border dark:bg-black/30 border-gray-300 dark:border-gray-500 focus:border-blue-500 dark:focus:border-gray-300 outline-none transition-all duration-300 peer"
+                  class="w-full py-3 pl-12 pr-4 rounded-lg border dark:text-white dark:bg-black/30 border-gray-300 dark:border-gray-500 focus:border-blue-500 dark:focus:border-gray-300 outline-none transition-all duration-300 peer"
                 />
 
                 <i
-                  class="fas fa-search absolute left-4 top-4 translate-y-3/2 text-gray-400 peer-focus:text-blue-500 dark:peer-focus:text-gray-300 peer-focus:scale-125 transition-all duration-300 pointer-events-none"
+                class="fas fa-search absolute left-4 top-4 translate-y-3/2 text-gray-400 peer-focus:text-blue-500 dark:peer-focus:text-gray-300 peer-focus:scale-125 transition-all duration-300 pointer-events-none"
                 ></i>
               </div>
 

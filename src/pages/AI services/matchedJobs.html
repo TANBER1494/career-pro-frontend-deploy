@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          if (savedTheme === 'dark') {
+              document.documentElement.classList.add('dark');
+          } else {
+              document.documentElement.classList.remove('dark');
+          }
+      })();
+  </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CV Analyzer - AI-Career Guidance</title>
@@ -124,39 +134,40 @@
         opacity: 0;
       }
 
-      #checkboxInput:active + .toggleSwitch {
-        transform: scale(0.94);
-      }
-      .icons svg {
-        fill: currentColor !important;
-      }
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+
+@media (max-width: 639px) {
+  .logout-container {
+    min-width: fit-content;
+  }
+}
+
     </style>
   </head>
-  <body class="bg-slate-100 text-slate-800 dark:text-white min-h-screen pb-12">
+  <body class="bg-slate-100 text-slate-800 dark:text-white min-h-screen ">
     <nav
       class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
     >
       <a
         href="/CareerPro"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        class="flex items-center gap-2 sm:gap-3 w-auto text-xl sm:text-2xl font-semibold cursor-pointer"
         onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
         <img
           src="/assets/imgs/Logo.png"
           alt="CareerGuidance Logo"
-          class="h-12 w-auto object-contain"
+          class="h-10 sm:h-12 w-auto object-contain"
         />
-        <span class="font-lexend font-simibold not-italic"
-          >AI-Career Guidance</span
-        >
+        <span class="nav-title font-lexend font-semibold not-italic hidden sm:block dark:text-white">
+          AI-Career Guidance
+        </span>
       </a>
       <div class="flex items-center gap-3">
-        <div class="flex items-center gap-3 w-auto flex justify-end min-w-0">
-          <div
-            id="auth-buttons-container"
-            class="flex justify-end items-center gap-3"
-          ></div>
-        </div>
         <input id="checkboxInput" type="checkbox" />
         <label class="toggleSwitch" for="checkboxInput">
           <div class="icons icons--moon">
@@ -175,7 +186,7 @@
               ></path>
             </svg>
           </div>
-
+        
           <div class="icons icons--sun">
             <svg
               class="sun"
@@ -191,24 +202,27 @@
             </svg>
           </div>
         </label>
+        <div class="w-auto flex justify-end min-w-0">
+          <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+          </div>
+          </div>
+      </div>
       </div>
     </nav>
-
-    <!-- 🚨 التعديل هنا: استخدام justify-between لترتيب العناصر -->
+<main class="w-full px-6 sm:px-6 lg:px-10 py-6 min-h-screen">
     <div
-      class="w-full px-4 md:w-5/6 lg:w-3/4 mx-auto mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6"
+  class="w-full max-w-7xl mx-auto flex pb-4flex flex-col sm:flex-row sm:items-center gap-4 mb-8 px-2 sm:px-0"
+>
+  <a
+    id="backBtn"
+    href="/CareerPro"
+    class="flex w-fit items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors mt-2 ml-4 mb-2 group"
     >
-      <div class="flex items-center gap-4">
-        <a
-          id="backBtn"
-          href="/CareerPro"
-          class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0"
-        >
-          <i
-            class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-          ></i>
-          <span class="text-sm font-medium">Back</span>
-        </a>
+    <i
+      class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
+    ></i>
+    <span class="text-sm font-medium">Back</span>
+  </a>
 
         <div>
           <h1
@@ -222,15 +236,14 @@
             Personalized job recommendations powered by your CV
           </p>
         </div>
-      </div>
-
-      <button
+        <button
         id="btn-refresh-matches"
-        class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white text-sm font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+        class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white text-sm font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed sm:ml-auto"
       >
         <i class="fa-solid fa-rotate-right" id="refresh-icon"></i>
         <span>Find New Jobs</span>
       </button>
+      </div>
     </div>
 
     <div
@@ -301,10 +314,10 @@
       </a>
     </div>
 
-    <div
-      id="matched-jobs-container"
-      class="hidden w-full max-w-4xl mx-auto flex flex-col gap-6 pb-12"
-    ></div>
+<div
+  id="matched-jobs-container"
+  class="hidden w-full max-w-5xl mx-auto flex flex-col gap-6 pb-12"
+></div>
 
     <div
       id="applyModal"
@@ -428,7 +441,7 @@
         </form>
       </div>
     </div>
-
+  </main>
     <script type="module" src="/src/js/utils/authGuard.js"></script>
     <script
       type="module"

@@ -361,153 +361,209 @@ window.handleSaveJob = async function (jobId, btnElement) {
     });
   }
 };
-
 // ==========================================
 // 💼 7. Global Actions (Apply Form Logic)
 // ==========================================
 window.applyForJobCheck = function (jobId) {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    const isDarkMode = document.documentElement.classList.contains('dark');
+  
+    Swal.fire({
+      icon: 'info',
+      title: 'Login Required',
+      text: 'You need to login to apply for jobs.',
+      showCancelButton: true,
+      background: isDarkMode ? '#1e1b4b' : '#ffffff',
+      color: isDarkMode ? '#f8fafc' : '#1e293b',
+      confirmButtonColor: '#3b82f6',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Login Now',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) window.location.href = '/login';
+    });
+    return;
+  }
+
   const modal = document.getElementById('applyModal');
   if (modal) {
     modal.classList.remove('hidden');
-    setTimeout(() => {
-      modal.classList.remove('opacity-0');
-      modal.querySelector('div').classList.remove('scale-95');
-    }, 10);
     modal.dataset.jobId = jobId;
 
+    // Pre-fill Name/Email from local storage
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (document.getElementById('applyName'))
-      document.getElementById('applyName').value =
-        `${user.firstName || ''} ${user.lastName || ''}`.trim();
-    if (document.getElementById('applyEmail'))
-      document.getElementById('applyEmail').value = user.email || '';
+    const nameInput = document.getElementById('applyName');
+    const emailInput = document.getElementById('applyEmail');
+
+    if (nameInput && user.firstName)
+      nameInput.value = `${user.firstName} ${user.lastName || ''}`.trim();
+    if (emailInput && user.email) emailInput.value = user.email;
   }
 };
-
 window.closeApplyModal = function () {
   const modal = document.getElementById('applyModal');
-  if (modal) {
-    modal.classList.add('opacity-0');
-    modal.querySelector('div')?.classList.add('scale-95');
-    setTimeout(() => modal.classList.add('hidden'), 300);
-  }
+  if (modal) modal.classList.add('hidden');
 
+  // بنحاول نلاقي الفورم ونعمله reset لو اتقفل من بره
   const form = document.getElementById('applyForm');
   if (form) form.reset();
-
-  // إعادة مربع الـ CV لحالته الأصلية
-  const fileText = document.getElementById('cvFileText');
-  if (fileText) {
-    fileText.textContent = 'Drag and drop your CV here or click to browse';
-    fileText.classList.remove(
-      'text-blue-600',
-      'dark:text-blue-400',
-      'font-bold'
-    );
-    fileText.classList.add('text-slate-600', 'dark:text-slate-500');
-  }
 };
 
+// ============================================================
+// 4. Init Modal Events (The Core Logic)
+// ============================================================
 function initModalEvents() {
   const modal = document.getElementById('applyModal');
+  const closeBtn = document.getElementById('btnCloseModal');
+
+  // ملاحظة: مش هنعرف cancelBtn هنا عشان هيتمسح مع الـ cloning
+
   let form = document.getElementById('applyForm');
 
-  // إغلاق المودال عند الضغط في أي مكان فارغ بالخارج
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) window.closeApplyModal();
+  // --- دالة الإغلاق الموحدة ---
+  const close = () => {
+    if (modal) modal.classList.add('hidden');
+    if (form) form.reset();
+
+    // 🔥 إعادة تعيين نص الملف (عشان يرجع "SVG, PNG..." لما نقفل)
+    const fileInput = document.getElementById('applyCv');
+    if (fileInput) {
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
+      if (fileNameDisplay) {
+        // رجعيه للنص الأصلي اللي عندك في الـ HTML
+        fileNameDisplay.textContent = 'SVG, PNG, JPG or GIF (MAX. 800x400px)';
+        fileNameDisplay.classList.remove('black', 'font-bold');
+      }
+    }
+  };
+
+  // ربط زر الإغلاق (X)
+  if (closeBtn) closeBtn.onclick = close;
+
+  // إغلاق عند الضغط خارج المودال
+  window.onclick = (e) => {
+    if (e.target === modal) close();
+  };
+
+  // 🔥 (إضافة) إغلاق عند الضغط على Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      close();
+    }
   });
 
   if (form) {
-    // استنساخ الفورم لتنظيف أي Events قديمة
+    // 1. نسخ الفورم واستبداله (عشان نحل مشكلة الـ Double Submission)
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
-    form = newForm;
+    form = newForm; // تحديث المتغير ليشير للفورم الجديد
 
-    const cancelBtn = form.querySelector('#btnCancelModal');
-    if (cancelBtn) {
-      cancelBtn.type = 'button';
-      cancelBtn.onclick = window.closeApplyModal;
+    // ✅✅✅ (تصحيح هام) زر Cancel ✅✅✅
+    // لازم نجيبه من "newForm" بعد النسخ، ونربطه بدالة القفل تاني
+    const newCancelBtn =
+      newForm.querySelector('#btnCancelModal') ||
+      document.getElementById('btnCancelModal');
+    if (newCancelBtn) {
+      newCancelBtn.onclick = close;
+      newCancelBtn.type = 'button'; // أمان عشان ميعملش submit
     }
 
-    // 🚨 تفعيل وظيفة تغيير النص عند اختيار CV
-    const fileInput = form.querySelector('#applyCv');
-    const fileText = form.querySelector('#cvFileText');
+    // 🔥 (إضافة) كود إظهار اسم الملف المختار
+    const fileInput = document.getElementById('applyCv');
+    if (fileInput) {
+      const dropZone = fileInput.closest('.group');
+      const fileNameDisplay = dropZone?.querySelector('p.text-slate-600');
 
-    if (fileInput && fileText) {
       fileInput.addEventListener('change', function () {
-        if (this.files && this.files[0]) {
-          // في حالة اختيار ملف، يتغير النص للون الأزرق و يظهر اسم الملف
-          fileText.textContent = `Selected: ${this.files[0].name}`;
-          fileText.classList.remove('text-slate-600', 'dark:text-slate-500');
-          fileText.classList.add(
-            'text-blue-600',
-            'dark:text-blue-400',
-            'font-bold'
-          );
-        } else {
-          // في حالة الإلغاء، يعود للون الرمادي
-          fileText.textContent =
-            'Drag and drop your CV here or click to browse';
-          fileText.classList.remove(
-            'text-blue-600',
-            'dark:text-blue-400',
-            'font-bold'
-          );
-          fileText.classList.add('text-slate-600', 'dark:text-slate-500');
+        if (this.files && this.files[0] && fileNameDisplay) {
+          fileNameDisplay.textContent = `Selected: ${this.files[0].name}`;
+          fileNameDisplay.classList.add('black', 'font-bold');
         }
       });
     }
 
-    // منطق الإرسال (Submit)
+    // 2. منطق الإرسال (Submit)
+    const submitBtn = form.querySelector('button[type="submit"]');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       e.stopPropagation();
 
       const jobId = modal.dataset.jobId;
-      const cvFile = form.querySelector('#applyCv').files[0];
 
-      if (!cvFile) {
-        swalDarkConfig({
+      // جلب العناصر (نتأكد إننا بنجيبهم من الـ DOM الحالي)
+      const currentFileInput = document.getElementById('applyCv');
+      const nameInput = document.getElementById('applyName');
+      const emailInput = document.getElementById('applyEmail');
+      const phoneInput = document.getElementById('applyPhone');
+      const coverInput = document.getElementById('applyCover');
+
+      if (!currentFileInput.files || currentFileInput.files.length === 0) {
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        Swal.fire({
           title: 'Warning',
           text: 'Please upload your CV.',
           icon: 'warning',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
         });
         return;
       }
 
       const applyData = {
-        fullName: form.querySelector('#applyName').value,
-        email: form.querySelector('#applyEmail').value,
-        phone: form.querySelector('#applyPhone').value,
-        coverLetter: form.querySelector('#applyCover').value,
-        cvFile: cvFile,
+        fullName: nameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        cvFile: currentFileInput.files[0],
+        coverLetter: coverInput.value,
       };
 
-      const submitBtn = form.querySelector('button[type="submit"]');
       try {
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.innerHTML =
             '<i class="fas fa-spinner fa-spin"></i> Sending...';
         }
+
         await jobService.applyForJob(jobId, applyData);
-        swalDarkConfig({
+
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        Swal.fire({
           icon: 'success',
           title: 'Success!',
           text: 'Application submitted successfully.',
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#3b82f6',
           timer: 2000,
           showConfirmButton: false,
         });
-        window.closeApplyModal();
+
+        close();
       } catch (error) {
-        let errorMsg =
-          error.response?.status === 409
-            ? 'You have already applied for this job.'
-            : error.response?.data?.message || 'Failed to submit application.';
-        swalDarkConfig({
+        console.error('Apply Error Details:', error);
+        let errorMsg = 'Failed to submit application.';
+
+        if (error.response && error.response.status === 409) {
+          errorMsg = 'You have already applied for this job.';
+        } else if (error.response?.data?.message) {
+          errorMsg = error.response.data.message;
+        }
+
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        Swal.fire({
           icon: 'error',
           title: 'Application Failed',
           text: errorMsg,
+          background: isDarkMode ? '#1e1b4b' : '#ffffff',
+          color: isDarkMode ? '#f8fafc' : '#1e293b',
+          confirmButtonColor: '#ef4444',
         });
       } finally {
         if (submitBtn) {
@@ -521,10 +577,53 @@ function initModalEvents() {
 
 function initAuthButtons() {
   const authContainer = document.getElementById('auth-buttons-container');
+  if (!authContainer) return;
   const user = JSON.parse(localStorage.getItem('user'));
-  if (user && authContainer) {
+  const token = localStorage.getItem('token');
+  authContainer.className = 'flex items-center gap-3 justify-end';
+  
+  if (token && user) {
+    let navLinkHtml = '';
+
+    if (user.accountType === 'company') {
+      authService.logout();
+    } else {
+      navLinkHtml = `
+          <a id="profileBtn" href="/profile" class="text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-2 transition duration-300 whitespace-nowrap">
+            <i class="fas fa-user-circle text-3xl"></i>
+            <span class="hidden md:inline">Profile</span>
+          </a>`;
+    }
+
+    // 💡 تم تبديل الترتيب هنا: الـ Logout أولاً ثم الـ Profile
     authContainer.innerHTML = `
-      <a href="/profile" class="text-base font-medium text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-slate-200 transition duration-300 flex items-center gap-2"><i class="fas fa-user-circle text-xl"></i> Profile</a>
-    `;
+    <div class="flex items-center">
+        <button 
+          id="btnLogout"
+          class="group flex items-center justify-start mr-4 w-8 h-8 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg md:hover:w-32 md:hover:rounded-3xl active:translate-x-1 active:translate-y-1"
+        >
+          <div class="flex items-center justify-center w-full transition-all duration-300 md:group-hover:justify-start md:group-hover:px-3">
+            <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+              <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+            </svg>
+          </div>
+          <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 md:group-hover:translate-x-0 md:group-hover:opacity-100">
+            Logout
+          </div>
+        </button>
+    </div>
+    
+    ${navLinkHtml}
+`;
+
+    document.getElementById('btnLogout').addEventListener('click', () => {
+      authService.logout();
+    });
+  } else {
+    // للزائر
+    authContainer.innerHTML = `
+            <a href="/login" class="text-sm font-medium text-slate-600 hover:text-blue-600">Login</a>
+            <a href="/signup?mode=signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition shadow-md shadow-blue-500/30">Sign Up</a>
+        `;
   }
 }

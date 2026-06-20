@@ -17,27 +17,67 @@
       }
 
       // --- 2. إجبار استكمال البيانات ---
-      const currentStep = parseInt(user.registrationStep) || 1;
-      if (currentStep < 4) {
-        let targetPage = '';
-        if (user.accountType === 'job_seeker' || user.role === 'job_seeker') {
-          targetPage = `/SeekerStep${currentStep}`;
-        } else if (user.accountType === 'company' || user.role === 'company') {
-          targetPage = `/CompanyStep${currentStep}`;
-        }
+// --- 2. إجبار استكمال البيانات مع السماح بالرجوع للخطوات السابقة ---
+const currentStep = parseInt(user.registrationStep) || 1;
 
-        if (
-          targetPage &&
-          currentPath !== targetPage &&
-          !currentPath.includes(targetPage) &&
-          currentPath !== '/login' &&
-          currentPath !== '/signup'
-        ) {
-          document.documentElement.style.display = 'none';
-          window.location.replace(targetPage);
-          return;
-        }
-      }
+if (currentStep < 4) {
+  const isSeeker =
+    user.accountType === 'job_seeker' || user.role === 'job_seeker';
+
+  const isCompany =
+    user.accountType === 'company' || user.role === 'company';
+
+  // لو المستخدم في صفحات الـ Seeker
+  if (isSeeker && currentPath.includes('SeekerStep')) {
+    const pageStep = parseInt(
+      currentPath.match(/SeekerStep(\d+)/)?.[1]
+    );
+
+    // امنعي فقط الذهاب لخطوة أكبر من المسموح
+    if (pageStep > currentStep) {
+      document.documentElement.style.display = 'none';
+      window.location.replace(`/SeekerStep${currentStep}`);
+      return;
+    }
+  }
+
+  // لو المستخدم في صفحات الـ Company
+  if (isCompany && currentPath.includes('CompanyStep')) {
+    const pageStep = parseInt(
+      currentPath.match(/CompanyStep(\d+)/)?.[1]
+    );
+
+    // امنعي فقط الذهاب لخطوة أكبر من المسموح
+    if (pageStep > currentStep) {
+      document.documentElement.style.display = 'none';
+      window.location.replace(`/CompanyStep${currentStep}`);
+      return;
+    }
+  }
+
+  // لو حاول يروح أي صفحة خارج خطوات التسجيل قبل ما يخلصها
+  const allowedRoutes = [
+    '/login',
+    '/signup',
+    '/SeekerStep1',
+    '/SeekerStep2',
+    '/SeekerStep3',
+    '/CompanyStep1',
+    '/CompanyStep2',
+    '/CompanyStep3',
+  ];
+
+  if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
+    document.documentElement.style.display = 'none';
+
+    const targetPage = isSeeker
+      ? `/SeekerStep${currentStep}`
+      : `/CompanyStep${currentStep}`;
+
+    window.location.replace(targetPage);
+    return;
+  }
+}
       // --- 3. منع الدخول لصفحات الدخول والتسجيل ---
       else if (currentPath === '/login' || currentPath === '/signup') {
         document.documentElement.style.display = 'none';

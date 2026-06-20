@@ -48,7 +48,40 @@ function swalDarkConfig(options) {
 // SECTION A: JOB SEEKER LOGIC
 // ============================================================
 
-function initSeekerStep1() {
+async function initSeekerStep1() {
+  let savedCountry = '';
+  let savedCity = '';
+
+  try {
+    const response = await seekerService.getMe();
+
+    const personal = response.data.personal;
+
+    document.getElementById('phoneNumber').value =
+      personal.phoneNumber || '';
+
+    document.getElementById('birthDate').value =
+      personal.birthDate?.split('T')[0] || '';
+
+    document.getElementById('gender').value =
+      personal.gender || '';
+
+    document.getElementById('experienceLevel').value =
+      personal.experienceLevel || '';
+
+    document.getElementById('yearsOfExperience').value =
+      personal.yearsOfExperience || '';
+
+    document.getElementById('industry').value =
+      personal.industry || '';
+
+      savedCountry = personal.country || '';
+      savedCity = personal.city || '';
+
+  } catch (err) {
+    console.error('GETME ERROR:', err);
+  }
+
   const form = document.getElementById('step1Form');
 
   // Country/City Logic
@@ -170,6 +203,17 @@ function initSeekerStep1() {
         citySelect.appendChild(option);
       });
     });
+    if (savedCountry) {
+      countrySelect.value = savedCountry;
+    
+      countrySelect.dispatchEvent(new Event('change'));
+    
+      if (savedCity) {
+        citySelect.value = savedCity;
+        console.log(savedCity);
+        console.log(citySelect.value);
+      }
+    }
   }
 
   if (form) {
@@ -210,8 +254,33 @@ function initSeekerStep1() {
   }
 }
 
-function initSeekerStep2() {
+async function initSeekerStep2() {
+  try {
+    const response = await seekerService.getMe();
+
+    const education = response.data.education;
+
+    document.getElementById('degree').value =
+  education.degree || '';
+
+document.getElementById('university').value =
+  education.university || '';
+
+document.getElementById('graduationYear').value =
+  education.graduationYear || '';
+
+document.getElementById('jobType').value =
+  education.jobType || '';
+
+document.getElementById('workplaceSetting').value =
+  education.workplaceSetting || '';
+
+  } catch (err) {
+    console.error('GETME ERROR:', err);
+  }
+
   const form = document.getElementById('step2Form');
+
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -248,7 +317,7 @@ function initSeekerStep2() {
       }
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
-      window.location.href = 'SeekerStep1';
+      window.location.href = '/SeekerStep1';
     });
   }
 }
@@ -307,7 +376,7 @@ function initSeekerStep3() {
       }
     });
     document.getElementById('backBtn')?.addEventListener('click', () => {
-      window.location.href = 'SeekerStep2';
+      window.location.href = '/SeekerStep2';
     });
   }
 }
@@ -316,7 +385,37 @@ function initSeekerStep3() {
 // SECTION B: COMPANY LOGIC
 // ============================================================
 
-function initCompanyStep1() {
+async function initCompanyStep1() {
+  try {
+    const response = await companyService.getProfile();
+
+    const companyInfo = response.data.companyInfo;
+
+    document.getElementById('location').value =
+      companyInfo.location || '';
+
+    document.getElementById('industry').value =
+      companyInfo.industry || '';
+
+    document.getElementById('foundedYear').value =
+      companyInfo.foundedYear || '';
+
+    document.getElementById('numberOfEmployees').value =
+      companyInfo.companySize || '';
+
+    document.getElementById('phone').value =
+      companyInfo.phone || '';
+
+    document.getElementById('website').value =
+      companyInfo.website || '';
+
+    document.getElementById('companyDescription').value =
+      companyInfo.companyDescription || '';
+
+  } catch (err) {
+    console.error(err);
+  }
+
   const form = document.getElementById('companyStep1Form');
 
   if (form) {
@@ -357,12 +456,40 @@ function initCompanyStep1() {
   }
 }
 
-function initCompanyStep2() {
-  const form = document.getElementById('companyStep2Form');
-
+async function initCompanyStep2() {
   // Tags Management Logic
   const technologies = [];
   const benefits = [];
+  try {
+    const response = await companyService.getProfile();
+  
+    const companyDetails = response.data.companyDetails;
+  
+    document.getElementById('linkedin').value =
+      companyDetails.socialMedia?.linkedin || '';
+  
+    document.getElementById('twitter').value =
+      companyDetails.socialMedia?.twitter || '';
+  
+    document.getElementById('facebook').value =
+      companyDetails.socialMedia?.facebook || '';
+  
+    document.getElementById('instagram').value =
+      companyDetails.socialMedia?.instagram || '';
+  
+    if (companyDetails.technologies) {
+      technologies.push(...companyDetails.technologies);
+    }
+  
+    if (companyDetails.benefits) {
+      benefits.push(...companyDetails.benefits);
+    }
+  
+  } catch (err) {
+    console.error(err);
+  }
+  const form = document.getElementById('companyStep2Form');
+
 
   setupTagsInput(
     'techInput',
@@ -508,6 +635,7 @@ function setupTagsInput(
       }
     }
   });
+  renderTags();
 }
 
 function initCompanyStep3() {

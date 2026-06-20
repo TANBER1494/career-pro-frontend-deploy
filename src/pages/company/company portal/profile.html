@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          if (savedTheme === 'dark') {
+              document.documentElement.classList.add('dark');
+          } else {
+              document.documentElement.classList.remove('dark');
+          }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Company Profile - Company Portal</title>
@@ -229,128 +239,134 @@
 .icons svg {
   fill: currentColor !important;
 }
-
+@media (max-width: 767px) {
+  .nav-container, .magic-menu, #btnLogout {
+    display: none !important;
+  }
+}
     </style>
   </head>
   <body class=" text-gray-800 ">
-    <nav
-    class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-center justify-between shadow-sm mb-8"
-    >
-    <a
-        href="/Company_dashboard"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
-        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-      >
-        <img
-          src="../../../../assets/imgs/Logo.png"
-          alt="CareerGuidance Logo"
-          class="h-12 w-auto object-contain"
-        />
-        <span class="font-lexend font-simibold not-italic dark:text-slate-100">
-          Company Portal
-        </span>
-      </a>
-
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-center justify-between shadow-sm mb-8">
+      
+      <div class="flex items-center gap-3">
+        <button class="block md:hidden text-black dark:text-white focus:outline-none">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+    
+        <a href="/Company_dashboard" class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer">
+          <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-10 md:h-12 w-auto object-contain">
+          <span class="hidden md:block font-lexend font-semibold not-italic dark:text-white">Company Portal</span>
+        </a>
+      </div>
+    
       <div class="hidden md:flex flex-1 nav-container">
-        <div
-        class="bg-gray-50 dark:bg-black/30 px-6 py-2 rounded-full border border-gray-200 dark:border-slate-800 shadow-inner"
-        >
-        <ul class="magic-menu">
-          <li class="menu-item" data-url="/Company_dashboard" style="--i: #5eb6fd;--j:#0576d3">
+        <div class="bg-gray-50 dark:bg-black/30 px-6 py-2 rounded-full border border-gray-200 dark:border-slate-800 shadow-inner">
+          <ul class="magic-menu">
+            <li class="menu-item " data-url="/Company_dashboard" style="--i: #5eb6fd; --j: #0576d3">
               <span class="icon"><ion-icon name="easel-outline"></ion-icon></span>
-              <span class="title">dashboard</span>
-          </li>
-      
-          <li class="menu-item active" data-url="/Company_profile" style="--i: #67e3ff;--j:#69a8b8">
+              <span class="title dark:text-slate-200">dashboard</span>
+            </li>
+            <li class="menu-item active" data-url="/Company_profile" style="--i: #67e3ff; --j: #69a8b8">
               <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-              <span class="title">profile</span>
-          </li>
-      
-          <li class="menu-item" data-url="/Company_jobs" style="--i: #8f68d6;--j:#4e3085">
+              <span class="title dark:text-slate-200">profile</span>
+            </li>
+            <li class="menu-item" data-url="/Company_jobs" style="--i: #8f68d6; --j: #4e3085">
               <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
-              <span class="title">Jobs</span>
-          </li>
-      
-          <li class="menu-item" data-url="/applications" style="--i: #72f3f3;--j:#29a8a8">
+              <span class="title dark:text-slate-200">Jobs</span>
+            </li>
+            <li class="menu-item" data-url="/applications" style="--i: #72f3f3; --j: #29a8a8">
               <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
-              <span class="title">Applications</span>
-          </li>
-      
-          <li class="menu-item" data-url="/verification" style="--i: #2cc034;--j:#17741b">
+              <span class="title dark:text-slate-200">Applications</span>
+            </li>
+            <li class="menu-item" data-url="/verification" style="--i: #2cc034; --j: #17741b">
               <span class="icon"><ion-icon name="shield-outline"></ion-icon></span>
-              <span class="title">Verification</span>
-          </li>
-      </ul>
+              <span class="title dark:text-slate-200">Verification</span>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="min-w-[150px] flex justify-end">
-        <button 
-        id="btnLogout"
-  class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
->
-  <div
-    class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
-  >
-    <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-      <path
-        d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-      ></path>
-    </svg>
-  </div>
-  <div
-    class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-  >
-    Logout
-  </div>
-</button>
-
+    
+      <div class="flex items-center gap-3 max-sm:ml-auto">
+        
+        <div class="hidden md:flex min-w-[150px] justify-end">
+          <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1">
+            <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
+              <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+                <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+              </svg>
+            </div>
+            <div class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">Logout</div>
+          </button>
+        </div>
+    
+        <input id="checkboxInput" type="checkbox" />
+        <label class="toggleSwitch" for="checkboxInput">
+          <div class="icons icons--moon">
+            <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+              <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="icons icons--sun">
+            <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+              <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"></path>
+            </svg>
+          </div>
+        </label>
+    
       </div>
-      <input id="checkboxInput" type="checkbox" />
-      <label class="toggleSwitch" for="checkboxInput">
-        <div class="icons icons--moon">
-          <svg
-            class="moon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            width="32"
-            height="32"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </div>
-      
-        <div class="icons icons--sun">
-          <svg
-            class="sun"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            width="32"
-            height="32"
-          >
-            <path
-              d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
-            ></path>
-          </svg>
-        </div>
-      </label>
     </nav>
-    <!-- <i class="fas fa-building"></i> <span>Company Portal</span> -->
+    <div id="mobileSidebar" class="fixed inset-0 z-[60] transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+      <div id="closeSidebarOverlay" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      
+      <div class="relative w-64 h-full bg-white dark:bg-indigo-950 shadow-2xl p-6">
+        <div class="flex justify-between items-center mb-8">
+          <span class="text-xl font-bold text-gray-800 dark:text-gray-300">Menu</span>
+          <button id="closeSidebar" class="text-gray-500 hover:text-red-500">
+            <ion-icon name="close-outline" class="text-3xl"></ion-icon>
+          </button>
+        </div>
+    
+        <ul class="space-y-4">
+          <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/Company_dashboard">
+            <ion-icon name="easel-outline" class="text-2xl text-blue-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Dashboard</span>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/Company_profile">
+            <ion-icon name="person-outline" class="text-2xl text-cyan-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Profile</span>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/Company_jobs">
+            <ion-icon name="briefcase-outline" class="text-2xl text-purple-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Jobs</span>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/applications">
+            <ion-icon name="grid-outline" class="text-2xl text-teal-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Applications</span>
+          </li>
+          <li class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer" data-url="/verification">
+            <ion-icon name="shield-outline" class="text-2xl text-green-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Verification</span>
+          </li>
+          <li id="BLogout" class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer">
+            <ion-icon name="exit-outline" class="text-2xl text-red-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Logout</span>
+          </li>
+        </ul>
+      </div>
+    </div>
     <main class="w-full mx-auto p-6 space-y-6">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100">Company Profile</h1>
           <p class="text-gray-500 mt-1">
             Manage your company information and branding
           </p>
         </div>
-
-        <div id="viewActions">
+      
+        <div id="viewActions" class="w-fit">
           <button
             id="btnEditProfile"
             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center gap-2"
@@ -585,7 +601,7 @@
               Basic Information
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="col-span-2">
+              <div class="col-span-1 md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Company Name *</label
                 >
@@ -605,14 +621,14 @@
                   id="input-industry"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 >
-                  <option value="" disabled>Select industry</option>
-                  <option value="Software Development">Software Development</option>
-                  <option value="Web Development">Web Development</option>
-                  <option value="Mobile Development">Mobile Development</option>
-                  <option value="Data Science & Analytics">Data Science & Analytics</option>
-                  <option value="AI & Machine Learning">AI & Machine Learning</option>
-                  <option value="Cybersecurity">Cybersecurity</option>
-                  <option value="Cloud Computing">Cloud Computing</option>
+                  <option value="" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled>Select industry</option>
+                  <option value="Software Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Software Development</option>
+                  <option value="Web Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Web Development</option>
+                  <option value="Mobile Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Mobile Development</option>
+                  <option value="Data Science & Analytics" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Data Science & Analytics</option>
+                  <option value="AI & Machine Learning" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">AI & Machine Learning</option>
+                  <option value="Cybersecurity" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cybersecurity</option>
+                  <option value="Cloud Computing" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cloud Computing</option>
                 </select>
               </div>
 
@@ -624,12 +640,12 @@
                   id="input-numberOfEmployees"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 >
-                  <option value="1-10">1-10</option>
-                  <option value="11-50">11-50</option>
-                  <option value="51-200">51-200</option>
-                  <option value="201-500">201-500</option>
-                  <option value="501-1000">501-1000</option>
-                  <option value="1000+">1000+</option>
+                  <option value="1-10" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">1-10</option>
+                  <option value="11-50" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">11-50</option>
+                  <option value="51-200" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">51-200</option>
+                  <option value="201-500" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">201-500</option>
+                  <option value="501-1000" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">501-1000</option>
+                  <option value="1000+" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">1000+</option>
                 </select>
               </div>
 
@@ -649,10 +665,10 @@
                   >Location</label
                 >
                 <select id="input-location" required class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 text-sm">
-    <option value="" disabled selected>Select location</option>
-    <option value="Remote" class="font-bold text-blue-600">🌍 Remote / Anywhere</option>
+    <option value="" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled selected>Select location</option>
+    <option value="Remote" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" class="font-bold text-blue-600">🌍 Remote / Anywhere</option>
 
-    <optgroup label="Egypt">
+    <optgroup label="Egypt" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Cairo, Egypt">Cairo, Egypt</option>
         <option value="Giza, Egypt">Giza, Egypt</option>
         <option value="Alexandria, Egypt">Alexandria, Egypt</option>
@@ -665,7 +681,7 @@
         <option value="Tanta, Egypt">Tanta, Egypt</option>
     </optgroup>
 
-    <optgroup label="Saudi Arabia">
+    <optgroup label="Saudi Arabia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Riyadh, Saudi Arabia">Riyadh, Saudi Arabia</option>
         <option value="Jeddah, Saudi Arabia">Jeddah, Saudi Arabia</option>
         <option value="Mecca, Saudi Arabia">Mecca, Saudi Arabia</option>
@@ -677,7 +693,7 @@
         <option value="Hail, Saudi Arabia">Hail, Saudi Arabia</option>
     </optgroup>
 
-    <optgroup label="United Arab Emirates">
+    <optgroup label="United Arab Emirates" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Dubai, United Arab Emirates">Dubai, UAE</option>
         <option value="Abu Dhabi, United Arab Emirates">Abu Dhabi, UAE</option>
         <option value="Sharjah, United Arab Emirates">Sharjah, UAE</option>
@@ -687,7 +703,7 @@
         <option value="Umm Al Quwain, United Arab Emirates">Umm Al Quwain, UAE</option>
     </optgroup>
 
-    <optgroup label="Jordan">
+    <optgroup label="Jordan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Amman, Jordan">Amman, Jordan</option>
         <option value="Zarqa, Jordan">Zarqa, Jordan</option>
         <option value="Irbid, Jordan">Irbid, Jordan</option>
@@ -696,7 +712,7 @@
         <option value="Jerash, Jordan">Jerash, Jordan</option>
     </optgroup>
 
-    <optgroup label="Lebanon">
+    <optgroup label="Lebanon" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Beirut, Lebanon">Beirut, Lebanon</option>
         <option value="Tripoli, Lebanon">Tripoli, Lebanon</option>
         <option value="Sidon, Lebanon">Sidon, Lebanon</option>
@@ -705,7 +721,7 @@
         <option value="Zahle, Lebanon">Zahle, Lebanon</option>
     </optgroup>
 
-    <optgroup label="Iraq">
+    <optgroup label="Iraq" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Baghdad, Iraq">Baghdad, Iraq</option>
         <option value="Basra, Iraq">Basra, Iraq</option>
         <option value="Mosul, Iraq">Mosul, Iraq</option>
@@ -715,7 +731,7 @@
         <option value="Karbala, Iraq">Karbala, Iraq</option>
     </optgroup>
 
-    <optgroup label="Syria">
+    <optgroup label="Syria" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Damascus, Syria">Damascus, Syria</option>
         <option value="Aleppo, Syria">Aleppo, Syria</option>
         <option value="Homs, Syria">Homs, Syria</option>
@@ -724,7 +740,7 @@
         <option value="Tartus, Syria">Tartus, Syria</option>
     </optgroup>
 
-    <optgroup label="Kuwait">
+    <optgroup label="Kuwait" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Kuwait City, Kuwait">Kuwait City, Kuwait</option>
         <option value="Al Ahmadi, Kuwait">Al Ahmadi, Kuwait</option>
         <option value="Hawalli, Kuwait">Hawalli, Kuwait</option>
@@ -732,7 +748,7 @@
         <option value="Al Jahra, Kuwait">Al Jahra, Kuwait</option>
     </optgroup>
 
-    <optgroup label="Oman">
+    <optgroup label="Oman" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Muscat, Oman">Muscat, Oman</option>
         <option value="Salalah, Oman">Salalah, Oman</option>
         <option value="Sohar, Oman">Sohar, Oman</option>
@@ -741,7 +757,7 @@
         <option value="Buraimi, Oman">Buraimi, Oman</option>
     </optgroup>
 
-    <optgroup label="Qatar">
+    <optgroup label="Qatar" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Doha, Qatar">Doha, Qatar</option>
         <option value="Al Rayyan, Qatar">Al Rayyan, Qatar</option>
         <option value="Al Wakrah, Qatar">Al Wakrah, Qatar</option>
@@ -749,7 +765,7 @@
         <option value="Umm Salal, Qatar">Umm Salal, Qatar</option>
     </optgroup>
 
-    <optgroup label="Bahrain">
+    <optgroup label="Bahrain" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Manama, Bahrain">Manama, Bahrain</option>
         <option value="Riffa, Bahrain">Riffa, Bahrain</option>
         <option value="Muharraq, Bahrain">Muharraq, Bahrain</option>
@@ -757,7 +773,7 @@
         <option value="Isa Town, Bahrain">Isa Town, Bahrain</option>
     </optgroup>
 
-    <optgroup label="Yemen">
+    <optgroup label="Yemen" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Sana'a, Yemen">Sana'a, Yemen</option>
         <option value="Aden, Yemen">Aden, Yemen</option>
         <option value="Taiz, Yemen">Taiz, Yemen</option>
@@ -765,7 +781,7 @@
         <option value="Ibb, Yemen">Ibb, Yemen</option>
     </optgroup>
 
-    <optgroup label="Palestine">
+    <optgroup label="Palestine" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Jerusalem, Palestine">Jerusalem, Palestine</option>
         <option value="Gaza City, Palestine">Gaza City, Palestine</option>
         <option value="Ramallah, Palestine">Ramallah, Palestine</option>
@@ -776,7 +792,7 @@
         <option value="Jericho, Palestine">Jericho, Palestine</option>
     </optgroup>
 
-    <optgroup label="Libya">
+    <optgroup label="Libya" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Tripoli, Libya">Tripoli, Libya</option>
         <option value="Benghazi, Libya">Benghazi, Libya</option>
         <option value="Misrata, Libya">Misrata, Libya</option>
@@ -784,7 +800,7 @@
         <option value="Sebha, Libya">Sebha, Libya</option>
     </optgroup>
 
-    <optgroup label="Tunisia">
+    <optgroup label="Tunisia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Tunis, Tunisia">Tunis, Tunisia</option>
         <option value="Sfax, Tunisia">Sfax, Tunisia</option>
         <option value="Sousse, Tunisia">Sousse, Tunisia</option>
@@ -793,7 +809,7 @@
         <option value="Gabes, Tunisia">Gabes, Tunisia</option>
     </optgroup>
 
-    <optgroup label="Algeria">
+    <optgroup label="Algeria" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Algiers, Algeria">Algiers, Algeria</option>
         <option value="Oran, Algeria">Oran, Algeria</option>
         <option value="Constantine, Algeria">Constantine, Algeria</option>
@@ -802,7 +818,7 @@
         <option value="Batna, Algeria">Batna, Algeria</option>
     </optgroup>
 
-    <optgroup label="Morocco">
+    <optgroup label="Morocco" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Casablanca, Morocco">Casablanca, Morocco</option>
         <option value="Rabat, Morocco">Rabat, Morocco</option>
         <option value="Fes, Morocco">Fes, Morocco</option>
@@ -812,7 +828,7 @@
         <option value="Meknes, Morocco">Meknes, Morocco</option>
     </optgroup>
 
-    <optgroup label="Sudan">
+    <optgroup label="Sudan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Khartoum, Sudan">Khartoum, Sudan</option>
         <option value="Omdurman, Sudan">Omdurman, Sudan</option>
         <option value="Port Sudan, Sudan">Port Sudan, Sudan</option>
@@ -820,14 +836,14 @@
         <option value="Kassala, Sudan">Kassala, Sudan</option>
     </optgroup>
 
-    <optgroup label="Mauritania">
+    <optgroup label="Mauritania" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Nouakchott, Mauritania">Nouakchott, Mauritania</option>
         <option value="Nouadhibou, Mauritania">Nouadhibou, Mauritania</option>
         <option value="Kiffa, Mauritania">Kiffa, Mauritania</option>
         <option value="Rosso, Mauritania">Rosso, Mauritania</option>
     </optgroup>
 
-    <optgroup label="Somalia">
+    <optgroup label="Somalia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Mogadishu, Somalia">Mogadishu, Somalia</option>
         <option value="Hargeisa, Somalia">Hargeisa, Somalia</option>
         <option value="Bosaso, Somalia">Bosaso, Somalia</option>
@@ -835,13 +851,13 @@
         <option value="Berbera, Somalia">Berbera, Somalia</option>
     </optgroup>
 
-    <optgroup label="Djibouti">
+    <optgroup label="Djibouti" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Djibouti City, Djibouti">Djibouti City, Djibouti</option>
         <option value="Ali Sabieh, Djibouti">Ali Sabieh, Djibouti</option>
         <option value="Tadjoura, Djibouti">Tadjoura, Djibouti</option>
     </optgroup>
 
-    <optgroup label="Comoros">
+    <optgroup label="Comoros" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Moroni, Comoros">Moroni, Comoros</option>
         <option value="Mutsamudu, Comoros">Mutsamudu, Comoros</option>
         <option value="Fomboni, Comoros">Fomboni, Comoros</option>
@@ -872,7 +888,7 @@
                 />
               </div>
 
-              <div class="col-span-2">
+              <div class="col-span-1 md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Company Description</label
                 >

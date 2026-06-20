@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          if (savedTheme === 'dark') {
+              document.documentElement.classList.add('dark');
+          } else {
+              document.documentElement.classList.remove('dark');
+          }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile - AI-Career Guidance</title>
@@ -53,29 +63,74 @@
         background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
       }
       /* Magic Navigation Styles */
-      .nav-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin-right: 100px;
-      }
-      .dark .nav-container.active #bg {
-        display: block !important; /* تظهر فقط عند الضغط */
-        background: #221E4E !important;
-      }
+      @media (max-width: 1180px) {
+  /* 1. إظهار الخلفية فقط عندما تكون المنيو نشطة */
+  #bg {
+    display: none; /* تختفي في الموبايل بشكل افتراضي */
+  }
+
+  .nav-container.active #bg {
+    display: block !important; /* تظهر فقط عند الضغط */
+    background: white !important;
+    border-radius: 20px;
+    padding: 15px;
+  }
+  .dark .nav-container.active #bg {
+    display: block !important; /* تظهر فقط عند الضغط */
+    background: #221E4E !important;
+  }
+
+  /* 2. الحاوية الصغيرة المنسدلة */
+  .nav-container.active {
+    display: flex !important;
+    position: absolute;
+    top: 85px;
+    right: auto; /* تأكدي من تصحيح auti إلى auto أو تحديد جهة واحدة */
+    left: 5%;
+    width: auto;
+    min-width: 160px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: column; /* لضمان الترتيب الرأسي للحاوية */
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+
+  /* 3. إجبار المنيو على التدفق الرأسي */
+  .nav-container.active .magic-menu {
+    display: flex !important;
+    flex-direction: column !important; /* هذا هو السطر السحري */
+    gap: 20px !important;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  /* 4. ضبط شكل العناصر داخل القائمة الرأسية */
+  .magic-menu li {
+    width: 45px !important; 
+    height: 45px !important;
+    margin: 0 auto !important;
+  }
+
+  /* تمدد العنصر أفقياً عند اختياره داخل القائمة الرأسية */
+  .magic-menu li:hover,
+  .magic-menu li.active {
+    width: 130px !important; 
+  }
+}
       .magic-menu {
         display: flex;
         position: relative;
-        gap: 20px;
+        gap: 15px; /* قللنا المسافة بين الايقونات شوية */
         align-items: center;
         padding: 0 10px;
       }
       .magic-menu li {
         position: relative;
         list-style: none;
-        width: 50px;
-        height: 50px;
+        width: 42px; /* تصغير العرض (كان 50) */
+        height: 42px; /* تصغير الطول (كان 50) */
         background: white;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         border-radius: 60px;
@@ -87,10 +142,11 @@
       }
       .dark .magic-menu li {
         background: rgba(126, 126, 126, 0.37);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 15px rgba(2, 2, 2, 0.1);
       }
+      /* ... (before & after كما هما) ... */
       .magic-menu li::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
         border-radius: 60px;
@@ -99,7 +155,7 @@
         transition: 0.5s;
       }
       .magic-menu li::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 10px;
         width: 100%;
@@ -111,9 +167,11 @@
         z-index: -1;
         opacity: 0;
       }
+
+      /* Hover State */
       .magic-menu li:hover,
       .magic-menu li.active {
-        width: 140px;
+        width: 130px; /* تصغير عرض التمدد قليلاً */
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
       }
       .magic-menu li:hover::before,
@@ -124,15 +182,17 @@
       .magic-menu li.active::after {
         opacity: 0.5;
       }
+
       .magic-menu li ion-icon {
         color: #777;
-        font-size: 1.5em;
+        font-size: 1.3em; /* تصغير حجم الايقونة لتناسب الدائرة الجديدة */
         transition: 0.5s;
         transition-delay: 0.25s;
       }
       .dark .magic-menu li ion-icon {
         color: #ddd9d9;
       }
+      /* ... باقي الستايل كما هو ... */
       .magic-menu li:hover ion-icon,
       .magic-menu li.active ion-icon {
         transform: scale(0);
@@ -146,7 +206,7 @@
       .magic-menu li span.title {
         position: absolute;
         color: #fff;
-        font-size: 0.9em;
+        font-size: 0.85em; /* تصغير الخط قليلاً */
         font-weight: 600;
         letter-spacing: 0.05em;
         text-transform: uppercase;
@@ -159,7 +219,80 @@
         transform: scale(1);
         transition-delay: 0.25s;
       }
+      @media (min-width: 1181px) {
+        .magic-menu {
+          display: flex;
+          position: relative;
+          gap: 15px;
+          align-items: center;
+          padding: 0 10px;
+        }
+      }
 
+      @media (max-width: 1180px) {
+        .magic-menu {
+          display: none;
+        }
+        #bg{
+          display: none;
+        }
+      }
+      .toggle {
+  position: relative;
+  width: 35px; /* عرض الزر */
+  height: 24px; /* ارتفاع الزر ليتناسب مع المسافات بين الـ bars */
+  cursor: pointer;
+  display: block !important;
+}
+
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #030303 !important;
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(.5,-0.35,.35,1.5);
+}
+
+.dark .bar {
+  background: #d1d0d0 !important;
+}
+/* توزيع البراد بشكل متساوي */
+.bar--top { top: 0; }
+.bar--middle { top: 10px; }
+.bar--bottom { top: 20px; }
+
+/* الـ Animation عند الضغط */
+#checkbox:checked + .toggle .bar--top {
+  top: 10px;
+  transform: rotate(135deg);
+}
+#checkbox:checked + .toggle .bar--middle {
+  opacity: 0;
+}
+#checkbox:checked + .toggle .bar--bottom {
+  top: 10px;
+  transform: rotate(225deg);
+}
+
+/* From Uiverse.io by zenonaiden_3341 */ 
+.toggleSwitch {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  border-radius: 50%;
+  position: relative;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+  overflow: hidden;
+}
+
+#checkboxInput {
+  display: none;
+}
       /* Tabs Styles */
       .profile-tab-btn {
         position: relative;
@@ -187,9 +320,6 @@
       .profile-tab-btn.active::after {
         background: #3397E9;
       }
-      .typed-cursor {
-  color: #2563eb;
-}
 
 /* From Uiverse.io by zenonaiden_3341 */ 
 .toggleSwitch {
@@ -271,32 +401,100 @@
 .icons svg {
   fill: currentColor !important;
 }
+ /* ===== RESPONSIVE ONLY ===== */
 
+ /* #hamburger { display: none; }
+
+ .dark #hamburger span {
+  background-color: #e5e7eb;
+ }
+
+@media (max-width: 900px) {
+  .nav-container { display: none !important; }
+  #hamburger { display: flex !important; }
+}
+
+@media (max-width: 640px) {
+  #btnLogout { display: none !important; }
+  .logo-text { display: none !important; }
+}
+
+#mobileMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75%;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.767);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  z-index: 100;
+}
+.dark #mobileMenu {
+    background-color: rgba(0, 0, 0, 0.637); 
+    border-color: rgb(31, 41, 55);   
+    backdrop-filter: blur(12px);
+    }
+  
+#mobileMenu.open { display: block; }
+#mobileMenu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.363);
+  font-family: 'Poppins', sans-serif;
+  backdrop-filter: blur(12px);
+}
+.dark #mobileMenu a {
+  color: #ddd9d9;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+#mobileMenu a:last-child { border-bottom: none; color: #dc2626; } */
+@media (min-width: 640px) {
+  #btnLogout:hover {
+    width: 8rem; /* 128px = w-32 */
+    border-radius: 1.5rem;
+  }
+
+  #btnLogout:hover .logout-text {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 639px) {
+  .logout-container {
+    min-width: fit-content;
+  }
+}
     </style>
   </head>
   <body class="text-gray-800">
     <nav
-      class="sticky top-0 z-50 bg-white/40 dark:bg-black/20 border-gray-200 dark:border-gray-800 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-3/4 mx-auto rounded-full"
+      class="sticky top-0 z-50 bg-white/40 dark:bg-black/20 border-gray-200 dark:border-gray-800 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-[95%] md:w-3/4 mx-auto rounded-full"
     >
-      <a
-        href="/CareerPro"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black dark:text-white cursor-pointer"
-        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-      >
-        <img
-          src="../../../../assets/imgs/Logo.png"
-          alt="CareerGuidance Logo"
-          class="h-12 w-auto object-contain"
-        />
-        <span class="font-lexend font-simibold not-italic"
-          >AI-Career Guidance</span
-        >
-      </a>
-      <div class="hidden md:flex flex-1 nav-container">
-        <div
-          class=" px-6 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/30 shadow-inner"
-        >
-          <ul class="magic-menu">
+    <div class="hidden max-[1180px]:block menu-toggle"> 
+      <input type="checkbox" id="checkbox" class="hidden"> 
+      <label for="checkbox" class="toggle">
+        <div class="bar bar--top"></div>
+        <div class="bar bar--middle"></div>
+        <div class="bar bar--bottom"></div>
+      </label>
+    </div>
+    <a id="logoBtn" href="/Company_dashboard" class="flex items-center gap-3 w-auto text-2xl font-semibold text-black dark:text-white cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <img src="assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
+      <span class="hidden sm:inline font-lexend font-semibold not-italic">AI-Career Guidance</span>
+    </a>
+      <div class="hidden md:flex flex-1 justify-center items-center nav-container">
+    <div id="bg" class="w-fit px-6 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/30 shadow-inner">          <ul class="magic-menu">
             <li id="homeBtn" style="--i: #67e3ff; --j: #69a8b8">
               <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
@@ -316,64 +514,42 @@
           </ul>
         </div>
       </div>
-      <input id="checkboxInput" type="checkbox" />
+
+<div class="flex items-center gap-2 md:gap-4 max-sm:ml-auto">
+        
+  <input id="checkboxInput" type="checkbox" />
   <label class="toggleSwitch" for="checkboxInput">
     <div class="icons icons--moon">
-      <svg
-        class="moon"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        width="32"
-        height="32"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
-          clip-rule="evenodd"
-        ></path>
+      <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd"></path>
       </svg>
     </div>
-  
     <div class="icons icons--sun">
-      <svg
-        class="sun"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        width="32"
-        height="32"
-      >
-        <path
-          d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
-        ></path>
+      <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+        <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"></path>
       </svg>
     </div>
   </label>
-      <div class="min-w-[150px] flex justify-end">
-        <button
-          id="btnLogout"
-          class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg hover:w-32 hover:rounded-3xl active:translate-x-1 active:translate-y-1"
-        >
-          <div
-            class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
-          >
-            <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-              <path
-                d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-              ></path>
-            </svg>
-          </div>
-          <div
-            class="absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-          >
-            Logout
-          </div>
-        </button>
-      </div>
-    </nav>
 
-    <main class="container mx-auto px-4 w-3/4 pb-12">
+</div>
+
+<div class="logout-container min-w-[150px] flex justify-end">
+  <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg active:translate-x-1 active:translate-y-1">
+    <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
+      <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+      </svg>
+    </div>
+    <div class="logout-text absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500">
+      Logout
+    </div>
+  </button>
+</div>
+
+
+</nav>
+
+    <main class="container mx-auto px-4 w-full md:w-3/4 pb-12">
       <div
         id="loadingState"
         class="hidden flex flex-col items-center justify-center py-20"
@@ -386,7 +562,7 @@
         <div
           class="bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 p-8 mb-6 relative overflow-hidden"
         >
-          <div class="absolute top-0 right-0 p-6">
+          <div class="flex justify-end mb-4 md:absolute md:top-0 md:right-0 md:p-2">
             <button
               id="btnEditProfile"
               class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
@@ -463,23 +639,24 @@
           </div>
         </div>
 
+
         <div
-          class="flex border-b border-gray-200 dark:border-gray-700 mb-6 gap-8 px-2 overflow-x-auto"
+          class="flex border-b border-gray-200 dark:border-gray-700  md:gap-8 mb-6 gap-4 px-2 overflow-x-auto scrollbar-hide"
         >
           <button
-            class="profile-tab-btn active text-sm md:text-base whitespace-nowrap"
+            class="profile-tab-btn active text-sm md:text-base whitespace-nowrap flex-shrink-0"
             data-target="tab-info"
           >
             <i class="far fa-user mr-2"></i> Profile Info
           </button>
           <button
-            class="profile-tab-btn text-sm md:text-base whitespace-nowrap"
+            class="profile-tab-btn text-sm md:text-base whitespace-nowrap flex-shrink-0"
             data-target="tab-apps"
           >
             <i class="far fa-paper-plane mr-2"></i> My Applications
           </button>
           <button
-            class="profile-tab-btn text-sm md:text-base whitespace-nowrap"
+            class="profile-tab-btn text-sm md:text-base whitespace-nowrap flex-shrink-0"
             data-target="tab-saved"
           >
             <i class="far fa-bookmark mr-2"></i> Saved Jobs
@@ -696,7 +873,7 @@
           </div>
         </div>
       </div>
-
+    <!-- EDIT MODE -->
       <div id="editMode" class="hidden">
         <div
           class="bg-white dark:bg-black/30 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 w-3/4 mx-auto p-8"
@@ -755,9 +932,9 @@
                     id="input-gender"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Prefer not to say</option>
+                    <option value="male" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Male</option>
+                    <option value="female" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Female</option>
+                    <option value="other" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Prefer not to say</option>
                   </select>
                 </div>
                 <div class="md:col-span-2">
@@ -766,14 +943,14 @@
                   >
                   <select
                     id="input-location"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition "
                   >
-                    <option value="" disabled selected>Select location</option>
-                    <option value="Remote" class="font-bold text-blue-600">
+                    <option value=""  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled selected>Select location</option>
+                    <option value="Remote" class="font-bold bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       🌍 Remote / Anywhere
                     </option>
 
-                    <optgroup label="Egypt">
+                    <optgroup label="Egypt"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Cairo, Egypt">Cairo, Egypt</option>
                       <option value="Giza, Egypt">Giza, Egypt</option>
                       <option value="Alexandria, Egypt">
@@ -788,7 +965,7 @@
                       <option value="Tanta, Egypt">Tanta, Egypt</option>
                     </optgroup>
 
-                    <optgroup label="Saudi Arabia">
+                    <optgroup label="Saudi Arabia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Riyadh, Saudi Arabia">
                         Riyadh, Saudi Arabia
                       </option>
@@ -818,7 +995,7 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="United Arab Emirates">
+                    <optgroup label="United Arab Emirates"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Dubai, United Arab Emirates">
                         Dubai, UAE
                       </option>
@@ -842,7 +1019,7 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Jordan">
+                    <optgroup label="Jordan"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Amman, Jordan">Amman, Jordan</option>
                       <option value="Zarqa, Jordan">Zarqa, Jordan</option>
                       <option value="Irbid, Jordan">Irbid, Jordan</option>
@@ -851,7 +1028,7 @@
                       <option value="Jerash, Jordan">Jerash, Jordan</option>
                     </optgroup>
 
-                    <optgroup label="Lebanon">
+                    <optgroup label="Lebanon"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Beirut, Lebanon">Beirut, Lebanon</option>
                       <option value="Tripoli, Lebanon">Tripoli, Lebanon</option>
                       <option value="Sidon, Lebanon">Sidon, Lebanon</option>
@@ -860,7 +1037,7 @@
                       <option value="Zahle, Lebanon">Zahle, Lebanon</option>
                     </optgroup>
 
-                    <optgroup label="Iraq">
+                    <optgroup label="Iraq"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Baghdad, Iraq">Baghdad, Iraq</option>
                       <option value="Basra, Iraq">Basra, Iraq</option>
                       <option value="Mosul, Iraq">Mosul, Iraq</option>
@@ -870,7 +1047,7 @@
                       <option value="Karbala, Iraq">Karbala, Iraq</option>
                     </optgroup>
 
-                    <optgroup label="Syria">
+                    <optgroup label="Syria"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Damascus, Syria">Damascus, Syria</option>
                       <option value="Aleppo, Syria">Aleppo, Syria</option>
                       <option value="Homs, Syria">Homs, Syria</option>
@@ -879,7 +1056,7 @@
                       <option value="Tartus, Syria">Tartus, Syria</option>
                     </optgroup>
 
-                    <optgroup label="Kuwait">
+                    <optgroup label="Kuwait"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Kuwait City, Kuwait">
                         Kuwait City, Kuwait
                       </option>
@@ -893,7 +1070,7 @@
                       <option value="Al Jahra, Kuwait">Al Jahra, Kuwait</option>
                     </optgroup>
 
-                    <optgroup label="Oman">
+                    <optgroup label="Oman"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Muscat, Oman">Muscat, Oman</option>
                       <option value="Salalah, Oman">Salalah, Oman</option>
                       <option value="Sohar, Oman">Sohar, Oman</option>
@@ -902,7 +1079,7 @@
                       <option value="Buraimi, Oman">Buraimi, Oman</option>
                     </optgroup>
 
-                    <optgroup label="Qatar">
+                    <optgroup label="Qatar"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Doha, Qatar">Doha, Qatar</option>
                       <option value="Al Rayyan, Qatar">Al Rayyan, Qatar</option>
                       <option value="Al Wakrah, Qatar">Al Wakrah, Qatar</option>
@@ -910,7 +1087,7 @@
                       <option value="Umm Salal, Qatar">Umm Salal, Qatar</option>
                     </optgroup>
 
-                    <optgroup label="Bahrain">
+                    <optgroup label="Bahrain"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Manama, Bahrain">Manama, Bahrain</option>
                       <option value="Riffa, Bahrain">Riffa, Bahrain</option>
                       <option value="Muharraq, Bahrain">
@@ -924,7 +1101,7 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Yemen">
+                    <optgroup label="Yemen"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Sana'a, Yemen">Sana'a, Yemen</option>
                       <option value="Aden, Yemen">Aden, Yemen</option>
                       <option value="Taiz, Yemen">Taiz, Yemen</option>
@@ -934,7 +1111,7 @@
                       <option value="Ibb, Yemen">Ibb, Yemen</option>
                     </optgroup>
 
-                    <optgroup label="Palestine">
+                    <optgroup label="Palestine"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Jerusalem, Palestine">
                         Jerusalem, Palestine
                       </option>
@@ -959,7 +1136,7 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Libya">
+                    <optgroup label="Libya"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Tripoli, Libya">Tripoli, Libya</option>
                       <option value="Benghazi, Libya">Benghazi, Libya</option>
                       <option value="Misrata, Libya">Misrata, Libya</option>
@@ -967,7 +1144,7 @@
                       <option value="Sebha, Libya">Sebha, Libya</option>
                     </optgroup>
 
-                    <optgroup label="Tunisia">
+                    <optgroup label="Tunisia"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Tunis, Tunisia">Tunis, Tunisia</option>
                       <option value="Sfax, Tunisia">Sfax, Tunisia</option>
                       <option value="Sousse, Tunisia">Sousse, Tunisia</option>
@@ -978,7 +1155,7 @@
                       <option value="Gabes, Tunisia">Gabes, Tunisia</option>
                     </optgroup>
 
-                    <optgroup label="Algeria">
+                    <optgroup label="Algeria"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Algiers, Algeria">Algiers, Algeria</option>
                       <option value="Oran, Algeria">Oran, Algeria</option>
                       <option value="Constantine, Algeria">
@@ -989,7 +1166,7 @@
                       <option value="Batna, Algeria">Batna, Algeria</option>
                     </optgroup>
 
-                    <optgroup label="Morocco">
+                    <optgroup label="Morocco" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Casablanca, Morocco">
                         Casablanca, Morocco
                       </option>
@@ -1003,7 +1180,7 @@
                       <option value="Meknes, Morocco">Meknes, Morocco</option>
                     </optgroup>
 
-                    <optgroup label="Sudan">
+                    <optgroup label="Sudan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Khartoum, Sudan">Khartoum, Sudan</option>
                       <option value="Omdurman, Sudan">Omdurman, Sudan</option>
                       <option value="Port Sudan, Sudan">
@@ -1013,7 +1190,7 @@
                       <option value="Kassala, Sudan">Kassala, Sudan</option>
                     </optgroup>
 
-                    <optgroup label="Mauritania">
+                    <optgroup label="Mauritania" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Nouakchott, Mauritania">
                         Nouakchott, Mauritania
                       </option>
@@ -1028,7 +1205,7 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Somalia">
+                    <optgroup label="Somalia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Mogadishu, Somalia">
                         Mogadishu, Somalia
                       </option>
@@ -1040,7 +1217,7 @@
                       <option value="Berbera, Somalia">Berbera, Somalia</option>
                     </optgroup>
 
-                    <optgroup label="Djibouti">
+                    <optgroup label="Djibouti" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Djibouti City, Djibouti">
                         Djibouti City, Djibouti
                       </option>
@@ -1052,7 +1229,7 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Comoros">
+                    <optgroup label="Comoros" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       <option value="Moroni, Comoros">Moroni, Comoros</option>
                       <option value="Mutsamudu, Comoros">
                         Mutsamudu, Comoros
@@ -1078,10 +1255,10 @@
                     id="input-experienceLevel"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="Entry-level">Entry Level</option>
-                    <option value="Mid-Level">Mid-Level</option>
-                    <option value="Senior-level">Senior-level</option>
-                    <option value="Executive">Executive</option>
+                    <option value="Entry-level" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Entry Level</option>
+                    <option value="Mid-Level" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Mid-Level</option>
+                    <option value="Senior-level" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Senior-level</option>
+                    <option value="Executive" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Executive</option>
                   </select>
                 </div>
                 <div>
@@ -1099,24 +1276,24 @@
                   >
                   <select
                     id="input-industry"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition transition"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="" disabled>Select industry</option>
-                    <option value="Software Development">
+                    <option value="" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled>Select industry</option>
+                    <option value="Software Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       Software Development
                     </option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="Mobile Development">
+                    <option value="Web Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Web Development</option>
+                    <option value="Mobile Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       Mobile Development
                     </option>
-                    <option value="Data Science & Analytics">
+                    <option value="Data Science & Analytics" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       Data Science & Analytics
                     </option>
-                    <option value="AI & Machine Learning">
+                    <option value="AI & Machine Learning" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
                       AI & Machine Learning
                     </option>
-                    <option value="Cybersecurity">Cybersecurity</option>
-                    <option value="Cloud Computing">Cloud Computing</option>
+                    <option value="Cybersecurity" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cybersecurity</option>
+                    <option value="Cloud Computing" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cloud Computing</option>
                   </select>
                 </div>
               </div>
@@ -1173,10 +1350,10 @@
                     id="input-jobType"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="Full Time">Full Time</option>
-                    <option value="Part Time">Part Time</option>
-                    <option value="Contract">Contract</option>
-                    <option value="Internship">Internship</option>
+                    <option value="Full Time" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Full Time</option>
+                    <option value="Part Time" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Part Time</option>
+                    <option value="Contract" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Contract</option>
+                    <option value="Internship" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Internship</option>
                   </select>
                 </div>
                 <div>
@@ -1187,9 +1364,9 @@
                     id="input-workplaceSetting"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="on_site">On-Site</option>
-                    <option value="remote">Remote</option>
-                    <option value="hybrid">Hybrid</option>
+                    <option value="on_site" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">On-Site</option>
+                    <option value="remote" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Remote</option>
+                    <option value="hybrid" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Hybrid</option>
                   </select>
                 </div>
               </div>
@@ -1213,7 +1390,7 @@
       class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
     >
       <div
-        class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 md:max-w-xl relative transform transition-all scale-100 overflow-y-auto max-h-[90vh]"
+        class="bg-white dark:bg-indigo-950 rounded-2xl shadow-2xl w-full max-w-lg mx-4 md:max-w-xl relative transform transition-all scale-100 overflow-y-auto max-h-[90vh]"
       >
         <div class="p-6 pb-2 text-center">
           <button
@@ -1222,49 +1399,58 @@
           >
             <i class="fa-solid fa-xmark text-xl"></i>
           </button>
-          <h2 class="text-xl font-bold text-slate-900">Apply for Job</h2>
-          <p class="text-sm text-slate-500 mt-1">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-200">Apply for Job</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Submit your application and CV for this position
           </p>
         </div>
+
         <form id="applyForm" class="p-6 pt-2 space-y-4" novalidate>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1"
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
                 >Full Name <span class="text-red-500">*</span></label
-              ><input
+              >
+              <input
                 type="text"
                 id="applyName"
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+                placeholder="Enter your full name"
+                class="w-full px-3 py-2 dark:text-white border border-slate-300 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1"
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
                 >Email <span class="text-red-500">*</span></label
-              ><input
+              >
+              <input
                 type="email"
                 id="applyEmail"
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+                placeholder="Enter your email"
+                class="w-full px-3 py-2 border dark:text-white border-slate-300 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
               />
             </div>
           </div>
+
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1"
-              >Phone</label
-            ><input
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+              >Phone Number</label
+            >
+            <input
               type="tel"
               id="applyPhone"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              placeholder="Enter your phone number"
+              class="w-full px-3 py-2 border dark:text-white border-slate-300 rounded-lg dark:bg-black/30 dark:focus:border-slate-200 dark:focus:ring-white/50 dark:caret-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
+
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1"
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Upload CV/Resume <span class="text-red-500">*</span></label
             >
             <div
-              class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer group"
+              class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 dark:hover:bg-black/30 transition-colors cursor-pointer group"
               onclick="document.getElementById('applyCv').click()"
             >
               <div
@@ -1272,7 +1458,7 @@
               >
                 <i class="fa-solid fa-arrow-up-from-bracket text-slate-500"></i>
               </div>
-              <p class="text-sm text-slate-600 font-medium">
+              <p class="text-sm text-slate-600 dark:text-slate-500 font-medium">
                 Drag and drop your CV here or click to browse
               </p>
               <p class="text-xs text-slate-400 mt-1">
@@ -1280,33 +1466,34 @@
               </p>
               <button
                 type="button"
-                class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors"
+                class="mt-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors"
               >
                 Choose File
               </button>
-              <input type="file" id="applyCv" class="hidden" />
+              <input type="file" id="applyCv" class="hidden" required />
             </div>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1"
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Cover Letter (Optional)</label
-            ><textarea
+            >
+            <textarea
               id="applyCover"
               rows="3"
-              class="w-full px-3 py-2 -mb-4 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              class="w-full px-3 py-2 dark:bg-black/30 border dark:caret-white dark:focus:border-slate-200 dark:focus:ring-white/50 border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:text-white resize-none"
             ></textarea>
           </div>
-          <div class="flex gap-3 pt-2">
+          <div class="flex gap-3 pt-2 -mt-30">
             <button
               type="button"
               id="btnCancelModal"
-              class="flex-1 py-2 border border-slate-300 rounded-lg text-sm"
+              class="flex-1 py-2 border border-slate-400 hover:border-slate-200 dark:text-slate-400 hover:dark:text-slate-200 transition-colors rounded-lg text-sm"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="flex-1 py-2 bg-blue-600 text-white rounded-lg text-sm"
+              class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white transition-colors rounded-lg text-sm"
             >
               Submit Application
             </button>
@@ -1365,5 +1552,28 @@
         });
       }
     </script>
+    <!-- ✅ Script مضاف جديد فقط -->
+<script>
+const checkbox = document.getElementById('checkbox');
+const navContainer = document.querySelector('.nav-container');
+
+// التحقق من وجود العناصر أولاً لتجنب الـ TypeError
+if (checkbox && navContainer) {
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      navContainer.classList.add('active');
+    } else {
+      navContainer.classList.remove('active');
+    }
+  });
+  // أضيفي هذا الكود داخل الـ if (checkbox && navContainer)
+  document.querySelectorAll('.nav-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      checkbox.checked = false; // سيلغي تفعيل الـ checkbox
+      navContainer.classList.remove('active'); // سيخفي القائمة
+    });
+  });
+} 
+  </script>
   </body>
 </html>

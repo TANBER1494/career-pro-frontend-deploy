@@ -1,8 +1,18 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <script>
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    })();
+  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareerPro - personality test</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -39,89 +49,45 @@
 
         --color-neutral: #cbd5f5; /* أفتح علشان يبان */
 
-        --color-agree-1: #5b9c729a;
-        --color-agree-2: #279e539a;
-        --color-agree-3: #1374379a;
-      }
+          --color-agree-1:    #5b9c729a;
+          --color-agree-2:    #279e539a;
+          --color-agree-3:    #1374379a;
+        }
 
-      /* 1. الحاوية الأساسية */
-      .scale-group {
+    :root {
+        --color-disagree-3: #ef4444;
+        --color-disagree-2: #f87171;
+        --color-disagree-1: #fca5a5;
+        --color-neutral:    #94a3b8;
+        --color-agree-1:    #86efac;
+        --color-agree-2:    #4ade80;
+        --color-agree-3:    #22c55e;
+    }
+
+    /* 1. الحاوية الأساسية */
+    .scale-group {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
         max-width: 700px;
         margin: 0 auto;
         position: relative;
-        padding-bottom: 2rem;
-      }
+        padding-bottom: 2.5rem;
+        gap: 4px;
+    }
 
-      /* (تم إزالة الخط الخلفي بالكامل بناءً على طلبك) */
-
-      /* 2. حاوية كل خيار */
-      .scale-option {
+    /* 2. حاوية كل خيار */
+    .scale-option {
         position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         cursor: pointer;
         width: 14%;
-      }
-
-      .scale-option input[type='radio'] {
-        display: none; /* إخفاء الـ Radio الأساسي */
-      }
-
-      /* 3. الدائرة الأساسية (مفرغة ولها إطار ملون مسبقاً) */
-      .circle {
-        border-radius: 50%;
-        border: 3px solid; /* اللون هيتحدد تحت حسب النوع */
-        background-color: transparent; /* مفرغة من الداخل */
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        margin-bottom: 0.75rem;
-      }
-
-      /* أحجام الدوائر المتدرجة */
-      .size-lg {
-        width: 50px;
-        height: 50px;
-      }
-      .size-md {
-        width: 40px;
-        height: 40px;
-      }
-      .size-sm {
-        width: 30px;
-        height: 30px;
-      }
-
-      /* 4. النصوص التوضيحية */
-      .scale-label {
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        text-align: center;
-        color: #cbd5e1; /* لون باهت في البداية */
-        transition: color 0.3s ease;
-        line-height: 1.3;
-        pointer-events: none;
-        white-space: nowrap;
-      }
-
-      @media (max-width: 640px) {
-        .scale-label {
-          font-size: 9px;
-        }
-        .scale-label .long-text {
-          display: none;
-        }
-      }
-
-      /* 5. التأثيرات المشتركة عند الـ Hover (تكبير ناعم) */
-      .scale-option:hover .circle {
-        transform: scale(1.15);
-      }
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
 
       /* ==========================================
         🎨 الألوان الديناميكية لكل دائرة (حواف، امتلاء، نصوص)
@@ -206,51 +172,135 @@
       }
 
       /* Strongly Agree (opt-7) */
-      .opt-7 .circle {
-        border-color: var(--color-agree-3);
-      }
-      .opt-7:hover .circle,
-      .opt-7 input:checked + .circle {
-        background-color: var(--color-agree-3);
-      }
-      .opt-7:hover .scale-label,
-      .opt-7 input:checked ~ .scale-label {
-        color: var(--color-agree-3);
-      }
+      .opt-7 .circle { border-color: var(--color-agree-3); }
+      .opt-7:hover .circle, .opt-7 input:checked + .circle { background-color: var(--color-agree-3); }
+      .opt-7:hover .scale-label, .opt-7 input:checked ~ .scale-label { color: var(--color-agree-3); }
+    .scale-option input[type="radio"] {
+        display: none;
+    }
 
-      body.loaded {
-        opacity: 1;
-      }
-      body {
-        opacity: 0;
+    /* 3. الدائرة الأساسية */
+    .circle {
+        border-radius: 50%;
+        border: 3px solid;
+        background-color: transparent;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 0.75rem;
+    }
+
+    /* أحجام الدوائر — Desktop */
+    .size-lg { width: 50px; height: 50px; }
+    .size-md { width: 40px; height: 40px; }
+    .size-sm { width: 30px; height: 30px; }
+
+    /* 4. النصوص التوضيحية */
+    .scale-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        text-align: center;
+        color: #475569;
+        transition: color 0.3s ease;
+        line-height: 1.3;
+        pointer-events: none;
+        white-space: nowrap;
+    }
+
+    /* 5. Hover */
+    .scale-option:hover .circle {
+        transform: scale(1.15);
+    }
+
+    /* ==========================================
+       🎨 الألوان لكل دائرة
+       ========================================== */
+
+    .opt-1 .circle { border-color: var(--color-disagree-3); }
+    .opt-1:hover .circle, .opt-1 input:checked + .circle { background-color: var(--color-disagree-3); }
+    .opt-1:hover .scale-label, .opt-1 input:checked ~ .scale-label { color: var(--color-disagree-3); }
+
+    .opt-2 .circle { border-color: var(--color-disagree-2); }
+    .opt-2:hover .circle, .opt-2 input:checked + .circle { background-color: var(--color-disagree-2); }
+    .opt-2:hover .scale-label, .opt-2 input:checked ~ .scale-label { color: var(--color-disagree-2); }
+
+    .opt-3 .circle { border-color: var(--color-disagree-1); }
+    .opt-3:hover .circle, .opt-3 input:checked + .circle { background-color: var(--color-disagree-1); }
+    .opt-3:hover .scale-label, .opt-3 input:checked ~ .scale-label { color: var(--color-disagree-1); }
+
+    .opt-4 .circle { border-color: var(--color-neutral); }
+    .opt-4:hover .circle, .opt-4 input:checked + .circle { background-color: var(--color-neutral); }
+    .opt-4:hover .scale-label, .opt-4 input:checked ~ .scale-label { color: var(--color-neutral); }
+
+    .opt-5 .circle { border-color: var(--color-agree-1); }
+    .opt-5:hover .circle, .opt-5 input:checked + .circle { background-color: var(--color-agree-1); }
+    .opt-5:hover .scale-label, .opt-5 input:checked ~ .scale-label { color: var(--color-agree-1); }
+
+    .opt-6 .circle { border-color: var(--color-agree-2); }
+    .opt-6:hover .circle, .opt-6 input:checked + .circle { background-color: var(--color-agree-2); }
+    .opt-6:hover .scale-label, .opt-6 input:checked ~ .scale-label { color: var(--color-agree-2); }
+
+    .opt-7 .circle { border-color: var(--color-agree-3); }
+    .opt-7:hover .circle, .opt-7 input:checked + .circle { background-color: var(--color-agree-3); }
+    .opt-7:hover .scale-label, .opt-7 input:checked ~ .scale-label { color: var(--color-agree-3); }
+
+    /* ==========================================
+       📱 Responsive — Tablet (max-width: 768px)
+       ========================================== */
+    @media (max-width: 768px) {
+        .size-lg { width: 42px; height: 42px; }
+        .size-md { width: 34px; height: 34px; }
+        .size-sm { width: 26px; height: 26px; }
+        .scale-label { font-size: 9px; }
+    }
+
+    /* ==========================================
+       📱 Responsive — Mobile (max-width: 600px)
+       الـ labels بتختفي خالص — الألوان بتتكلم عن نفسها
+       ========================================== */
+    @media (max-width: 600px) {
+        .size-lg { width: 38px; height: 38px; }
+        .size-md { width: 32px; height: 32px; }
+        .size-sm { width: 26px; height: 26px; }
+        .circle { border-width: 2.5px; margin-bottom: 0; }
+        .scale-label { display: none; }
+        .scale-option { width: 13%; }
+        .scale-group {
+            gap: 4px;
+            padding-bottom: 0.5rem;
+            align-items: center;
+        }
+    }
+
+    /* ==========================================
+       📱 Responsive — Very Small (max-width: 380px)
+       ========================================== */
+    @media (max-width: 380px) {
+        .size-lg { width: 32px; height: 32px; }
+        .size-md { width: 26px; height: 26px; }
+        .size-sm { width: 21px; height: 21px; }
+        .circle { border-width: 2px; }
+    }
+
+    /* ==========================================
+      🌐 Global Styles
+       ========================================== */
+    body.loaded { opacity: 1; }
+    body {
+        /* opacity: 0; */
         transition: opacity 0.5s ease-in-out;
         background: #dce0e0;
-        background: linear-gradient(
-          150deg,
-          rgba(220, 224, 224, 1) 14%,
-          rgba(182, 206, 224, 1) 60%,
-          rgba(95, 106, 115, 1) 100%
-        );
+        background: linear-gradient(150deg, rgba(220,224,224,1) 14%, rgba(182,206,224,1) 60%, rgba(95,106,115,1) 100%);
         margin: 0;
         overflow-x: hidden;
         background-attachment: fixed;
-        font-family: 'Poppins', sans-serif;
-      }
-      .hidden {
-        display: none !important;
-      }
-      .fade-in {
-        animation: fadeIn 0.8s ease-in-out forwards;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        font-family: "Poppins", sans-serif;
+    }
+    /* .hidden { display: none !important; } */
+    .fade-in { animation: fadeIn 0.8s ease-in-out forwards; }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       .dark body {
@@ -340,39 +390,38 @@
         opacity: 0;
       }
 
-      #checkboxInput:active + .toggleSwitch {
-        transform: scale(0.94);
-      }
-      .icons svg {
-        fill: currentColor !important;
-      }
+#checkboxInput:active + .toggleSwitch {
+  transform: scale(0.94);
+}
+.icons svg {
+  fill: currentColor !important;
+}
+@media (max-width: 639px) {
+  .logout-container {
+    min-width: fit-content;
+  }
+}
     </style>
-  </head>
-  <body class="text-slate-800 dark:text-white min-h-screen overflow-x-hidden">
-    <nav
+</head>
+<body class="text-slate-800 dark:text-white min-h-screen overflow-x-hidden">
+  <nav
       class="sticky top-0 z-50 bg-white/80 dark:bg-black/30 backdrop-blur-md px-6 py-3 flex items-start justify-between shadow-sm mb-8 w-full"
     >
       <a
         href="/CareerPro"
-        class="flex items-center gap-3 w-auto text-2xl font-semibold cursor-pointer"
+        class="flex items-center gap-2 sm:gap-3 w-auto text-xl sm:text-2xl font-semibold cursor-pointer"
         onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
       >
         <img
           src="/assets/imgs/Logo.png"
           alt="CareerGuidance Logo"
-          class="h-12 w-auto object-contain"
+          class="h-10 sm:h-12 w-auto object-contain"
         />
-        <span class="font-lexend font-simibold not-italic"
-          >AI-Career Guidance</span
-        >
+        <span class="nav-title font-lexend font-semibold not-italic hidden sm:block dark:text-white">
+          AI-Career Guidance
+        </span>
       </a>
       <div class="flex items-center gap-3">
-        <div class="w-auto flex justify-end min-w-0">
-          <div
-            id="auth-buttons-container"
-            class="flex justify-end items-center gap-3"
-          ></div>
-        </div>
         <input id="checkboxInput" type="checkbox" />
         <label class="toggleSwitch" for="checkboxInput">
           <div class="icons icons--moon">
@@ -391,7 +440,7 @@
               ></path>
             </svg>
           </div>
-
+        
           <div class="icons icons--sun">
             <svg
               class="sun"
@@ -407,174 +456,90 @@
             </svg>
           </div>
         </label>
+        <div class="w-auto flex justify-end min-w-0">
+          <div id="auth-buttons-container" class="flex justify-end items-center gap-3">
+          </div>
+          </div>
+      </div>
       </div>
     </nav>
-    <main class="pt-[50px] pb-12 flex justify-center min-h-screen px-4">
-      <div class="w-full">
-        <div
-          id="start-view"
-          class="hidden transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto"
-        >
-          <div class="flex items-center gap-4 mt-6 mb-10">
-            <a
-              id="backBtn"
-              href="/CareerPro"
-              class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0"
-            >
-              <i
-                class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-              ></i>
-              <span class="text-sm font-medium">Back</span>
-            </a>
-            <div>
-              <h1 class="text-3xl font-semibold text-dark dark:text-slate-200">
-                Personality Test
-              </h1>
-              <p class="text-slate-500 dark:text-slate-400 mt-1">
-                Discover your professional strengths
-              </p>
+    <main class="pt-[50px] sm:pt-[50px] sm:px-4 pb-12 flex justify-center min-h-screen px-4">
+        <div class="w-full">
+
+            <div id="start-view" class="hidden transition-opacity duration-500 ease-in-out opacity-100 max-w-[1000px] mx-auto">
+                <div class="flex items-center gap-4 mt-6 sm:mt-6 mb-6 sm:mb-10">
+                  <a id="backBtn" href="/CareerPro" class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0">
+                    <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
+                    <span class="text-sm font-medium">Back</span>
+                  </a>
+                  <div>
+                    <h1 class="text-3xl sm:text-3xl font-semibold text-dark dark:text-slate-200">Personality Test</h1>
+                    <p class="text-slate-500 dark:text-slate-400 mt-1 sm:text-base">Discover your professional strengths</p>
+                  </div>
+                </div>
+
+                <div class="bg-white dark:bg-black/30 sm:p-12 rounded-2xl p-18 md:p-20 text-center shadow-lg border border-slate-200 dark:border-gray-800 max-w-4xl mx-auto">
+                  <i class="fa-solid fa-brain sm:text-6xl text-6xl text-primary mb-6 inline-block bg-gradient-to-r from-blue-300 to-blue-600 drop-shadow-glow hover:drop-shadow-glow-lg bg-clip-text text-transparent"></i>
+                  <h2 class="text-3xl sm:text-3xl font-semibold text-dark dark:text-slate-200 mb-3">Professional Personality Test</h2>
+                  <p class="text-gray-500 dark:text-slate-400 font-medium mb-8 max-w-xl mx-auto sm:text-base">Take our comprehensive assessment to discover your unique professional strengths.</p>
+                  <button onclick="goToQuiz()" class="bg-blue-600 dark:bg-blue-500 text-white px-8 py-3 sm:px-10 rounded-lg font-medium shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none w-full md:w-auto">
+                      Start Test
+                  </button>
+                </div>
             </div>
-          </div>
 
-          <div
-            class="bg-white dark:bg-black/30 rounded-2xl p-18 md:p-20 text-center shadow-lg border border-slate-200 dark:border-gray-800 max-w-4xl mx-auto"
-          >
-            <i
-              class="fa-solid fa-brain text-6xl text-primary mb-6 inline-block bg-gradient-to-r from-blue-300 to-blue-600 drop-shadow-glow hover:drop-shadow-glow-lg bg-clip-text text-transparent"
-            ></i>
-            <h2
-              class="text-3xl font-semibold text-dark dark:text-slate-200 mb-3"
-            >
-              Professional Personality Test
-            </h2>
-            <p
-              class="text-gray-500 dark:text-slate-400 font-medium mb-8 max-w-xl mx-auto"
-            >
-              Take our comprehensive assessment to discover your unique
-              professional strengths.
-            </p>
-            <button
-              onclick="goToQuiz()"
-              class="bg-blue-600 dark:bg-blue-500 text-white px-8 py-3 rounded-lg font-medium shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none w-full md:w-auto"
-            >
-              Start Test
-            </button>
-          </div>
-        </div>
-
-        <div
-          id="quiz-view"
-          class="hidden transition-opacity duration-500 ease-in-out opacity-0 max-w-[1000px] mx-auto"
-        >
-          <a
-            id="backBtn"
-            href="personalityTest.html"
-            class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0 -mt-7 mb-4"
-          >
-            <i
-              class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"
-            ></i>
-            <span class="text-sm font-medium">Back</span>
-          </a>
-          <div class="flex justify-between items-center mb-6">
-            <h2
-              id="q-counter"
-              class="text-xl font-semibold text-dark dark:text-slate-200"
-            >
-              Loading...
-            </h2>
-            <span
-              class="bg-slate-200 dark:bg-black/30 text-slate-600 dark:text-slate-200 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide"
-              >AI Assessment</span
-            >
-          </div>
-          <div
-            class="w-full h-2 bg-slate-400 rounded-full overflow-hidden mb-8"
-          >
-            <div
-              id="progress-bar"
-              class="h-full bg-dark w-0 transition-all duration-300"
-            ></div>
-          </div>
-          <div
-            class="bg-white dark:bg-black/30 rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 dark:border-slate-800 max-w-4xl mx-auto"
-          >
-            <h3
-              id="q-text"
-              class="text-xl md:text-2xl font-medium text-dark dark:text-white mb-8"
-            >
-              Fetching questions...
-            </h3>
-            <div id="options-box" class="flex flex-col gap-4"></div>
-            <div class="text-right mt-8">
-              <button
-                id="next-btn"
-                onclick="nextQuestion()"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium opacity-50 pointer-events-none transition"
-              >
-                Next Question
-              </button>
+            <div id="quiz-view" class="hidden transition-opacity duration-500 ease-in-out opacity-0 max-w-[1000px] mx-auto">
+              <a id="backBtn" href="personalityTest.html" class="flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-slate-200 transition-colors group shrink-0 -mt-7 mb-4">
+                <i class="fa-solid fa-arrow-left mr-2 text-sm group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-sm font-medium">Back</span>
+              </a>
+                <div class="flex justify-between items-center mb-6 sm:mb-6">
+                    <h2 id="q-counter" class="text-xl font-semibold text-dark dark:text-slate-200 sm:text-xl">Loading...</h2>
+                    <span class="bg-slate-200 dark:bg-black/30 text-slate-600 dark:text-slate-200 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">AI Assessment</span>
+                </div>
+                <div class="w-full h-2 bg-slate-400 rounded-full overflow-hidden mb-8 sm:mb-8">
+                    <div id="progress-bar" class="h-full bg-dark w-0 transition-all duration-300"></div>
+                </div>
+                <div class="bg-white dark:bg-black/30 rounded-2xl p-8 md:p-12 sm:p-8 shadow-lg border border-slate-200 dark:border-slate-800 max-w-4xl mx-auto">
+                    <h3 id="q-text" class="text-xl md:text-2xl font-medium sm:text-xl text-dark dark:text-white mb-8">Fetching questions...</h3>
+                    <div id="options-box" class="flex flex-col gap-4"></div>
+                    <div class="text-right mt-8 sm:mt-8">
+                        <button id="next-btn" onclick="nextQuestion()" class="bg-blue-500 hover:bg-blue-600 text-white sm:text-base sm:px-8 py-2.5 sm:py-3 px-8 py-3 rounded-lg font-medium opacity-50 pointer-events-none transition">
+                            Next Question
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <div id="result-view" class="hidden w-full px-4 md:px-8 fade-in max-w-5xl mx-auto sm:px-4">                
+                
+                <div class="bg-white dark:bg-black/30 sm:p-6 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 dark:border-gray-800 mb-8 text-center md:text-left">
+                    <h1 id="result-title" class="text-4xl sm:text-4xl md:text-5xl font-bold text-dark mb-2">
+                        </h1>
+                </div>
+
+                <div class="bg-white dark:bg-black/30 sm:p-6 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-gray-800 mb-8 sm:mb-8">
+                    <h3 class="text-sm font-bold text-primary dark:text-slate-200 tracking-widest uppercase mb-4">Personality Summary</h3>
+                    <p id="result-summary" class="text-lg text-slate-700 dark:text-slate-400 leading-relaxed font-medium">
+                        </p>
+                </div>
+
+                <div class="bg-white dark:bg-black/30 sm:p-6 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-gray-800 mb-8 sm:mb-8">
+                    <h3 class="text-sm font-bold text-primary tracking-widest uppercase mb-6">Recommended Career</h3>
+                    <div id="careers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        </div>
+                </div>
+
+                <div class="flex justify-center md:justify-start pb-12">
+                    <button onclick="retakeTest()" class="dark:bg-black/30 sm:px-8 sm:text-base bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Retake Test
+                    </button>
+                    <a href="/CareerPro" class="bg-blue-600 dark:bg-blue-500 sm:text-base sm:px-8 text-white px-8 py-3 ml-4 rounded-xl font-semibold shadow-md shadow-blue-500/30 hover:bg-blue-700 dark:hover:bg-blue-600 transition">
+                        Go to Dashboard
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <div
-          id="result-view"
-          class="hidden w-full px-4 md:px-8 fade-in max-w-5xl mx-auto"
-        >
-          <div
-            class="bg-white dark:bg-black/30 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 dark:border-gray-800 mb-8 text-center md:text-left"
-          >
-            <h1
-              id="result-title"
-              class="text-4xl md:text-5xl font-bold text-dark mb-2"
-            ></h1>
-          </div>
-
-          <div
-            class="bg-white dark:bg-black/30 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-gray-800 mb-8"
-          >
-            <h3
-              class="text-sm font-bold text-primary dark:text-slate-200 tracking-widest uppercase mb-4"
-            >
-              Personality Summary
-            </h3>
-            <p
-              id="result-summary"
-              class="text-lg text-slate-700 dark:text-slate-400 leading-relaxed font-medium"
-            ></p>
-          </div>
-
-          <div
-            class="bg-white dark:bg-black/30 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-gray-800 mb-8"
-          >
-            <h3
-              class="text-sm font-bold text-primary tracking-widest uppercase mb-6"
-            >
-              Recommended Career
-            </h3>
-            <div
-              id="careers-container"
-              class="grid grid-cols-1 md:grid-cols-2 gap-6"
-            ></div>
-          </div>
-
-          <div class="flex justify-center md:justify-start pb-12">
-            <button
-              onclick="retakeTest()"
-              class="dark:bg-black/30 bg-slate-50 text-slate-700 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:border-gray-300 border-2 border-slate-300 dark:border-gray-500 hover:border-blue-400 hover:bg-slate-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm"
-            >
-              <i class="fa-solid fa-rotate-right mr-2"></i> Retake Test
-            </button>
-            <a
-              href="/CareerPro"
-              class="bg-blue-600 dark:bg-blue-500 text-white px-8 py-3 ml-4 rounded-xl font-semibold shadow-md shadow-blue-500/30 hover:bg-blue-700 dark:hover:bg-blue-600 transition"
-            >
-              Go to Dashboard
-            </a>
-          </div>
-        </div>
-      </div>
     </main>
     <script type="module" src="/src/js/utils/authGuard.js"></script>
     <script

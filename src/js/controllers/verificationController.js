@@ -28,6 +28,8 @@ let selectedFile = null;
 
 // log gout
 const btnLogout = document.getElementById("btnLogout");
+const BLogout = document.getElementById("BLogout");
+
 
 // ============================================================
 // 2. Initialization
@@ -335,6 +337,13 @@ function resetUploadForm() {
 
 if (btnLogout) {
   btnLogout.addEventListener("click", (e) => {
+    e.preventDefault(); // 2. منع أي سلوك افتراضي
+    console.log("Logout clicked"); // 3. للتجربة والتأكد
+    authService.logout();
+  });
+}
+if (BLogout) {
+  BLogout.addEventListener("click", (e) => {
     e.preventDefault(); // 2. منع أي سلوك افتراضي
     console.log("Logout clicked"); // 3. للتجربة والتأكد
     authService.logout();

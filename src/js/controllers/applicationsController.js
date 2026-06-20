@@ -23,6 +23,7 @@ const statReviewing = document.getElementById('stat-reviewing');
 const statInterviewed = document.getElementById('stat-interviewed');
 const statHired = document.getElementById('stat-hired');
 const btnLogout = document.getElementById('btnLogout');
+const BLogout = document.getElementById('BLogout');
 
 let currentPage = 1;
 let currentLimit = 100;
@@ -374,6 +375,11 @@ if (nextBtn) {
 
 if (btnLogout) {
   btnLogout.addEventListener('click', () => {
+    authService.logout();
+  });
+}
+if (BLogout) {
+  BLogout.addEventListener('click', () => {
     authService.logout();
   });
 }

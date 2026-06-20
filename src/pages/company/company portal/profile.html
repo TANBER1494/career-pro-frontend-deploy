@@ -350,6 +350,10 @@
             <ion-icon name="shield-outline" class="text-2xl text-green-500"></ion-icon>
             <span class="font-medium text-gray-700 dark:text-gray-300">Verification</span>
           </li>
+          <li id="BLogout" class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer">
+            <ion-icon name="exit-outline" class="text-2xl text-red-500"></ion-icon>
+            <span class="font-medium text-gray-700 dark:text-gray-300">Logout</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -597,7 +601,7 @@
               Basic Information
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="col-span-2">
+              <div class="col-span-1 md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Company Name *</label
                 >
@@ -617,14 +621,14 @@
                   id="input-industry"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 >
-                  <option value="" disabled>Select industry</option>
-                  <option value="Software Development">Software Development</option>
-                  <option value="Web Development">Web Development</option>
-                  <option value="Mobile Development">Mobile Development</option>
-                  <option value="Data Science & Analytics">Data Science & Analytics</option>
-                  <option value="AI & Machine Learning">AI & Machine Learning</option>
-                  <option value="Cybersecurity">Cybersecurity</option>
-                  <option value="Cloud Computing">Cloud Computing</option>
+                  <option value="" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled>Select industry</option>
+                  <option value="Software Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Software Development</option>
+                  <option value="Web Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Web Development</option>
+                  <option value="Mobile Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Mobile Development</option>
+                  <option value="Data Science & Analytics" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Data Science & Analytics</option>
+                  <option value="AI & Machine Learning" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">AI & Machine Learning</option>
+                  <option value="Cybersecurity" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cybersecurity</option>
+                  <option value="Cloud Computing" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cloud Computing</option>
                 </select>
               </div>
 
@@ -636,12 +640,12 @@
                   id="input-numberOfEmployees"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                 >
-                  <option value="1-10">1-10</option>
-                  <option value="11-50">11-50</option>
-                  <option value="51-200">51-200</option>
-                  <option value="201-500">201-500</option>
-                  <option value="501-1000">501-1000</option>
-                  <option value="1000+">1000+</option>
+                  <option value="1-10" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">1-10</option>
+                  <option value="11-50" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">11-50</option>
+                  <option value="51-200" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">51-200</option>
+                  <option value="201-500" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">201-500</option>
+                  <option value="501-1000" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">501-1000</option>
+                  <option value="1000+" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">1000+</option>
                 </select>
               </div>
 
@@ -661,10 +665,10 @@
                   >Location</label
                 >
                 <select id="input-location" required class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 text-sm">
-    <option value="" disabled selected>Select location</option>
-    <option value="Remote" class="font-bold text-blue-600">🌍 Remote / Anywhere</option>
+    <option value="" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled selected>Select location</option>
+    <option value="Remote" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" class="font-bold text-blue-600">🌍 Remote / Anywhere</option>
 
-    <optgroup label="Egypt">
+    <optgroup label="Egypt" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Cairo, Egypt">Cairo, Egypt</option>
         <option value="Giza, Egypt">Giza, Egypt</option>
         <option value="Alexandria, Egypt">Alexandria, Egypt</option>
@@ -677,7 +681,7 @@
         <option value="Tanta, Egypt">Tanta, Egypt</option>
     </optgroup>
 
-    <optgroup label="Saudi Arabia">
+    <optgroup label="Saudi Arabia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Riyadh, Saudi Arabia">Riyadh, Saudi Arabia</option>
         <option value="Jeddah, Saudi Arabia">Jeddah, Saudi Arabia</option>
         <option value="Mecca, Saudi Arabia">Mecca, Saudi Arabia</option>
@@ -689,7 +693,7 @@
         <option value="Hail, Saudi Arabia">Hail, Saudi Arabia</option>
     </optgroup>
 
-    <optgroup label="United Arab Emirates">
+    <optgroup label="United Arab Emirates" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Dubai, United Arab Emirates">Dubai, UAE</option>
         <option value="Abu Dhabi, United Arab Emirates">Abu Dhabi, UAE</option>
         <option value="Sharjah, United Arab Emirates">Sharjah, UAE</option>
@@ -699,7 +703,7 @@
         <option value="Umm Al Quwain, United Arab Emirates">Umm Al Quwain, UAE</option>
     </optgroup>
 
-    <optgroup label="Jordan">
+    <optgroup label="Jordan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Amman, Jordan">Amman, Jordan</option>
         <option value="Zarqa, Jordan">Zarqa, Jordan</option>
         <option value="Irbid, Jordan">Irbid, Jordan</option>
@@ -708,7 +712,7 @@
         <option value="Jerash, Jordan">Jerash, Jordan</option>
     </optgroup>
 
-    <optgroup label="Lebanon">
+    <optgroup label="Lebanon" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Beirut, Lebanon">Beirut, Lebanon</option>
         <option value="Tripoli, Lebanon">Tripoli, Lebanon</option>
         <option value="Sidon, Lebanon">Sidon, Lebanon</option>
@@ -717,7 +721,7 @@
         <option value="Zahle, Lebanon">Zahle, Lebanon</option>
     </optgroup>
 
-    <optgroup label="Iraq">
+    <optgroup label="Iraq" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Baghdad, Iraq">Baghdad, Iraq</option>
         <option value="Basra, Iraq">Basra, Iraq</option>
         <option value="Mosul, Iraq">Mosul, Iraq</option>
@@ -727,7 +731,7 @@
         <option value="Karbala, Iraq">Karbala, Iraq</option>
     </optgroup>
 
-    <optgroup label="Syria">
+    <optgroup label="Syria" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Damascus, Syria">Damascus, Syria</option>
         <option value="Aleppo, Syria">Aleppo, Syria</option>
         <option value="Homs, Syria">Homs, Syria</option>
@@ -736,7 +740,7 @@
         <option value="Tartus, Syria">Tartus, Syria</option>
     </optgroup>
 
-    <optgroup label="Kuwait">
+    <optgroup label="Kuwait" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Kuwait City, Kuwait">Kuwait City, Kuwait</option>
         <option value="Al Ahmadi, Kuwait">Al Ahmadi, Kuwait</option>
         <option value="Hawalli, Kuwait">Hawalli, Kuwait</option>
@@ -744,7 +748,7 @@
         <option value="Al Jahra, Kuwait">Al Jahra, Kuwait</option>
     </optgroup>
 
-    <optgroup label="Oman">
+    <optgroup label="Oman" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Muscat, Oman">Muscat, Oman</option>
         <option value="Salalah, Oman">Salalah, Oman</option>
         <option value="Sohar, Oman">Sohar, Oman</option>
@@ -753,7 +757,7 @@
         <option value="Buraimi, Oman">Buraimi, Oman</option>
     </optgroup>
 
-    <optgroup label="Qatar">
+    <optgroup label="Qatar" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Doha, Qatar">Doha, Qatar</option>
         <option value="Al Rayyan, Qatar">Al Rayyan, Qatar</option>
         <option value="Al Wakrah, Qatar">Al Wakrah, Qatar</option>
@@ -761,7 +765,7 @@
         <option value="Umm Salal, Qatar">Umm Salal, Qatar</option>
     </optgroup>
 
-    <optgroup label="Bahrain">
+    <optgroup label="Bahrain" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Manama, Bahrain">Manama, Bahrain</option>
         <option value="Riffa, Bahrain">Riffa, Bahrain</option>
         <option value="Muharraq, Bahrain">Muharraq, Bahrain</option>
@@ -769,7 +773,7 @@
         <option value="Isa Town, Bahrain">Isa Town, Bahrain</option>
     </optgroup>
 
-    <optgroup label="Yemen">
+    <optgroup label="Yemen" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Sana'a, Yemen">Sana'a, Yemen</option>
         <option value="Aden, Yemen">Aden, Yemen</option>
         <option value="Taiz, Yemen">Taiz, Yemen</option>
@@ -777,7 +781,7 @@
         <option value="Ibb, Yemen">Ibb, Yemen</option>
     </optgroup>
 
-    <optgroup label="Palestine">
+    <optgroup label="Palestine" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Jerusalem, Palestine">Jerusalem, Palestine</option>
         <option value="Gaza City, Palestine">Gaza City, Palestine</option>
         <option value="Ramallah, Palestine">Ramallah, Palestine</option>
@@ -788,7 +792,7 @@
         <option value="Jericho, Palestine">Jericho, Palestine</option>
     </optgroup>
 
-    <optgroup label="Libya">
+    <optgroup label="Libya" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Tripoli, Libya">Tripoli, Libya</option>
         <option value="Benghazi, Libya">Benghazi, Libya</option>
         <option value="Misrata, Libya">Misrata, Libya</option>
@@ -796,7 +800,7 @@
         <option value="Sebha, Libya">Sebha, Libya</option>
     </optgroup>
 
-    <optgroup label="Tunisia">
+    <optgroup label="Tunisia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Tunis, Tunisia">Tunis, Tunisia</option>
         <option value="Sfax, Tunisia">Sfax, Tunisia</option>
         <option value="Sousse, Tunisia">Sousse, Tunisia</option>
@@ -805,7 +809,7 @@
         <option value="Gabes, Tunisia">Gabes, Tunisia</option>
     </optgroup>
 
-    <optgroup label="Algeria">
+    <optgroup label="Algeria" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Algiers, Algeria">Algiers, Algeria</option>
         <option value="Oran, Algeria">Oran, Algeria</option>
         <option value="Constantine, Algeria">Constantine, Algeria</option>
@@ -814,7 +818,7 @@
         <option value="Batna, Algeria">Batna, Algeria</option>
     </optgroup>
 
-    <optgroup label="Morocco">
+    <optgroup label="Morocco" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Casablanca, Morocco">Casablanca, Morocco</option>
         <option value="Rabat, Morocco">Rabat, Morocco</option>
         <option value="Fes, Morocco">Fes, Morocco</option>
@@ -824,7 +828,7 @@
         <option value="Meknes, Morocco">Meknes, Morocco</option>
     </optgroup>
 
-    <optgroup label="Sudan">
+    <optgroup label="Sudan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Khartoum, Sudan">Khartoum, Sudan</option>
         <option value="Omdurman, Sudan">Omdurman, Sudan</option>
         <option value="Port Sudan, Sudan">Port Sudan, Sudan</option>
@@ -832,14 +836,14 @@
         <option value="Kassala, Sudan">Kassala, Sudan</option>
     </optgroup>
 
-    <optgroup label="Mauritania">
+    <optgroup label="Mauritania" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Nouakchott, Mauritania">Nouakchott, Mauritania</option>
         <option value="Nouadhibou, Mauritania">Nouadhibou, Mauritania</option>
         <option value="Kiffa, Mauritania">Kiffa, Mauritania</option>
         <option value="Rosso, Mauritania">Rosso, Mauritania</option>
     </optgroup>
 
-    <optgroup label="Somalia">
+    <optgroup label="Somalia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Mogadishu, Somalia">Mogadishu, Somalia</option>
         <option value="Hargeisa, Somalia">Hargeisa, Somalia</option>
         <option value="Bosaso, Somalia">Bosaso, Somalia</option>
@@ -847,13 +851,13 @@
         <option value="Berbera, Somalia">Berbera, Somalia</option>
     </optgroup>
 
-    <optgroup label="Djibouti">
+    <optgroup label="Djibouti" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Djibouti City, Djibouti">Djibouti City, Djibouti</option>
         <option value="Ali Sabieh, Djibouti">Ali Sabieh, Djibouti</option>
         <option value="Tadjoura, Djibouti">Tadjoura, Djibouti</option>
     </optgroup>
 
-    <optgroup label="Comoros">
+    <optgroup label="Comoros" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
         <option value="Moroni, Comoros">Moroni, Comoros</option>
         <option value="Mutsamudu, Comoros">Mutsamudu, Comoros</option>
         <option value="Fomboni, Comoros">Fomboni, Comoros</option>
@@ -884,7 +888,7 @@
                 />
               </div>
 
-              <div class="col-span-2">
+              <div class="col-span-1 md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
                   >Company Description</label
                 >

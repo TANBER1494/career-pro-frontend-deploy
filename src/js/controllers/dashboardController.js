@@ -14,6 +14,8 @@ const verifProgressText = document.getElementById("verifProgressText");
 const recentJobsContainer = document.getElementById("recentJobsContainer");
 const recentAppsContainer = document.getElementById("recentAppsContainer");
 const btnLogout = document.getElementById("btnLogout");
+const BLogout = document.getElementById('BLogout');
+
 
 // ============================================================
 // 2. Initialization
@@ -237,6 +239,11 @@ function renderRecentApplications(apps) {
 // ============================================================
 if (btnLogout) {
   btnLogout.addEventListener("click", () => {
+    authService.logout();
+  });
+}
+if (BLogout) {
+  BLogout.addEventListener('click', () => {
     authService.logout();
   });
 }

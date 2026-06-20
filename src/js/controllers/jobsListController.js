@@ -8,6 +8,8 @@ const jobsContainer = document.getElementById("jobsContainer");
 const searchInput = document.getElementById("search-input");
 const statusFilter = document.getElementById("statusFilter");
 const btnLogout = document.getElementById("btnLogout");
+const BLogout = document.getElementById('BLogout');
+
 
 // Stats Elements
 const statActive = document.getElementById("stat-active");
@@ -145,25 +147,25 @@ function renderJobs(jobs) {
               currentStatus
             )}"
           >
-            <option value="Active" ${
+            <option value="Active"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" ${
               currentStatus === "Active" ? "selected" : ""
             }>
               Active
             </option>
 
-            <option value="Draft" ${
+            <option value="Draft" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" ${
               currentStatus === "Draft" ? "selected" : ""
             }>
               Draft
             </option>
 
-            <option value="Closed" ${
+            <option value="Closed" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" ${
               currentStatus === "Closed" ? "selected" : ""
             }>
               Closed
             </option>
 
-            <option value="Paused" ${
+            <option value="Paused" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" ${
               currentStatus === "Paused" ? "selected" : ""
             }>
               Paused
@@ -375,6 +377,11 @@ statusFilter.addEventListener("change", filterJobs);
 
 if (btnLogout) {
   btnLogout.addEventListener("click", () => {
+    authService.logout();
+  });
+}
+if (BLogout) {
+  BLogout.addEventListener('click', () => {
     authService.logout();
   });
 }

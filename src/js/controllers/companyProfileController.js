@@ -26,6 +26,7 @@ const btnCancelEdit = document.getElementById('btnCancelEdit');
 const btnSaveChanges = document.getElementById('btnSaveChanges');
 const btnUploadLogo = document.getElementById('btnUploadLogo');
 const btnLogout = document.getElementById('btnLogout');
+const BLogout = document.getElementById('BLogout');
 
 // ============================================================
 // 2. SWALS 
@@ -424,6 +425,11 @@ btnSaveChanges.addEventListener('click', async (e) => {
 
 if (btnLogout) {
   btnLogout.addEventListener('click', () => {
+    authService.logout();
+  });
+}
+if (BLogout) {
+  BLogout.addEventListener('click', () => {
     authService.logout();
   });
 }

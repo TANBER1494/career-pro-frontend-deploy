@@ -23,7 +23,7 @@ const appsCountBadge = document.getElementById('appsCount');
 
 let currentProfile = {};
 // ============================================================
-// 2. SWALS
+// 2. SWALS 
 // ============================================================
 function swalDarkConfig(options) {
   const isDarkMode = document.documentElement.classList.contains('dark');
@@ -71,20 +71,12 @@ function initProfileImageUpload() {
 
       // تحقق سريع من النوع والحجم
       if (!file.type.startsWith('image/')) {
-        swalDarkConfig({
-          title: 'Error',
-          text: 'Please upload an image file',
-          icon: 'error',
-        });
+        swalDarkConfig({title:'Error', text:'Please upload an image file', icon:'error'});
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
         // 5MB limit
-        swalDarkConfig({
-          title: 'Error',
-          text: 'Image size should be less than 5MB',
-          icon: 'error',
-        });
+        swalDarkConfig({title:'Error', text:'Image size should be less than 5MB', icon:'error'});
         return;
       }
 
@@ -124,11 +116,7 @@ function initProfileImageUpload() {
         });
       } catch (error) {
         console.error(error);
-        swalDarkConfig({
-          title: 'Error',
-          text: 'Failed to upload image',
-          icon: 'error',
-        });
+        swalDarkConfig({title:'Error', text:'Failed to upload image', icon:'error'});
       } finally {
         fileInput.value = ''; // تصفير الانبوت عشان لو اختار نفس الصورة تاني تشتغل
       }
@@ -151,7 +139,7 @@ function setupProfileTabs() {
           'active',
           'text-blue-600',
           'border-b-2',
-          'border-blue-600'
+          'border-blue-600',
         );
         t.classList.add('text-slate-500');
       });
@@ -337,24 +325,19 @@ function createApplicationCard(app) {
 
   // Status Logic
   if (statusLower === 'submitted' || statusLower === 'new') {
-    statusClass =
-      'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-600 dark:text-blue-50 dark:border-blue-600';
+    statusClass = 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-600 dark:text-blue-50 dark:border-blue-600';
     statusIcon = 'fa-paper-plane';
   } else if (statusLower === 'viewed' || statusLower === 'reviewing') {
-    statusClass =
-      'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-600 dark:text-yellow-50 dark:border-yellow-600';
+    statusClass = 'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-600 dark:text-yellow-50 dark:border-yellow-600';
     statusIcon = 'fa-eye';
   } else if (statusLower === 'interview') {
-    statusClass =
-      'bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-600 dark:text-purple-50 dark:border-purple-600';
+    statusClass = 'bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-600 dark:text-purple-50 dark:border-purple-600';
     statusIcon = 'fa-user-tie';
   } else if (statusLower === 'accepted' || statusLower === 'hired') {
-    statusClass =
-      'bg-green-50 text-green-600 border-green-100 dark:bg-green-600 dark:text-green-50 dark:border-green-600';
+    statusClass = 'bg-green-50 text-green-600 border-green-100 dark:bg-green-600 dark:text-green-50 dark:border-green-600';
     statusIcon = 'fa-check-circle';
   } else if (statusLower === 'rejected') {
-    statusClass =
-      'bg-red-50 text-red-600 border-red-100 dark:bg-red-600 dark:text-red-50 dark:border-red-600';
+    statusClass = 'bg-red-50 text-red-600 border-red-100 dark:bg-red-600 dark:text-red-50 dark:border-red-600';
     statusIcon = 'fa-times-circle';
   }
 
@@ -452,13 +435,15 @@ function createSavedJobCard(job) {
   const companyName = companyData.companyName || companyData.name || 'Company';
   let logo = 'https://placehold.co/64x64?text=Job';
 
+  // 🚨 التصليح هنا: قراءة logoUrl بدلاً من logo ليتطابق مع ما يرسله الباك إند
   if (
     companyData.logoUrl &&
-    !companyData.logo.includes('url...') &&
-    companyData.logo.length > 10
+    !companyData.logoUrl.includes('url...') &&
+    companyData.logoUrl.length > 10
   ) {
     logo = companyData.logoUrl;
   }
+  
   const location = job.location || companyData.location || 'Remote';
   const type = job.type || 'Full-time';
 
@@ -575,11 +560,7 @@ btnSaveChanges.addEventListener('click', async (e) => {
       toggleView(false);
     });
   } catch (error) {
-    swalDarkConfig({
-      title: 'Error',
-      text: 'Failed to update profile.',
-      icon: 'error',
-    });
+    swalDarkConfig({title:'Error', text:'Failed to update profile.', icon:'error'});
   } finally {
     btnSaveChanges.disabled = false;
     btnSaveChanges.innerHTML = 'Save Changes';
@@ -637,7 +618,7 @@ window.removeSavedJob = async function (jobId) {
     )
       loadSavedJobs();
 
-    swalDarkConfig({ title: 'Removed!', text: '', icon: 'success' });
+    swalDarkConfig({title:'Removed!',text: '', icon:'success'});
   }
 };
 
@@ -665,17 +646,9 @@ window.deleteApplication = async function (appId) {
       )
         loadApplications();
 
-      swalDarkConfig({
-        title: 'Deleted!',
-        text: 'Application history removed.',
-        icon: 'success',
-      });
+      swalDarkConfig({title:'Deleted!', text:'Application history removed.', icon:'success'});
     } catch (error) {
-      swalDarkConfig({
-        title: 'Error',
-        text: 'Failed to delete application.',
-        icon: 'error',
-      });
+      swalDarkConfig({title:'Error', text:'Failed to delete application.', icon:'error'});
     }
   }
 };
@@ -772,18 +745,14 @@ function initModalEvents() {
 
         await jobService.applyForJob(modal.dataset.jobId, data);
 
-        swalDarkConfig({
-          title: 'Success',
-          text: 'Application Sent!',
-          icon: 'success',
-        });
+        swalDarkConfig({title:'Success', text:'Application Sent!', icon:'success'});
         close();
       } catch (err) {
         swalDarkConfig({
-          title: 'Error',
-          text: err.response?.data?.message || 'Failed to send application',
-          icon: 'error',
-        });
+          title:'Error',
+          text:err.response?.data?.message || 'Failed to send application',
+          icon:'error'
+      });
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Submit';

@@ -36,10 +36,13 @@ axiosClient.interceptors.response.use(
       const message = error.response.data?.message || '';
 
       // الحالة الأولى: التوكن غير صالح أو منتهي (401)
-      if (status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/login'; // تأكد إن مسار صفحة اللوجن بتاعك اسمه كدا
+    if (status === 401) {
+        const requestUrl = error.config?.url || '';
+        if (!requestUrl.includes('/login')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+        }
       }
 
       // 🔥 الحالة الثانية: المستخدم تم إيقافه أو حذفه وهو أونلاين (403)

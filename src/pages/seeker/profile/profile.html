@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <script>
-      (function() {
-          const savedTheme = localStorage.getItem('theme') || 'light';
-          if (savedTheme === 'dark') {
-              document.documentElement.classList.add('dark');
-          } else {
-              document.documentElement.classList.remove('dark');
-          }
+      (function () {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       })();
     </script>
     <meta charset="UTF-8" />
@@ -23,7 +23,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <script type="module" src="/src/js/controllers/DarkModeController.js"></script>
+    <script
+      type="module"
+      src="/src/js/controllers/DarkModeController.js"
+    ></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -36,7 +39,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link href="/src/css/main.css" rel="stylesheet">
+    <link href="/src/css/main.css" rel="stylesheet" />
 
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -60,65 +63,70 @@
       .dark body {
         transition: opacity 0.5s ease-in-out;
         background: #110b36;
-        background: linear-gradient(131deg,rgba(17, 11, 54, 1) 0%, rgba(38, 42, 102, 1) 35%, rgba(55, 31, 89, 1) 100%);
+        background: linear-gradient(
+          131deg,
+          rgba(17, 11, 54, 1) 0%,
+          rgba(38, 42, 102, 1) 35%,
+          rgba(55, 31, 89, 1) 100%
+        );
       }
       /* Magic Navigation Styles */
       @media (max-width: 1180px) {
-  /* 1. إظهار الخلفية فقط عندما تكون المنيو نشطة */
-  #bg {
-    display: none; /* تختفي في الموبايل بشكل افتراضي */
-  }
+        /* 1. إظهار الخلفية فقط عندما تكون المنيو نشطة */
+        #bg {
+          display: none; /* تختفي في الموبايل بشكل افتراضي */
+        }
 
-  .nav-container.active #bg {
-    display: block !important; /* تظهر فقط عند الضغط */
-    background: white !important;
-    border-radius: 20px;
-    padding: 15px;
-  }
-  .dark .nav-container.active #bg {
-    display: block !important; /* تظهر فقط عند الضغط */
-    background: #221E4E !important;
-  }
+        .nav-container.active #bg {
+          display: block !important; /* تظهر فقط عند الضغط */
+          background: white !important;
+          border-radius: 20px;
+          padding: 15px;
+        }
+        .dark .nav-container.active #bg {
+          display: block !important; /* تظهر فقط عند الضغط */
+          background: #221e4e !important;
+        }
 
-  /* 2. الحاوية الصغيرة المنسدلة */
-  .nav-container.active {
-    display: flex !important;
-    position: absolute;
-    top: 85px;
-    right: auto; /* تأكدي من تصحيح auti إلى auto أو تحديد جهة واحدة */
-    left: 5%;
-    width: auto;
-    min-width: 160px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    flex-direction: column; /* لضمان الترتيب الرأسي للحاوية */
-    border-radius: 25px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-  }
+        /* 2. الحاوية الصغيرة المنسدلة */
+        .nav-container.active {
+          display: flex !important;
+          position: absolute;
+          top: 85px;
+          right: auto; /* تأكدي من تصحيح auti إلى auto أو تحديد جهة واحدة */
+          left: 5%;
+          width: auto;
+          min-width: 160px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          flex-direction: column; /* لضمان الترتيب الرأسي للحاوية */
+          border-radius: 25px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+          z-index: 1000;
+        }
 
-  /* 3. إجبار المنيو على التدفق الرأسي */
-  .nav-container.active .magic-menu {
-    display: flex !important;
-    flex-direction: column !important; /* هذا هو السطر السحري */
-    gap: 20px !important;
-    align-items: center;
-    padding: 10px 0;
-  }
+        /* 3. إجبار المنيو على التدفق الرأسي */
+        .nav-container.active .magic-menu {
+          display: flex !important;
+          flex-direction: column !important; /* هذا هو السطر السحري */
+          gap: 20px !important;
+          align-items: center;
+          padding: 10px 0;
+        }
 
-  /* 4. ضبط شكل العناصر داخل القائمة الرأسية */
-  .magic-menu li {
-    width: 45px !important; 
-    height: 45px !important;
-    margin: 0 auto !important;
-  }
+        /* 4. ضبط شكل العناصر داخل القائمة الرأسية */
+        .magic-menu li {
+          width: 45px !important;
+          height: 45px !important;
+          margin: 0 auto !important;
+        }
 
-  /* تمدد العنصر أفقياً عند اختياره داخل القائمة الرأسية */
-  .magic-menu li:hover,
-  .magic-menu li.active {
-    width: 130px !important; 
-  }
-}
+        /* تمدد العنصر أفقياً عند اختياره داخل القائمة الرأسية */
+        .magic-menu li:hover,
+        .magic-menu li.active {
+          width: 130px !important;
+        }
+      }
       .magic-menu {
         display: flex;
         position: relative;
@@ -146,7 +154,7 @@
       }
       /* ... (before & after كما هما) ... */
       .magic-menu li::before {
-        content: "";
+        content: '';
         position: absolute;
         inset: 0;
         border-radius: 60px;
@@ -155,7 +163,7 @@
         transition: 0.5s;
       }
       .magic-menu li::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 10px;
         width: 100%;
@@ -233,66 +241,72 @@
         .magic-menu {
           display: none;
         }
-        #bg{
+        #bg {
           display: none;
         }
       }
       .toggle {
-  position: relative;
-  width: 35px; /* عرض الزر */
-  height: 24px; /* ارتفاع الزر ليتناسب مع المسافات بين الـ bars */
-  cursor: pointer;
-  display: block !important;
-}
+        position: relative;
+        width: 35px; /* عرض الزر */
+        height: 24px; /* ارتفاع الزر ليتناسب مع المسافات بين الـ bars */
+        cursor: pointer;
+        display: block !important;
+      }
 
-.bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: #030303 !important;
-  border-radius: 2px;
-  transition: all 0.35s cubic-bezier(.5,-0.35,.35,1.5);
-}
+      .bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: #030303 !important;
+        border-radius: 2px;
+        transition: all 0.35s cubic-bezier(0.5, -0.35, 0.35, 1.5);
+      }
 
-.dark .bar {
-  background: #d1d0d0 !important;
-}
-/* توزيع البراد بشكل متساوي */
-.bar--top { top: 0; }
-.bar--middle { top: 10px; }
-.bar--bottom { top: 20px; }
+      .dark .bar {
+        background: #d1d0d0 !important;
+      }
+      /* توزيع البراد بشكل متساوي */
+      .bar--top {
+        top: 0;
+      }
+      .bar--middle {
+        top: 10px;
+      }
+      .bar--bottom {
+        top: 20px;
+      }
 
-/* الـ Animation عند الضغط */
-#checkbox:checked + .toggle .bar--top {
-  top: 10px;
-  transform: rotate(135deg);
-}
-#checkbox:checked + .toggle .bar--middle {
-  opacity: 0;
-}
-#checkbox:checked + .toggle .bar--bottom {
-  top: 10px;
-  transform: rotate(225deg);
-}
+      /* الـ Animation عند الضغط */
+      #checkbox:checked + .toggle .bar--top {
+        top: 10px;
+        transform: rotate(135deg);
+      }
+      #checkbox:checked + .toggle .bar--middle {
+        opacity: 0;
+      }
+      #checkbox:checked + .toggle .bar--bottom {
+        top: 10px;
+        transform: rotate(225deg);
+      }
 
-/* From Uiverse.io by zenonaiden_3341 */ 
-.toggleSwitch {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  border-radius: 50%;
-  position: relative;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  line-height: 1;
-  overflow: hidden;
-}
+      /* From Uiverse.io by zenonaiden_3341 */
+      .toggleSwitch {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        border-radius: 50%;
+        position: relative;
+        place-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        line-height: 1;
+        overflow: hidden;
+      }
 
-#checkboxInput {
-  display: none;
-}
+      #checkboxInput {
+        display: none;
+      }
       /* Tabs Styles */
       .profile-tab-btn {
         position: relative;
@@ -305,7 +319,7 @@
         color: #2563eb;
       }
       .dark .profile-tab-btn.active {
-        color: #3397E9;
+        color: #3397e9;
       }
       .profile-tab-btn.active::after {
         content: '';
@@ -318,92 +332,93 @@
         border-radius: 3px 3px 0 0;
       }
       .profile-tab-btn.active::after {
-        background: #3397E9;
+        background: #3397e9;
       }
 
-/* From Uiverse.io by zenonaiden_3341 */ 
-.toggleSwitch {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  border-radius: 50%;
-  position: relative;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  line-height: 1;
-  overflow: hidden;
-}
+      /* From Uiverse.io by zenonaiden_3341 */
+      .toggleSwitch {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        border-radius: 50%;
+        position: relative;
+        place-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        line-height: 1;
+        overflow: hidden;
+      }
 
-#checkboxInput {
-  display: none;
-}
+      #checkboxInput {
+        display: none;
+      }
 
-.icons {
-  grid-column: 1 / 1;
-  grid-row: 1 / 1;
-  width: 80%;
-  height: 80%;
-  display: grid;
-  place-items: center;
-  z-index: 2;
-  transform-origin: center center;
-  transition:
-    transform 500ms ease,
-    opacity 300ms ease;
-  opacity: 0;
-  pointer-events: none;
-}
+      .icons {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+        width: 80%;
+        height: 80%;
+        display: grid;
+        place-items: center;
+        z-index: 2;
+        transform-origin: center center;
+        transition:
+          transform 500ms ease,
+          opacity 300ms ease;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-.icons--moon {
-  color: #212121;
-  /* background-color: #e8e8e8; */
-  border-radius: 50%;
-}
-.icons--sun {
-  color: #ffa600;
-  border-radius: 50%;
-}
-.dark .icons--sun {
-  color: #ffa600;
-  filter: drop-shadow(0 0 5px #ffa600) drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
-}
+      .icons--moon {
+        color: #212121;
+        /* background-color: #e8e8e8; */
+        border-radius: 50%;
+      }
+      .icons--sun {
+        color: #ffa600;
+        border-radius: 50%;
+      }
+      .dark .icons--sun {
+        color: #ffa600;
+        filter: drop-shadow(0 0 5px #ffa600)
+          drop-shadow(0 0 8px rgba(255, 166, 0, 0.6));
+      }
 
-.icons--moon,
-.icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      .icons--moon,
+      .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--sun {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:not(:checked) + .toggleSwitch .icons--moon {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--moon {
-  transform: rotate(360deg) scale(1);
-  opacity: 1;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--moon {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
 
-#checkboxInput:checked + .toggleSwitch .icons--sun {
-  transform: rotate(0deg) scale(0);
-  opacity: 0;
-}
+      #checkboxInput:checked + .toggleSwitch .icons--sun {
+        transform: rotate(0deg) scale(0);
+        opacity: 0;
+      }
 
-#checkboxInput:active + .toggleSwitch {
-  transform: scale(0.94);
-}
-.icons svg {
-  fill: currentColor !important;
-}
- /* ===== RESPONSIVE ONLY ===== */
+      #checkboxInput:active + .toggleSwitch {
+        transform: scale(0.94);
+      }
+      .icons svg {
+        fill: currentColor !important;
+      }
+      /* ===== RESPONSIVE ONLY ===== */
 
- /* #hamburger { display: none; }
+      /* #hamburger { display: none; }
 
  .dark #hamburger span {
   background-color: #e5e7eb;
@@ -459,42 +474,59 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 #mobileMenu a:last-child { border-bottom: none; color: #dc2626; } */
-@media (min-width: 640px) {
-  #btnLogout:hover {
-    width: 8rem; /* 128px = w-32 */
-    border-radius: 1.5rem;
-  }
+      @media (min-width: 640px) {
+        #btnLogout:hover {
+          width: 8rem; /* 128px = w-32 */
+          border-radius: 1.5rem;
+        }
 
-  #btnLogout:hover .logout-text {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@media (max-width: 639px) {
-  .logout-container {
-    min-width: fit-content;
-  }
-}
+        #btnLogout:hover .logout-text {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @media (max-width: 639px) {
+        .logout-container {
+          min-width: fit-content;
+        }
+      }
     </style>
   </head>
   <body class="text-gray-800">
     <nav
       class="sticky top-0 z-50 bg-white/40 dark:bg-black/20 border-gray-200 dark:border-gray-800 backdrop-blur-md border border-white-100 px-6 py-3 flex items-center justify-between shadow-sm mb-8 w-[95%] md:w-3/4 mx-auto rounded-full"
     >
-    <div class="hidden max-[1180px]:block menu-toggle"> 
-      <input type="checkbox" id="checkbox" class="hidden"> 
-      <label for="checkbox" class="toggle">
-        <div class="bar bar--top"></div>
-        <div class="bar bar--middle"></div>
-        <div class="bar bar--bottom"></div>
-      </label>
-    </div>
-    <a id="logoBtn" href="/Company_dashboard" class="flex items-center gap-3 w-auto text-2xl font-semibold text-black dark:text-white cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-      <img src="../../../../assets/imgs/Logo.png" alt="CareerGuidance Logo" class="h-12 w-auto object-contain">
-      <span class="hidden sm:inline font-lexend font-semibold not-italic">AI-Career Guidance</span>
-    </a>
-      <div class="hidden md:flex flex-1 justify-center items-center nav-container">
-    <div id="bg" class="w-fit px-6 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/30 shadow-inner">          <ul class="magic-menu">
+      <div class="hidden max-[1180px]:block menu-toggle">
+        <input type="checkbox" id="checkbox" class="hidden" />
+        <label for="checkbox" class="toggle">
+          <div class="bar bar--top"></div>
+          <div class="bar bar--middle"></div>
+          <div class="bar bar--bottom"></div>
+        </label>
+      </div>
+      <a
+        id="logoBtn"
+        href="/Company_dashboard"
+        class="flex items-center gap-3 w-auto text-2xl font-semibold text-black dark:text-white cursor-pointer"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      >
+        <img
+          src="../../../../assets/imgs/Logo.png"
+          alt="CareerGuidance Logo"
+          class="h-12 w-auto object-contain"
+        />
+        <span class="hidden sm:inline font-lexend font-semibold not-italic"
+          >AI-Career Guidance</span
+        >
+      </a>
+      <div
+        class="hidden md:flex flex-1 justify-center items-center nav-container"
+      >
+        <div
+          id="bg"
+          class="w-fit px-6 py-2 rounded-full border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/30 shadow-inner"
+        >
+          <ul class="magic-menu">
             <li id="homeBtn" style="--i: #67e3ff; --j: #69a8b8">
               <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
@@ -515,46 +547,73 @@
         </div>
       </div>
 
-<div class="flex items-center gap-2 md:gap-4 max-sm:ml-auto">
-        
-  <input id="checkboxInput" type="checkbox" />
-  <label class="toggleSwitch" for="checkboxInput">
-    <div class="icons icons--moon">
-      <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-        <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd"></path>
-      </svg>
-    </div>
-    <div class="icons icons--sun">
-      <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-        <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"></path>
-      </svg>
-    </div>
-  </label>
+      <div class="flex items-center gap-2 md:gap-4 max-sm:ml-auto">
+        <input id="checkboxInput" type="checkbox" />
+        <label class="toggleSwitch" for="checkboxInput">
+          <div class="icons icons--moon">
+            <svg
+              class="moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="32"
+              height="32"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </div>
+          <div class="icons icons--sun">
+            <svg
+              class="sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="32"
+              height="32"
+            >
+              <path
+                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+              ></path>
+            </svg>
+          </div>
+        </label>
+      </div>
 
-</div>
-
-<div class="logout-container min-w-[150px] flex justify-end">
-  <button id="btnLogout" class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg active:translate-x-1 active:translate-y-1">
-    <div class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
-      <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
-        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-      </svg>
-    </div>
-    <div class="logout-text absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500">
-      Logout
-    </div>
-  </button>
-</div>
-
-
-</nav>
+      <div class="logout-container min-w-[150px] flex justify-end">
+        <button
+          id="btnLogout"
+          class="group flex items-center justify-start w-11 h-11 bg-red-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-500 shadow-lg active:translate-x-1 active:translate-y-1"
+        >
+          <div
+            class="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 512 512" fill="white">
+              <path
+                d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+              ></path>
+            </svg>
+          </div>
+          <div
+            class="logout-text absolute right-5 transform translate-x-full opacity-0 text-white text-lg font-semibold transition-all duration-500"
+          >
+            Logout
+          </div>
+        </button>
+      </div>
+    </nav>
 
     <main class="container mx-auto px-4 w-full md:w-3/4 pb-12">
       <div
         id="loadingState"
         class="hidden flex flex-col items-center justify-center py-20"
       >
-        <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 dark:text-blue-600 mb-4"></i>
+        <i
+          class="fas fa-circle-notch fa-spin text-4xl text-blue-500 dark:text-blue-600 mb-4"
+        ></i>
         <p class="text-gray-500 dark:text-gray-400">Loading your profile...</p>
       </div>
 
@@ -562,7 +621,9 @@
         <div
           class="bg-white dark:bg-black/30 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 p-8 mb-6 relative overflow-hidden"
         >
-          <div class="flex justify-end mb-4 md:absolute md:top-0 md:right-0 md:p-2">
+          <div
+            class="flex justify-end mb-4 md:absolute md:top-0 md:right-0 md:p-2"
+          >
             <button
               id="btnEditProfile"
               class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition shadow-sm flex items-center gap-2"
@@ -639,9 +700,8 @@
           </div>
         </div>
 
-
         <div
-          class="flex border-b border-gray-200 dark:border-gray-700  md:gap-8 mb-6 gap-4 px-2 overflow-x-auto scrollbar-hide"
+          class="flex border-b border-gray-200 dark:border-gray-700 md:gap-8 mb-6 gap-4 px-2 overflow-x-auto scrollbar-hide"
         >
           <button
             class="profile-tab-btn active text-sm md:text-base whitespace-nowrap flex-shrink-0"
@@ -674,7 +734,9 @@
                 >
                   <i class="fas fa-graduation-cap text-blue-500"></i> Education
                 </h3>
-                <div class="bg-slate-50 dark:bg-black/30 rounded-lg p-4 border border-slate-100 dark:border-slate-800">
+                <div
+                  class="bg-slate-50 dark:bg-black/30 rounded-lg p-4 border border-slate-100 dark:border-slate-800"
+                >
                   <div class="flex justify-between items-start">
                     <div>
                       <h4
@@ -683,7 +745,12 @@
                       >
                         --
                       </h4>
-                      <p id="view-university" class="text-gray-600 dark:text-gray-400">--</p>
+                      <p
+                        id="view-university"
+                        class="text-gray-600 dark:text-gray-400"
+                      >
+                        --
+                      </p>
                     </div>
                     <span
                       id="view-gradYear"
@@ -715,7 +782,10 @@
                       class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block mb-1"
                       >Experience Level</label
                     >
-                    <p id="view-expLevel" class="font-medium text-gray-800 dark:text-gray-400">
+                    <p
+                      id="view-expLevel"
+                      class="font-medium text-gray-800 dark:text-gray-400"
+                    >
                       --
                     </p>
                   </div>
@@ -724,7 +794,10 @@
                       class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase block mb-1"
                       >Years of Experience</label
                     >
-                    <p id="view-yearsExp" class="font-medium text-gray-800 dark:text-gray-400">
+                    <p
+                      id="view-yearsExp"
+                      class="font-medium text-gray-800 dark:text-gray-400"
+                    >
                       --
                     </p>
                   </div>
@@ -757,22 +830,34 @@
                   <li
                     class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
                   >
-                    <span class="text-gray-500 dark:text-gray-400">Birth Date</span
-                    ><span id="view-birthDate" class="font-medium dark:text-gray-400">--</span>
-                  </li>
-                  <li
-                    class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
-                  >
-                    <span class="text-gray-500 dark:text-gray-400">Gender</span
-                    ><span id="view-gender" class="font-medium capitalize dark:text-gray-400"
+                    <span class="text-gray-500 dark:text-gray-400"
+                      >Birth Date</span
+                    ><span
+                      id="view-birthDate"
+                      class="font-medium dark:text-gray-400"
                       >--</span
                     >
                   </li>
                   <li
                     class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
                   >
-                    <span class="text-gray-500 dark:text-gray-400">Nationality</span
-                    ><span id="view-country" class="font-medium dark:text-gray-400">--</span>
+                    <span class="text-gray-500 dark:text-gray-400">Gender</span
+                    ><span
+                      id="view-gender"
+                      class="font-medium capitalize dark:text-gray-400"
+                      >--</span
+                    >
+                  </li>
+                  <li
+                    class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-800 pb-2"
+                  >
+                    <span class="text-gray-500 dark:text-gray-400"
+                      >Nationality</span
+                    ><span
+                      id="view-country"
+                      class="font-medium dark:text-gray-400"
+                      >--</span
+                    >
                   </li>
                 </ul>
               </div>
@@ -786,7 +871,8 @@
                 </h3>
                 <div class="space-y-3">
                   <div>
-                    <span class="block text-xs text-gray-600 dark:text-gray-400 uppercase mb-1"
+                    <span
+                      class="block text-xs text-gray-600 dark:text-gray-400 uppercase mb-1"
                       >Job Type</span
                     ><span
                       id="view-jobType"
@@ -795,7 +881,8 @@
                     >
                   </div>
                   <div>
-                    <span class="block text-xs text-gray-600 dark:text-gray-400 uppercase mb-1"
+                    <span
+                      class="block text-xs text-gray-600 dark:text-gray-400 uppercase mb-1"
                       >Workplace Setting</span
                     ><span
                       id="view-workplace"
@@ -806,7 +893,7 @@
                 </div>
               </div>
               <div
-                class="bg-gradient-to-br bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 text-gray-900 "
+                class="bg-gradient-to-br bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 text-gray-900"
               >
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="font-bold dark:text-slate-200">My CV</h3>
@@ -828,9 +915,13 @@
         </div>
 
         <div id="tab-apps" class="profile-tab-content hidden animate-fade-in">
-          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+          <div
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6"
+          >
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200">My Applications</h2>
+              <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200">
+                My Applications
+              </h2>
               <span
                 id="appsCount"
                 class="bg-purple-100 text-purple-600 dark:bg-purple-600 dark:text-purple-100 text-xs font-bold px-3 py-1 rounded-full"
@@ -853,9 +944,13 @@
         </div>
 
         <div id="tab-saved" class="profile-tab-content hidden animate-fade-in">
-          <div class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+          <div
+            class="bg-white dark:bg-black/30 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6"
+          >
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200">Saved Jobs</h2>
+              <h2 class="text-xl font-bold text-gray-800 dark:text-slate-200">
+                Saved Jobs
+              </h2>
               <span
                 id="savedCount"
                 class="bg-blue-100 text-blue-600 dark:text-blue-100 dark:bg-blue-600 text-xs font-bold px-3 py-1 rounded-full"
@@ -867,13 +962,15 @@
                 class="flex flex-col items-center justify-center py-20 text-center"
               >
                 <i class="fas fa-bookmark text-7xl text-slate-200 mb-4"></i>
-                <p class="text-slate-500 dark:text-slate-400 font-medium">No saved jobs yet</p>
+                <p class="text-slate-500 dark:text-slate-400 font-medium">
+                  No saved jobs yet
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    <!-- EDIT MODE -->
+      <!-- EDIT MODE -->
       <div id="editMode" class="hidden">
         <div
           class="bg-white dark:bg-black/30 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 w-3/4 mx-auto p-8"
@@ -881,7 +978,9 @@
           <div
             class="flex justify-between items-center border-b border-gray-100 dark:border-gray-500 pb-6 mb-6"
           >
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-slate-200">Edit Profile</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-slate-200">
+              Edit Profile
+            </h2>
             <button
               id="btnCancelEdit"
               class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium transition"
@@ -898,7 +997,8 @@
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Full Name</label
                   ><input
                     type="text"
@@ -907,7 +1007,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Phone Number</label
                   ><input
                     type="tel"
@@ -916,7 +1017,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Birth Date</label
                   ><input
                     type="date"
@@ -925,32 +1027,62 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Gender</label
                   >
                   <select
                     id="input-gender"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="male" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Male</option>
-                    <option value="female" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Female</option>
-                    <option value="other" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Prefer not to say</option>
+                    <option
+                      value="male"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Male
+                    </option>
+                    <option
+                      value="female"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Female
+                    </option>
+                    <option
+                      value="other"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Prefer not to say
+                    </option>
                   </select>
                 </div>
                 <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Location (City, Country)</label
                   >
                   <select
                     id="input-location"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition "
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value=""  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled selected>Select location</option>
-                    <option value="Remote" class="font-bold bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <option
+                      value=""
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                      disabled
+                      selected
+                    >
+                      Select location
+                    </option>
+                    <option
+                      value="Remote"
+                      class="font-bold bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       🌍 Remote / Anywhere
                     </option>
 
-                    <optgroup label="Egypt"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Egypt"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Cairo, Egypt">Cairo, Egypt</option>
                       <option value="Giza, Egypt">Giza, Egypt</option>
                       <option value="Alexandria, Egypt">
@@ -965,7 +1097,10 @@
                       <option value="Tanta, Egypt">Tanta, Egypt</option>
                     </optgroup>
 
-                    <optgroup label="Saudi Arabia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Saudi Arabia"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Riyadh, Saudi Arabia">
                         Riyadh, Saudi Arabia
                       </option>
@@ -995,7 +1130,10 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="United Arab Emirates"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="United Arab Emirates"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Dubai, United Arab Emirates">
                         Dubai, UAE
                       </option>
@@ -1019,7 +1157,10 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Jordan"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Jordan"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Amman, Jordan">Amman, Jordan</option>
                       <option value="Zarqa, Jordan">Zarqa, Jordan</option>
                       <option value="Irbid, Jordan">Irbid, Jordan</option>
@@ -1028,7 +1169,10 @@
                       <option value="Jerash, Jordan">Jerash, Jordan</option>
                     </optgroup>
 
-                    <optgroup label="Lebanon"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Lebanon"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Beirut, Lebanon">Beirut, Lebanon</option>
                       <option value="Tripoli, Lebanon">Tripoli, Lebanon</option>
                       <option value="Sidon, Lebanon">Sidon, Lebanon</option>
@@ -1037,7 +1181,10 @@
                       <option value="Zahle, Lebanon">Zahle, Lebanon</option>
                     </optgroup>
 
-                    <optgroup label="Iraq"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Iraq"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Baghdad, Iraq">Baghdad, Iraq</option>
                       <option value="Basra, Iraq">Basra, Iraq</option>
                       <option value="Mosul, Iraq">Mosul, Iraq</option>
@@ -1047,7 +1194,10 @@
                       <option value="Karbala, Iraq">Karbala, Iraq</option>
                     </optgroup>
 
-                    <optgroup label="Syria"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Syria"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Damascus, Syria">Damascus, Syria</option>
                       <option value="Aleppo, Syria">Aleppo, Syria</option>
                       <option value="Homs, Syria">Homs, Syria</option>
@@ -1056,7 +1206,10 @@
                       <option value="Tartus, Syria">Tartus, Syria</option>
                     </optgroup>
 
-                    <optgroup label="Kuwait"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Kuwait"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Kuwait City, Kuwait">
                         Kuwait City, Kuwait
                       </option>
@@ -1070,7 +1223,10 @@
                       <option value="Al Jahra, Kuwait">Al Jahra, Kuwait</option>
                     </optgroup>
 
-                    <optgroup label="Oman"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Oman"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Muscat, Oman">Muscat, Oman</option>
                       <option value="Salalah, Oman">Salalah, Oman</option>
                       <option value="Sohar, Oman">Sohar, Oman</option>
@@ -1079,7 +1235,10 @@
                       <option value="Buraimi, Oman">Buraimi, Oman</option>
                     </optgroup>
 
-                    <optgroup label="Qatar"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Qatar"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Doha, Qatar">Doha, Qatar</option>
                       <option value="Al Rayyan, Qatar">Al Rayyan, Qatar</option>
                       <option value="Al Wakrah, Qatar">Al Wakrah, Qatar</option>
@@ -1087,7 +1246,10 @@
                       <option value="Umm Salal, Qatar">Umm Salal, Qatar</option>
                     </optgroup>
 
-                    <optgroup label="Bahrain"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Bahrain"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Manama, Bahrain">Manama, Bahrain</option>
                       <option value="Riffa, Bahrain">Riffa, Bahrain</option>
                       <option value="Muharraq, Bahrain">
@@ -1101,7 +1263,10 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Yemen"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Yemen"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Sana'a, Yemen">Sana'a, Yemen</option>
                       <option value="Aden, Yemen">Aden, Yemen</option>
                       <option value="Taiz, Yemen">Taiz, Yemen</option>
@@ -1111,7 +1276,10 @@
                       <option value="Ibb, Yemen">Ibb, Yemen</option>
                     </optgroup>
 
-                    <optgroup label="Palestine"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Palestine"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Jerusalem, Palestine">
                         Jerusalem, Palestine
                       </option>
@@ -1136,7 +1304,10 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Libya"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Libya"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Tripoli, Libya">Tripoli, Libya</option>
                       <option value="Benghazi, Libya">Benghazi, Libya</option>
                       <option value="Misrata, Libya">Misrata, Libya</option>
@@ -1144,7 +1315,10 @@
                       <option value="Sebha, Libya">Sebha, Libya</option>
                     </optgroup>
 
-                    <optgroup label="Tunisia"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Tunisia"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Tunis, Tunisia">Tunis, Tunisia</option>
                       <option value="Sfax, Tunisia">Sfax, Tunisia</option>
                       <option value="Sousse, Tunisia">Sousse, Tunisia</option>
@@ -1155,7 +1329,10 @@
                       <option value="Gabes, Tunisia">Gabes, Tunisia</option>
                     </optgroup>
 
-                    <optgroup label="Algeria"  class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Algeria"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Algiers, Algeria">Algiers, Algeria</option>
                       <option value="Oran, Algeria">Oran, Algeria</option>
                       <option value="Constantine, Algeria">
@@ -1166,7 +1343,10 @@
                       <option value="Batna, Algeria">Batna, Algeria</option>
                     </optgroup>
 
-                    <optgroup label="Morocco" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Morocco"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Casablanca, Morocco">
                         Casablanca, Morocco
                       </option>
@@ -1180,7 +1360,10 @@
                       <option value="Meknes, Morocco">Meknes, Morocco</option>
                     </optgroup>
 
-                    <optgroup label="Sudan" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Sudan"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Khartoum, Sudan">Khartoum, Sudan</option>
                       <option value="Omdurman, Sudan">Omdurman, Sudan</option>
                       <option value="Port Sudan, Sudan">
@@ -1190,7 +1373,10 @@
                       <option value="Kassala, Sudan">Kassala, Sudan</option>
                     </optgroup>
 
-                    <optgroup label="Mauritania" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Mauritania"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Nouakchott, Mauritania">
                         Nouakchott, Mauritania
                       </option>
@@ -1205,7 +1391,10 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Somalia" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Somalia"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Mogadishu, Somalia">
                         Mogadishu, Somalia
                       </option>
@@ -1217,7 +1406,10 @@
                       <option value="Berbera, Somalia">Berbera, Somalia</option>
                     </optgroup>
 
-                    <optgroup label="Djibouti" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Djibouti"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Djibouti City, Djibouti">
                         Djibouti City, Djibouti
                       </option>
@@ -1229,7 +1421,10 @@
                       </option>
                     </optgroup>
 
-                    <optgroup label="Comoros" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <optgroup
+                      label="Comoros"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       <option value="Moroni, Comoros">Moroni, Comoros</option>
                       <option value="Mutsamudu, Comoros">
                         Mutsamudu, Comoros
@@ -1248,21 +1443,43 @@
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Experience Level</label
                   >
                   <select
                     id="input-experienceLevel"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="Entry-level" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Entry Level</option>
-                    <option value="Mid-Level" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Mid-Level</option>
-                    <option value="Senior-level" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Senior-level</option>
-                    <option value="Executive" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Executive</option>
+                    <option
+                      value="Entry-level"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Entry Level
+                    </option>
+                    <option
+                      value="Mid-Level"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Mid-Level
+                    </option>
+                    <option
+                      value="Senior-level"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Senior-level
+                    </option>
+                    <option
+                      value="Executive"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Executive
+                    </option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Years of Exp</label
                   ><input
                     type="number"
@@ -1271,29 +1488,63 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Industry</label
                   >
                   <select
                     id="input-industry"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200" disabled>Select industry</option>
-                    <option value="Software Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <option
+                      value=""
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                      disabled
+                    >
+                      Select industry
+                    </option>
+                    <option
+                      value="Software Development"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       Software Development
                     </option>
-                    <option value="Web Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Web Development</option>
-                    <option value="Mobile Development" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <option
+                      value="Web Development"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Web Development
+                    </option>
+                    <option
+                      value="Mobile Development"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       Mobile Development
                     </option>
-                    <option value="Data Science & Analytics" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <option
+                      value="Data Science & Analytics"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       Data Science & Analytics
                     </option>
-                    <option value="AI & Machine Learning" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">
+                    <option
+                      value="AI & Machine Learning"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
                       AI & Machine Learning
                     </option>
-                    <option value="Cybersecurity" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cybersecurity</option>
-                    <option value="Cloud Computing" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Cloud Computing</option>
+                    <option
+                      value="Cybersecurity"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Cybersecurity
+                    </option>
+                    <option
+                      value="Cloud Computing"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Cloud Computing
+                    </option>
                   </select>
                 </div>
               </div>
@@ -1306,7 +1557,8 @@
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Degree</label
                   ><input
                     type="text"
@@ -1315,7 +1567,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >University</label
                   ><input
                     type="text"
@@ -1324,7 +1577,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Graduation Year</label
                   ><input
                     type="number"
@@ -1333,7 +1587,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >GPA (Optional)</label
                   ><input
                     type="number"
@@ -1343,33 +1598,124 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Job Type</label
                   >
                   <select
                     id="input-jobType"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="Full Time" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Full Time</option>
-                    <option value="Part Time" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Part Time</option>
-                    <option value="Contract" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Contract</option>
-                    <option value="Internship" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Internship</option>
+                    <option
+                      value="Full Time"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Full Time
+                    </option>
+                    <option
+                      value="Part Time"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Part Time
+                    </option>
+                    <option
+                      value="Contract"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Contract
+                    </option>
+                    <option
+                      value="Internship"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Internship
+                    </option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
                     >Workplace Setting</label
                   >
                   <select
                     id="input-workplaceSetting"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
                   >
-                    <option value="on_site" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">On-Site</option>
-                    <option value="remote" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Remote</option>
-                    <option value="hybrid" class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200">Hybrid</option>
+                    <option
+                      value="on_site"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      On-Site
+                    </option>
+                    <option
+                      value="remote"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Remote
+                    </option>
+                    <option
+                      value="hybrid"
+                      class="bg-white text-gray-700 dark:bg-indigo-950 dark:text-slate-200"
+                    >
+                      Hybrid
+                    </option>
                   </select>
                 </div>
               </div>
+            </div>
+            <div>
+              <h4
+                class="text-sm font-bold text-gray-400 dark:text-slate-300 dark:border-gray-500 uppercase tracking-wider mb-4 border-t pt-6"
+              >
+                Security Settings (Optional)
+              </h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  >
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    id="input-currentPassword"
+                    placeholder="••••••••"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  >
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    id="input-newPassword"
+                    placeholder="••••••••"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-slate-400 mb-1"
+                  >
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    id="input-confirmPassword"
+                    placeholder="••••••••"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-black/30 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-slate-600 focus:border-blue-500 dark:focus:border-slate-200 outline-none transition"
+                  />
+                </div>
+              </div>
+              <p
+                class="text-xs text-gray-500 dark:text-slate-400 mt-3 font-medium"
+              >
+                * Leave these fields blank if you do not wish to change your
+                password.
+              </p>
             </div>
             <div class="flex justify-end pt-6 border-t border-gray-500">
               <button
@@ -1399,7 +1745,9 @@
           >
             <i class="fa-solid fa-xmark text-xl"></i>
           </button>
-          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-200">Apply for Job</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-200">
+            Apply for Job
+          </h2>
           <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Submit your application and CV for this position
           </p>
@@ -1408,7 +1756,8 @@
         <form id="applyForm" class="p-6 pt-2 space-y-4" novalidate>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+              <label
+                class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
                 >Full Name <span class="text-red-500">*</span></label
               >
               <input
@@ -1420,7 +1769,8 @@
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+              <label
+                class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
                 >Email <span class="text-red-500">*</span></label
               >
               <input
@@ -1434,7 +1784,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+            <label
+              class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Phone Number</label
             >
             <input
@@ -1446,7 +1797,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+            <label
+              class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Upload CV/Resume <span class="text-red-500">*</span></label
             >
             <div
@@ -1474,7 +1826,8 @@
             </div>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
+            <label
+              class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1"
               >Cover Letter (Optional)</label
             >
             <textarea
@@ -1510,7 +1863,7 @@
       type="module"
       src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
     ></script>
-        <script type="module" src="/src/js/utils/authGuard.js"></script>
+    <script type="module" src="/src/js/utils/authGuard.js"></script>
 
     <script type="module" src="/src/js/config/constant.js"></script>
     <script type="module" src="/src/js/utils/axiosClient.js"></script>
@@ -1553,27 +1906,27 @@
       }
     </script>
     <!-- ✅ Script مضاف جديد فقط -->
-<script>
-const checkbox = document.getElementById('checkbox');
-const navContainer = document.querySelector('.nav-container');
+    <script>
+      const checkbox = document.getElementById('checkbox');
+      const navContainer = document.querySelector('.nav-container');
 
-// التحقق من وجود العناصر أولاً لتجنب الـ TypeError
-if (checkbox && navContainer) {
-  checkbox.addEventListener('change', () => {
-    if (checkbox.checked) {
-      navContainer.classList.add('active');
-    } else {
-      navContainer.classList.remove('active');
-    }
-  });
-  // أضيفي هذا الكود داخل الـ if (checkbox && navContainer)
-  document.querySelectorAll('.nav-item').forEach((item) => {
-    item.addEventListener('click', () => {
-      checkbox.checked = false; // سيلغي تفعيل الـ checkbox
-      navContainer.classList.remove('active'); // سيخفي القائمة
-    });
-  });
-} 
-  </script>
+      // التحقق من وجود العناصر أولاً لتجنب الـ TypeError
+      if (checkbox && navContainer) {
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            navContainer.classList.add('active');
+          } else {
+            navContainer.classList.remove('active');
+          }
+        });
+        // أضيفي هذا الكود داخل الـ if (checkbox && navContainer)
+        document.querySelectorAll('.nav-item').forEach((item) => {
+          item.addEventListener('click', () => {
+            checkbox.checked = false; // سيلغي تفعيل الـ checkbox
+            navContainer.classList.remove('active'); // سيخفي القائمة
+          });
+        });
+      }
+    </script>
   </body>
 </html>

@@ -68,4 +68,19 @@ export const authService = {
     });
     return response.data;
   },
+  // ============================================================
+  //  9. Update Password (For Logged In Users)
+  // ============================================================
+  async updatePassword(passwordData) {
+    // passwordData: { currentPassword, password, passwordConfirm }
+    const response = await axiosClient.patch("/auth/update-password", passwordData);
+    
+    // 🚨 نقطة هامة: الباك إند يرسل توكن جديد بعد تغيير الباسورد
+    // يجب تحديثه في المتصفح حتى لا يفقد المستخدم الجلسة
+    if (response.data && response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    }
+    
+    return response.data;
+  }
 };

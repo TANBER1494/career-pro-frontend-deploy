@@ -527,6 +527,8 @@ function populateEditForm(data) {
 btnSaveChanges.addEventListener('click', async (e) => {
   e.preventDefault();
   const getVal = (id) => document.getElementById(id)?.value.trim() || '';
+  
+  // 1. تجميع بيانات البروفايل العادية
   const updatedData = {
     fullName: getVal('input-fullName'),
     phoneNumber: getVal('input-phoneNumber'),
@@ -545,22 +547,56 @@ btnSaveChanges.addEventListener('click', async (e) => {
     workplaceSetting: getVal('input-workplaceSetting'),
   };
 
+  // 2. تجميع بيانات الباسورد
+  const currentPassword = getVal('input-currentPassword');
+  const newPassword = getVal('input-newPassword');
+  const confirmPassword = getVal('input-confirmPassword');
+
   try {
     btnSaveChanges.disabled = true;
-    btnSaveChanges.innerHTML =
-      '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    btnSaveChanges.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+    // 3. التحقق وإرسال تحديث الباسورد (لو المستخدم كتب حاجة في حقول الباسورد)
+    if (currentPassword || newPassword || confirmPassword) {
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        throw new Error("Please fill in all password fields to update your password.");
+      }
+      
+      // إرسال الريكويست للسيرفيس اللي ضفناها في الخطوة الأولى
+      await authService.updatePassword({
+        currentPassword: currentPassword,
+        password: newPassword,
+        passwordConfirm: confirmPassword
+      });
+
+      // تفريغ حقول الباسورد بعد النجاح عشان متبقاش ظاهرة لو فتح التعديل تاني
+      document.getElementById('input-currentPassword').value = '';
+      document.getElementById('input-newPassword').value = '';
+      document.getElementById('input-confirmPassword').value = '';
+    }
+
+    // 4. إرسال تحديث بيانات البروفايل
     await seekerService.updateProfile(updatedData);
+
+    // 5. رسالة النجاح النهائية
     swalDarkConfig({
       icon: 'success',
-      title: 'Profile Updated',
+      title: 'Profile Updated Successfully!',
       timer: 1500,
       showConfirmButton: false,
     }).then(() => {
       loadProfileData();
       toggleView(false);
     });
+
   } catch (error) {
-    swalDarkConfig({title:'Error', text:'Failed to update profile.', icon:'error'});
+    // 6. اصطياد الأخطاء (سواء من الباسورد أو البروفايل)
+    const errorMsg = error.response?.data?.message || error.message || 'Failed to update profile.';
+    swalDarkConfig({
+      title: 'Action Failed', 
+      text: errorMsg, 
+      icon: 'error'
+    });
   } finally {
     btnSaveChanges.disabled = false;
     btnSaveChanges.innerHTML = 'Save Changes';
